@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registro-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registro
+  template:
+    metadata:
+      labels:
+        app: registro
+    spec:
+      containers:
+        - name:  registro
+          image: adorego/registro
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registro-srv
+spec:
+  selector:
+    app: registro
+  ports:
+    - name: registro
+      protocol: TCP
+      port: 4001
+      targetPort: 4001

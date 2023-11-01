@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consultaci-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consultaci
+  template:
+    metadata:
+      labels:
+        app: consultaci
+    spec:
+      containers:
+        - name: auth
+          image: adorego/consulta-ci
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consultaci-srv
+spec:
+  selector:
+    app: consultaci
+  ports:
+    - name: consultaci
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

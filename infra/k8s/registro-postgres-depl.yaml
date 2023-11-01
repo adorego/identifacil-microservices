@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: registro-postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registro-postgres
+  template:
+    metadata:
+      labels:
+        app: registro-postgres
+    spec:
+      containers:
+        - name: registro-postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef: 
+                name: registro-secret-credentials
+
+          
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registro-postgres-srv
+spec:
+  selector:
+    app: registro-postgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

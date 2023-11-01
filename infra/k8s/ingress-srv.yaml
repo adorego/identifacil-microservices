@@ -4,15 +4,30 @@ metadata:
   name: ingress-srv
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
     - host: identifacil.gov.py
       http:
         paths:
-          - path: /api/users
+          - path: /api/consultaci/
             pathType: Prefix
             backend:
               service:
-                name: auth-srv
-                port: 
+                name: consultaci-srv
+                port:
+                  number: 4003
+          - path: /api/registro/
+            pathType: Prefix
+            backend:
+              service:
+                name: registro-srv
+                port:
+                  number: 4001
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: cliente-srv
+                port:
                   number: 3000

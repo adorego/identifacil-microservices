@@ -1,0 +1,44 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+build:
+  artifacts:
+    - image: adorego/auth
+      context: auth-identifacil
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    # - image: adorego/identifacil_cliente
+    #   context: cliente
+    #   sync:
+    #     manual:
+    #       - src: src/**/*.*
+    #         dest: .
+    #   docker:
+    #     dockerfile: Dockerfile
+    # - image: adorego/consulta-ci
+    #   context: consulta-ci
+    #   sync:
+    #     manual:
+    #       - src: src/**/*.ts
+    #         dest: .
+    #   docker:
+    #     dockerfile: Dockerfile
+
+    # - image: adorego/registro
+    #   context: identificacion-registro
+    #   sync:
+    #     manual:
+    #       - src: src/**/*.ts
+    #         dest: .
+    #   docker:
+    #     dockerfile: Dockerfile
+  local:
+    push: false
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+deploy:
+  kubectl: {}

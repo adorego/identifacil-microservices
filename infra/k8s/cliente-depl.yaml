@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cliente-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cliente
+  template:
+    metadata:
+      labels:
+        app: cliente
+    spec:
+      containers:
+        - name: cliente
+          image: adorego/cliente
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cliente-srv
+spec:
+  selector:
+    app: cliente
+  ports:
+    - name: cliente
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

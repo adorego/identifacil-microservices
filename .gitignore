@@ -1,1 +1,10 @@
-auth/node_modules
+auth-identifacil/node_modules
+auth-identifacil/dist
+cliente/node_modules
+cliente/.next
+consulta-ci/node_modules
+consulta-ci/dist
+identificacion-registro/dist
+identificacion-registro/node_modules
+
+

@@ -16,6 +16,8 @@ export class RegistroController{
   getHola(){
     return "Hola como estas"
   }
+
+
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -25,19 +27,21 @@ export class RegistroController{
     ])
   )
   async registrarppl(@UploadedFiles() fotos: {
-    foto1: Express.Multer.File[], 
-    foto2: Express.Multer.File[],
-    foto3: Express.Multer.File[]},
+    foto1: Array<Express.Multer.File>, 
+    foto2: Array<Express.Multer.File>,
+    foto3: Array<Express.Multer.File>},
     @Body() registro:RegistroPersonaDTO, ):Promise<RespuestaRegistroPPLDTO>{
     
+   
       //Transformacion de Datos
     const personaARegistrar = await this.registroPersonaFactory.crearRegistro(registro,fotos);
-    this.registroPersonaUseCase.registrar(personaARegistrar);
     
-    console.log(fotos.foto1);
-    console.log(fotos.foto2);
-    console.log(fotos.foto3);
-    // console.log(registro);
-    return {sucess:true};
+    // console.log('PersonaARegistrada:', personaARegistrar);
+    
+    const savedPersona = await this.registroPersonaUseCase.registrar(personaARegistrar);
+    //console.log("SavedPersona:", savedPersona);
+    
+    // return {sucess:true, savedPersona:savedPersona};
+    return {sucess:true, savedPersona:savedPersona}
   }
 }

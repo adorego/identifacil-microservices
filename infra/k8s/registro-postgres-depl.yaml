@@ -20,6 +20,16 @@ spec:
           envFrom:
             - configMapRef: 
                 name: registro-secret-credentials
+          volumeMounts: 
+              - mountPath: /var/lib/postgresql/data
+                name: registro-data-volume
+      volumes: 
+        - name: registro-data-volume
+          persistentVolumeClaim:
+            claimName: registro-data-claim
+
+          
+
 
           
       
@@ -36,3 +46,4 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+

@@ -16,7 +16,7 @@ export class ConsultaCIController{
   }
   @Post()
   async getDatosCi(@Body() cedula:CedulaDTO):Promise<ConsultaPoliciaRespuestaDTO>{
-    console.log('ConsultaCI Controller, cedula:', cedula);
+    // console.log('ConsultaCI Controller, cedula:', cedula);
     const respuesta = new ConsultaPoliciaRespuestaDTO();
     
     try{

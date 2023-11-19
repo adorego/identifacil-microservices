@@ -14,10 +14,10 @@ build:
     context: identificacion-registro
     docker:
         dockerfile: Dockerfile
-  - image: adorego/auth-identifacil
-    context: auth-identifacil
-    docker:
-        dockerfile: Dockerfile
+  # - image: adorego/auth
+  #   context: auth-identifacil
+  #   docker:
+  #       dockerfile: Dockerfile
 manifests:
   rawYaml:
      - ./infra/k8s/*

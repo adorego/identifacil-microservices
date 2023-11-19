@@ -2,17 +2,17 @@ import { Genero } from "../entities/genero.entity";
 import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 
 export class RegistroPersonaDTO{
-  nombre:string;
-  apellido:string;
-  genero:Genero;
+  nombres:string;
+  apellidos:string;
+  genero:string;
   fechaDeNacimiento:Date;
-  tipo_identificacion:TipoIdentificacion;
+  tipo_identificacion:string;
   numero_identificacion:string;
   foto1:File;
-  descriptorFacial1:Array<Number>;
+  descriptorFacial1:string;
   foto2:File;
-  descriptorFacial2:Array<Number>;
+  descriptorFacial2:string;
   foto3:File;
-  descriptorFacial3:Array<Number>;
+  descriptorFacial3:string;
 
 }

@@ -15,6 +15,14 @@ spec:
       containers:
         - name:  registro
           image: adorego/registro
+          volumeMounts: 
+              - mountPath: /mnt/archivos
+                name: archivos-volume
+      volumes: 
+        - name: archivos-volume
+          persistentVolumeClaim:
+            claimName: archivos-identifacil-claim
+
 ---
 apiVersion: v1
 kind: Service

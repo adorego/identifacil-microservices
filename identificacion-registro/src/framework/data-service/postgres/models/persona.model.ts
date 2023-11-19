@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 import { GeneroModel } from "./genero.model";
 import { Persona } from "src/core/entities/persona.entity";
@@ -12,6 +12,7 @@ export class PersonaModel extends Persona{
   id:number;
 
   @ManyToOne(() => TipoIdentificacionModel, (tipoDeIdentificacion) => tipoDeIdentificacion.personas, {eager:true} )
+  @JoinColumn({name: 'id_tipo_identificacion'})
   tipo_identificacion:TipoIdentificacionModel
   
   @Column({type:'varchar', nullable:false})
@@ -24,9 +25,12 @@ export class PersonaModel extends Persona{
   apellido:string;
 
   @ManyToOne((type) => GeneroModel, (genero) => genero.personas, {eager:true})
+  @JoinColumn()
   genero:GeneroModel;
 
-  @Column({type:"date", nullable:false})
+  @Column({
+    type:'date'
+  })
   fechaDeNacimiento:Date;
 
   @OneToOne((type) => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true})

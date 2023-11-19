@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { PostgresDataServiceModule } from './framework/data-service/postgres/postgres-data-service.module';
 import { RegistroIdentificacionModule } from './framework/identificacion-registro.module';
@@ -8,14 +9,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:"registro-postgres-srv",
+      // host:"registro-postgres-srv",
+      host:process.env.TEST_DB_HOST,
       port: 5432,
-      username: 'identifacil',
+      username:'identifacil',
       password:'clave',
-      database:'identifacil-registro',
+      logging:true,
+      database:'identifacil_registro',
+      migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,
       autoLoadEntities:true,
     }),
+    ConfigModule.forRoot(),
     
     RegistroIdentificacionModule,
     PostgresDataServiceModule,
@@ -24,5 +29,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   ],
   controllers: [],
   providers: [],
+  exports:[
+    PostgresDataServiceModule
+  ]
 })
 export class AppModule {}

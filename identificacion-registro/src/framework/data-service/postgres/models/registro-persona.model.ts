@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGenerate
 import { PersonaModel } from "./persona.model";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";
 
-@Entity('registro-persona')
+@Entity('registro_persona')
 export class RegistroPersonaModel extends RegistroPersona{
 
   constructor(){
@@ -15,22 +15,24 @@ export class RegistroPersonaModel extends RegistroPersona{
   @Column({type:"varchar", length: 100, unique:true,nullable:false})
   foto1:string;
 
-  @Column('integer', {array: true, default:[]})
-  descriptorFacial1:Array<Number>
+  @Column({type: 'varchar'})
+  descriptorFacial1:string
 
   @Column({type:"varchar", length: 100, unique:true,nullable:false})
   foto2:string;
 
-  @Column('integer', {array: true, default:[]})
-  descriptorFacial2:Array<Number>
+  @Column({type: 'varchar'})
+  descriptorFacial2:string
 
   @Column({type:"varchar", length: 100, unique:true,nullable:false})
   foto3:string;
 
-  @Column('integer', {array: true, default:[]})
-  descriptorFacial3:Array<Number>
+  @Column({type: 'varchar'})
+  descriptorFacial3:string
   
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type:'timestamp'
+  })
   fecha_registro:Date;
 
   @OneToOne(() => PersonaModel, persona => persona.registro)

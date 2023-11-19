@@ -3,11 +3,11 @@ import { Persona } from "./persona.entity";
 export class RegistroPersona{
   id:number;
   foto1:string;
-  descriptorFacial1:Array<Number>
+  descriptorFacial1:string;
   foto2:string;
-  descriptorFacial2:Array<Number>
+  descriptorFacial2:string;
   foto3:string;
-  descriptorFacial3:Array<Number>
+  descriptorFacial3:string;
   fecha_registro:Date;
   
 

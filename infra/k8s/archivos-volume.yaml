@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: archivos-identifacil
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1000M
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/archivos"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: archivos-identifacil
+  name: archivos-identifacil-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000M

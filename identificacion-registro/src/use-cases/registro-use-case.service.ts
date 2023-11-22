@@ -18,10 +18,11 @@ export class RegistroUseCase{
     //  console.log("Objecto dataService:", this.dataService);
      try{
         //Guardar Registro
-        console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
+        // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
         const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
         personaARegistrar.registro = registroGuardado;
         const personaGuardada = await this.dataService.persona.create(personaARegistrar);
+        console.log("Persona registrada:", personaGuardada);
         return personaGuardada;
         // return null
      }catch(error){

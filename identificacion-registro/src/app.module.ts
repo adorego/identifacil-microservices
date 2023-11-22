@@ -1,4 +1,5 @@
 import { ConfigModule } from '@nestjs/config';
+import { IdentificacionUseCaseModule } from './use-cases/identificacion-use-case.module';
 import { Module } from '@nestjs/common';
 import { PostgresDataServiceModule } from './framework/data-service/postgres/postgres-data-service.module';
 import { RegistroIdentificacionModule } from './framework/identificacion-registro.module';
@@ -24,7 +25,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     
     RegistroIdentificacionModule,
     PostgresDataServiceModule,
-    RegistroUseCasesModule
+    RegistroUseCasesModule,
+    IdentificacionUseCaseModule
   
   ],
   controllers: [],

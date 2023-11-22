@@ -18,6 +18,9 @@ export class PersonaModel extends Persona{
   @Column({type:'varchar', nullable:false})
   numero_identificacion:string;
   
+  @Column({type:'boolean', nullable:false})
+  esPPL:boolean;
+  
   @Column({type:"varchar", length: 100, unique:false,nullable:false})
   nombre:string;
 

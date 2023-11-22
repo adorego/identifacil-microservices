@@ -6,6 +6,7 @@ export class Persona{
   id:number;
   tipo_identificacion:TipoIdentificacion;
   numero_identificacion:string;
+  esPPL:boolean;
   nombre:string;
   apellido:string;
   ci:string;

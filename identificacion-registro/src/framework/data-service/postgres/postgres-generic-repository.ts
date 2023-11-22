@@ -30,5 +30,9 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
   update(id: number, item: T) {
     
   }
+
+  getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
+      return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
+  }
   
 }

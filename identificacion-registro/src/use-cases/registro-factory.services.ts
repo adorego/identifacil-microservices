@@ -49,8 +49,9 @@ export class RegistroFactory{
     persona.numero_identificacion = crearRegistroPersonaDTO.numero_identificacion;
     persona.nombre = crearRegistroPersonaDTO.nombres;
     persona.apellido = crearRegistroPersonaDTO.apellidos;
+    persona.esPPL = true;
     persona.genero = genero;
-    persona.fechaDeNacimiento = new Date(`${crearRegistroPersonaDTO.fechaDeNacimiento}T00:00:00.000Z`);
+    persona.fechaDeNacimiento = new Date(`${crearRegistroPersonaDTO.fechaDeNacimiento}`);
     const registro = new RegistroPersona();
     
     // registro.descriptorFacial1 = this.transformar_descriptor(crearRegistroPersonaDTO.descriptorFacial1.toString());

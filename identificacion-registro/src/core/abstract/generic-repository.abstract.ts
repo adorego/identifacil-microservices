@@ -9,7 +9,7 @@ export abstract class IGenericRepository<T>{
   
   abstract create(item: T): Promise<T>;
 
-  abstract update(id:number, item:T);
+  abstract update(item:T):Promise<T>;
 
   abstract getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any>;
 }

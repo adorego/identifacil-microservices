@@ -27,12 +27,14 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
     // console.log('Postgres Generic create item:', item);
     return this._repository.save(item);
   }
-  update(id: number, item: T) {
-    
+  update(item: T):Promise<T> {
+    return this._repository.save(item);
   }
 
   getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
       return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
   }
+
+  
   
 }

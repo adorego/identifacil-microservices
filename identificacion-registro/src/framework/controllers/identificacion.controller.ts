@@ -5,7 +5,7 @@ import { IdentificacionUseCase } from "src/use-cases/identificacion-use-case.ser
 
 // import { IdentificacionUseCase } from "src/use-cases/identificacion-use-case.service";
 
-@Controller('/api/identificacion')
+@Controller('identificacion')
 export class IdentificacionController{
 
 

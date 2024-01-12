@@ -14,6 +14,7 @@ export class ConsultaCIService{
       const datos = await this.policiaService.getDatosCI(cedula);
       return datos;
     }catch(error){
+      console.log('Ocurrio un error:', error);
       throw error
     }
   }

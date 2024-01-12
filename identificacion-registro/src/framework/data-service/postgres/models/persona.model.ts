@@ -1,8 +1,18 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
+import { DatosFamiliaresModel } from "./datos-familiares.model";
+import { DatosPersonalesModel } from "./datos-personales.model";
+import { EducacionFormacionModel } from "./educacion-formacion.model";
 import { GeneroModel } from "./genero.model";
+import { LimitacionIdiomaticaModel } from "./limitacion-idiomatica.model";
 import { Persona } from "src/core/entities/persona.entity";
 import { RegistroPersonaModel } from "./registro-persona.model";
+import { SaludFisica } from "src/core/entities/salud-fisica.entity";
+import { SaludFisicaModel } from "./salud-fisica.model";
+import { SaludMentalModel } from "./salud-mental.model";
+import { SaludModel } from "./salud.model";
+import { SeguridadModel } from "./seguridad_model";
+import { SituacionJudicialModel } from "./situacion-judicial.model";
 import { TipoIdentificacionModel } from "./tipo_identificacion.model";
 
 @Entity({name:'persona'})
@@ -17,6 +27,9 @@ export class PersonaModel extends Persona{
   
   @Column({type:'varchar', nullable:false})
   numero_identificacion:string;
+
+  @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona)
+  datosPersonales:DatosPersonalesModel;
   
   @Column({type:'boolean', nullable:false})
   esPPL:boolean;
@@ -27,7 +40,7 @@ export class PersonaModel extends Persona{
   @Column({type:"varchar", length: 100, unique:false,nullable:false})
   apellido:string;
 
-  @ManyToOne((type) => GeneroModel, (genero) => genero.personas, {eager:true})
+  @ManyToOne(() => GeneroModel, (genero) => genero.personas, {eager:true})
   @JoinColumn()
   genero:GeneroModel;
 
@@ -36,9 +49,42 @@ export class PersonaModel extends Persona{
   })
   fechaDeNacimiento:Date;
 
-  @OneToOne((type) => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true})
+  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true})
   @JoinColumn()
   registro:RegistroPersonaModel;
 
+
+  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {cascade:true, eager:true})
+  @JoinColumn()
+  salud:SaludModel;
+
+  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true})
+  @JoinColumn()
+  salud_mental:SaludMentalModel;
+
+  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true})
+  @JoinColumn()
+  salud_fisica:SaludFisicaModel;
+
+  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true})
+  @JoinColumn()
+  limitacion_idiomatica:LimitacionIdiomaticaModel;
+  
+
+  @OneToOne(() => EducacionFormacionModel)
+  @JoinColumn()
+  educacion_formal:EducacionFormacionModel
+
+  @OneToOne(() => SeguridadModel)
+  @JoinColumn()
+  seguridad:SeguridadModel;
+
+  @OneToOne(() => DatosFamiliaresModel)
+  @JoinColumn()
+  datosFamiliares:DatosFamiliaresModel;
+
+  @OneToOne(() => SituacionJudicialModel)
+  @JoinColumn()
+  situacionJudicial:SituacionJudicialModel;
 
 }

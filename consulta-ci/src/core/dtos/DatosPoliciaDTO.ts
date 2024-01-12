@@ -6,3 +6,4 @@ export interface DatosPoliciaDTO{
   fecha_nacimiento:string;
 
 }
+

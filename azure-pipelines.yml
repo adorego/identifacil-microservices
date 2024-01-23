@@ -4,6 +4,8 @@
 
 trigger:
 - master
+- dev
+- test
 
 resources:
 - repo: self
@@ -50,7 +52,7 @@ stages:
         containerRegistryType: 'Azure Container Registry'
     - task: Kubernetes@1
       displayName: Deploy to penitenciaria-prod
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: 'penitenciaria-prod'

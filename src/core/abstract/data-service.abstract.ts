@@ -19,6 +19,7 @@ import { RegistroPersona } from "../entities/registro-persona.entity";
 import { Salud } from "../entities/salud.entity";
 import { SaludFisica } from "../entities/salud-fisica.entity";
 import { SaludMental } from "../entities/salud-mental.entity";
+import { Seguridad } from "../entities/seguridad.entity";
 import { SituacionJudicial } from "../entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 import { Vacuna } from "../entities/vacuna.entity";
@@ -47,4 +48,5 @@ export abstract class IDataService{
   abstract ingresoAPrision:IGenericRepository<IngresoAPrision>
   abstract situacionJudicial:IGenericRepository<SituacionJudicial>
   abstract oficios:IGenericRepository<Oficio>
+  abstract seguridad:IGenericRepository<Seguridad>
 }

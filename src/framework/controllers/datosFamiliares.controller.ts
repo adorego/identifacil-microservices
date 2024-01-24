@@ -5,7 +5,7 @@ import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
 @Controller(
-  'registro'
+  'datos_familiares'
 )
 export class DatosFamiliaresController{
   private readonly logger = new Logger('DatosFamiliaresController');
@@ -13,7 +13,7 @@ export class DatosFamiliaresController{
     private registroPersonaUseCase:RegistroUseCase
   ){}
 
-  @Post('datos_familiares')
+  @Post()
   async create(@Body() registroDatosFamiliares:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
     this.logger.log("Datos enviado:", registroDatosFamiliares, 'metodo:create');
     await this.registroPersonaUseCase.registrar_datos_familiares(registroDatosFamiliares);

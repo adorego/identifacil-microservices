@@ -6,7 +6,7 @@ import { RegistroDatosPersonalesFactory } from "src/use-cases/registro-datosPers
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
-@Controller('registro')
+@Controller('datos_personales')
 export class DatosPersonalesController{
   private readonly logger = new Logger('DatosPersonalesController');
   constructor(
@@ -15,7 +15,7 @@ export class DatosPersonalesController{
 
   }
 
-  @Post('datos_personales')
+  @Post()
   async create(@Body() registro_datosPersonales:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
     this.logger.log('Identificacion:', registro_datosPersonales.numeroDeIdentificacion);
     this.registroPersonaUseCase.registrar_datosPersonales(registro_datosPersonales);

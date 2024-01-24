@@ -5,7 +5,7 @@ import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
 @Controller(
-  'registro'
+  'educacion'
 )
 export class EducacionFormacionController{
 

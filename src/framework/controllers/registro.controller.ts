@@ -15,11 +15,12 @@ interface CausasJudicialesParameter{
   ci:string;
 }
 
-@Controller(
-  'registro'
+// @Controller(
+//   'registro'
   
   
-)
+// )
+@Controller()
 export class RegistroController{
 
   constructor(
@@ -33,7 +34,7 @@ export class RegistroController{
   }
 
 
-  @Post()
+  @Post('registro_persona')
   @UseInterceptors(
     FileFieldsInterceptor([
       {name:'foto1', maxCount:1},

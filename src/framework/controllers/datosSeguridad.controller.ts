@@ -5,7 +5,7 @@ import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
 @Controller(
-  'registro'
+  'seguridad'
 )
 export class DatosSeguridadController{
   private readonly logger = new Logger('DatosSeguridadController');
@@ -16,7 +16,7 @@ export class DatosSeguridadController{
   @Post('datos_seguridad')
   async create(@Body() registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosSeguridadDTO>{
     this.logger.log("Datos enviado:", registroDatosSeguridad, 'metodo:create');
-    // await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
+    await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
     return(
       {
         success:true,

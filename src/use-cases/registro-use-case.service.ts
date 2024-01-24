@@ -5,7 +5,6 @@ import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { Concubino } from "src/core/entities/concubino.entity";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
-import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
 import { GrupoSanguineo } from "src/core/entities/grupo-sanguineo.entity";
@@ -19,16 +18,16 @@ import { RegistroDatosJudicialesDTO } from "src/core/dto/registro-datos-judicial
 import { RegistroDatosJudicialesFactory } from "./registro-datos-judiciales/registro-datosJudiciales.factory";
 import { RegistroDatosPersonalesDTO } from "src/core/dto/registro-datos-personales.dto";
 import { RegistroDatosPersonalesFactory } from "./registro-datosPersonales-factory.service";
+import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/registro-datos-seguridad.dto";
+import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
 import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
-import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/respuesta-registro-datos-personales.dto";
-import { RespuestaRegistroEducacionFormacionDTO } from "src/core/dto/respuesta-registro-educacionFormacion.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/respuesta-registro-salud.dto";
-import { Salud } from "src/core/entities/salud.entity";
+import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 
@@ -42,6 +41,7 @@ export class RegistroUseCase{
     private registro_educacionFormacion_factory:RegistroEducacionFormacionFactory,
     private registro_datosFamiliares_factory:RegistroDatosFamiliaresFactory,
     private registro_datosJudiciales_factory:RegistroDatosJudicialesFactory,
+    private registro_datosSeguridad_factory:RegistroDatosSeguridadFactory,
   ){}
 
   async registrar(personaARegistrar:Persona):Promise<Persona>{
@@ -167,7 +167,18 @@ export class RegistroUseCase{
     try{
       return await this.dataService.grupo_sanguineo.getAll();
     }catch(error){
+      this.logger.error(`Error durante el registro de Datos Judiciales:${error}`);
       throw new HttpException(`Error al consultar los grupos sanguineos`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async registrar_datos_seguridad(registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<Seguridad>{
+    try{
+      const datosDeSeguridadAGuardar = await this.registro_datosSeguridad_factory.generar_datos_seguridad(registroDatosSeguridad);
+      return await this.dataService.seguridad.create(datosDeSeguridadAGuardar);
+    }catch(error){
+      this.logger.error(`Error durante el registro de Datos de Seguridad:${error}`);
+      throw new HttpException(`Error al consultar los Datos de Seeguridad`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

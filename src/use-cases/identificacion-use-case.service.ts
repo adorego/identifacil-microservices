@@ -5,6 +5,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestj
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { IdentificacionRespuestaDTO } from "src/core/dto/identificacion-respuesta.dto";
+import { Persona } from "src/core/entities/persona.entity";
 
 @Injectable()
 export class IdentificacionUseCase{
@@ -45,6 +46,7 @@ export class IdentificacionUseCase{
     return {
       nombres:persona_identificada.nombre,
       apellidos:persona_identificada.apellido,
+      numeroDeIdentificacion:persona_identificada.numero_identificacion,
       esPPL:persona_identificada.esPPL
     };
   }
@@ -78,5 +80,9 @@ export class IdentificacionUseCase{
       console.log('Ocurrio un error:', e);
       throw new HttpException('Error al cargar los modelos de reconocimiento facial', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async identificarPPLConCedula(numeroDeIdentificacion:string):Promise<Persona>{
+    return await this.dataService.persona.getByNumeroIdentificacion(numeroDeIdentificacion); 
   }
 }

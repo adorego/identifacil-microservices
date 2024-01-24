@@ -7,7 +7,6 @@ import { PostgreGenericRepository } from "./postgres-generic-repository";
 import { GeneroModel } from "./models/genero.model";
 import { TipoIdentificacionModel } from "./models/tipo_identificacion.model";
 import { RegistroPersonaModel } from "./models/registro-persona.model";
-import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { GrupoSanguineoModel } from "./models/grupo-sanguineo.model";
 import { VacunaModel } from "./models/vacuna.model";
 import { NacionalidadModel } from "./models/nacionalidad.model";
@@ -31,6 +30,7 @@ import { IngresoAPrisionModel } from "./models/ingreso-a-prision.model";
 import { SituacionJudicialModel } from "./models/situacion-judicial.model";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { OficioModel } from "./models/oficio.model";
+import { SeguridadModel } from "./models/seguridad.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -57,6 +57,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   ingresoAPrision: PostgreGenericRepository<IngresoAPrisionModel>;
   situacionJudicial: PostgreGenericRepository<SituacionJudicialModel>;
   oficios: PostgreGenericRepository<OficioModel>;
+  seguridad: PostgreGenericRepository<SeguridadModel>
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -105,6 +106,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private situacion_judicial_repository:Repository<SituacionJudicialModel>,
     @InjectRepository(OficioModel)
     private oficios_repository:Repository<OficioModel>,
+    @InjectRepository(SeguridadModel)
+    private seguridad_repository:Repository<SeguridadModel>,
     ){}
   
   
@@ -134,6 +137,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.ingresoAPrision = new PostgreGenericRepository<IngresoAPrisionModel>(this.ingreso_a_prision_repository);
     this.situacionJudicial = new PostgreGenericRepository<SituacionJudicialModel>(this.situacion_judicial_repository);
     this.oficios = new PostgreGenericRepository<OficioModel>(this.oficios_repository);
+    this.seguridad = new PostgreGenericRepository<SeguridadModel>(this.seguridad_repository);
   }
   
   

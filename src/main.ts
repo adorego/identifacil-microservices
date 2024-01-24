@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('/identifacil/api/')
+  // app.setGlobalPrefix('/api/')
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(4001);

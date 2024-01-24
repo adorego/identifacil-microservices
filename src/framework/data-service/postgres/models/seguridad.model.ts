@@ -11,45 +11,72 @@ export class SeguridadModel extends Seguridad{
   @OneToOne(() => PersonaModel, persona => persona.seguridad)
   persona:PersonaModel;
 
-  @Column({type:'boolean'})
-  es_riesgo_para_personal:boolean;
-  
-  @Column({type:'varchar'})
-  riesgo_personal:string;
+  @Column({type:"boolean"})
+  riesgoParaPersonal: boolean;
 
-  @Column({type:'boolean'})
-  es_riesgo_para_otros_reclusos:boolean;
+  @Column({type:"boolean"})
+  riesgoParaPersonal_modificado:boolean;
 
-  @Column({type:'varchar'})
-  riesgo_para_otros_reclusos:string;
+  @Column({type:"varchar"})
+  riesgoParaPersonalRespuesta: string;
 
-  @Column({type:'boolean'})
-  tiene_riesgo_de_ser_lesionado_por_otros_reclusos:boolean;
-  
-  @Column({type:'varchar'})
-  riesgo_de_ser_lesionado_por_otros_reclusos:string;
+  @Column({type:"boolean"})
+  riesgoParaPersonalRespuesta_modificado:boolean;
 
-  @Column({type:'boolean'})
-  constituye_riesgo_de_danar_propiedad:boolean;
+  @Column({type:"boolean"})
+  riesgoParaReclusos: boolean;
 
-  @Column({type:'varchar'})
-  riesgo_de_danar_propiedad:string;
+  @Column({type:"boolean"})
+  riesgoParaReclusos_modificado:boolean;
 
-  @Column({type:'boolean'})
-  es_miembro_de_grupo_que_es_amenaza_para_la_seguridad:boolean;
+  @Column({type:"varchar"})
+  riesgoParaReclusosRespuesta: string;
 
-  @Column({type:'varchar'})
-  miembro_de_grupo_que_es_amenaza_para_la_seguridad:string;
+  @Column({type:"boolean"})
+  riesgoParaReclusosRespuesta_modificado:boolean;
 
-  @Column({type:'boolean'})
-  tiene_entrenamiento_militar_previo:boolean;
+  @Column({type:"boolean"})
+  riesgoDeSufrirLesionPorOtrosReclusos: boolean;
 
-  @Column({type:'varchar'})
-  entrenamiento_militar_previo:string;
+  @Column({type:"boolean"})
+  riesgoDeSufrirLesionPorOtrosReclusos_modificado:boolean;
 
-  @Column({type:'boolean'})
-  era_funcionario_publico:boolean;
+  @Column({type:"varchar"})
+  riesgoDeSufrirLesionPorOtrosReclusosRespuesta: string;
 
-  @Column({type:'varchar'})
-  cargo_funcionario_publico:string;
+  @Column({type:"boolean"})
+  riesgoDeDanharLaPropiedad: boolean;
+
+  @Column({type:"boolean"})
+  riesgoDeDanharLaPropiedad_modificado:boolean;
+
+  @Column({type:"varchar"})
+  riesgoDeDanharLaPropiedadRespuesta: string;
+
+  @Column({type:"boolean"})
+  miembroDeGrupoQueConstituyeAmenazaParaSeguridad: boolean;
+
+  @Column({type:"boolean"})
+  miembroDeGrupoQueConstituyeAmenazaParaSeguridad_modificado:boolean;
+
+  @Column({type:"varchar"})
+  miembroDeGrupoQueConstituyeAmenazaParaSeguridadRespuesta: string;
+
+  @Column({type:"boolean"})
+  tieneEntrenamientoMilitarPrevio: boolean;
+
+  @Column({type:"boolean"})
+  tieneEntrenamientoMilitarPrevio_modificado:boolean;
+
+  @Column({type:"varchar"})
+  tieneEntrenamientoMilitarPrevioRespuesta: string;
+
+  @Column({type:"boolean"})
+  eraFuncionarioPublico: boolean;
+
+  @Column({type:"boolean"})
+  eraFuncionarioPublico_modificado:boolean;
+
+  @Column({type:"varchar"})
+  eraFuncionarioPublicoRespuesta: string;
 }

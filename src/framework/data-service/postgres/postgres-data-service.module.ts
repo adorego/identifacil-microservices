@@ -1,5 +1,4 @@
 import { CausaJudicialModel } from "./models/causa-judicial.model";
-import { CausaRepository } from "./repositories/causa.repository";
 import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.model";
 import { CiudadModel } from "./models/ciudad.model";
 import { ConcubinoModel } from "./models/concubino.model";
@@ -85,7 +84,7 @@ import { VacunaModel } from "./models/vacuna.model";
       provide: IDataService,
       useClass: PostgresDataService
     },
-    CausaRepository
+    
     
   ],
   exports:[

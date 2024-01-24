@@ -4,6 +4,7 @@ import { PostgresDataServiceModule } from "src/framework/data-service/postgres/p
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
 import { RegistroDatosJudicialesFactory } from "./registro-datos-judiciales/registro-datosJudiciales.factory";
 import { RegistroDatosPersonalesFactory } from "./registro-datosPersonales-factory.service";
+import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
 import { RegistroFactory } from "./registro-factory.services";
 import { RegistroSaludFactory } from "./registro-salud-factory.service";
@@ -22,6 +23,7 @@ import { RegistroUseCase } from "./registro-use-case.service";
     RegistroEducacionFormacionFactory,
     RegistroDatosFamiliaresFactory,
     RegistroDatosJudicialesFactory,
+    RegistroDatosSeguridadFactory,
   
   ],
   controllers:[],
@@ -32,6 +34,7 @@ import { RegistroUseCase } from "./registro-use-case.service";
     RegistroDatosPersonalesFactory,
     RegistroEducacionFormacionFactory,
     RegistroDatosFamiliaresFactory,
+    RegistroDatosSeguridadFactory,
   ]
 })
 export class RegistroUseCasesModule{}

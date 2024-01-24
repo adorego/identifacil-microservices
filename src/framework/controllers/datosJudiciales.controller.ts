@@ -5,7 +5,7 @@ import { RespuestaRegistroDatosJudicialesDTO } from "src/core/dto/respuesta-regi
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 @Controller(
-  'registro'
+  'datos_judiciales'
 )
 export class DatosJudicialesController{
   private readonly logger = new Logger('DatosJudicialesController')
@@ -15,7 +15,7 @@ export class DatosJudicialesController{
 
   }
 
-  @Post('datos_judiciales')
+  @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
       {name:'oficioJudicial_documento', maxCount:1},

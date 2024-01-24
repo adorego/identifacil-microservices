@@ -17,8 +17,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:"registro-postgres-srv",
-      // host:process.env.TEST_DB_HOST,
+      // host:"registro-postgres-srv",
+      host:process.env.TEST_DB_HOST,
       port: 5432,
       username:'identifacil',
       password:'clave',

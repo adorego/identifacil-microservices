@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.setGlobalPrefix('/api/')
+  app.setGlobalPrefix('/api/registro/')
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(4001);

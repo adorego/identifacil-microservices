@@ -7,6 +7,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api/registro/')
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
+  
   await app.listen(4001);
 }
 bootstrap();

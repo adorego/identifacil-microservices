@@ -10,9 +10,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MulterModule.register({
       limits:{
-        fileSize: 1024 * 1024 * 10,
+        fileSize: 1024 * 1024 * 1000,
       },
     }),
     TypeOrmModule.forRoot({
@@ -23,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username:'identifacil',
       password:'clave',
       logging:true,
-      database:'identifacil-registro',
+      database:'identifacil_registro',
       migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,
       autoLoadEntities:true,

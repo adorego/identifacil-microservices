@@ -4,14 +4,19 @@ import * as path from "path";
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
 import { ErrorPersonaEncontrada } from "src/framework/errors/error-persona-encontrada";
+import { Float32ConveterService } from "src/framework/lib/float32-converter.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
+import { IdentificacionUseCase } from "./identificacion-use-case.service";
 import { Persona } from "src/core/entities/persona.entity";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";
 import { RegistroPersonaDTO } from "src/core/dto/registro-persona.dto";
 
 @Injectable()
 export class RegistroFactory{
-  constructor(private dataService:IDataService){}
+  constructor(private dataService:IDataService,
+    private identificarUseCase:IdentificacionUseCase,
+    private float32ConverterService:Float32ConveterService
+  ){}
   async crearRegistro(crearRegistroPersonaDTO:RegistroPersonaDTO, fotos:{
     foto1:Array<Express.Multer.File>,
     foto2:Array<Express.Multer.File>,
@@ -25,7 +30,12 @@ export class RegistroFactory{
     if (personaEncontrada){
       throw new ErrorPersonaEncontrada('Esta persona ya está registrada');
     }
-    
+
+    //Validar que este rostro ya no este en la base de datos
+    const personaQueCoincide = await this.identificarUseCase.identificar(this.float32ConverterService.transformar_array_a_descriptor(crearRegistroPersonaDTO.descriptorFacial1.split(",")));
+    if(personaQueCoincide.identificado){
+      throw new ErrorPersonaEncontrada('Ya existe una persona con este rostro');
+    }
     //Validar tipo de documento
     const tipo_identificacion = await this.dataService.tipo_identificacion.get(parseInt(crearRegistroPersonaDTO.tipo_identificacion));
 
@@ -41,7 +51,7 @@ export class RegistroFactory{
       throw new NotFoundException('Genero no encontrado')
     }
 
-    console.log("DTO:", crearRegistroPersonaDTO);
+    // console.log("DTO:", crearRegistroPersonaDTO);
     
     const persona = new Persona();
     persona.tipo_identificacion = tipo_identificacion;

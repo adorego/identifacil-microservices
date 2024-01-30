@@ -4,9 +4,7 @@ import { RespuestaRegistroEducacionFormacionDTO } from "src/core/dto/respuesta-r
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
-@Controller(
-  'educacion'
-)
+@Controller()
 export class EducacionFormacionController{
 
   constructor(

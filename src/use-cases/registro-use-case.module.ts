@@ -1,3 +1,4 @@
+import { IdentificacionUseCaseModule } from "./identificacion-use-case.module";
 import { LibModule } from "src/framework/lib/lib.modules";
 import { Module } from "@nestjs/common";
 import { PostgresDataServiceModule } from "src/framework/data-service/postgres/postgres-data-service.module";
@@ -14,6 +15,7 @@ import { RegistroUseCase } from "./registro-use-case.service";
   imports:[
     PostgresDataServiceModule,
     LibModule,
+    IdentificacionUseCaseModule,
   ],
   providers:[
     RegistroUseCase,

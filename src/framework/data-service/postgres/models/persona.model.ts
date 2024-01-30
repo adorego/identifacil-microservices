@@ -50,41 +50,41 @@ export class PersonaModel extends Persona{
   })
   fechaDeNacimiento:Date;
 
-  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true})
+  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   registro:RegistroPersonaModel;
 
 
-  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud:SaludModel;
 
-  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud_mental:SaludMentalModel;
 
-  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud_fisica:SaludFisicaModel;
 
-  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true})
+  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   limitacion_idiomatica:LimitacionIdiomaticaModel;
   
 
-  @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona, {cascade: true, eager: true})
+  @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   educacionFormacion:EducacionFormacionModel
 
-  @OneToOne(() => SeguridadModel, seguridad => seguridad.persona, {cascade: true, eager: true})
+  @OneToOne(() => SeguridadModel, seguridad => seguridad.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   seguridad:SeguridadModel;
 
-  @OneToOne(() => DatosFamiliaresModel, datosFamiiliares => datosFamiiliares.persona, {cascade: true, eager: true})
+  @OneToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   datosFamiliares:DatosFamiliaresModel;
 
-  @OneToOne(() => SituacionJudicialModel)
+  @OneToOne(() => SituacionJudicialModel, situacionJuridica => situacionJuridica.persona, {cascade: true, eager: true, onDelete:'CASCADE'} )
   @JoinColumn()
   situacionJudicial:SituacionJudicialModel;
 

@@ -4,19 +4,26 @@ import * as path from "path";
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
 import { ErrorPersonaEncontrada } from "src/framework/errors/error-persona-encontrada";
+import { Float32ConveterService } from "src/framework/lib/float32-converter.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
+import { IdentificacionUseCase } from "./identificacion-use-case.service";
 import { Persona } from "src/core/entities/persona.entity";
+import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";
-import { RegistroPersonaDTO } from "src/core/dto/registro-persona.dto";
+import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
+import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
 
 @Injectable()
 export class RegistroFactory{
-  constructor(private dataService:IDataService){}
+  constructor(private dataService:IDataService,
+    private identificarUseCase:IdentificacionUseCase,
+    private float32ConverterService:Float32ConveterService
+  ){}
   async crearRegistro(crearRegistroPersonaDTO:RegistroPersonaDTO, fotos:{
     foto1:Array<Express.Multer.File>,
     foto2:Array<Express.Multer.File>,
     foto3:Array<Express.Multer.File>
-  }){
+  }):Promise<RespuestaFactoryRegistroPPL>{
     
     //**********************Validaciones******************************//
     //Validar que la persona no este ya registrada
@@ -25,7 +32,12 @@ export class RegistroFactory{
     if (personaEncontrada){
       throw new ErrorPersonaEncontrada('Esta persona ya está registrada');
     }
-    
+
+    //Validar que este rostro ya no este en la base de datos
+    const personaQueCoincide = await this.identificarUseCase.identificar(this.float32ConverterService.transformar_array_a_descriptor(crearRegistroPersonaDTO.descriptorFacial1.split(",")));
+    if(personaQueCoincide.identificado){
+      throw new ErrorPersonaEncontrada('Ya existe una persona con este rostro');
+    }
     //Validar tipo de documento
     const tipo_identificacion = await this.dataService.tipo_identificacion.get(parseInt(crearRegistroPersonaDTO.tipo_identificacion));
 
@@ -41,7 +53,15 @@ export class RegistroFactory{
       throw new NotFoundException('Genero no encontrado')
     }
 
-    
+    let establecimiento_penitenciario = null;
+    //Validar establecimiento del PPL
+    if(crearRegistroPersonaDTO.esPPL === "true"){
+      establecimiento_penitenciario = await this.dataService.establecimientoPenitenciario.get(parseInt(crearRegistroPersonaDTO.establecimiento));
+      if(!establecimiento_penitenciario){
+        throw new NotFoundException("No se encuentra el establecimiento penitenciario enviado");
+      }
+    }
+    // console.log("DTO:", crearRegistroPersonaDTO);
     
     const persona = new Persona();
     persona.tipo_identificacion = tipo_identificacion;
@@ -49,7 +69,7 @@ export class RegistroFactory{
     persona.numero_identificacion = crearRegistroPersonaDTO.numero_identificacion;
     persona.nombre = crearRegistroPersonaDTO.nombres;
     persona.apellido = crearRegistroPersonaDTO.apellidos;
-    persona.esPPL = true;
+    persona.esPPL = crearRegistroPersonaDTO.esPPL === "true" ? true : false;
     persona.genero = genero;
     persona.fechaDeNacimiento = new Date(`${crearRegistroPersonaDTO.fechaDeNacimiento}`);
     const registro = new RegistroPersona();
@@ -71,10 +91,23 @@ export class RegistroFactory{
     registro.foto2 = await this.almacenar_foto(fotos.foto2, 2, `${persona.numero_identificacion}`);
     registro.foto3 = await this.almacenar_foto(fotos.foto3, 3, `${persona.numero_identificacion}`);
     registro.fecha_registro = new Date();
-    console.log('Persona:', persona);
-    console.log('Registro:', registro);
+    // console.log('Persona:', persona);
+    // console.log('Registro:', registro);
     persona.registro = registro;
-    return persona;
+    if(persona.esPPL){
+      const ppl = new Ppl();
+      ppl.persona = persona;
+      ppl.establecimiento_penitenciario = establecimiento_penitenciario;
+      return{
+        persona:persona,
+        ppl:ppl
+      }
+      
+    }
+    return {
+      persona:persona,
+      ppl:null
+    }
   }
 
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{

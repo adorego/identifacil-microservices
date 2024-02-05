@@ -10,13 +10,13 @@ export class FamiliarModel extends Familiar{
   id:number;
 
   @Column({type:'varchar', nullable:false})
-  nombre_apellido:string;
+  nombre:string;
+
+  @Column({type:'varchar', nullable:false})
+  apellido:string;
 
   @Column({type:'varchar', nullable:false})
   vinculo:string;
-
-  @Column({type:'varchar', nullable:false})
-  vinculo_sistema_penitenciario:string;
 
   @Column({type:'varchar', nullable:false})
   lugar:string;

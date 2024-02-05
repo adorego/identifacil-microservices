@@ -11,7 +11,7 @@ import { SaludFisica } from "src/core/entities/salud-fisica.entity";
 import { SaludFisicaModel } from "./salud-fisica.model";
 import { SaludMentalModel } from "./salud-mental.model";
 import { SaludModel } from "./salud.model";
-import { SeguridadModel } from "./seguridad_model";
+import { SeguridadModel } from "./seguridad.model";
 import { SituacionJudicialModel } from "./situacion-judicial.model";
 import { TipoIdentificacionModel } from "./tipo_identificacion.model";
 
@@ -29,6 +29,7 @@ export class PersonaModel extends Persona{
   numero_identificacion:string;
 
   @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona)
+  @JoinColumn()
   datosPersonales:DatosPersonalesModel;
   
   @Column({type:'boolean', nullable:false})
@@ -49,41 +50,41 @@ export class PersonaModel extends Persona{
   })
   fechaDeNacimiento:Date;
 
-  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true})
+  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   registro:RegistroPersonaModel;
 
 
-  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud:SaludModel;
 
-  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud_mental:SaludMentalModel;
 
-  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true})
+  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   salud_fisica:SaludFisicaModel;
 
-  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true})
+  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   limitacion_idiomatica:LimitacionIdiomaticaModel;
   
 
-  @OneToOne(() => EducacionFormacionModel)
+  @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
-  educacion_formal:EducacionFormacionModel
+  educacionFormacion:EducacionFormacionModel
 
-  @OneToOne(() => SeguridadModel)
+  @OneToOne(() => SeguridadModel, seguridad => seguridad.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   seguridad:SeguridadModel;
 
-  @OneToOne(() => DatosFamiliaresModel)
+  @OneToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   datosFamiliares:DatosFamiliaresModel;
 
-  @OneToOne(() => SituacionJudicialModel)
+  @OneToOne(() => SituacionJudicialModel, situacionJuridica => situacionJuridica.persona, {cascade: true, eager: true, onDelete:'CASCADE'} )
   @JoinColumn()
   situacionJudicial:SituacionJudicialModel;
 

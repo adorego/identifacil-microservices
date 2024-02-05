@@ -4,7 +4,7 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
 import { Persona } from "src/core/entities/persona.entity";
 import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
-import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { Salud } from "src/core/entities/salud.entity";
 import { SaludFisica } from "src/core/entities/salud-fisica.entity";
 import { SaludMental } from "src/core/entities/salud-mental.entity";

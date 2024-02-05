@@ -5,5 +5,5 @@ export class Hijo{
   nombre:string;
   edad:number;
   lugar_sistema_penitenciario:string;
-  datosFamiliares:DatosFamiliares;
+  
 }

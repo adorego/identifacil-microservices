@@ -5,6 +5,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestj
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { IdentificacionRespuestaDTO } from "src/core/dto/identificacion-respuesta.dto";
+import { Persona } from "src/core/entities/persona.entity";
 
 @Injectable()
 export class IdentificacionUseCase{
@@ -14,7 +15,13 @@ export class IdentificacionUseCase{
   async identificar(descriptorFacial:Float32Array):Promise<IdentificacionRespuestaDTO>{
     const personas = await this.dataService.persona.getAll();
     if(personas.length === 0){
-      throw new NotFoundException('No existen registros en la Base de Datos');
+      return{
+        identificado:false,
+        numeroDeIdentificacion:null,
+        nombres:null,
+        apellidos:null,
+        esPPL:null
+      }
     }
     // console.log("labeledDescriptor:", personas[0].numero_identificacion, this.transformar_array_a_descriptor(personas[0].registro.descriptorFacial1.split(',')));
     // console.log('descriptor generado:', descriptorFacial);
@@ -29,10 +36,10 @@ export class IdentificacionUseCase{
       }
     )
     await this.cargar_modelos();
-    console.log("labeledDescriptors:", labeledDescriptors);
+    // console.log("labeledDescriptors:", labeledDescriptors);
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.6);
     const resultado = faceMatcher.findBestMatch(this.transformar_objeto_a_array(descriptorFacial));
-    console.log('El resultado es:', resultado);
+    // console.log('El resultado es:', resultado);
     
     const persona_identificada = personas.find(
       (persona) =>{
@@ -40,11 +47,19 @@ export class IdentificacionUseCase{
       }
     )
     if(!persona_identificada){
-      throw new NotFoundException('Persona no identiificada');
+      return {
+        identificado:false,
+        numeroDeIdentificacion:null,
+        nombres:null,
+        apellidos:null,
+        esPPL:null
+      }
     }
     return {
+      identificado:true,
       nombres:persona_identificada.nombre,
       apellidos:persona_identificada.apellido,
+      numeroDeIdentificacion:persona_identificada.numero_identificacion,
       esPPL:persona_identificada.esPPL
     };
   }
@@ -78,5 +93,9 @@ export class IdentificacionUseCase{
       console.log('Ocurrio un error:', e);
       throw new HttpException('Error al cargar los modelos de reconocimiento facial', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async identificarPPLConCedula(numeroDeIdentificacion:string):Promise<Persona>{
+    return await this.dataService.persona.getByNumeroIdentificacion(numeroDeIdentificacion); 
   }
 }

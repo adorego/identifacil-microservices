@@ -1,8 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
+import { ConcubinoModel } from "./concubino.model";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { FamiliarModel } from "./familiar.model";
-import { HijoPersonaModel } from "./hijo-persona.model";
+import { PersonaModel } from "./persona.model";
 
 @Entity({name:'datos_familiares'})
 export class DatosFamiliaresModel extends DatosFamiliares{
@@ -10,15 +11,37 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @Column({type:'boolean', nullable:false})
-  es_cabeza_de_familia:boolean;
+  @OneToOne(() => PersonaModel, (persona) => persona.datosFamiliares)
+  persona:PersonaModel;
 
-  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares)
+  @Column({type:'boolean', nullable:true})
+  esCabezaDeFamilia:boolean;
+
+  @Column({type:'boolean', nullable:false})
+  esCabezaDeFamilia_modificado:boolean;
+
+  @Column({type:'boolean', nullable:true})
+  tieneCirculoFamiliar:boolean;
+
+  @Column({type:'boolean', nullable:false})
+  tieneCirculoFamiliar_modificado:boolean;
+
+  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares, {cascade:true})
   familiares:FamiliarModel[];
 
   @Column({type:'boolean', nullable:false})
-  tiene_concubino:boolean;
+  familiares_modificado:boolean;
 
-  @OneToMany(() => HijoPersonaModel, (hijo) => hijo.datosFamiliares)
-  hijos:HijoPersonaModel[];
+  @Column({type:'boolean', nullable:true})
+  tieneConcubino:boolean;
+
+  @Column({type:'boolean', nullable:false})
+  tieneConcubino_modificado:boolean;
+  
+  @OneToOne(() => ConcubinoModel, {cascade:true})
+  @JoinColumn()
+  concubino:ConcubinoModel;
+  
+  @Column({type:'boolean', nullable:false})
+  concubino_modificado:boolean;
 }

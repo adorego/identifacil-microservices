@@ -1,7 +1,5 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { BarrioModel } from "./barrio.model";
-import { CompaniaModel } from "./compania.model";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { EstadoCivilModel } from "./estado-civil.model";
 import { NacionalidadModel } from "./nacionalidad.model";
@@ -33,8 +31,8 @@ export class DatosPersonalesModel extends DatosPersonales{
   @Column({type:"boolean"})
   nacionalidad_modificado:boolean;
 
-  @Column({type:"date"})
-  lugarDeNacimiento:Date;
+  @Column({type:"varchar"})
+  lugarDeNacimiento:string;
 
   @Column({type:"boolean"})
   lugarDeNacimiento_modificado:boolean;
@@ -45,18 +43,13 @@ export class DatosPersonalesModel extends DatosPersonales{
   @Column({type:"boolean"})
   direccion_modificado:boolean;
 
-  @ManyToOne(() => BarrioModel)
-  barrio:BarrioModel;
+  @Column({type:"varchar"})
+  barrioCompania:string;
 
   @Column({type:"boolean"})
-  barrio_modificado:boolean;
+  barrioCompania_modificado:boolean;
 
-  @ManyToOne(() => CompaniaModel)
-  compania:CompaniaModel;
-
-  @Column({type:"boolean"})
-  compania_modificado:boolean;
-
+  
   @Column({type:"varchar"})
   numeroDeContacto:string;
 

@@ -5,7 +5,8 @@ import { DatosPoliciaDTO } from "src/core/dtos/DatosPoliciaDTO";
 import { ConsultaCIService } from "src/core/use-cases/consultaci/consultaci.use-case";
 
 
-@Controller('api/consultaci')
+// @Controller('consultaci')
+@Controller()
 export class ConsultaCIController{
   constructor(private policiaService:ConsultaCIService){}
 
@@ -14,7 +15,7 @@ export class ConsultaCIController{
     console.log('Entro en saludar');
     return "Hola";
   }
-  @Post()
+  @Post('get_datos_ci')
   async getDatosCi(@Body() cedula:CedulaDTO):Promise<ConsultaPoliciaRespuestaDTO>{
     // console.log('ConsultaCI Controller, cedula:', cedula);
     const respuesta = new ConsultaPoliciaRespuestaDTO();

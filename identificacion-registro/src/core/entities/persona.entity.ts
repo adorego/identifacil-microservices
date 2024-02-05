@@ -9,7 +9,7 @@ import { Salud } from "./salud.entity";
 import { SaludFisica } from "./salud-fisica.entity";
 import { SaludMental } from "./salud-mental.entity";
 import { Seguridad } from "./seguridad.entity";
-import { SituacionJudicial } from "./situacion-judicial-persona.entity";
+import { SituacionJudicial } from "./situacion-judicial.entity";
 import { TipoIdentificacion } from "./tipo-identificacion.entity";
 
 export class Persona{
@@ -28,7 +28,7 @@ export class Persona{
   salud_mental:SaludMental;
   salud_fisica:SaludFisica;
   limitacion_idiomatica:LimitacionIdiomatica;
-  educacion_formal:EducacionFormacion;
+  educacionFormacion:EducacionFormacion;
   seguridad:Seguridad;
   datosFamiliares:DatosFamiliares;
   situacionJudicial:SituacionJudicial;

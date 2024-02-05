@@ -1,20 +1,21 @@
-import { Body, Controller, Get, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
-import { RegistroPersonaDTO } from "src/core/dto/registro-persona.dto";
-import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
+import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RespuestaEstadoCivilDTO } from "src/core/dto/respuesta-estado-civil.dto";
 import { RespuestaGrupoSanguineoDTO } from "src/core/dto/respuesta-grupo-sanguineo.dto";
 import { RespuestaNacionalidadDTO } from "src/core/dto/respuesta-nacionalida.dto";
-import { RespuestaRegistroPPLDTO } from "src/core/dto/respuesta-registro-ppl.dto";
-import { RespuestaRegistroSaludDTO} from "src/core/dto/respuesta-registro-salud.dto";
+import { RespuestaRegistroPPLDTO } from "src/core/dto/registro/respuesta-registro-ppl.dto";
+import { RespuestaRegistroSaludDTO} from "src/core/dto/registro/respuesta-registro-salud.dto";
 import { RespuestaVacunasDTO } from "src/core/dto/respuesta-vacunas.dto";
 import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
-@Controller(
-  'registro'
-  
-  
-)
+interface CausasJudicialesParameter{
+  ci:string;
+}
+
+@Controller()
 export class RegistroController{
 
   constructor(
@@ -28,7 +29,7 @@ export class RegistroController{
   }
 
 
-  @Post()
+  @Post('registro_persona')
   @UseInterceptors(
     FileFieldsInterceptor([
       {name:'foto1', maxCount:1},
@@ -44,11 +45,11 @@ export class RegistroController{
     
    
       //Transformacion de Datos
-    const personaARegistrar = await this.registroPersonaFactory.crearRegistro(registro,fotos);
+    const {persona:personaARegistrar,ppl} = await this.registroPersonaFactory.crearRegistro(registro,fotos);
     
     // console.log('PersonaARegistrada:', personaARegistrar);
     
-    const savedPersona = await this.registroPersonaUseCase.registrar(personaARegistrar);
+    const savedPersona = await this.registroPersonaUseCase.registrar(personaARegistrar, ppl);
     //console.log("SavedPersona:", savedPersona);
     
     // return {sucess:true, savedPersona:savedPersona};
@@ -92,6 +93,41 @@ export class RegistroController{
     repuesta.nacionalidades = nacionalidades;
     repuesta.success = true;
     return repuesta;
+  }
+
+  @Get('estados_civiles')
+  async estadosCiviles():Promise<RespuestaEstadoCivilDTO>{
+    const estados_civiles = await this.registroPersonaUseCase.estados_civiles();
+    const respuesta = new RespuestaEstadoCivilDTO();
+    respuesta.estadosCiviles = estados_civiles;
+    respuesta.success = true;
+    return respuesta;
+  }
+
+  
+  @Get('causas')
+  async causasJudiciales(@Query() parametros:CausasJudicialesParameter){
+    
+    const causas = await this.registroPersonaUseCase.causas_judiciales(parametros.ci);
+    
+    return(
+      {
+        causas:causas,
+        success:true
+      }
+    )
+  }
+  @Get('oficios')
+  async getOficios(){
+    
+    const oficios = await this.registroPersonaUseCase.oficios();
+    
+    return(
+      {
+        oficios:oficios,
+        success:true
+      }
+    )
   }
 }
 

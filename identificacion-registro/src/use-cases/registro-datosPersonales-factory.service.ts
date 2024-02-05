@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
-import { RegistroDatosPersonalesDTO } from "src/core/dto/registro-datos-personales.dto";
+import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 
 @Injectable()
 export class RegistroDatosPersonalesFactory{
@@ -12,9 +12,9 @@ export class RegistroDatosPersonalesFactory{
 
   }
 
-  async registrarDatosPersonales(datosPersonalesDTO:RegistroDatosPersonalesDTO) {
+  async registrarDatosPersonales(datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<DatosPersonales> {
      //Validacion de que existe la persona
-     this.logger.log("Identificacion:"+datosPersonalesDTO.numeroDeIdentificacion);
+    //  this.logger.log("Identificacion:"+datosPersonalesDTO.numeroDeIdentificacion);
      if(!datosPersonalesDTO.numeroDeIdentificacion){
       throw new HttpException('No se envió el número de identificación', HttpStatus.BAD_REQUEST);
      }
@@ -38,13 +38,12 @@ export class RegistroDatosPersonalesFactory{
 
      
      let datosPersonales = new DatosPersonales();
-    //  datosPersonales = {
-    //   id:null,
-    //   ...datosPersonalesDTO,
-    //   nacionalidad:Nacionalidad,
-    //   estado_civil:EstadoCivil,
-    //   persona:PersonaEncontrada
-    // }
+     return datosPersonales = {
+      ...datosPersonalesDTO,
+      nacionalidad:Nacionalidad,
+      estado_civil:EstadoCivil,
+      persona:PersonaEncontrada
+    }
   
   }
 }

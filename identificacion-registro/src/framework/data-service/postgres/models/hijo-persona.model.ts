@@ -18,8 +18,7 @@ export class HijoPersonaModel extends Hijo{
   @Column({type:'varchar', nullable:false})
   lugar_sistema_penitenciario:string;
 
-  @ManyToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.hijos)
-  datosFamiliares:DatosFamiliaresModel;
+  
 
   
 }

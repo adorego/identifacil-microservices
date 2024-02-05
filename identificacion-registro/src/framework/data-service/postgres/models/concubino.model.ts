@@ -10,7 +10,7 @@ export class ConcubinoModel extends Concubino{
   id:number;
 
   @Column({type:'varchar', nullable:false})
-  numero_identificacion:string;
+  numeroDeIdentificacion:string;
 
   @Column({type:'varchar', nullable:false})
   nombres:string;
@@ -18,13 +18,7 @@ export class ConcubinoModel extends Concubino{
   @Column({type:'varchar', nullable:false})
   apellidos:string;
 
-  @Column({type:'date', nullable:false})
-  fecha_inicio:Date;
+  
 
-  @Column({type:'date'})
-  fecha_baja:Date;
-
-  @OneToOne(() => PersonaModel)
-  @JoinColumn()
-  persona:PersonaModel;
+  
 }

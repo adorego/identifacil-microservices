@@ -2,9 +2,8 @@
 
 export class Concubino{
   id:number;
-  numero_identificacion:string;
+  numeroDeIdentificacion:string;
   nombres:string;
   apellidos:string;
-  fecha_inicio:Date;
-  fecha_baja:Date;
+  
 }

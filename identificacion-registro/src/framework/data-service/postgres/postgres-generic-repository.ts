@@ -6,7 +6,11 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
   
   private _repository:Repository<T>;
 
-  constructor(repository:Repository<T>){
+  constructor(
+    repository:Repository<T>,
+    
+    
+    ){
     this._repository = repository;
   }
   
@@ -35,6 +39,19 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
       return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
   }
 
-  
-  
+  getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("causa")
+          .leftJoin("causa.persona","persona")
+          .where("persona.numero_identificacion = :numero_de_identificacion ",{numero_de_identificacion:numeroDeIdentificacion})
+          .getMany()
+
+
+  }
+
+  getAllPPLsByEstablecimiento(establecimiento:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("ppl")
+           .where("ppl.establecimiento_penitenciario = :establecimiento",{establecimiento:establecimiento})
+           .getMany()
+  }
 }
+  

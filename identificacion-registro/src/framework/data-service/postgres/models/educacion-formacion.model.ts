@@ -1,24 +1,45 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
+import { Persona } from "src/core/entities/persona.entity";
+import { PersonaModel } from "./persona.model";
 
-@Entity({name:'educacion_formal'})
+@Entity({name:'educacion_formacion'})
 export class EducacionFormacionModel extends EducacionFormacion{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @Column({type:'varchar'})
-  nivel_academico:string;
+  @OneToOne(() => PersonaModel, (persona) => persona.educacionFormacion)
+  persona: PersonaModel;
 
   @Column({type:'varchar'})
-  institucion_educativa:string;
+  nivelAcademico:string;
 
   @Column({type:'boolean'})
-  tiene_oficio:boolean;
+  nivelAcademico_modificado:boolean;
 
   @Column({type:'varchar'})
-  oficio:string;
+  institucionEducativa:string;
+
+  @Column({type:'boolean'})
+  institucionEducativa_modificado:boolean;
+
+  @Column({type:'boolean'})
+  tieneOficio:boolean;
+
+  @Column({type:'boolean'})
+  tieneOficio_modificado:boolean;
 
   @Column({type:'varchar'})
-  ultimo_lugar_de_trabajo:string;
+  nombreOficio:string;
+
+  @Column({type:'boolean'})
+  nombreOficio_modificado:boolean;
+
+  @Column({type:'varchar'})
+  ultimoTrabajo:string;
+
+  @Column({type:'boolean'})
+  ultimoTrabajo_modificado:boolean;
+ 
 }

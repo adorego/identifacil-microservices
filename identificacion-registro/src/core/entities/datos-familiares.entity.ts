@@ -1,12 +1,22 @@
+import { Concubino } from "./concubino.entity";
 import { Familiar } from "./familiar.entity";
 import { Hijo } from "./hijo-persona.entity";
+import { Persona } from "./persona.entity";
 
 export class DatosFamiliares{
-  id:number;
-  es_cabeza_de_familia:boolean;
-  familiares:Familiar[];
-  tiene_concubino:boolean;
-  hijos:Array<Hijo>;
+  id?:number;
+  persona:Persona;
+  esCabezaDeFamilia:boolean;
+  esCabezaDeFamilia_modificado:boolean;
+  tieneCirculoFamiliar:boolean;
+  tieneCirculoFamiliar_modificado:boolean;
+  familiares:Array<Familiar>;
+  familiares_modificado:boolean;
+  tieneConcubino:boolean;
+  tieneConcubino_modificado:boolean;
+  concubino:Concubino;
+  concubino_modificado:boolean;
+  
   
   
 }

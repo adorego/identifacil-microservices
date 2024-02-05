@@ -12,21 +12,22 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { Persona } from "src/core/entities/persona.entity";
+import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
-import { RegistroDatosJudicialesDTO } from "src/core/dto/registro-datos-judiciales.dto";
+import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
 import { RegistroDatosJudicialesFactory } from "./registro-datos-judiciales/registro-datosJudiciales.factory";
-import { RegistroDatosPersonalesDTO } from "src/core/dto/registro-datos-personales.dto";
+import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 import { RegistroDatosPersonalesFactory } from "./registro-datosPersonales-factory.service";
 import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/registro-datos-seguridad.dto";
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
-import { RegistroEducacionDTO } from "src/core/dto/registro-educacion.dto";
+import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
-import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
-import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/respuesta-registrar-educacion-use-case.dto";
-import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/respuesta-registro-datos-personales.dto";
-import { RespuestaRegistroSaludDTO } from "src/core/dto/respuesta-registro-salud.dto";
+import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
+import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
+import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
 import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
@@ -44,7 +45,7 @@ export class RegistroUseCase{
     private registro_datosSeguridad_factory:RegistroDatosSeguridadFactory,
   ){}
 
-  async registrar(personaARegistrar:Persona):Promise<Persona>{
+  async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
     //  console.log("Objecto dataService:", this.dataService);
      try{
         //Guardar Registro
@@ -52,7 +53,10 @@ export class RegistroUseCase{
         const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
         personaARegistrar.registro = registroGuardado;
         const personaGuardada = await this.dataService.persona.create(personaARegistrar);
-        console.log("Persona registrada:", personaGuardada);
+        if(personaGuardada.esPPL){
+          ppl.persona = personaGuardada;
+          const pplGuardado = await this.dataService.ppl.create(ppl);
+        }
         return personaGuardada;
         // return null
      }catch(error){

@@ -1,5 +1,5 @@
-import { Genero } from "../entities/genero.entity";
-import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
+import { Genero } from "../../entities/genero.entity";
+import { TipoIdentificacion } from "../../entities/tipo-identificacion.entity";
 
 export class RegistroPersonaDTO{
   nombres:string;
@@ -15,5 +15,6 @@ export class RegistroPersonaDTO{
   foto3:File;
   descriptorFacial3:string;
   esPPL:string;
+  establecimiento:string | null;
 
 }

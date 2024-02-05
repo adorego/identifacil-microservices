@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { RegistroEducacionDTO } from "src/core/dto/registro-educacion.dto";
-import { RespuestaRegistroEducacionFormacionDTO } from "src/core/dto/respuesta-registro-educacionFormacion.dto";
+import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
+import { RespuestaRegistroEducacionFormacionDTO } from "src/core/dto/registro/respuesta-registro-educacionFormacion.dto";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 

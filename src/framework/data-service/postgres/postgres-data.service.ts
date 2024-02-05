@@ -31,6 +31,9 @@ import { SituacionJudicialModel } from "./models/situacion-judicial.model";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { OficioModel } from "./models/oficio.model";
 import { SeguridadModel } from "./models/seguridad.model";
+import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
+import { Ppl } from "src/core/entities/ppl.entity";
+import { PplModel } from "./models/ppl.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -57,7 +60,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   ingresoAPrision: PostgreGenericRepository<IngresoAPrisionModel>;
   situacionJudicial: PostgreGenericRepository<SituacionJudicialModel>;
   oficios: PostgreGenericRepository<OficioModel>;
-  seguridad: PostgreGenericRepository<SeguridadModel>
+  seguridad: PostgreGenericRepository<SeguridadModel>;
+  ppl: PostgreGenericRepository<PplModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -108,6 +112,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private oficios_repository:Repository<OficioModel>,
     @InjectRepository(SeguridadModel)
     private seguridad_repository:Repository<SeguridadModel>,
+    @InjectRepository(PplModel)
+    private ppl_repository:Repository<PplModel>,
     ){}
   
   
@@ -138,6 +144,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.situacionJudicial = new PostgreGenericRepository<SituacionJudicialModel>(this.situacion_judicial_repository);
     this.oficios = new PostgreGenericRepository<OficioModel>(this.oficios_repository);
     this.seguridad = new PostgreGenericRepository<SeguridadModel>(this.seguridad_repository);
+    this.ppl = new PostgreGenericRepository<PplModel>(this.ppl_repository);
   }
   
   

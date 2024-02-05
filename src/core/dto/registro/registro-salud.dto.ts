@@ -1,5 +1,5 @@
-import { GrupoSanguineo } from "../entities/grupo-sanguineo.entity";
-import { Vacuna } from "../entities/vacuna.entity";
+import { GrupoSanguineo } from "../../entities/grupo-sanguineo.entity";
+import { Vacuna } from "../../entities/vacuna.entity";
 
 export class RegistroSaludDTO{
   numeroDeIdentificacion:string;

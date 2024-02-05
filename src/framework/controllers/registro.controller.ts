@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
-import { RegistroPersonaDTO } from "src/core/dto/registro-persona.dto";
-import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
+import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { RespuestaEstadoCivilDTO } from "src/core/dto/respuesta-estado-civil.dto";
 import { RespuestaGrupoSanguineoDTO } from "src/core/dto/respuesta-grupo-sanguineo.dto";
 import { RespuestaNacionalidadDTO } from "src/core/dto/respuesta-nacionalida.dto";
-import { RespuestaRegistroPPLDTO } from "src/core/dto/respuesta-registro-ppl.dto";
-import { RespuestaRegistroSaludDTO} from "src/core/dto/respuesta-registro-salud.dto";
+import { RespuestaRegistroPPLDTO } from "src/core/dto/registro/respuesta-registro-ppl.dto";
+import { RespuestaRegistroSaludDTO} from "src/core/dto/registro/respuesta-registro-salud.dto";
 import { RespuestaVacunasDTO } from "src/core/dto/respuesta-vacunas.dto";
 import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
@@ -15,11 +15,6 @@ interface CausasJudicialesParameter{
   ci:string;
 }
 
-// @Controller(
-//   'registro'
-  
-  
-// )
 @Controller()
 export class RegistroController{
 
@@ -50,11 +45,11 @@ export class RegistroController{
     
    
       //Transformacion de Datos
-    const personaARegistrar = await this.registroPersonaFactory.crearRegistro(registro,fotos);
+    const {persona:personaARegistrar,ppl} = await this.registroPersonaFactory.crearRegistro(registro,fotos);
     
     // console.log('PersonaARegistrada:', personaARegistrar);
     
-    const savedPersona = await this.registroPersonaUseCase.registrar(personaARegistrar);
+    const savedPersona = await this.registroPersonaUseCase.registrar(personaARegistrar, ppl);
     //console.log("SavedPersona:", savedPersona);
     
     // return {sucess:true, savedPersona:savedPersona};

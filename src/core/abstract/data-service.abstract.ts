@@ -15,6 +15,7 @@ import { LimitacionIdiomatica } from "../entities/limitacion-idiomatica.entity";
 import { Nacionalidad } from "../entities/nacionalidad";
 import { Oficio } from "../entities/oficio.entity";
 import { Persona } from "../entities/persona.entity";
+import { Ppl } from "../entities/ppl.entity";
 import { RegistroPersona } from "../entities/registro-persona.entity";
 import { Salud } from "../entities/salud.entity";
 import { SaludFisica } from "../entities/salud-fisica.entity";
@@ -49,4 +50,5 @@ export abstract class IDataService{
   abstract situacionJudicial:IGenericRepository<SituacionJudicial>
   abstract oficios:IGenericRepository<Oficio>
   abstract seguridad:IGenericRepository<Seguridad>
+  abstract ppl:IGenericRepository<Ppl>
 }

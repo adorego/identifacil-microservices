@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post } from "@nestjs/common";
-import { RegistroDatosPersonalesDTO } from "src/core/dto/registro-datos-personales.dto";
-import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/respuesta-registro-datos-personales.dto";
+import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
+import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { RegistroDatosPersonalesFactory } from "src/use-cases/registro-datosPersonales-factory.service";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";

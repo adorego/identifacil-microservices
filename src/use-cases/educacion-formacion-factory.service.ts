@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { RegistroEducacionDTO } from "src/core/dto/registro-educacion.dto";
+import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
 
 @Injectable()

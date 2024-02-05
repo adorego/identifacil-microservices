@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { RegistroSaludDTO } from "src/core/dto/registro-salud.dto";
-import { RespuestaRegistroSaludDTO } from "src/core/dto/respuesta-registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 @Controller('salud')

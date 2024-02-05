@@ -47,5 +47,11 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
 
 
   }
+
+  getAllPPLsByEstablecimiento(establecimiento:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("ppl")
+           .where("ppl.establecimiento_penitenciario = :establecimiento",{establecimiento:establecimiento})
+           .getMany()
+  }
 }
   

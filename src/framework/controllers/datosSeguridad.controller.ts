@@ -5,7 +5,7 @@ import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
 @Controller(
-  'seguridad'
+  
 )
 export class DatosSeguridadController{
   private readonly logger = new Logger('DatosSeguridadController');

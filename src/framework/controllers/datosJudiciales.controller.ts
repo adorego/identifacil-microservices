@@ -1,7 +1,7 @@
 import { Body, Controller, Logger, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
-import { RegistroDatosJudicialesDTO } from "src/core/dto/registro-datos-judiciales.dto";
-import { RespuestaRegistroDatosJudicialesDTO } from "src/core/dto/respuesta-registro-datos-judiciales.dto";
+import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
+import { RespuestaRegistroDatosJudicialesDTO } from "src/core/dto/registro/respuesta-registro-datos-judiciales.dto";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 @Controller(

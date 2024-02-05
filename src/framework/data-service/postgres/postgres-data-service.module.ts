@@ -25,6 +25,7 @@ import { OficioModel } from "./models/oficio.model";
 import { PaisModel } from "./models/pais.model";
 import { PersonaModel } from "./models/persona.model";
 import { PostgresDataService } from "./postgres-data.service";
+import { PplModel } from "./models/ppl.model";
 import { RegistroPersonaModel } from "./models/registro-persona.model";
 import { SaludFisicaModel } from "./models/salud-fisica.model";
 import { SaludMentalModel } from "./models/salud-mental.model";
@@ -74,6 +75,7 @@ import { VacunaModel } from "./models/vacuna.model";
       CircunscripcionJudicialModel,
       DespachosJudicialesModel,
       OficioModel,
+      PplModel,
       
     
     

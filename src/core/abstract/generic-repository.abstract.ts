@@ -13,5 +13,7 @@ export abstract class IGenericRepository<T>{
 
   abstract getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any>;
 
-  abstract getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>
+  abstract getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>;
+
+  abstract getAllPPLsByEstablecimiento(establecimiento_penitenciario:number):Promise<Array<T>>;
 }

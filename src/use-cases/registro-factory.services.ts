@@ -8,8 +8,10 @@ import { Float32ConveterService } from "src/framework/lib/float32-converter.serv
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { IdentificacionUseCase } from "./identificacion-use-case.service";
 import { Persona } from "src/core/entities/persona.entity";
+import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";
-import { RegistroPersonaDTO } from "src/core/dto/registro-persona.dto";
+import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
+import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
 
 @Injectable()
 export class RegistroFactory{
@@ -21,7 +23,7 @@ export class RegistroFactory{
     foto1:Array<Express.Multer.File>,
     foto2:Array<Express.Multer.File>,
     foto3:Array<Express.Multer.File>
-  }){
+  }):Promise<RespuestaFactoryRegistroPPL>{
     
     //**********************Validaciones******************************//
     //Validar que la persona no este ya registrada
@@ -51,6 +53,14 @@ export class RegistroFactory{
       throw new NotFoundException('Genero no encontrado')
     }
 
+    let establecimiento_penitenciario = null;
+    //Validar establecimiento del PPL
+    if(crearRegistroPersonaDTO.esPPL === "true"){
+      establecimiento_penitenciario = await this.dataService.establecimientoPenitenciario.get(parseInt(crearRegistroPersonaDTO.establecimiento));
+      if(!establecimiento_penitenciario){
+        throw new NotFoundException("No se encuentra el establecimiento penitenciario enviado");
+      }
+    }
     // console.log("DTO:", crearRegistroPersonaDTO);
     
     const persona = new Persona();
@@ -84,7 +94,20 @@ export class RegistroFactory{
     // console.log('Persona:', persona);
     // console.log('Registro:', registro);
     persona.registro = registro;
-    return persona;
+    if(persona.esPPL){
+      const ppl = new Ppl();
+      ppl.persona = persona;
+      ppl.establecimiento_penitenciario = establecimiento_penitenciario;
+      return{
+        persona:persona,
+        ppl:ppl
+      }
+      
+    }
+    return {
+      persona:persona,
+      ppl:null
+    }
   }
 
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{

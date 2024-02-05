@@ -5,7 +5,7 @@ import { DocumentoOrdenPrision } from "src/core/entities/documentos-ordenan-pris
 import { FileService } from "src/framework/lib/files.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
-import { RegistroDatosJudicialesDTO } from "src/core/dto/registro-datos-judiciales.dto";
+import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 
 @Injectable()

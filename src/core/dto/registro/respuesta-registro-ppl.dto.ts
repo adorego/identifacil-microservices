@@ -1,4 +1,4 @@
-import { Persona } from "../entities/persona.entity";
+import { Persona } from "../../entities/persona.entity";
 
 export class RespuestaRegistroPPLDTO{
   sucess:boolean;

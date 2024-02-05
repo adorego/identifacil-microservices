@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
-import { RegistroDatosPersonalesDTO } from "src/core/dto/registro-datos-personales.dto";
+import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 
 @Injectable()
 export class RegistroDatosPersonalesFactory{

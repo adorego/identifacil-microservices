@@ -1,6 +1,7 @@
 import { FindOptionsWhere, Repository } from "typeorm";
 
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
+import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
 export class PostgreGenericRepository<T> implements IGenericRepository<T>{
   
@@ -50,8 +51,36 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
 
   getAllPPLsByEstablecimiento(establecimiento:number):Promise<Array<T>>{
     return this._repository.createQueryBuilder("ppl")
+           .leftJoinAndSelect("ppl.persona","persona")
+           .leftJoinAndSelect("persona.genero","genero")
+           .leftJoinAndSelect("persona.datosPersonales", "datosPersonales")
+           .leftJoinAndSelect("persona.salud", "salud")
+           .leftJoinAndSelect("persona.salud_mental", "salud_mental")
+           .leftJoinAndSelect("persona.salud_fisica", "salud_fisica")
+           .leftJoinAndSelect("persona.limitacion_idiomatica", "limitacion_idiomatica")
+           .leftJoinAndSelect("persona.educacionFormacion", "educacionFormacion")
+           .leftJoinAndSelect("persona.seguridad", "seguridad")
+           .leftJoinAndSelect("persona.datosFamiliares", "datosFamiliares")
+           .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
            .where("ppl.establecimiento_penitenciario = :establecimiento",{establecimiento:establecimiento})
            .getMany()
+  }
+
+  getPplByCedula(ci:string):Promise<T>{
+    return this._repository.createQueryBuilder("ppl")
+           .leftJoinAndSelect("ppl.persona","persona")
+           .leftJoinAndSelect("persona.genero","genero")
+           .leftJoinAndSelect("persona.datosPersonales", "datosPersonales")
+           .leftJoinAndSelect("persona.salud", "salud")
+           .leftJoinAndSelect("persona.salud_mental", "salud_mental")
+           .leftJoinAndSelect("persona.salud_fisica", "salud_fisica")
+           .leftJoinAndSelect("persona.limitacion_idiomatica", "limitacion_idiomatica")
+           .leftJoinAndSelect("persona.educacionFormacion", "educacionFormacion")
+           .leftJoinAndSelect("persona.seguridad", "seguridad")
+           .leftJoinAndSelect("persona.datosFamiliares", "datosFamiliares")
+           .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
+           .where("persona.numero_identificacion = :ci",{ci})
+           .getOne()
   }
 }
   

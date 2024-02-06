@@ -16,4 +16,6 @@ export abstract class IGenericRepository<T>{
   abstract getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>;
 
   abstract getAllPPLsByEstablecimiento(establecimiento_penitenciario:number):Promise<Array<T>>;
+
+  abstract getPplByCedula(ci:string):Promise<T>;
 }

@@ -20,8 +20,9 @@ export class PplController{
     
   
   }
-  @Get('ppls:establecimiento')
+  @Get('ppls/:establecimiento')
   async ppls_por_establecimiento(@Param() param:any):Promise<Array<PplDTO>>{
+    console.log("Establecimiento:", param.establecimiento);
     return await this.gestionPPLUseCase.getPPLsByEstablecimiento(param.establecimiento);
     
     

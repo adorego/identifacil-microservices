@@ -28,7 +28,7 @@ export class PersonaModel extends Persona{
   @Column({type:'varchar', nullable:false})
   numero_identificacion:string;
 
-  @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona)
+  @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()
   datosPersonales:DatosPersonalesModel;
   

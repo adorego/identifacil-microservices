@@ -17,7 +17,7 @@ export class GestionPPLUseCase{
           return{
             nombre:ppl.persona.nombre,
             apellido:ppl.persona.apellido,
-            apodo:ppl.persona.datosPersonales?.apodo,
+            apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
             genero:ppl.persona.genero.id,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             estado_perfil:this.verificar_perfil(ppl.persona),
@@ -34,6 +34,7 @@ export class GestionPPLUseCase{
 
           }
         })
+        console.log("Array de PPLs:",pplsDTOs);
         return pplsDTOs;
 
   }
@@ -42,10 +43,11 @@ export class GestionPPLUseCase{
     const ppls:Array<Ppl> = await this.dataService.ppl.getAllPPLsByEstablecimiento(establecimiento);
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
+          console.log(ppl);
           return{
             nombre:ppl.persona.nombre,
             apellido:ppl.persona.apellido,
-            apodo:ppl.persona.datosPersonales.apodo,
+            apodo:ppl.persona.datosPersonales?.apodo,
             genero:ppl.persona.genero.id,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             estado_perfil:this.verificar_perfil(ppl.persona),

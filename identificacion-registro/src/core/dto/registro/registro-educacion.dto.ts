@@ -1,6 +1,6 @@
 
 export class RegistroEducacionDTO{
-  numeroDeIdentificacion:string;
+  id_persona:number|null;
   nivelAcademico: string;
   nivelAcademico_modificado:boolean;
   institucionEducativa: string;

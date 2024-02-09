@@ -92,7 +92,7 @@ export class GestionPPLUseCase{
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        nacionalidad:ppl.persona.datosPersonales ? ppl.persona.datosPersonales?.nacionalidad.id : null,
+        nacionalidad:ppl.persona.datosPersonales ? ppl.persona.datosPersonales?.nacionalidad?.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
         datosDeSalud:ppl.persona.salud,

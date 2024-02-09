@@ -55,7 +55,7 @@ export class RegistroController{
     //console.log("SavedPersona:", savedPersona);
     
     // return {sucess:true, savedPersona:savedPersona};
-    return {sucess:true, savedPersona:savedPersona}
+    return {sucess:true, id_persona:savedPersona.id}
   }
 
   

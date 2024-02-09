@@ -2,7 +2,7 @@ import { Concubino } from "src/core/entities/concubino.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
 
 export class RegistroDatosFamiliaresDTO{
-  numeroDeIdentificacion:string;
+  id_persona:number|null;
   esCabezaDeFamilia:boolean;
   esCabezaDeFamilia_modificado:boolean;
   tieneCirculoFamiliar:boolean;

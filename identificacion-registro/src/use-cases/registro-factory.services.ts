@@ -27,17 +27,21 @@ export class RegistroFactory{
     
     //**********************Validaciones******************************//
     //Validar que la persona no este ya registrada
-    const personaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(crearRegistroPersonaDTO.numero_identificacion);
-    // console.log('RegistroFactory:personaEncontrada:', personaEncontrada);
-    if (personaEncontrada){
-      throw new ErrorPersonaEncontrada('Esta persona ya está registrada');
-    }
+    if(crearRegistroPersonaDTO.tiene_cedula){
+      const personaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(crearRegistroPersonaDTO.numero_identificacion);
+      // console.log('RegistroFactory:personaEncontrada:', personaEncontrada);
+      if (personaEncontrada){
+        throw new ErrorPersonaEncontrada('Esta persona ya está registrada');
+      }
 
+      
+    }
     //Validar que este rostro ya no este en la base de datos
     const personaQueCoincide = await this.identificarUseCase.identificar(this.float32ConverterService.transformar_array_a_descriptor(crearRegistroPersonaDTO.descriptorFacial1.split(",")));
     if(personaQueCoincide.identificado){
       throw new ErrorPersonaEncontrada('Ya existe una persona con este rostro');
     }
+
     //Validar tipo de documento
     const tipo_identificacion = await this.dataService.tipo_identificacion.get(parseInt(crearRegistroPersonaDTO.tipo_identificacion));
 
@@ -74,7 +78,6 @@ export class RegistroFactory{
     persona.tiene_cedula = crearRegistroPersonaDTO.tiene_cedula === "true" ? true : false;
     persona.genero = genero;
     persona.fechaDeNacimiento = new Date(`${crearRegistroPersonaDTO.fechaDeNacimiento}`);
-    console.log("Persona creada:", persona);
     const registro = new RegistroPersona();
     
     // registro.descriptorFacial1 = this.transformar_descriptor(crearRegistroPersonaDTO.descriptorFacial1.toString());

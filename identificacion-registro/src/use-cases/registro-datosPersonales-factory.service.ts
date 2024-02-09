@@ -15,10 +15,10 @@ export class RegistroDatosPersonalesFactory{
   async registrarDatosPersonales(datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<DatosPersonales> {
      //Validacion de que existe la persona
     //  this.logger.log("Identificacion:"+datosPersonalesDTO.numeroDeIdentificacion);
-     if(!datosPersonalesDTO.numeroDeIdentificacion){
-      throw new HttpException('No se envió el número de identificación', HttpStatus.BAD_REQUEST);
+     if(!datosPersonalesDTO.id_persona){
+      throw new HttpException('No se envió el id de persona', HttpStatus.BAD_REQUEST);
      }
-     const PersonaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(datosPersonalesDTO.numeroDeIdentificacion);
+     const PersonaEncontrada = await this.dataService.persona.get(datosPersonalesDTO.id_persona);
      if(!PersonaEncontrada){
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
      } 

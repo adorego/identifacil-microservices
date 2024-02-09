@@ -11,10 +11,10 @@ export class RegistroDatosSeguridadFactory{
   ){}
 
   async generar_datos_seguridad(datosSeguridad:RegistroDatosSeguridadDTO):Promise<Seguridad>{
-    if(!datosSeguridad.numeroDeIdentificacion){
-      throw new HttpException('No se envió el número de identificación', HttpStatus.BAD_REQUEST);
+    if(!datosSeguridad.id_persona){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
     }
-    const personaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(datosSeguridad.numeroDeIdentificacion);
+    const personaEncontrada = await this.dataService.persona.get(datosSeguridad.id_persona);
     if(!personaEncontrada){
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 

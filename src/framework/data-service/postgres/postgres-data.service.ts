@@ -1,8 +1,8 @@
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { PersonaModel } from "./models/persona.model";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource, Repository } from "typeorm";
+import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
 import { PostgreGenericRepository } from "./postgres-generic-repository";
 import { GeneroModel } from "./models/genero.model";
 import { TipoIdentificacionModel } from "./models/tipo_identificacion.model";
@@ -114,10 +114,14 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private seguridad_repository:Repository<SeguridadModel>,
     @InjectRepository(PplModel)
     private ppl_repository:Repository<PplModel>,
+    @InjectDataSource()
+    private dataSource:DataSource
     ){}
   
   
-  
+  getQueryRunner(){
+    return this.dataSource.createQueryRunner();
+  }
  
   onApplicationBootstrap() {
     this.persona = new PostgreGenericRepository<PersonaModel>(this.persona_repository);

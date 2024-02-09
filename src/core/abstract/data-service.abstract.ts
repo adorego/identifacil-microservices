@@ -51,4 +51,5 @@ export abstract class IDataService{
   abstract oficios:IGenericRepository<Oficio>
   abstract seguridad:IGenericRepository<Seguridad>
   abstract ppl:IGenericRepository<Ppl>
+  abstract getQueryRunner();
 }

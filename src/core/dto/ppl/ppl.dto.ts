@@ -10,6 +10,10 @@ import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 export class PplDTO{
   nombre:string;
   apellido:string;
+  numero_de_identificacion:string;
+  establecimiento:number;
+  establecimiento_nombre:string;
+  nacionalidad:number;
   apodo:string;
   genero:number;
   fechaDeNacimiento:Date;

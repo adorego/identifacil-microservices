@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
@@ -10,6 +10,7 @@ import { RespuestaRegistroSaludDTO} from "src/core/dto/registro/respuesta-regist
 import { RespuestaVacunasDTO } from "src/core/dto/respuesta-vacunas.dto";
 import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
+import { log } from "console";
 
 interface CausasJudicialesParameter{
   ci:string;
@@ -17,7 +18,7 @@ interface CausasJudicialesParameter{
 
 @Controller()
 export class RegistroController{
-
+  private readonly logger = new Logger('RegistroController  ');
   constructor(
     private registroPersonaFactory:RegistroFactory,
     private registroPersonaUseCase:RegistroUseCase,
@@ -43,6 +44,7 @@ export class RegistroController{
     foto3: Array<Express.Multer.File>},
     @Body() registro:RegistroPersonaDTO, ):Promise<RespuestaRegistroPPLDTO>{
     
+    this.logger.log("Datos recibidos:", registro);
    
       //Transformacion de Datos
     const {persona:personaARegistrar,ppl} = await this.registroPersonaFactory.crearRegistro(registro,fotos);
@@ -53,7 +55,7 @@ export class RegistroController{
     //console.log("SavedPersona:", savedPersona);
     
     // return {sucess:true, savedPersona:savedPersona};
-    return {sucess:true, savedPersona:savedPersona}
+    return {sucess:true, id_persona:savedPersona.id}
   }
 
   

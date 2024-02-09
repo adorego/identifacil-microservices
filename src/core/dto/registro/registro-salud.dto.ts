@@ -2,7 +2,7 @@ import { GrupoSanguineo } from "../../entities/grupo-sanguineo.entity";
 import { Vacuna } from "../../entities/vacuna.entity";
 
 export class RegistroSaludDTO{
-  numeroDeIdentificacion:string;
+  id_persona:number;
   tieneAfeccionADrogras:boolean;
   tieneAfeccionADrogas_modificado:boolean;
   grupo_sanguineo:number;

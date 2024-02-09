@@ -3,16 +3,24 @@ import { RegistroSaludFactory, RespuestaRegistroSaludfactory } from "./registro-
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { Concubino } from "src/core/entities/concubino.entity";
+import { ConcubinoModel } from "src/framework/data-service/postgres/models/concubino.model";
+import { DataBaseService } from "src/core/abstract/data-base-service.abstract";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
+import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
+import { FamiliarModel } from "src/framework/data-service/postgres/models/familiar.model";
 import { GrupoSanguineo } from "src/core/entities/grupo-sanguineo.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
+import { LimitacionIdiomaticaModel } from "src/framework/data-service/postgres/models/limitacion-idiomatica.model";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { Persona } from "src/core/entities/persona.entity";
+import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
 import { Ppl } from "src/core/entities/ppl.entity";
+import { PplModel } from "src/framework/data-service/postgres/models/ppl.model";
+import { QueryRunner } from "typeorm";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
@@ -23,14 +31,20 @@ import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/regis
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
+import { RegistroPersona } from "src/core/entities/registro-persona.entity";
+import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
+import { SaludFisicaModel } from "src/framework/data-service/postgres/models/salud-fisica.model";
+import { SaludMentalModel } from "src/framework/data-service/postgres/models/salud-mental.model";
+import { SaludModel } from "src/framework/data-service/postgres/models/salud.model";
 import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
+import { query } from "express";
 
 @Injectable()
 export class RegistroUseCase{
@@ -46,22 +60,32 @@ export class RegistroUseCase{
   ){}
 
   async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
-    //  console.log("Objecto dataService:", this.dataService);
-     try{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    try{
         //Guardar Registro
         // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
-        const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
-        personaARegistrar.registro = registroGuardado;
-        const personaGuardada = await this.dataService.persona.create(personaARegistrar);
+        
+        await queryRunner.startTransaction()
+        const registro = await queryRunner.manager.save(RegistroPersonaModel,personaARegistrar.registro);
+        personaARegistrar.registro = registro;
+        const personaGuardada = await queryRunner.manager.save(PersonaModel,personaARegistrar);
+
+        // const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
+        // personaARegistrar.registro = registroGuardado;
+        // const personaGuardada = await this.dataService.persona.create(personaARegistrar);
         if(personaGuardada.esPPL){
           ppl.persona = personaGuardada;
-          const pplGuardado = await this.dataService.ppl.create(ppl);
+          const pplGuardado = await queryRunner.manager.save(PplModel, ppl );
         }
+        await queryRunner.commitTransaction()
         return personaGuardada;
         // return null
      }catch(error){
+        await queryRunner.rollbackTransaction()
         this.logger.error(`Error durante el registro:${error}`);
         throw new HttpException(`Error durante el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+     }finally{
+        await queryRunner.release()
      }
 
      
@@ -72,25 +96,32 @@ export class RegistroUseCase{
     
     const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.crearRegistroSalud(registroSaludDTO);
     
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+
     try{
+      await queryRunner.startTransaction();
       const persona = registro_salud.persona;
-      const updatedSalud = await this.dataService.salud.create(registro_salud.registro_salud);
-      persona.salud = updatedSalud;
-      const updatedSaludMental = await this.dataService.saludMental.create(registro_salud.registro_salud_mental);
-      persona.salud_mental = updatedSaludMental;
-      const updatedSaludFisica = await this.dataService.saludFisica.create(registro_salud.registro_salud_fisica);
-      persona.salud_fisica = updatedSaludFisica;
-      const updatedLimitacionesIdiomaticas = await this.dataService.limitacionesIdiomaticas.create(registro_salud.registro_limitacionesIdiomaticas);
+      const registroDeSaludGuardado = await queryRunner.manager.save(SaludModel, registro_salud.registro_salud);
+      persona.salud = registroDeSaludGuardado;
+      const registroDeSaludMentalGuardado = await queryRunner.manager.save(SaludMentalModel,registro_salud.registro_salud_mental);
+      persona.salud_mental = registroDeSaludMentalGuardado;
+      const registroDeSaludFisica = await queryRunner.manager.save(SaludFisicaModel,registro_salud.registro_salud_fisica);
+      persona.salud_fisica = registroDeSaludFisica;
+      const updatedLimitacionesIdiomaticas = await queryRunner.manager.save(LimitacionIdiomaticaModel,registro_salud.registro_limitacionesIdiomaticas);
       persona.limitacion_idiomatica = updatedLimitacionesIdiomaticas;
       
-      const updatedPersona:Persona  = await this.dataService.persona.update(persona);
+      const updatedPersona:Persona  = await queryRunner.manager.save(PersonaModel,persona);
+      await queryRunner.commitTransaction()
       return {
         success:true
       }
         
     }catch(error){
+      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de salud:${error}`);
       throw new HttpException(`Error durante el registro de salud:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }finally{
+      await queryRunner.release()
     }
 
   }
@@ -113,9 +144,12 @@ export class RegistroUseCase{
   }
 
   async registrar_educacion(datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestaRegistrarEducacionFormacionUseCaseDTO>{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
+      await queryRunner.startTransaction();
       const datosEducacionFormacion:RespuestaEducacionFactoryDTO = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
-      const educacionFormalCreated = await this.dataService.educacionFormacion.create(datosEducacionFormacion.educacionFormacion);
+      const educacionFormalCreated = await queryRunner.manager.save(datosEducacionFormacion.educacionFormacion);
+      await queryRunner.commitTransaction();
       return{
         success:true,
         educacionFormacionCreated:educacionFormalCreated
@@ -123,35 +157,39 @@ export class RegistroUseCase{
     
     
     }catch(error){
+      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de Educacion:${error}`);
       throw new HttpException(`Error durante el registro de datos de Educación:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }finally{
+      await queryRunner.release()
     }
   }
 
   async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
+      queryRunner.startTransaction();
       if(datosFamiliaresACrear.concubino){
         let concubinoCreado:Concubino = null;
-        if(datosFamiliaresACrear.concubino){
-          concubinoCreado = await this.dataService.concubino.create(datosFamiliaresACrear.concubino);
-          datosFamiliaresACrear.concubino = concubinoCreado;
-        }
+        concubinoCreado = await queryRunner.manager.save(ConcubinoModel,datosFamiliaresACrear.concubino);
+        datosFamiliaresACrear.concubino = concubinoCreado;
+        
       }
-      let datosFamiliaresGuardados = await this.dataService.datosFamiliares.create(datosFamiliaresACrear);
+      let datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel,datosFamiliaresACrear);
 
       if(datosFamiliaresACrear.familiares){
         let familiares:Array<Familiar> = []
         if(datosFamiliaresACrear.familiares){
           datosFamiliaresACrear.familiares.map(
             async (familiar) => {
-              const familiarCreado = await this.dataService.familiar.create(familiar)
+              const familiarCreado = await queryRunner.manager.save(FamiliarModel,familiar);
               familiares.push(familiarCreado);
               
             }
           )
-          datosFamiliaresGuardados.familiares = familiares;
-          datosFamiliaresGuardados = await this.dataService.datosFamiliares.update(datosFamiliaresGuardados);
+          // datosFamiliaresGuardados.familiares = familiares;
+          // datosFamiliaresGuardados = await this.dataService.datosFamiliares.update(datosFamiliaresGuardados);
           
         }
       }
@@ -167,6 +205,8 @@ export class RegistroUseCase{
   async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<SituacionJudicial>{
     return await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
   }
+
+
   async grupos_sanguineos():Promise<Array<GrupoSanguineo>>{
     try{
       return await this.dataService.grupo_sanguineo.getAll();

@@ -23,20 +23,17 @@ export class RegistroSaludFactory{
 
   async crearRegistroSalud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludfactory>{
       //**********************Validaciones******************************//
-    console.log("Numero de identificacion:",registroSaludDTO.numeroDeIdentificacion);
-    if(!registroSaludDTO.numeroDeIdentificacion){
-      throw new HttpException('Error en los parametros, no se recibio el numero de identificacion', HttpStatus.BAD_REQUEST);
+    console.log("Id de persona:",registroSaludDTO.id_persona);
+    if(!registroSaludDTO.id_persona){
+      throw new HttpException('Error en los parametros, no se recibio el id de la persona', HttpStatus.BAD_REQUEST);
     }
       //Validar que la persona este registrada
-    const personaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(registroSaludDTO.numeroDeIdentificacion);
+    const personaEncontrada = await this.dataService.persona.get(registroSaludDTO.id_persona);
     console.log('Persona Encontrada', personaEncontrada);
     if (!personaEncontrada){
       throw new NotFoundException('Esta persona no está registrada');
     }
-    //Validar que no exista un registro de salud
-    if(personaEncontrada.salud){
-      throw new HttpException('Ya existe el registro de salud en la base de datos', HttpStatus.CONFLICT);
-    }
+   
     
     
     const registroSalud = new Salud();

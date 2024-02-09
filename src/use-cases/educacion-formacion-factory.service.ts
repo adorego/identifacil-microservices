@@ -14,11 +14,11 @@ export class RegistroEducacionFormacionFactory{
   }
 
   async generarDatosEducacionFormacion(datosEducacionFormacion:RegistroEducacionDTO):Promise<RespuestaEducacionFactoryDTO>{
-    if(!datosEducacionFormacion.numeroDeIdentificacion){
-      throw new HttpException('No se envió el número de identificación', HttpStatus.BAD_REQUEST);
+    if(!datosEducacionFormacion.id_persona){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
     }
 
-    const PersonaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(datosEducacionFormacion.numeroDeIdentificacion);
+    const PersonaEncontrada = await this.dataService.persona.get(datosEducacionFormacion.id_persona);
      if(!PersonaEncontrada){
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
      } 

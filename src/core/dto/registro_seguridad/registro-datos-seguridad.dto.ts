@@ -1,7 +1,7 @@
 
 
 export class RegistroDatosSeguridadDTO{
-  numeroDeIdentificacion:string | null;
+  id_persona:number | null;
   riesgoParaPersonal: boolean;
   riesgoParaPersonal_modificado:boolean;
   riesgoParaPersonalRespuesta: string;

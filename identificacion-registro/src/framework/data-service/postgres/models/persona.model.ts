@@ -25,8 +25,14 @@ export class PersonaModel extends Persona{
   @JoinColumn({name: 'id_tipo_identificacion'})
   tipo_identificacion:TipoIdentificacionModel
   
-  @Column({type:'varchar', nullable:false})
+  @Column({type:'varchar', nullable:true})
   numero_identificacion:string;
+
+  @Column({type:"boolean", nullable:false})
+  tiene_cedula:boolean
+
+  @Column({type:"boolean", nullable:false})
+  es_extranjero: boolean;
 
   @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
   @JoinColumn()

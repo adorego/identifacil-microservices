@@ -19,7 +19,7 @@ export class DatosPersonalesModel extends DatosPersonales{
   @OneToOne(() => PersonaModel, (persona) => persona.datosPersonales)
   persona:PersonaModel;
 
-  @Column({type:"varchar"})
+  @Column({type:"varchar",nullable:true})
   estadoCivil:EstadoCivilModel;
 
   @Column({type:"boolean"})

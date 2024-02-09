@@ -5,6 +5,7 @@ export class Ppl{
   id:number;
 
   persona:Persona;
+  prontuario:string;
 
   establecimiento_penitenciario:EstablecimientoPenitenciario;
 }

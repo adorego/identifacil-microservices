@@ -70,8 +70,11 @@ export class RegistroFactory{
     persona.nombre = crearRegistroPersonaDTO.nombres;
     persona.apellido = crearRegistroPersonaDTO.apellidos;
     persona.esPPL = crearRegistroPersonaDTO.esPPL === "true" ? true : false;
+    persona.es_extranjero = crearRegistroPersonaDTO.es_extranjero === "true" ? true : false;
+    persona.tiene_cedula = crearRegistroPersonaDTO.tiene_cedula === "true" ? true : false;
     persona.genero = genero;
     persona.fechaDeNacimiento = new Date(`${crearRegistroPersonaDTO.fechaDeNacimiento}`);
+    console.log("Persona creada:", persona);
     const registro = new RegistroPersona();
     
     // registro.descriptorFacial1 = this.transformar_descriptor(crearRegistroPersonaDTO.descriptorFacial1.toString());
@@ -98,6 +101,9 @@ export class RegistroFactory{
       const ppl = new Ppl();
       ppl.persona = persona;
       ppl.establecimiento_penitenciario = establecimiento_penitenciario;
+      if(!crearRegistroPersonaDTO.tiene_cedula){
+        ppl.prontuario = crearRegistroPersonaDTO.prontuario;
+      }
       return{
         persona:persona,
         ppl:ppl

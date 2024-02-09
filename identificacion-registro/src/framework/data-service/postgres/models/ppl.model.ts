@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { EstablecimientoPenitenciarioModel } from "./establecimiento-penitenciario.model";
 import { PersonaModel } from "./persona.model";
@@ -12,6 +12,9 @@ export class PplModel extends Ppl{
   @OneToOne(() =>PersonaModel,{eager:true})
   @JoinColumn()
   persona:PersonaModel;
+
+  @Column({type:"varchar", nullable:true})
+  prontuario: string;
 
   @OneToOne(() => EstablecimientoPenitenciarioModel, {eager:true})
   @JoinColumn()

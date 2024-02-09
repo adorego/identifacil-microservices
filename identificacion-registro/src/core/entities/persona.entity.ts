@@ -16,6 +16,8 @@ export class Persona{
   id:number;
   tipo_identificacion:TipoIdentificacion;
   numero_identificacion:string;
+  tiene_cedula:boolean;
+  es_extranjero:boolean;
   datosPersonales:DatosPersonales;
   esPPL:boolean;
   nombre:string;

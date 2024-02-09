@@ -68,6 +68,7 @@ export class PostgreGenericRepository<T> implements IGenericRepository<T>{
 
   getPplByCedula(ci:string):Promise<T>{
     return this._repository.createQueryBuilder("ppl")
+           .leftJoinAndSelect("ppl.establecimiento_penitenciario","establecimiento")
            .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("persona.genero","genero")
            .leftJoinAndSelect("persona.datosPersonales", "datosPersonales")

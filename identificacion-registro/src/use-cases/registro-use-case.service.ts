@@ -3,6 +3,7 @@ import { RegistroSaludFactory, RespuestaRegistroSaludfactory } from "./registro-
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { Concubino } from "src/core/entities/concubino.entity";
+import { DataBaseService } from "src/core/abstract/data-base-service.abstract";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
@@ -12,7 +13,10 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { Persona } from "src/core/entities/persona.entity";
+import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
 import { Ppl } from "src/core/entities/ppl.entity";
+import { PplModel } from "src/framework/data-service/postgres/models/ppl.model";
+import { QueryRunner } from "typeorm";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
@@ -23,6 +27,8 @@ import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/regis
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
+import { RegistroPersona } from "src/core/entities/registro-persona.entity";
+import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
@@ -46,22 +52,32 @@ export class RegistroUseCase{
   ){}
 
   async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
-    //  console.log("Objecto dataService:", this.dataService);
-     try{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    try{
         //Guardar Registro
         // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
-        const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
-        personaARegistrar.registro = registroGuardado;
-        const personaGuardada = await this.dataService.persona.create(personaARegistrar);
+        
+        await queryRunner.startTransaction()
+        const registro = await queryRunner.manager.save(RegistroPersonaModel,personaARegistrar.registro);
+        personaARegistrar.registro = registro;
+        const personaGuardada = await queryRunner.manager.save(PersonaModel,personaARegistrar);
+
+        // const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
+        // personaARegistrar.registro = registroGuardado;
+        // const personaGuardada = await this.dataService.persona.create(personaARegistrar);
         if(personaGuardada.esPPL){
           ppl.persona = personaGuardada;
-          const pplGuardado = await this.dataService.ppl.create(ppl);
+          const pplGuardado = await queryRunner.manager.save(PplModel, ppl );
         }
+        await queryRunner.commitTransaction()
         return personaGuardada;
         // return null
      }catch(error){
+        await queryRunner.rollbackTransaction()
         this.logger.error(`Error durante el registro:${error}`);
         throw new HttpException(`Error durante el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+     }finally{
+        await queryRunner.release()
      }
 
      

@@ -18,7 +18,7 @@ interface CausasJudicialesParameter{
 
 @Controller()
 export class RegistroController{
-  private readonly logger = new Logger('RegistroController  ');
+  private readonly logger = new Logger('RegistroController');
   constructor(
     private registroPersonaFactory:RegistroFactory,
     private registroPersonaUseCase:RegistroUseCase,

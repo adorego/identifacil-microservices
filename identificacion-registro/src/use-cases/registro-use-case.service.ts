@@ -8,6 +8,7 @@ import { DataBaseService } from "src/core/abstract/data-base-service.abstract";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
+import { EducacionFormacionModel } from "src/framework/data-service/postgres/models/educacion-formacion.model";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
 import { FamiliarModel } from "src/framework/data-service/postgres/models/familiar.model";
@@ -148,7 +149,7 @@ export class RegistroUseCase{
     try{
       await queryRunner.startTransaction();
       const datosEducacionFormacion:RespuestaEducacionFactoryDTO = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
-      const educacionFormalCreated = await queryRunner.manager.save(datosEducacionFormacion.educacionFormacion);
+      const educacionFormalCreated = await queryRunner.manager.save(EducacionFormacionModel,datosEducacionFormacion.educacionFormacion);
       await queryRunner.commitTransaction();
       return{
         success:true,

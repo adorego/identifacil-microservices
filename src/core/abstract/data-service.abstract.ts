@@ -24,6 +24,7 @@ import { Seguridad } from "../entities/seguridad.entity";
 import { SituacionJudicial } from "../entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 import { Vacuna } from "../entities/vacuna.entity";
+import { VinculoFamiliar } from "../entities/vinculo-familiar.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -51,5 +52,8 @@ export abstract class IDataService{
   abstract oficios:IGenericRepository<Oficio>
   abstract seguridad:IGenericRepository<Seguridad>
   abstract ppl:IGenericRepository<Ppl>
-  abstract getQueryRunner();
+  abstract vinculo_familiar:IGenericRepository<VinculoFamiliar>
+
+  abstract getQueryRunner():any;
+  
 }

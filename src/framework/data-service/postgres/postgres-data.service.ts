@@ -3,7 +3,7 @@ import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { PersonaModel } from "./models/persona.model";
 import { DataSource, Repository } from "typeorm";
 import { InjectDataSource, InjectRepository } from "@nestjs/typeorm";
-import { PostgreGenericRepository } from "./postgres-generic-repository";
+import { PostgresGenericRepository } from "./postgres-generic-repository";
 import { GeneroModel } from "./models/genero.model";
 import { TipoIdentificacionModel } from "./models/tipo_identificacion.model";
 import { RegistroPersonaModel } from "./models/registro-persona.model";
@@ -28,40 +28,40 @@ import { CausaJudicialModel } from "./models/causa-judicial.model";
 import { DocumentosOrdenanPrisionModel } from "./models/documentos-ordenan-prision.model";
 import { IngresoAPrisionModel } from "./models/ingreso-a-prision.model";
 import { SituacionJudicialModel } from "./models/situacion-judicial.model";
-import { Oficio } from "src/core/entities/oficio.entity";
 import { OficioModel } from "./models/oficio.model";
 import { SeguridadModel } from "./models/seguridad.model";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
-import { Ppl } from "src/core/entities/ppl.entity";
 import { PplModel } from "./models/ppl.model";
+import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
-  persona: PostgreGenericRepository<PersonaModel>;
-  tipo_identificacion: PostgreGenericRepository<TipoIdentificacionModel>;
-  genero: PostgreGenericRepository<GeneroModel>;
-  registro:PostgreGenericRepository<RegistroPersonaModel>;
-  grupo_sanguineo: PostgreGenericRepository<GrupoSanguineoModel>;
-  vacuna: PostgreGenericRepository<VacunaModel>;
-  nacionalidad: PostgreGenericRepository<NacionalidadModel>;
-  salud: PostgreGenericRepository<SaludModel>;
-  saludMental:PostgreGenericRepository<SaludMentalModel>;
-  saludFisica:PostgreGenericRepository<SaludFisicaModel>;
-  limitacionesIdiomaticas:PostgreGenericRepository<LimitacionIdiomaticaModel>;
-  datosPersonales:PostgreGenericRepository<DatosPersonalesModel>;
-  estadoCivil:PostgreGenericRepository<EstadoCivilModel>;
-  educacionFormacion:PostgreGenericRepository<EducacionFormacionModel>;
-  familiar: PostgreGenericRepository<Familiar>;
-  concubino: PostgreGenericRepository<Concubino>;
-  datosFamiliares: PostgreGenericRepository<DatosFamiliares>;
-  establecimientoPenitenciario: PostgreGenericRepository<EstablecimientoPenitenciarioModel>;
-  causas: PostgreGenericRepository<CausaJudicialModel>;
-  documentoOrdenPrision: PostgreGenericRepository<DocumentosOrdenanPrisionModel>;
-  ingresoAPrision: PostgreGenericRepository<IngresoAPrisionModel>;
-  situacionJudicial: PostgreGenericRepository<SituacionJudicialModel>;
-  oficios: PostgreGenericRepository<OficioModel>;
-  seguridad: PostgreGenericRepository<SeguridadModel>;
-  ppl: PostgreGenericRepository<PplModel>;
+  persona: PostgresGenericRepository<PersonaModel>;
+  tipo_identificacion: PostgresGenericRepository<TipoIdentificacionModel>;
+  genero: PostgresGenericRepository<GeneroModel>;
+  registro:PostgresGenericRepository<RegistroPersonaModel>;
+  grupo_sanguineo: PostgresGenericRepository<GrupoSanguineoModel>;
+  vacuna: PostgresGenericRepository<VacunaModel>;
+  nacionalidad: PostgresGenericRepository<NacionalidadModel>;
+  salud: PostgresGenericRepository<SaludModel>;
+  saludMental:PostgresGenericRepository<SaludMentalModel>;
+  saludFisica:PostgresGenericRepository<SaludFisicaModel>;
+  limitacionesIdiomaticas:PostgresGenericRepository<LimitacionIdiomaticaModel>;
+  datosPersonales:PostgresGenericRepository<DatosPersonalesModel>;
+  estadoCivil:PostgresGenericRepository<EstadoCivilModel>;
+  educacionFormacion:PostgresGenericRepository<EducacionFormacionModel>;
+  familiar: PostgresGenericRepository<Familiar>;
+  concubino: PostgresGenericRepository<Concubino>;
+  datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
+  establecimientoPenitenciario: PostgresGenericRepository<EstablecimientoPenitenciarioModel>;
+  causas: PostgresGenericRepository<CausaJudicialModel>;
+  documentoOrdenPrision: PostgresGenericRepository<DocumentosOrdenanPrisionModel>;
+  ingresoAPrision: PostgresGenericRepository<IngresoAPrisionModel>;
+  situacionJudicial: PostgresGenericRepository<SituacionJudicialModel>;
+  oficios: PostgresGenericRepository<OficioModel>;
+  seguridad: PostgresGenericRepository<SeguridadModel>;
+  ppl: PostgresGenericRepository<PplModel>;
+  vinculo_familiar: IGenericRepository<VinculoFamiliarModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -115,7 +115,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectRepository(PplModel)
     private ppl_repository:Repository<PplModel>,
     @InjectDataSource()
-    private dataSource:DataSource
+    private dataSource:DataSource,
+    @InjectRepository(VinculoFamiliarModel)
+    private vinculo_familiar_repository:Repository<VinculoFamiliarModel>
     ){}
   
   
@@ -124,31 +126,32 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   }
  
   onApplicationBootstrap() {
-    this.persona = new PostgreGenericRepository<PersonaModel>(this.persona_repository);
-    this.genero = new PostgreGenericRepository<GeneroModel>(this.genero_repository);
-    this.tipo_identificacion = new PostgreGenericRepository<TipoIdentificacionModel>(this.tipo_identificacion_repository);
-    this.registro = new PostgreGenericRepository<RegistroPersonaModel>(this.registro_repository);
-    this.grupo_sanguineo = new PostgreGenericRepository<GrupoSanguineoModel>(this.grupos_sanguineo_repository);
-    this.vacuna = new PostgreGenericRepository<VacunaModel>(this.vacunas_repository);
-    this.nacionalidad = new PostgreGenericRepository<NacionalidadModel>(this.nacionalidad_repository);
-    this.salud = new PostgreGenericRepository<SaludModel>(this.salud_repository);
-    this.saludFisica = new PostgreGenericRepository<SaludFisicaModel>(this.saludFisica_repository);
-    this.saludMental = new PostgreGenericRepository<SaludMentalModel>(this.saludMental_repository);
-    this.limitacionesIdiomaticas = new PostgreGenericRepository<LimitacionIdiomaticaModel>(this.limitacionesIdiomaticas_repository);
-    this.datosPersonales = new PostgreGenericRepository<DatosPersonalesModel>(this.datosPersonales_repository);
-    this.estadoCivil = new PostgreGenericRepository<EstadoCivilModel>(this.estadoCivil_repository);
-    this.educacionFormacion = new PostgreGenericRepository<EducacionFormacionModel>(this.educacionFormacion_repository);
-    this.familiar = new PostgreGenericRepository<FamiliarModel>(this.familiar_repository);
-    this.concubino = new PostgreGenericRepository<ConcubinoModel>(this.concubino_repository);
-    this.datosFamiliares = new PostgreGenericRepository<DatosFamiliaresModel>(this.datosFamiliares_repository);
-    this.establecimientoPenitenciario = new PostgreGenericRepository<EstablecimientoPenitenciarioModel>(this.establecimientosPenitenciarios_repository);
-    this.causas = new PostgreGenericRepository<CausaJudicialModel>(this.causas_repository);
-    this.documentoOrdenPrision = new PostgreGenericRepository<DocumentosOrdenanPrisionModel>(this.documentos_ordenan_prision_repository);
-    this.ingresoAPrision = new PostgreGenericRepository<IngresoAPrisionModel>(this.ingreso_a_prision_repository);
-    this.situacionJudicial = new PostgreGenericRepository<SituacionJudicialModel>(this.situacion_judicial_repository);
-    this.oficios = new PostgreGenericRepository<OficioModel>(this.oficios_repository);
-    this.seguridad = new PostgreGenericRepository<SeguridadModel>(this.seguridad_repository);
-    this.ppl = new PostgreGenericRepository<PplModel>(this.ppl_repository);
+    this.persona = new PostgresGenericRepository<PersonaModel>(this.persona_repository);
+    this.genero = new PostgresGenericRepository<GeneroModel>(this.genero_repository);
+    this.tipo_identificacion = new PostgresGenericRepository<TipoIdentificacionModel>(this.tipo_identificacion_repository);
+    this.registro = new PostgresGenericRepository<RegistroPersonaModel>(this.registro_repository);
+    this.grupo_sanguineo = new PostgresGenericRepository<GrupoSanguineoModel>(this.grupos_sanguineo_repository);
+    this.vacuna = new PostgresGenericRepository<VacunaModel>(this.vacunas_repository);
+    this.nacionalidad = new PostgresGenericRepository<NacionalidadModel>(this.nacionalidad_repository);
+    this.salud = new PostgresGenericRepository<SaludModel>(this.salud_repository);
+    this.saludFisica = new PostgresGenericRepository<SaludFisicaModel>(this.saludFisica_repository);
+    this.saludMental = new PostgresGenericRepository<SaludMentalModel>(this.saludMental_repository);
+    this.limitacionesIdiomaticas = new PostgresGenericRepository<LimitacionIdiomaticaModel>(this.limitacionesIdiomaticas_repository);
+    this.datosPersonales = new PostgresGenericRepository<DatosPersonalesModel>(this.datosPersonales_repository);
+    this.estadoCivil = new PostgresGenericRepository<EstadoCivilModel>(this.estadoCivil_repository);
+    this.educacionFormacion = new PostgresGenericRepository<EducacionFormacionModel>(this.educacionFormacion_repository);
+    this.familiar = new PostgresGenericRepository<FamiliarModel>(this.familiar_repository);
+    this.concubino = new PostgresGenericRepository<ConcubinoModel>(this.concubino_repository);
+    this.datosFamiliares = new PostgresGenericRepository<DatosFamiliaresModel>(this.datosFamiliares_repository);
+    this.establecimientoPenitenciario = new PostgresGenericRepository<EstablecimientoPenitenciarioModel>(this.establecimientosPenitenciarios_repository);
+    this.causas = new PostgresGenericRepository<CausaJudicialModel>(this.causas_repository);
+    this.documentoOrdenPrision = new PostgresGenericRepository<DocumentosOrdenanPrisionModel>(this.documentos_ordenan_prision_repository);
+    this.ingresoAPrision = new PostgresGenericRepository<IngresoAPrisionModel>(this.ingreso_a_prision_repository);
+    this.situacionJudicial = new PostgresGenericRepository<SituacionJudicialModel>(this.situacion_judicial_repository);
+    this.oficios = new PostgresGenericRepository<OficioModel>(this.oficios_repository);
+    this.seguridad = new PostgresGenericRepository<SeguridadModel>(this.seguridad_repository);
+    this.ppl = new PostgresGenericRepository<PplModel>(this.ppl_repository);
+    this.vinculo_familiar = new PostgresGenericRepository<VinculoFamiliarModel>(this.vinculo_familiar_repository);
   }
   
   

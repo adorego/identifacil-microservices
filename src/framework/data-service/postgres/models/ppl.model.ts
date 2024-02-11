@@ -16,7 +16,7 @@ export class PplModel extends Ppl{
   @Column({type:"varchar", nullable:true})
   prontuario: string;
 
-  @OneToOne(() => EstablecimientoPenitenciarioModel, {eager:true})
+  @OneToOne(() => EstablecimientoPenitenciarioModel, {cascade:true,eager:true})
   @JoinColumn()
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 } 

@@ -1,7 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { DatosFamiliaresModel } from "./datos-familiares.model";
+import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
+import { VinculoFamiliarModel } from "./vinculo-familiar.model";
 
 @Entity({name:'familiar'})
 export class FamiliarModel extends Familiar{
@@ -16,10 +18,10 @@ export class FamiliarModel extends Familiar{
   apellido:string;
 
   @Column({type:'varchar', nullable:false})
-  vinculo:string;
+  vinculo:VinculoFamiliarModel;
 
   @Column({type:'varchar', nullable:false})
-  lugar:string;
+  establecimiento:EstablecimientoPenitenciario;
 
   @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares))
   datosFamiliares:DatosFamiliaresModel;

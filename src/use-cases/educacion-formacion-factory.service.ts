@@ -29,7 +29,7 @@ export class RegistroEducacionFormacionFactory{
       persona:PersonaEncontrada
     
     };
-
+    console.log("EducacionFormacion creada:", educacionFormacion);
      return(
       {
         educacionFormacion:educacionFormacion

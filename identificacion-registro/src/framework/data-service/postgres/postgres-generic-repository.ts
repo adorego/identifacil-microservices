@@ -3,7 +3,7 @@ import { FindOptionsWhere, Repository } from "typeorm";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
-export class PostgreGenericRepository<T> implements IGenericRepository<T>{
+export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   
   private _repository:Repository<T>;
 

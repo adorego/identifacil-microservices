@@ -4,11 +4,11 @@ import { RegistroSaludFactory, RespuestaRegistroSaludfactory } from "./registro-
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { Concubino } from "src/core/entities/concubino.entity";
 import { ConcubinoModel } from "src/framework/data-service/postgres/models/concubino.model";
-import { DataBaseService } from "src/core/abstract/data-base-service.abstract";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { EducacionFormacionModel } from "src/framework/data-service/postgres/models/educacion-formacion.model";
+import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
 import { FamiliarModel } from "src/framework/data-service/postgres/models/familiar.model";
@@ -32,7 +32,6 @@ import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/regis
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
-import { RegistroPersona } from "src/core/entities/registro-persona.entity";
 import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
@@ -45,7 +44,7 @@ import { SaludModel } from "src/framework/data-service/postgres/models/salud.mod
 import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
-import { query } from "express";
+import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
 
 @Injectable()
 export class RegistroUseCase{
@@ -125,6 +124,24 @@ export class RegistroUseCase{
       await queryRunner.release()
     }
 
+  }
+
+  async actualizar_salud(registroSaludDTO:RegistroSaludDTO){
+    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.actualizarRegistroSalud(registroSaludDTO);
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    try{
+      queryRunner.startTransaction();
+      const registroSaludActualizado = queryRunner.manager.save(SaludModel,registro_salud.registro_salud);
+      const registroSaludMentalActualizado = queryRunner.manager.save(SaludMentalModel, registro_salud.registro_salud_mental);
+      const registroSaludFisicaActualizado = queryRunner.manager.save(SaludFisicaModel, registro_salud.registro_salud_fisica);
+      const registroLimitacionesIdiomaticasActualizado = queryRunner.manager.save(LimitacionIdiomaticaModel, registro_salud.registro_limitacionesIdiomaticas);
+      queryRunner.commitTransaction();
+    }catch(error){
+      queryRunner.rollbackTransaction();
+      this.logger.error(`Ocurrio un error al actualizar el registro de Salud:${error}`);
+    }finally{
+      queryRunner.release();
+    }
   }
 
   async registrar_datosPersonales(registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
@@ -273,6 +290,22 @@ export class RegistroUseCase{
     }catch(error){
       this.logger.error(`Error al consultar los oficios:${error}`)
       throw new HttpException('Error al consultar los oficios', HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  async establecimientos():Promise<Array<EstablecimientoPenitenciario>>{
+    try{
+      return await this.dataService.establecimientoPenitenciario.getAll();
+    }catch(error){
+      this.logger.error(`Error al consultar los establecimiento penitenciarios:${error}`)
+    }
+  }
+
+  async vinculos_familiares():Promise<Array<VinculoFamiliar>>{
+    try{
+      return await this.dataService.vinculo_familiar.getAll()
+    }catch(error){
+      this.logger.error(`Error al consultar los vicnulos familiares:${error}`)
     }
   }
 }

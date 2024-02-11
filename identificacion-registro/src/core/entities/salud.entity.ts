@@ -5,7 +5,7 @@ import { Persona } from "./persona.entity";
 import { Vacuna } from "./vacuna.entity";
 
 export class Salud{
-  id:number;
+  id?:number;
   persona:Persona;
   tieneAfeccionADrogras:boolean;
   tieneAfeccionADrogas_modificado:boolean;

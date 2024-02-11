@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
@@ -11,6 +11,7 @@ import { RespuestaVacunasDTO } from "src/core/dto/respuesta-vacunas.dto";
 import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 import { log } from "console";
+import { RespuestaActualizacionSaludDTO } from "src/core/dto/registro_salud/respuesta-actualizacioin-salud.dto";
 
 interface CausasJudicialesParameter{
   ci:string;
@@ -65,6 +66,14 @@ export class RegistroController{
     return {
       success:true
       }
+  }
+
+  @Put('actualizar_salud')
+  async actualizar_salud(@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaActualizacionSaludDTO>{
+    const respuestaActualizacionSalud = await this.registroPersonaUseCase.actualizar_salud(registro_salud);
+    return{
+      success:true
+    }
   }
 
   @Get('grupos_sanguineos')
@@ -127,6 +136,29 @@ export class RegistroController{
     return(
       {
         oficios:oficios,
+        success:true
+      }
+    )
+  }
+
+  @Get('establecimientos')
+  async getEstablecimientos(){
+    const establecimientos = await this.registroPersonaUseCase.establecimientos();
+
+    return(
+      {
+        establecimientos:establecimientos,
+        success:true
+      }
+    )
+  }
+
+  @Get('vinculos_familiares')
+  async getVinculosFamiliares(){
+    const vinculos_familiares = await this.registroPersonaUseCase.vinculos_familiares();
+    return(
+      {
+        vinculos_familiares:vinculos_familiares,
         success:true
       }
     )

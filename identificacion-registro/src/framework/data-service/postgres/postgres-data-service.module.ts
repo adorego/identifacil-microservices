@@ -35,6 +35,7 @@ import { SituacionJudicialModel } from "./models/situacion-judicial.model";
 import { TipoIdentificacionModel } from "./models/tipo_identificacion.model";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { VacunaModel } from "./models/vacuna.model";
+import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
 
 @Module({
   imports:[
@@ -76,6 +77,7 @@ import { VacunaModel } from "./models/vacuna.model";
       DespachosJudicialesModel,
       OficioModel,
       PplModel,
+      VinculoFamiliarModel,
       
     
     

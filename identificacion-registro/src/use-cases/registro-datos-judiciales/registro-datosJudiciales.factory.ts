@@ -20,10 +20,10 @@ export class RegistroDatosJudicialesFactory{
   }
 
   async generar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Express.Multer.File, resolucion:Express.Multer.File):Promise<SituacionJudicial>{
-    if(!registroDatosJudiciales.numeroDeIdentificacion){
-      throw new HttpException('No se envió el número de identificación', HttpStatus.BAD_REQUEST);
+    if(!registroDatosJudiciales.id_persona){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
     }
-    const personaEncontrada = await this.dataService.persona.getByNumeroIdentificacion(registroDatosJudiciales.numeroDeIdentificacion);
+    const personaEncontrada = await this.dataService.persona.get(registroDatosJudiciales.id_persona);
     if(!personaEncontrada){
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
@@ -39,11 +39,8 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
     }
     
-    let situacionJudicial = personaEncontrada.situacionJudicial;
+    let situacionJudicial = new SituacionJudicial();
     
-    if(!situacionJudicial){
-      situacionJudicial = new SituacionJudicial();
-    }
 
     //Generar un registro de Situacion Judicial
     situacionJudicial.primera_vez_en_prision = registroDatosJudiciales.primeraVezEnPrision ;
@@ -63,7 +60,7 @@ export class RegistroDatosJudicialesFactory{
     oficioJudicialAGuardar.causa = causaJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudiciales.oficioJudicial.fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudiciales.oficioJudicial.numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudiciales.oficioJudicial.fechaDeDocumento}_${registroDatosJudiciales.numeroDeIdentificacion}`)
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudiciales.oficioJudicial.fechaDeDocumento}_${registroDatosJudiciales.id_persona}`)
     const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(oficioJudicialAGuardar);
 
 
@@ -71,7 +68,7 @@ export class RegistroDatosJudicialesFactory{
     resolucionMJAGuardar.causa = causaJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudiciales.resolucion.fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudiciales.resolucion.numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudiciales.resolucion.fechaDeDocumento}_${registroDatosJudiciales.numeroDeIdentificacion}`)
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudiciales.resolucion.fechaDeDocumento}_${registroDatosJudiciales.id_persona}`)
     const resolucionMJGuardada = await this.dataService.documentoOrdenPrision.create(resolucionMJAGuardar);
     
     ingresoAPrision.documento_que_ordenan_prision.push(oficioJudicialGuardado);

@@ -1,10 +1,10 @@
-import { Body, Controller, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Logger, Param, Post, Put } from "@nestjs/common";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RespuestaRegistroEducacionFormacionDTO } from "src/core/dto/registro/respuesta-registro-educacionFormacion.dto";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 
 
-@Controller()
+@Controller('educacion')
 export class EducacionFormacionController{
   private readonly logger:Logger = new Logger('EducacionFormacionLogger');
   constructor(
@@ -13,7 +13,7 @@ export class EducacionFormacionController{
 
   }
 
-  @Post("registro_educacion")
+  @Post()
   async registrar_educacion(@Body() registroEducacionDTO:RegistroEducacionDTO):Promise<RespuestaRegistroEducacionFormacionDTO>{
     this.logger.log('Datos recibidos:',registroEducacionDTO);
     const respuestaRegistrarEducacionUseCase = await this.registroPersonaUseCase.registrar_educacion(registroEducacionDTO);
@@ -24,5 +24,11 @@ export class EducacionFormacionController{
       }
     )
     
+  }
+
+  @Put(':id')
+  async actualizar_educacion(@Param() id, @Body() registroEducacionDTO){
+    this.logger.log('Datos recibidos:',registroEducacionDTO);
+    const respuestaActualizarEducacionCase = await this.registroPersonaUseCase.actualizar_educacion(id,registroEducacionDTO);
   }
 }

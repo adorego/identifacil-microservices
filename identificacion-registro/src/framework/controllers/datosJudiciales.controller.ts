@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Logger, Post, Put, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
 import { RespuestaRegistroDatosJudicialesDTO } from "src/core/dto/registro/respuesta-registro-datos-judiciales.dto";
@@ -28,7 +28,8 @@ export class DatosJudicialesController{
     resolucion_documento: Array<Express.Multer.File>},
     @Body() registroDatosJudiciales:RegistroDatosJudicialesDTO):Promise<RespuestaRegistroDatosJudicialesDTO>{
     this.logger.log("Datos recibidos:", registroDatosJudiciales, 'metodo:create');
-    this.registroPersonaUseCase.registrar_datos_judiciales(registroDatosJudiciales,documentos.oficioJudicial_documento, documentos.resolucion_documento)
+    const respuesta_registro_datos_judiciales = 
+    await this.registroPersonaUseCase.registrar_datos_judiciales(registroDatosJudiciales,documentos.oficioJudicial_documento, documentos.resolucion_documento)
     
     return(
       {
@@ -36,5 +37,21 @@ export class DatosJudicialesController{
       }
     )
   }
+
+  // @Put(':id')
+  // @UseInterceptors(
+  //   FileFieldsInterceptor([
+  //     {name:'oficioJudicial_documento', maxCount:1},
+  //     {name:'resolucion_documento', maxCount:1},
+  //   ])
+  // )
+  // async update(@UploadedFiles() documentos:{
+  //   oficioJudicial_documento: Array<Express.Multer.File>, 
+  //   resolucion_documento: Array<Express.Multer.File>},
+  //   @Body() registroDatosJudicialesDTO:RegistroDatosJudicialesDTO):Promise<RespuestaRegistroDatosJudicialesDTO>{
+  //     this.logger.log("Datos recibidos:", registroDatosJudicialesDTO, 'metodo:update');
+  //     this.registroPersonaUseCase.actualizar_datos_judiciales(registroDatosJudicialesDTO,documentos.oficioJudicial_documento, documentos.resolucion_documento);
+  //   }
+  // })
 
 }

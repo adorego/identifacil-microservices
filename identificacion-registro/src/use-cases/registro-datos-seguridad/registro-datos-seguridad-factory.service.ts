@@ -26,4 +26,22 @@ export class RegistroDatosSeguridadFactory{
     }
     return datosSeguridadAGuardar;
   }
+
+  async generar_actualizacion_datos_de_seguridad(id:number,datosDeSeguridadDTO:RegistroDatosSeguridadDTO){
+    if(!id){
+      throw new HttpException('No se envió el id del registro de seguridad', HttpStatus.BAD_REQUEST);
+    }
+
+    let registroDeSeguridadAActualizar = await this.dataService.seguridad.get(id);
+    if(!registroDeSeguridadAActualizar){
+      throw new HttpException('No se encontró el registro de seguridad enviado', HttpStatus.BAD_REQUEST);
+    }
+    registroDeSeguridadAActualizar = {...datosDeSeguridadDTO, 
+      persona:registroDeSeguridadAActualizar.persona};
+
+    return{
+      registroDeSeguridadAActualizar:registroDeSeguridadAActualizar,
+      
+    }  
+  }
 }

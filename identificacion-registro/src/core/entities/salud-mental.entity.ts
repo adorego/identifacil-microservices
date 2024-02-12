@@ -2,7 +2,6 @@ import { Persona } from "./persona.entity";
 
 export class SaludMental{
   id:number;
-  persona:Persona;
   sigue_tratamiento_mental:boolean;
   sigue_tratamiento_mental_modificado:boolean;
   tiene_antecedentes_de_lesiones_autoinflingidas:boolean;

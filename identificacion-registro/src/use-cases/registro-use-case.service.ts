@@ -7,6 +7,8 @@ import { ConcubinoModel } from "src/framework/data-service/postgres/models/concu
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
+import { DatosPersonalesModel } from "src/framework/data-service/postgres/models/datos-personales.model";
+import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { EducacionFormacionModel } from "src/framework/data-service/postgres/models/educacion-formacion.model";
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
@@ -34,6 +36,7 @@ import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.d
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
 import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
@@ -100,19 +103,27 @@ export class RegistroUseCase{
 
     try{
       await queryRunner.startTransaction();
+      const registroDeSaludACrear = registro_salud.registro_salud;
       const persona = registro_salud.persona;
-      const registroDeSaludGuardado = await queryRunner.manager.save(SaludModel, registro_salud.registro_salud);
-      persona.salud = registroDeSaludGuardado;
+      //Salud Mental
       const registroDeSaludMentalGuardado = await queryRunner.manager.save(SaludMentalModel,registro_salud.registro_salud_mental);
-      persona.salud_mental = registroDeSaludMentalGuardado;
-      const registroDeSaludFisica = await queryRunner.manager.save(SaludFisicaModel,registro_salud.registro_salud_fisica);
-      persona.salud_fisica = registroDeSaludFisica;
-      const updatedLimitacionesIdiomaticas = await queryRunner.manager.save(LimitacionIdiomaticaModel,registro_salud.registro_limitacionesIdiomaticas);
-      persona.limitacion_idiomatica = updatedLimitacionesIdiomaticas;
+      registroDeSaludACrear.saludMental = registroDeSaludMentalGuardado;
       
+      //Salud Fisica
+      const registroDeSaludFisicaGuardado = await queryRunner.manager.save(SaludFisicaModel,registro_salud.registro_salud_fisica);
+      registroDeSaludACrear.saludFisica = registroDeSaludFisicaGuardado;
+      //Limitaciones idiomaticas
+      const limitacionesIdiomaticasGuardado = await queryRunner.manager.save(LimitacionIdiomaticaModel,registro_salud.registro_limitacionesIdiomaticas);
+      registroDeSaludACrear.limitacionesIdiomaticas = limitacionesIdiomaticasGuardado;
+
+      //Finalmente guardo el registro de salud
+      const registroDeSaludGuardado = await queryRunner.manager.save(SaludModel, registroDeSaludACrear);
+      persona.salud = registroDeSaludGuardado;
+      //Actualizar Persona
       const updatedPersona:Persona  = await queryRunner.manager.save(PersonaModel,persona);
       await queryRunner.commitTransaction()
       return {
+        registro_salud:registroDeSaludGuardado,
         success:true
       }
         
@@ -126,16 +137,26 @@ export class RegistroUseCase{
 
   }
 
-  async actualizar_salud(registroSaludDTO:RegistroSaludDTO){
-    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.actualizarRegistroSalud(registroSaludDTO);
+  async actualizar_salud(id:number,registroSaludDTO:RegistroSaludDTO){
+    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.actualizarRegistroSalud(id,registroSaludDTO);
     const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    const registroSaludAActualizar = registro_salud.registro_salud;
     try{
       queryRunner.startTransaction();
-      const registroSaludActualizado = queryRunner.manager.save(SaludModel,registro_salud.registro_salud);
-      const registroSaludMentalActualizado = queryRunner.manager.save(SaludMentalModel, registro_salud.registro_salud_mental);
-      const registroSaludFisicaActualizado = queryRunner.manager.save(SaludFisicaModel, registro_salud.registro_salud_fisica);
-      const registroLimitacionesIdiomaticasActualizado = queryRunner.manager.save(LimitacionIdiomaticaModel, registro_salud.registro_limitacionesIdiomaticas);
+      const registroSaludMentalActualizado = await queryRunner.manager.save(SaludMentalModel, registro_salud.registro_salud_mental);
+      registroSaludAActualizar.saludMental = registroSaludMentalActualizado;
+
+      const registroSaludFisicaActualizado = await queryRunner.manager.save(SaludFisicaModel, registro_salud.registro_salud_fisica);
+      registroSaludAActualizar.saludFisica = registroSaludFisicaActualizado;
+      
+      const registroLimitacionesIdiomaticasActualizado = await queryRunner.manager.save(LimitacionIdiomaticaModel, registro_salud.registro_limitacionesIdiomaticas);
+      registroSaludAActualizar.limitacionesIdiomaticas = registroLimitacionesIdiomaticasActualizado;
+
+      const registroSaludActualizado = await queryRunner.manager.save(SaludModel,registro_salud.registro_salud);
       queryRunner.commitTransaction();
+      return{
+        registroSaludActualizado:registroSaludActualizado
+      }
     }catch(error){
       queryRunner.rollbackTransaction();
       this.logger.error(`Ocurrio un error al actualizar el registro de Salud:${error}`);
@@ -161,6 +182,26 @@ export class RegistroUseCase{
   
   }
 
+  async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    try{
+      queryRunner.startTransaction()
+      const datosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      const datosPersonalesActualizados = await queryRunner.manager.save(DatosPersonalesModel,datosPersonales.datosPersonales);
+      queryRunner.commitTransaction();
+      return {
+        datosPersonalesActualizados:datosPersonalesActualizados,
+        success:true
+      }
+      
+    }catch(error){
+      queryRunner.rollbackTransaction();
+      throw new HttpException(`Hubo un error al actualizar el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }finally{
+      queryRunner.release();
+    }
+  }
+
   async registrar_educacion(datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestaRegistrarEducacionFormacionUseCaseDTO>{
     const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
@@ -183,45 +224,65 @@ export class RegistroUseCase{
     }
   }
 
+  async actualizar_educacion(id:number, datosEducacionDTO:RegistroEducacionDTO):Promise<EducacionFormacion>{
+    const registroDeEducacionAActualizar = await this.registro_educacionFormacion_factory.generarActualizacionEducacion(id,datosEducacionDTO);
+    return await this.dataService.educacionFormacion.update(registroDeEducacionAActualizar.registroDeEducacion);
+  }
+
   async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
     const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
       queryRunner.startTransaction();
-      if(datosFamiliaresACrear.concubino){
-        let concubinoCreado:Concubino = null;
-        concubinoCreado = await queryRunner.manager.save(ConcubinoModel,datosFamiliaresACrear.concubino);
-        datosFamiliaresACrear.concubino = concubinoCreado;
-        
-      }
-      let datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel,datosFamiliaresACrear);
+      
+      const familiaresGuardados = await queryRunner.manager.save(FamiliarModel,datosFamiliaresACrear.datosFamiliares.familiares);
+      const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel, datosFamiliaresACrear.datosFamiliares.concubino);
+     
+      datosFamiliaresACrear.datosFamiliares.familiares = familiaresGuardados;
+      datosFamiliaresACrear.datosFamiliares.concubino = concubinoGuardado;
 
-      if(datosFamiliaresACrear.familiares){
-        let familiares:Array<Familiar> = []
-        if(datosFamiliaresACrear.familiares){
-          datosFamiliaresACrear.familiares.map(
-            async (familiar) => {
-              const familiarCreado = await queryRunner.manager.save(FamiliarModel,familiar);
-              familiares.push(familiarCreado);
-              
-            }
-          )
-          // datosFamiliaresGuardados.familiares = familiares;
-          // datosFamiliaresGuardados = await this.dataService.datosFamiliares.update(datosFamiliaresGuardados);
-          
-        }
-      }
-      return datosFamiliaresGuardados;
-
-    
+      const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresACrear);
+      queryRunner.commitTransaction();
+      return datosFamiliaresGuardados
+      
     }catch(error){
+      queryRunner.rollbackTransaction();
       this.logger.error(`Error durante el registro de datos familiares:${error}`);
       throw new HttpException(`Error durante el registro de datos de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
+    }finally{
+      queryRunner.release();
+    }
+  }
+
+  async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
+    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    try{
+      const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id,datosFamiliaresDTO);
+      queryRunner.startTransaction();
+      
+      const familiaresGuardados = await queryRunner.manager.save(FamiliarModel,datosFamiliaresAActualizar.datosFamiliares.familiares);
+      const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel, datosFamiliaresAActualizar.datosFamiliares.concubino);
+     
+      datosFamiliaresAActualizar.datosFamiliares.familiares = familiaresGuardados;
+      datosFamiliaresAActualizar.datosFamiliares.concubino = concubinoGuardado;
+
+      const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresAActualizar);
+      queryRunner.commitTransaction();
+      return datosFamiliaresGuardados
+      
+    }catch(error){
+      queryRunner.rollbackTransaction();
+      this.logger.error(`Error durante la actualizacion de datos familiares:${error}`);
+      throw new HttpException(`Error durante la actualizacion de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
+    }finally{
+      queryRunner.release();
     }
   }
 
   async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<SituacionJudicial>{
     return await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+  
+  
   }
 
 
@@ -242,6 +303,16 @@ export class RegistroUseCase{
       this.logger.error(`Error durante el registro de Datos de Seguridad:${error}`);
       throw new HttpException(`Error al consultar los Datos de Seeguridad`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async actualizar_datos_seguridad(id:number, datosSeguridadDTO:RegistroDatosSeguridadDTO){
+    const datosDeSeguridadAActualizar = await this.registro_datosSeguridad_factory.generar_actualizacion_datos_de_seguridad(id,datosSeguridadDTO);
+    try{
+      return await this.dataService.seguridad.update(datosDeSeguridadAActualizar.registroDeSeguridadAActualizar);
+    }catch(error){
+      throw new HttpException(`Error al actualizar el registro de seguridad:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  
   }
 
   async vacunas():Promise<Array<Vacuna>>{

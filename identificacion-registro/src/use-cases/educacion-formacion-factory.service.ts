@@ -37,4 +37,28 @@ export class RegistroEducacionFormacionFactory{
      )
 
   }
+
+  async generarActualizacionEducacion(id:number, datosEducacionDTO:RegistroEducacionDTO){
+    //Validar id
+    if(!id){
+      throw new HttpException('El id del registro de Educacion debe ser valido', HttpStatus.BAD_REQUEST);
+    }
+
+    //Validar que existe el registro
+    let registroDeEducacion = await this.dataService.educacionFormacion.get(id); 
+    if(!registroDeEducacion){
+      throw new HttpException('El registro de Educacion no existe', HttpStatus.NOT_FOUND);
+    }
+
+    registroDeEducacion = {
+      ...datosEducacionDTO,
+      persona:registroDeEducacion.persona
+    
+    };
+
+    return {
+      registroDeEducacion:registroDeEducacion
+    }
+
+  }
 }

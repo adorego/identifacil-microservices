@@ -38,6 +38,8 @@ export class RegistroDatosPersonalesFactory{
 
      
      let datosPersonales = new DatosPersonales();
+     
+     
      return datosPersonales = {
       ...datosPersonalesDTO,
       nacionalidad:Nacionalidad,
@@ -45,5 +47,43 @@ export class RegistroDatosPersonalesFactory{
       persona:PersonaEncontrada
     }
   
+  }
+
+  async generarDatosPersonalesAActualizar(id:number, datosPersonalesDTO:RegistroDatosPersonalesDTO){
+    //Validar que exista el Objeto
+    if(!id){
+      throw new HttpException('El identificador del registro debe ser valido', HttpStatus.BAD_REQUEST);
+    }
+    let datosPersonales = await this.dataService.datosPersonales.get(id);
+    if(!datosPersonales){
+      throw new HttpException('No se encontro el registro de Datos Personales', HttpStatus.BAD_REQUEST);
+    }
+    if(!datosPersonalesDTO.estadoCivil){
+      throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
+     }
+     const estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
+     if(!estadoCivil){
+      throw new HttpException('No existe este estado civil', HttpStatus.NOT_FOUND)
+     }
+
+     if(!datosPersonalesDTO.nacionalidad){
+      throw new HttpException('Se debe enviar una nacionalidad valida', HttpStatus.BAD_REQUEST);
+     }
+     const nacionalidad:Nacionalidad = await this.dataService.nacionalidad.get(datosPersonalesDTO.nacionalidad);
+     if(!nacionalidad){
+      throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
+     }
+
+     datosPersonales = {
+      ...datosPersonalesDTO,
+      estado_civil:estadoCivil,
+      nacionalidad:nacionalidad,
+      persona:datosPersonales.persona
+
+     }
+     return{
+        datosPersonales:datosPersonales
+     }
+
   }
 }

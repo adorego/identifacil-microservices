@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
@@ -60,21 +60,7 @@ export class RegistroController{
   }
 
   
-  @Post('registrar_salud')
-  async registrar_salud(@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{
-    const respuestaRegistroSalud =  await this.registroPersonaUseCase.registrar_salud(registro_salud);
-    return {
-      success:true
-      }
-  }
-
-  @Put('actualizar_salud')
-  async actualizar_salud(@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaActualizacionSaludDTO>{
-    const respuestaActualizacionSalud = await this.registroPersonaUseCase.actualizar_salud(registro_salud);
-    return{
-      success:true
-    }
-  }
+  
 
   @Get('grupos_sanguineos')
   async grupos_sanguineos():Promise<RespuestaGrupoSanguineoDTO>{

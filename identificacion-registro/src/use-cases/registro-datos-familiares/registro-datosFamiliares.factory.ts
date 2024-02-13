@@ -86,6 +86,8 @@ export class RegistroDatosFamiliaresFactory{
       datosFamiliares.concubino = concubinoGuardado;
       datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
       datosFamiliaresGuardados = await this.dataService.datosFamiliares.create(datosFamiliares);
+      personaEncontrada.datosFamiliares = datosFamiliaresGuardados;
+      const personaActualizada = await this.dataService.persona.update(personaEncontrada);
       return {
         datosFamiliares:datosFamiliaresGuardados
       }

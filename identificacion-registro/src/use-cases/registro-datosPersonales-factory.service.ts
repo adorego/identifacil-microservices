@@ -74,13 +74,45 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
-     datosPersonales = {
-      ...datosPersonalesDTO,
-      estado_civil:estadoCivil,
-      nacionalidad:nacionalidad,
-      persona:datosPersonales.persona
+    //  id_persona:number|null;
+    //   numeroDeIdentificacion:string;
+    //   nombre: string;
+    //   nombre_modificado:boolean;
+    //   apellido: string;
+    //   apellido_modificado:boolean;
+    //   apodo: string;
+    //   apodo_modificado:boolean;
+    //   estadoCivil: number;
+    //   estadoCivil_modificado:boolean;
+    //   fechaDeNacimiento: Date;
+    //   fechaDeNacimiento_modificado:boolean;
+    //   nacionalidad: number;
+    //   nacionalidad_modificado:boolean;
+    //   lugarDeNacimiento: string;
+    //   lugarDeNacimiento_modificado:boolean;
+    //   sexo: string;
+    //   sexo_modificado:boolean;
+    //   tipoDeDocumento: string;
+    //   tipoDeDocumento_modificado:boolean;
+    //   direccion: string;
+    //   direccion_modificado:boolean;
+    //   barrioCompania: string;
+    //   barrioCompania_modificado:boolean;
+    //   numeroDeContacto: string;
+    //   numeroDeContacto_modificado:boolean;
+    //   contactoDeEmergencia1: string;
+    //   contactoDeEmergencia1_modificado:boolean;
+    //   contactoDeEmergencia2: string;
+    //   contactoDeEmergencia2_modificado:boolean;
+    //   pueblosIndigenas: boolean;
+    //   pueblosIndigenas_modificado:boolean;
+    //   nombreEtnia: string;
+    //   nombreEtnia_modificado:boolean;
+    //   perteneceAComunidadLGTBI:boolean;
+    //   perteneceAComunidadLGTBI_modificado:boolean;
+    //   grupoLgbti: string;
+    //   grupoLgbti_modificado:boolean;
 
-     }
      const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales);
      return{
         datosPersonales:datosPersonalesGuardados

@@ -123,7 +123,6 @@ export class RegistroUseCase{
       const updatedPersona:Persona  = await queryRunner.manager.save(PersonaModel,persona);
       await queryRunner.commitTransaction()
       return {
-        registro_salud:registroDeSaludGuardado,
         success:true
       }
         

@@ -4,6 +4,5 @@ import { SaludFisica } from "../../entities/salud-fisica.entity";
 import { SaludMental } from "../../entities/salud-mental.entity";
 
 export class RespuestaRegistroSaludDTO{
-  registro_salud:Salud;
   success:boolean;
 }

@@ -25,6 +25,10 @@ export class RegistroDatosFamiliaresFactory{
      if(!personaEncontrada){
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
      } 
+
+     if(personaEncontrada.datosFamiliares){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
+     }
      let familiares:Array<Familiar> = null; 
      if(datosFamiliaresDTO.familiares_modificado){
         familiares = await Promise.all(datosFamiliaresDTO.familiares.map(

@@ -65,19 +65,7 @@ export class PersonaModel extends Persona{
   @JoinColumn()
   salud:SaludModel;
 
-  @OneToOne(() => SaludMentalModel, saludMental => saludMental.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
-  @JoinColumn()
-  salud_mental:SaludMentalModel;
-
-  @OneToOne(() => SaludFisicaModel, saludFisica => saludFisica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
-  @JoinColumn()
-  salud_fisica:SaludFisicaModel;
-
-  @OneToOne(() => LimitacionIdiomaticaModel, limitacionIdiomatica => limitacionIdiomatica.persona, {cascade:true, eager:true, onDelete:'CASCADE'})
-  @JoinColumn()
-  limitacion_idiomatica:LimitacionIdiomaticaModel;
   
-
   @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona, {cascade: true, eager: true, onDelete:'CASCADE'})
   @JoinColumn()
   educacionFormacion:EducacionFormacionModel

@@ -235,36 +235,10 @@ export class RegistroUseCase{
     try{
       queryRunner.startTransaction();
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
-      console.log("DatosFamiliares a crear:", datosFamiliaresACrear);
-      // 
-      const familiaresACrear = datosFamiliaresACrear.datosFamiliares.familiares;
-      let familiaresGuardados = null;
-      if(familiaresACrear){
-        familiaresGuardados = await Promise.all(familiaresACrear.map(
-          async (familiar) =>{
-            await queryRunner.manager.save(FamiliarModel, familiar);
-          }
-        ))
-      }
-     
-      // const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel,datosFamiliaresACrear.concubino);
-     
-      // const datosFamiliaresAGuardar = datosFamiliaresACrear.datosFamiliares;
-      // datosFamiliaresAGuardar.familiares = familiaresGuardados;
-      // datosFamiliaresAGuardar.concubino = concubinoGuardado;
-
-      // const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresAGuardar);
-      queryRunner.commitTransaction();
-      return null
-      // return datosFamiliaresGuardados
-      
     }catch(error){
-      queryRunner.rollbackTransaction();
-      this.logger.error(`Error durante el registro de datos familiares:${error}`);
-      throw new HttpException(`Error durante el registro de datos de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      queryRunner.release();
+      this.logger.error(`Error`)
     }
+    return null;
   }
 
   async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{

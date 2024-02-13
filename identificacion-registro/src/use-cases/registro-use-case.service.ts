@@ -184,9 +184,8 @@ export class RegistroUseCase{
   async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
     try{
       const datosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
-      const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales.datosPersonales);
       return {
-        datosPersonalesActualizados:datosPersonalesGuardados,
+        datosPersonalesActualizados:datosPersonales.datosPersonales,
         success:true
       }
       

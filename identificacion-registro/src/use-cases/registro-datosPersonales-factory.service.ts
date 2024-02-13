@@ -81,8 +81,9 @@ export class RegistroDatosPersonalesFactory{
       persona:datosPersonales.persona
 
      }
+     const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales);
      return{
-        datosPersonales:datosPersonales
+        datosPersonales:datosPersonalesGuardados
      }
 
   }

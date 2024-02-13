@@ -229,15 +229,8 @@ export class RegistroUseCase{
   }
 
   async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-    
-    try{
-      queryRunner.startTransaction();
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
-    }catch(error){
-      this.logger.error(`Error`)
-    }
-    return null;
+      return null;
   }
 
   async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
@@ -252,9 +245,8 @@ export class RegistroUseCase{
       datosFamiliaresAActualizar.datosFamiliares.familiares = familiaresGuardados;
       datosFamiliaresAActualizar.datosFamiliares.concubino = concubinoGuardado;
 
-      const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresAActualizar);
       queryRunner.commitTransaction();
-      return datosFamiliaresGuardados
+      return null
       
     }catch(error){
       queryRunner.rollbackTransaction();

@@ -21,9 +21,6 @@ export class PplDTO{
   estado_perfil:boolean;
   datosPersonales:DatosPersonales;
   datosDeSalud:Salud;
-  datosDeSaludMental:SaludMental;
-  datosDeSaludFisica:SaludFisica;
-  datosLimitacionesIdiomaticas:LimitacionIdiomatica;
   datosDeSeguridad:Seguridad;
   datosFamiliares:DatosFamiliares;
   datosJudiciales:SituacionJudicial;

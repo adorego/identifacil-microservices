@@ -30,6 +30,7 @@ export class GestionPPLUseCase{
             datosDeSeguridad:ppl.persona.seguridad,
             datosFamiliares:ppl.persona.datosFamiliares,
             datosJudiciales:ppl.persona.situacionJudicial,
+            datosEducacion:ppl.persona.educacionFormacion,
 
 
 
@@ -63,6 +64,7 @@ export class GestionPPLUseCase{
             datosDeSeguridad:ppl.persona.seguridad,
             datosFamiliares:ppl.persona.datosFamiliares,
             datosJudiciales:ppl.persona.situacionJudicial,
+            datosEducacion:ppl.persona.educacionFormacion,
 
 
 
@@ -96,6 +98,7 @@ export class GestionPPLUseCase{
         datosDeSeguridad:ppl.persona.seguridad,
         datosFamiliares:ppl.persona.datosFamiliares,
         datosJudiciales:ppl.persona.situacionJudicial,
+        datosEducacion:ppl.persona.educacionFormacion,
 
 
 

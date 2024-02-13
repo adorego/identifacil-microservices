@@ -1,5 +1,6 @@
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
+import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
 import { Salud } from "src/core/entities/salud.entity";
 import { SaludFisica } from "src/core/entities/salud-fisica.entity";
@@ -24,5 +25,6 @@ export class PplDTO{
   datosDeSeguridad:Seguridad;
   datosFamiliares:DatosFamiliares;
   datosJudiciales:SituacionJudicial;
+  datosEducacion:EducacionFormacion;
 
 }

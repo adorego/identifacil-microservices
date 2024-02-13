@@ -231,19 +231,32 @@ export class RegistroUseCase{
 
   async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
     const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+    
     try{
-      const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
       queryRunner.startTransaction();
-      
-      const familiaresGuardados = await queryRunner.manager.save(FamiliarModel,datosFamiliaresACrear.datosFamiliares.familiares);
-      const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel, datosFamiliaresACrear.datosFamiliares.concubino);
+      const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
+      console.log("DatosFamiliares a crear:", datosFamiliaresACrear);
+      // 
+      const familiaresACrear = datosFamiliaresACrear.datosFamiliares.familiares;
+      let familiaresGuardados = null;
+      if(familiaresACrear){
+        familiaresGuardados = await Promise.all(familiaresACrear.map(
+          async (familiar) =>{
+            await queryRunner.manager.save(FamiliarModel, familiar);
+          }
+        ))
+      }
      
-      datosFamiliaresACrear.datosFamiliares.familiares = familiaresGuardados;
-      datosFamiliaresACrear.datosFamiliares.concubino = concubinoGuardado;
+      // const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel,datosFamiliaresACrear.concubino);
+     
+      // const datosFamiliaresAGuardar = datosFamiliaresACrear.datosFamiliares;
+      // datosFamiliaresAGuardar.familiares = familiaresGuardados;
+      // datosFamiliaresAGuardar.concubino = concubinoGuardado;
 
-      const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresACrear);
+      // const datosFamiliaresGuardados = await queryRunner.manager.save(DatosFamiliaresModel, datosFamiliaresAGuardar);
       queryRunner.commitTransaction();
-      return datosFamiliaresGuardados
+      return null
+      // return datosFamiliaresGuardados
       
     }catch(error){
       queryRunner.rollbackTransaction();

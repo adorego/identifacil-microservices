@@ -19,7 +19,7 @@ export class DatosPersonalesModel extends DatosPersonales{
   @OneToOne(() => PersonaModel, (persona) => persona.datosPersonales)
   persona:PersonaModel;
 
-  @ManyToOne(() => EstadoCivilModel,{eager:true})
+  @ManyToOne(()=>EstadoCivilModel,{eager:true})
   estadoCivil:EstadoCivilModel;
 
   @Column({type:"boolean"})

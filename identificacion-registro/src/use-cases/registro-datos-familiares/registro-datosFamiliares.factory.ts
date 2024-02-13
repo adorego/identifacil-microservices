@@ -30,12 +30,22 @@ export class RegistroDatosFamiliaresFactory{
         familiares = await Promise.all(datosFamiliaresDTO.familiares.map(
           async (familiar) =>{
             const crearFamiliar = async (familiar:FamiliarDTO) =>{
+              const vinculo = await this.dataService.vinculo_familiar.get(familiar.vinculo);
+              const establecimiento = await this.dataService.establecimientoPenitenciario.get(familiar.establecimiento);
               const familiarACrear = new Familiar();
               familiarACrear.nombre = familiar.nombre;
               familiarACrear.apellido = familiar.apellido;
-              familiarACrear.vinculo = await this.dataService.vinculo_familiar.get(familiar.vinculo);
-              familiarACrear.establecimiento = await this.dataService.establecimientoPenitenciario.get(familiar.establecimiento);
+              familiarACrear.vinculo = vinculo;
+              familiarACrear.establecimiento = establecimiento;
+              
+              
               return familiarACrear;
+            }
+            if(!familiar.establecimiento){
+              throw new HttpException(`El Establecimiento del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
+            }
+            if(!familiar.vinculo){
+              throw new HttpException(`El vinculo del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
             }
             return await crearFamiliar(familiar);
           }
@@ -48,7 +58,7 @@ export class RegistroDatosFamiliaresFactory{
         concubino.nombres = datosFamiliaresDTO.concubino.nombres;
         concubino.apellidos = datosFamiliaresDTO.concubino.apellidos;
         concubino.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-        concubinoAAgregar = concubino;
+        
       }
      }
 
@@ -66,6 +76,8 @@ export class RegistroDatosFamiliaresFactory{
      
      return{
       datosFamiliares:datosFamiliares,
+      familiares:familiares,
+      concubino:concubinoAAgregar,
       persona:personaEncontrada,
      }
       
@@ -123,8 +135,11 @@ export class RegistroDatosFamiliaresFactory{
      datosFamiliares.concubino = concubinoAAgregar;
      datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
 
+     console.log("datos familiares generados:", datosFamiliares);
      return{
       datosFamiliares:datosFamiliares,
+      familiares:familiares,
+      concubino:concubinoAAgregar,
       persona:personaEncontrada,
      }
   }

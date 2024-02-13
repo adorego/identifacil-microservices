@@ -101,6 +101,7 @@ export class RegistroDatosPersonalesFactory{
           datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
           datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
           datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
+          
           datosPersonales.persona = datosPersonales.persona;
           const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales);
      return{

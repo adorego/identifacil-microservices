@@ -18,7 +18,7 @@ export class DatosPersonalesController{
 
   @Post()
   async create(@Body() registro_datosPersonales:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
-    this.logger.log('Datos reciibidos:', registro_datosPersonales.numeroDeIdentificacion);
+    this.logger.log('Datos reciibidos:', registro_datosPersonales);
     this.registroPersonaUseCase.registrar_datosPersonales(registro_datosPersonales);
     return{
       sucess:true

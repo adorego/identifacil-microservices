@@ -2,11 +2,6 @@ import { isString } from "class-validator";
 
 export class RegistroDatosPersonalesDTO{
   id_persona:number|null;
-  numeroDeIdentificacion:string;
-  nombre: string;
-  nombre_modificado:boolean;
-  apellido: string;
-  apellido_modificado:boolean;
   apodo: string;
   apodo_modificado:boolean;
   estadoCivil: number;
@@ -17,8 +12,6 @@ export class RegistroDatosPersonalesDTO{
   nacionalidad_modificado:boolean;
   lugarDeNacimiento: string;
   lugarDeNacimiento_modificado:boolean;
-  sexo: string;
-  sexo_modificado:boolean;
   tipoDeDocumento: string;
   tipoDeDocumento_modificado:boolean;
   direccion: string;

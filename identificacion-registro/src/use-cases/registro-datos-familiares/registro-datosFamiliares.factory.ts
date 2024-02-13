@@ -27,7 +27,7 @@ export class RegistroDatosFamiliaresFactory{
      } 
 
      if(personaEncontrada.datosFamiliares){
-      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Ya existe un registro de datos familiares', HttpStatus.BAD_REQUEST);
      }
      let familiares:Array<Familiar> = null; 
      if(datosFamiliaresDTO.familiares_modificado){

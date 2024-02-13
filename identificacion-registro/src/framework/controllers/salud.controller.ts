@@ -16,7 +16,7 @@ export class SaludController{
     const respuestaRegistroSalud =  await this.registroPersonaUseCase.registrar_salud(registro_salud);
     return {
       success:true,
-      registro_salud:respuestaRegistroSalud.registro_salud
+      
       }
   }
 

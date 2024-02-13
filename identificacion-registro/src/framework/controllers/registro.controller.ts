@@ -12,6 +12,7 @@ import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 import { log } from "console";
 import { RespuestaActualizacionSaludDTO } from "src/core/dto/registro_salud/respuesta-actualizacioin-salud.dto";
+import { CausaDTO } from "src/core/dto/causa/causa.dto";
 
 interface CausasJudicialesParameter{
   ci:string;
@@ -113,6 +114,11 @@ export class RegistroController{
         success:true
       }
     )
+  }
+
+  @Post('causas')
+  async create(@Body() causaDTO:CausaDTO){
+    
   }
   @Get('oficios')
   async getOficios(){

@@ -182,22 +182,17 @@ export class RegistroUseCase{
   }
 
   async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
-      queryRunner.startTransaction()
       const datosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
-      const datosPersonalesActualizados = await queryRunner.manager.save(DatosPersonalesModel,datosPersonales.datosPersonales);
-      queryRunner.commitTransaction();
+      const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales.datosPersonales);
       return {
-        datosPersonalesActualizados:datosPersonalesActualizados,
+        datosPersonalesActualizados:datosPersonalesGuardados,
         success:true
       }
       
     }catch(error){
-      queryRunner.rollbackTransaction();
+      
       throw new HttpException(`Hubo un error al actualizar el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      queryRunner.release();
     }
   }
 

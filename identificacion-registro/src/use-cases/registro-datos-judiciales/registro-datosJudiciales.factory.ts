@@ -28,16 +28,24 @@ export class RegistroDatosJudicialesFactory{
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
     
+    if(!oficio_judicial){
+      throw new HttpException('Se debe enviar el oficio judicial', HttpStatus.BAD_REQUEST);
+    }
+
+    if(!resolucion){
+      throw new HttpException('Se debe enviar el oficio judicial', HttpStatus.BAD_REQUEST);
+    }
+
     const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudiciales.establecimientoPenitenciario);
 
     if(!establecimientoPenitenciario){
       throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
     }
 
-    const causaJudicial = await this.dataService.causas.get(registroDatosJudiciales.causa);
-    if(!causaJudicial){
-      throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
-    }
+    // const causaJudicial = await this.dataService.causas.get(registroDatosJudiciales.causa);
+    // if(!causaJudicial){
+    //   throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
+    // }
     
     let situacionJudicial = new SituacionJudicial();
     
@@ -49,15 +57,15 @@ export class RegistroDatosJudicialesFactory{
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = new Date();
     ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
-    ingresoAPrision.causa = causaJudicial;
+    // ingresoAPrision.causa = causaJudicial;
     if(ingresoAPrision.causa.condenado){
-      ingresoAPrision.fecha_de_salida.setFullYear(ingresoAPrision.fecha_ingreso.getFullYear() + causaJudicial.condena.anhos);
+      // ingresoAPrision.fecha_de_salida.setFullYear(ingresoAPrision.fecha_ingreso.getFullYear() + causaJudicial.condena.anhos);
     }else{
       ingresoAPrision.fecha_de_salida = null
     }
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
-    oficioJudicialAGuardar.causa = causaJudicial;
+    // oficioJudicialAGuardar.causa = causaJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudiciales.oficioJudicial.fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudiciales.oficioJudicial.numeroDeDocumento;
     oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudiciales.oficioJudicial.fechaDeDocumento}_${registroDatosJudiciales.id_persona}`)
@@ -65,7 +73,7 @@ export class RegistroDatosJudicialesFactory{
 
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
-    resolucionMJAGuardar.causa = causaJudicial;
+    // resolucionMJAGuardar.causa = causaJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudiciales.resolucion.fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudiciales.resolucion.numeroDeDocumento;
     resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudiciales.resolucion.fechaDeDocumento}_${registroDatosJudiciales.id_persona}`)

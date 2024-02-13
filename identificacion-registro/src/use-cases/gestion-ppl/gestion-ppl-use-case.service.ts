@@ -15,6 +15,7 @@ export class GestionPPLUseCase{
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
           return{
+            id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
             apellido:ppl.persona.apellido,
             numero_de_identificacion:ppl.persona.numero_identificacion,
@@ -23,7 +24,7 @@ export class GestionPPLUseCase{
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario.id,
             establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ?? null,
+            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             datosDeSalud:ppl.persona.salud,
@@ -38,18 +39,19 @@ export class GestionPPLUseCase{
 
           }
         })
-        console.log("Array de PPLs:",pplsDTOs);
+        // console.log("Array de PPLs:",pplsDTOs);
         return pplsDTOs;
 
   }
   async getPPLsByEstablecimiento(establecimiento:number):Promise<Array<PplDTO>>{
     
     const ppls:Array<Ppl> = await this.dataService.ppl.getAllPPLsByEstablecimiento(establecimiento);
-    console.log("PPls devueltos:", ppls);
+    // console.log("PPls devueltos:", ppls);
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
           console.log(ppl);
           return{
+            id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
             apellido:ppl.persona.apellido,
             numero_de_identificacion:ppl.persona.numero_identificacion,
@@ -58,7 +60,7 @@ export class GestionPPLUseCase{
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario?.id ?? null,
             establecimiento_nombre:ppl.establecimiento_penitenciario?.nombre,
-            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ?? null,
+            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             datosDeSalud:ppl.persona.salud,
@@ -84,6 +86,7 @@ export class GestionPPLUseCase{
       return null
     }else{
       return{
+        id_persona:ppl.persona.id,
         nombre:ppl.persona.nombre,
         apellido:ppl.persona.apellido,
         numero_de_identificacion:ppl.persona.numero_identificacion,
@@ -92,7 +95,7 @@ export class GestionPPLUseCase{
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        nacionalidad:ppl.persona.datosPersonales ? ppl.persona.datosPersonales?.nacionalidad?.id : null,
+        nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
         datosDeSalud:ppl.persona.salud,

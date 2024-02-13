@@ -8,6 +8,7 @@ import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 
 export class PplDTO{
+  id_persona:number;
   nombre:string;
   apellido:string;
   numero_de_identificacion:string;

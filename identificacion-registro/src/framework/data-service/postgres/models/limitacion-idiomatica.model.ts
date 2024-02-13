@@ -9,9 +9,6 @@ export class LimitacionIdiomaticaModel extends LimitacionIdiomatica{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @OneToOne(() => PersonaModel, persona => persona.limitacion_idiomatica)
-  persona:PersonaModel;
-
   @Column()
   necesitaInterprete:boolean;
 

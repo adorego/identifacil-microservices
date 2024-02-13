@@ -8,9 +8,6 @@ export class SaludFisicaModel extends SaludFisica{
   @PrimaryGeneratedColumn()
   id:number;
   
-  @OneToOne(() => PersonaModel, persona => persona.salud_fisica)
-  persona:PersonaModel;
-
   @Column({type:'varchar', nullable:true})
   discapacidad_fisica:string;
 

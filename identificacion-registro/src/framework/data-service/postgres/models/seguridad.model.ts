@@ -50,7 +50,7 @@ export class SeguridadModel extends Seguridad{
   @Column({type:"boolean", nullable:true})
   riesgoDeDanharLaPropiedad_modificado:boolean;
 
-  @Column({type:"varchar"})
+  @Column({type:"varchar", nullable:true})
   riesgoDeDanharLaPropiedadRespuesta: string;
 
   @Column({type:"boolean", nullable:true})

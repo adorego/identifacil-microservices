@@ -24,7 +24,6 @@ export class GestionPPLUseCase{
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario.id,
             establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             datosDeSalud:ppl.persona.salud,
@@ -82,6 +81,7 @@ export class GestionPPLUseCase{
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     const ppl = await this.dataService.ppl.getPplByCedula(ci);
+    console.log("datos Personales:", ppl.persona.datosPersonales);
     if(!ppl){
       return null
     }else{
@@ -95,7 +95,7 @@ export class GestionPPLUseCase{
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
+        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
         datosDeSalud:ppl.persona.salud,

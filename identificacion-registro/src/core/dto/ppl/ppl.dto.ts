@@ -14,7 +14,7 @@ export class PplDTO{
   numero_de_identificacion:string;
   establecimiento:number;
   establecimiento_nombre:string;
-  nacionalidad:number;
+  // nacionalidad:number;
   apodo:string;
   genero:number;
   fechaDeNacimiento:Date;

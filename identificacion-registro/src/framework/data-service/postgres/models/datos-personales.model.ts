@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { EstadoCivilModel } from "./estado-civil.model";
@@ -19,13 +19,13 @@ export class DatosPersonalesModel extends DatosPersonales{
   @OneToOne(() => PersonaModel, (persona) => persona.datosPersonales)
   persona:PersonaModel;
 
-  @Column({type:"varchar",nullable:true})
+  @ManyToOne(() => EstadoCivilModel,{eager:true})
   estadoCivil:EstadoCivilModel;
 
   @Column({type:"boolean"})
   estadoCivil_modificado:boolean;
   
-  @ManyToOne(() => NacionalidadModel)
+  @ManyToOne(()=>NacionalidadModel,{eager:true})
   nacionalidad:NacionalidadModel;
 
   @Column({type:"boolean"})

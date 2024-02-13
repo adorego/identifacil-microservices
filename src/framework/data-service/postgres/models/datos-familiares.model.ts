@@ -17,31 +17,31 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @Column({type:'boolean', nullable:true})
   esCabezaDeFamilia:boolean;
 
-  @Column({type:'boolean', nullable:false})
+  @Column({type:'boolean', nullable:true})
   esCabezaDeFamilia_modificado:boolean;
 
   @Column({type:'boolean', nullable:true})
   tieneCirculoFamiliar:boolean;
 
-  @Column({type:'boolean', nullable:false})
+  @Column({type:'boolean', nullable:true})
   tieneCirculoFamiliar_modificado:boolean;
 
-  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares, {cascade:true})
+  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares)
   familiares:FamiliarModel[];
 
-  @Column({type:'boolean', nullable:false})
+  @Column({type:'boolean', nullable:true})
   familiares_modificado:boolean;
 
   @Column({type:'boolean', nullable:true})
   tieneConcubino:boolean;
 
-  @Column({type:'boolean', nullable:false})
+  @Column({type:'boolean', nullable:true})
   tieneConcubino_modificado:boolean;
   
   @OneToOne(() => ConcubinoModel, {cascade:true})
   @JoinColumn()
   concubino:ConcubinoModel;
   
-  @Column({type:'boolean', nullable:false})
+  @Column({type:'boolean', nullable:true})
   concubino_modificado:boolean;
 }

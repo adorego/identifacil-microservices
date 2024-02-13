@@ -17,7 +17,7 @@ interface expediente_tipo{
   fechaDeDocumento:string;
 }
 export class RegistroDatosJudicialesDTO{
-  numeroDeIdentificacion:string | null;
+  id_persona:number;
   establecimientoPenitenciario:number;
   situacionJudicial: string;
   situacionJudicial_modificado:boolean;

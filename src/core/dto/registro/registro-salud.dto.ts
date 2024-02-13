@@ -1,4 +1,7 @@
 import { GrupoSanguineo } from "../../entities/grupo-sanguineo.entity";
+import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
+import { SaludFisica } from "src/core/entities/salud-fisica.entity";
+import { SaludMental } from "src/core/entities/salud-mental.entity";
 import { Vacuna } from "../../entities/vacuna.entity";
 
 export class RegistroSaludDTO{
@@ -53,4 +56,7 @@ export class RegistroSaludDTO{
   necesitaInterprete_modificado:boolean;
   tieneDificultadParaLeerYEscribir:boolean;
   tieneDificultadParaLeerYEscribir_modificado:boolean;
+  saludMental:SaludMental;
+  saludFisica:SaludFisica;
+  limitacionesIdiomaticas:LimitacionIdiomatica;
 }

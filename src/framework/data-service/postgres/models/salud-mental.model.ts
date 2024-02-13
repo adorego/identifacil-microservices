@@ -8,9 +8,6 @@ export class SaludMentalModel extends SaludMental{
   @PrimaryGeneratedColumn()
   id:number;
   
-  @OneToOne(() => PersonaModel, persona => persona.salud_mental)
-  persona:PersonaModel;
-  
   @Column({type:'boolean', nullable:true})
   sigue_tratamiento_salud_mental:boolean;
 

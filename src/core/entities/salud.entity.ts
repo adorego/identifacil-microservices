@@ -1,7 +1,10 @@
 import { OneToMany, OneToOne } from "typeorm";
 
 import { GrupoSanguineo } from "./grupo-sanguineo.entity";
+import { LimitacionIdiomatica } from "./limitacion-idiomatica.entity";
 import { Persona } from "./persona.entity";
+import { SaludFisica } from "./salud-fisica.entity";
+import { SaludMental } from "./salud-mental.entity";
 import { Vacuna } from "./vacuna.entity";
 
 export class Salud{
@@ -39,6 +42,9 @@ export class Salud{
   tiempo_gestacion_modificado:boolean;
   fecha_parto:Date;
   fecha_parto_modificada:boolean;
+  saludFisica:SaludFisica;
+  saludMental:SaludMental;
+  limitacionesIdiomaticas:LimitacionIdiomatica;
   
   
 }

@@ -38,6 +38,8 @@ export class RegistroDatosPersonalesFactory{
 
      
      let datosPersonales = new DatosPersonales();
+     
+     
      return datosPersonales = {
       ...datosPersonalesDTO,
       nacionalidad:Nacionalidad,
@@ -45,5 +47,66 @@ export class RegistroDatosPersonalesFactory{
       persona:PersonaEncontrada
     }
   
+  }
+
+  async generarDatosPersonalesAActualizar(id:number, datosPersonalesDTO:RegistroDatosPersonalesDTO){
+    //Validar que exista el Objeto
+    if(!id){
+      throw new HttpException('El identificador del registro debe ser valido', HttpStatus.BAD_REQUEST);
+    }
+    let datosPersonales = await this.dataService.datosPersonales.get(id);
+    if(!datosPersonales){
+      throw new HttpException('No se encontro el registro de Datos Personales', HttpStatus.BAD_REQUEST);
+    }
+    if(!datosPersonalesDTO.estadoCivil){
+      throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
+     }
+     const estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
+     if(!estadoCivil){
+      throw new HttpException('No existe este estado civil', HttpStatus.NOT_FOUND)
+     }
+
+     if(!datosPersonalesDTO.nacionalidad){
+      throw new HttpException('Se debe enviar una nacionalidad valida', HttpStatus.BAD_REQUEST);
+     }
+     const nacionalidad:Nacionalidad = await this.dataService.nacionalidad.get(datosPersonalesDTO.nacionalidad);
+     if(!nacionalidad){
+      throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
+     }
+
+    //  id_persona:number|null;
+    //   numeroDeIdentificacion:string;
+          datosPersonales.id = datosPersonales.id;
+          datosPersonales.apodo =   datosPersonalesDTO.apodo;
+          datosPersonales.apodo_modificado = datosPersonalesDTO.apodo_modificado;
+          datosPersonales.estado_civil = estadoCivil;
+          datosPersonales.estadoCivil_modificado = datosPersonalesDTO.estadoCivil_modificado;
+          datosPersonales.nacionalidad = nacionalidad;
+          datosPersonales.lugarDeNacimiento = datosPersonalesDTO.lugarDeNacimiento;
+          datosPersonales.direccion = datosPersonalesDTO.direccion;
+          datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
+          datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
+          datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
+          datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
+          datosPersonales.barrioCompania_modificado = datosPersonalesDTO.barrioCompania_modificado;
+          datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
+          datosPersonales.numeroDeContacto_modificado = datosPersonalesDTO.numeroDeContacto_modificado;
+          datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
+          datosPersonales.contactoDeEmergencia1_modificado = datosPersonalesDTO.contactoDeEmergencia1_modificado;
+          datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
+          datosPersonales.contactoDeEmergencia2_modificado = datosPersonalesDTO.contactoDeEmergencia2_modificado;
+          datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
+          datosPersonales.pueblosIndigenas_modificado = datosPersonalesDTO.pueblosIndigenas_modificado;
+          datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
+          datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
+          datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
+          datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
+          
+          datosPersonales.persona = datosPersonales.persona;
+          const datosPersonalesGuardados = await this.dataService.datosPersonales.update(datosPersonales);
+     return{
+        datosPersonales:datosPersonalesGuardados
+     }
+
   }
 }

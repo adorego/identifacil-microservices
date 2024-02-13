@@ -14,13 +14,14 @@ export class DatosFamiliaresController{
   ){}
 
   @Post()
-  async create(@Body() registroDatosFamiliares:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
-    this.logger.log("Datos enviado:", registroDatosFamiliares, 'metodo:create');
-    await this.registroPersonaUseCase.registrar_datos_familiares(registroDatosFamiliares);
+  async create(@Body() registroDatosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
+    this.logger.log("Datos enviado:", registroDatosFamiliaresDTO, 'metodo:create');
+    await this.registroPersonaUseCase.registrar_datos_familiares(registroDatosFamiliaresDTO);
     return(
       {
         success:true,
       }
     )
   }
+
 }

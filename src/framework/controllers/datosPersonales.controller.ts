@@ -1,6 +1,7 @@
-import { Body, Controller, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Logger, Param, Post, Put } from "@nestjs/common";
 import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
+import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
 import { DatosPersonales } from "src/core/entities/datos-personales.entity";
 import { RegistroDatosPersonalesFactory } from "src/use-cases/registro-datosPersonales-factory.service";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
@@ -17,10 +18,20 @@ export class DatosPersonalesController{
 
   @Post()
   async create(@Body() registro_datosPersonales:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
-    this.logger.log('Identificacion:', registro_datosPersonales.numeroDeIdentificacion);
+    this.logger.log('Datos reciibidos:', registro_datosPersonales);
     this.registroPersonaUseCase.registrar_datosPersonales(registro_datosPersonales);
     return{
       sucess:true
+    }
+  }
+
+  @Put(':id')
+  async update(@Param() param:any, @Body() datosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
+    this.logger.log('Datos recibidos:',`id:${param.id}` ,`datos personales:${datosPersonalesDTO}`);
+    const resultadoActualizacionDatosPersonales = await this.registroPersonaUseCase.actualizar_datosPersonales(param.id, datosPersonalesDTO);
+    return{
+      datosPersonalesActualizados:resultadoActualizacionDatosPersonales.datosPersonalesActualizados,
+      success:true
     }
   }
 }

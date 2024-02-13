@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
@@ -12,6 +12,7 @@ import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 import { log } from "console";
 import { RespuestaActualizacionSaludDTO } from "src/core/dto/registro_salud/respuesta-actualizacioin-salud.dto";
+import { CausaDTO } from "src/core/dto/causa/causa.dto";
 
 interface CausasJudicialesParameter{
   ci:string;
@@ -60,21 +61,7 @@ export class RegistroController{
   }
 
   
-  @Post('registrar_salud')
-  async registrar_salud(@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{
-    const respuestaRegistroSalud =  await this.registroPersonaUseCase.registrar_salud(registro_salud);
-    return {
-      success:true
-      }
-  }
-
-  @Put('actualizar_salud')
-  async actualizar_salud(@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaActualizacionSaludDTO>{
-    const respuestaActualizacionSalud = await this.registroPersonaUseCase.actualizar_salud(registro_salud);
-    return{
-      success:true
-    }
-  }
+  
 
   @Get('grupos_sanguineos')
   async grupos_sanguineos():Promise<RespuestaGrupoSanguineoDTO>{
@@ -127,6 +114,11 @@ export class RegistroController{
         success:true
       }
     )
+  }
+
+  @Post('causas')
+  async create(@Body() causaDTO:CausaDTO){
+    
   }
   @Get('oficios')
   async getOficios(){

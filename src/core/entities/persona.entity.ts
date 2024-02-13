@@ -27,9 +27,6 @@ export class Persona{
   fechaDeNacimiento:Date;
   registro:RegistroPersona;
   salud:Salud;
-  salud_mental:SaludMental;
-  salud_fisica:SaludFisica;
-  limitacion_idiomatica:LimitacionIdiomatica;
   educacionFormacion:EducacionFormacion;
   seguridad:Seguridad;
   datosFamiliares:DatosFamiliares;

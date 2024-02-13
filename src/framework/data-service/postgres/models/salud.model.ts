@@ -1,8 +1,14 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { GrupoSanguineoModel } from "./grupo-sanguineo.model";
+import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
+import { LimitacionIdiomaticaModel } from "./limitacion-idiomatica.model";
 import { PersonaModel } from "./persona.model";
 import { Salud } from "src/core/entities/salud.entity";
+import { SaludFisica } from "src/core/entities/salud-fisica.entity";
+import { SaludFisicaModel } from "./salud-fisica.model";
+import { SaludMental } from "src/core/entities/salud-mental.entity";
+import { SaludMentalModel } from "./salud-mental.model";
 import { VacunaModel } from "./vacuna.model";
 
 @Entity({name:'salud'})
@@ -111,4 +117,16 @@ export class SaludModel extends Salud{
 
   @Column({type:'boolean', nullable:false})
   fecha_parto_modificada:boolean;
+
+  @OneToOne(() => SaludFisicaModel,{cascade:true, eager:true})
+  @JoinColumn()
+  saludFisica: SaludFisicaModel;
+
+  @OneToOne(() => SaludMentalModel, {cascade:true, eager:true})
+  @JoinColumn()
+  saludMental: SaludMentalModel;
+
+  @OneToOne(() => LimitacionIdiomaticaModel,{cascade:true, eager:true})
+  @JoinColumn()
+  limitacionesIdiomaticas: LimitacionIdiomaticaModel;
 }

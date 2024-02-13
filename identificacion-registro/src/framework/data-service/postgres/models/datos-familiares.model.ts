@@ -26,7 +26,7 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @Column({type:'boolean', nullable:true})
   tieneCirculoFamiliar_modificado:boolean;
 
-  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares, {cascade:true})
+  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares)
   familiares:FamiliarModel[];
 
   @Column({type:'boolean', nullable:true})

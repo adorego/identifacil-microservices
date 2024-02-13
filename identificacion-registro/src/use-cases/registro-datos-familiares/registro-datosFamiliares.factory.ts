@@ -32,10 +32,9 @@ export class RegistroDatosFamiliaresFactory{
      if(personaEncontrada.datosFamiliares){
       throw new HttpException('Ya existe un registro de datos familiares', HttpStatus.BAD_REQUEST);
      }
-     const queryRunner = this.dataService.getQueryRunner();
+     
      let datosFamiliaresGuardados:DatosFamiliares = null;
      try{
-      queryRunner.startTransaction();
       let familiaresGuardados:Array<Familiar> = null; 
       if(datosFamiliaresDTO.familiares_modificado){
           familiaresGuardados = await Promise.all(datosFamiliaresDTO.familiares.map(
@@ -50,7 +49,8 @@ export class RegistroDatosFamiliaresFactory{
                 familiarACrear.establecimiento = establecimiento;
                 
                 
-                return await queryRunner.manager.save(FamiliarModel, familiarACrear);
+                
+                return await this.dataService.familiar.create(familiarACrear);
               }
               if(!familiar.establecimiento){
                 throw new HttpException(`El Establecimiento del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
@@ -62,6 +62,7 @@ export class RegistroDatosFamiliaresFactory{
             }
           ))
       }
+      console.log("Familiares Guardados",familiaresGuardados);
       let concubinoGuardado:Concubino = null;
       if(datosFamiliaresDTO.concubino_modificado){
         if(datosFamiliaresDTO.concubino){
@@ -69,7 +70,7 @@ export class RegistroDatosFamiliaresFactory{
           concubino.nombres = datosFamiliaresDTO.concubino.nombres;
           concubino.apellidos = datosFamiliaresDTO.concubino.apellidos;
           concubino.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-          concubinoGuardado = queryRunner.manager.save(ConcubinoModel, concubino);
+          concubinoGuardado = await this.dataService.concubino.create(concubino);
         }
       }
 
@@ -84,13 +85,13 @@ export class RegistroDatosFamiliaresFactory{
       datosFamiliares.familiares_modificado = datosFamiliaresDTO.familiares_modificado;
       datosFamiliares.concubino = concubinoGuardado;
       datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
-      datosFamiliaresGuardados = queryRunner.manager.save(DatosFamiliaresModel, datosFamiliares);
-      queryRunner.commitTransaction();
+      datosFamiliaresGuardados = await this.dataService.datosFamiliares.create(datosFamiliares);
+      return {
+        datosFamiliares:datosFamiliaresGuardados
+      }
     }catch(error){
-      queryRunner.rollbackTransaction();
+      
       this.logger.error(`Error al guardar el registro famiiliar:${error}`);
-    }finally{
-      queryRunner.release()
     }
      
      return {

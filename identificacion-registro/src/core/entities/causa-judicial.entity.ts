@@ -1,17 +1,26 @@
+import { CircunscripcionJudicial } from "./circunscripcion-judicial.entity";
+import { Ciudad } from "./ciudad.entity";
 import { Condena } from "./condena.entity";
+import { DespachoJudicial } from "./despacho-judicial.entity";
 import { HechoPunible } from "./hecho_punible.entity";
-import { Persona } from "./persona.entity";
+import { Ppl } from "./ppl.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class CausaJudicial{
   id:number;
+  estado_procesal:string;
   condenado:boolean;
-  persona:Persona;
+  ppls:Array<Ppl>;
   caratula_causa:string;
-  juzgado:string;
-  hecho_punible:HechoPunible;
+  despacho_judicial:DespachoJudicial;
+  circunscripcion:CircunscripcionJudicial;
+  ciudad:Ciudad;
+  hechos_punibles:Array<HechoPunible>;
   condena:Condena;
   situacionJudicial:SituacionJudicial;
+  numeroDeExpediente:number;
+  numeroDeDocumento:number;
+  anho:number;
   
   
 }

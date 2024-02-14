@@ -1,5 +1,4 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { RegistroSaludFactory, RespuestaRegistroSaludfactory } from "./registro-salud-factory.service";
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { Concubino } from "src/core/entities/concubino.entity";
@@ -35,7 +34,8 @@ import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/regist
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
 import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
-import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
+import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
@@ -54,7 +54,7 @@ export class RegistroUseCase{
   private readonly logger = new Logger('RegistroUseCase');
   constructor(
     private dataService:IDataService,
-    private registro_salud_factory:RegistroSaludFactory,
+    private registroSaludFactory:RegistroSaludFactory,
     private registro_datosPersonales_factory:RegistroDatosPersonalesFactory,
     private registro_educacionFormacion_factory:RegistroEducacionFormacionFactory,
     private registro_datosFamiliares_factory:RegistroDatosFamiliaresFactory,
@@ -97,71 +97,30 @@ export class RegistroUseCase{
 
   async registrar_salud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{
     
-    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.crearRegistroSalud(registroSaludDTO);
-    
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-
     try{
-      await queryRunner.startTransaction();
-      const registroDeSaludACrear = registro_salud.registro_salud;
-      const persona = registro_salud.persona;
-      //Salud Mental
-      const registroDeSaludMentalGuardado = await queryRunner.manager.save(SaludMentalModel,registro_salud.registro_salud_mental);
-      registroDeSaludACrear.saludMental = registroDeSaludMentalGuardado;
-      
-      //Salud Fisica
-      const registroDeSaludFisicaGuardado = await queryRunner.manager.save(SaludFisicaModel,registro_salud.registro_salud_fisica);
-      registroDeSaludACrear.saludFisica = registroDeSaludFisicaGuardado;
-      //Limitaciones idiomaticas
-      const limitacionesIdiomaticasGuardado = await queryRunner.manager.save(LimitacionIdiomaticaModel,registro_salud.registro_limitacionesIdiomaticas);
-      registroDeSaludACrear.limitacionesIdiomaticas = limitacionesIdiomaticasGuardado;
-
-      //Finalmente guardo el registro de salud
-      const registroDeSaludGuardado = await queryRunner.manager.save(SaludModel, registroDeSaludACrear);
-      persona.salud = registroDeSaludGuardado;
-      //Actualizar Persona
-      const updatedPersona:Persona  = await queryRunner.manager.save(PersonaModel,persona);
-      await queryRunner.commitTransaction()
-      return {
-        success:true
+      const registrosGeneradosPorFactory = await this.registroSaludFactory.generarRegistroSalud(registroSaludDTO);
+      const saludMentalGuardado = await this.dataService.saludMental.create(registrosGeneradosPorFactory.registro_salud_mental);
+      const saludFisicaGuardado = await this.dataService.saludFisica.create(registrosGeneradosPorFactory.registro_salud_fisica);
+      const limitacionIdiomaticaGuardada = await this.dataService.limitacionesIdiomaticas.create(registrosGeneradosPorFactory.registro_limitacionesIdiomaticas);
+      const registroSaludACrear = registrosGeneradosPorFactory.registro_salud;
+      registroSaludACrear.saludMental = saludMentalGuardado;
+      registroSaludACrear.saludFisica = saludFisicaGuardado;
+      registroSaludACrear.limitacionesIdiomaticas = limitacionIdiomaticaGuardada;
+      const registroCreado = await this.dataService.salud.create(registroSaludACrear);
+      return{
+        success:true,
+        id:registroCreado.id
       }
-        
+
     }catch(error){
-      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de salud:${error}`);
       throw new HttpException(`Error durante el registro de salud:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      await queryRunner.release()
     }
 
   }
 
   async actualizar_salud(id:number,registroSaludDTO:RegistroSaludDTO){
-    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.actualizarRegistroSalud(id,registroSaludDTO);
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-    const registroSaludAActualizar = registro_salud.registro_salud;
-    try{
-      queryRunner.startTransaction();
-      const registroSaludMentalActualizado = await queryRunner.manager.save(SaludMentalModel, registro_salud.registro_salud_mental);
-      registroSaludAActualizar.saludMental = registroSaludMentalActualizado;
-
-      const registroSaludFisicaActualizado = await queryRunner.manager.save(SaludFisicaModel, registro_salud.registro_salud_fisica);
-      registroSaludAActualizar.saludFisica = registroSaludFisicaActualizado;
-      
-      const registroLimitacionesIdiomaticasActualizado = await queryRunner.manager.save(LimitacionIdiomaticaModel, registro_salud.registro_limitacionesIdiomaticas);
-      registroSaludAActualizar.limitacionesIdiomaticas = registroLimitacionesIdiomaticasActualizado;
-
-      const registroSaludActualizado = await queryRunner.manager.save(SaludModel,registro_salud.registro_salud);
-      queryRunner.commitTransaction();
-      return{
-        registroSaludActualizado:registroSaludActualizado
-      }
-    }catch(error){
-      queryRunner.rollbackTransaction();
-      this.logger.error(`Ocurrio un error al actualizar el registro de Salud:${error}`);
-    }finally{
-      queryRunner.release();
-    }
+    
   }
 
   async registrar_datosPersonales(registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{

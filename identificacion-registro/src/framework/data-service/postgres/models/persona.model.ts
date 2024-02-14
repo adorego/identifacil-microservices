@@ -28,10 +28,10 @@ export class PersonaModel extends Persona{
   @Column({type:'varchar', nullable:true})
   numero_identificacion:string;
 
-  @Column({type:"boolean", nullable:false})
+  @Column({type:"boolean", nullable:true})
   tiene_cedula:boolean
 
-  @Column({type:"boolean", nullable:false})
+  @Column({type:"boolean", nullable:true})
   es_extranjero: boolean;
 
   @OneToOne(() => DatosPersonalesModel, datosPersonales => datosPersonales.persona, {cascade:true, eager:true, onDelete:'CASCADE'})

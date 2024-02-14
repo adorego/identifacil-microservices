@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
-import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
 import { RespuestaEstadoCivilDTO } from "src/core/dto/respuesta-estado-civil.dto";
 import { RespuestaGrupoSanguineoDTO } from "src/core/dto/respuesta-grupo-sanguineo.dto";
 import { RespuestaNacionalidadDTO } from "src/core/dto/respuesta-nacionalida.dto";
@@ -12,7 +12,6 @@ import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 import { log } from "console";
 import { RespuestaActualizacionSaludDTO } from "src/core/dto/registro_salud/respuesta-actualizacioin-salud.dto";
-import { CausaDTO } from "src/core/dto/causa/causa.dto";
 
 interface CausasJudicialesParameter{
   ci:string;
@@ -116,10 +115,7 @@ export class RegistroController{
     )
   }
 
-  @Post('causas')
-  async create(@Body() causaDTO:CausaDTO){
-    
-  }
+  
   @Get('oficios')
   async getOficios(){
     

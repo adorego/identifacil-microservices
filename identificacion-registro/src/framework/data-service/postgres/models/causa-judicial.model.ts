@@ -1,14 +1,13 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
-import { Condena } from "src/core/entities/condena.entity";
+import { CircunscripcionJudicialModel } from "./circunscripcion-judicial.model";
+import { CiudadModel } from "./ciudad.model";
 import { CondenaModel } from "./condena.model";
-import { DespachosJudicialesModel } from "./despachos-judiciales.model";
-import { HechoPunible } from "src/core/entities/hecho_punible.entity";
+import { DespachoJudicialModel } from "./despachos-judiciales.model";
 import { HechoPunibleModel } from "./hecho-punible.model";
-import { Persona } from "src/core/entities/persona.entity";
-import { PersonaModel } from "./persona.model";
-import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
+import { Ppl } from "src/core/entities/ppl.entity";
+import { PplModel } from "./ppl.model";
 import { SituacionJudicialModel } from "./situacion-judicial.model";
 
 @Entity({name:'causa_judicial'})
@@ -16,35 +15,44 @@ export class CausaJudicialModel extends CausaJudicial{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @Column({type:"int", nullable:false})
-  numero_expediente:number;
+  @Column({type:"int", nullable:true})
+  numeroDeExpediente:number;
+
+  @Column({type:"int", nullable:true})
+  numeroDeDocumento:number;
 
   @Column({type:"int", nullable:false})
   anho:number;
-  
-  @Column({type:"boolean", default:false})
-  condenado:boolean;
 
-  @ManyToMany(() =>PersonaModel)
+  @Column({type:"varchar",nullable:true})
+  condenado:boolean
+  
+  @Column({type:"varchar", nullable:true})
+  estado_procesal:string;
+
+  @ManyToMany(() =>PplModel)
   @JoinTable()
-  persona:PersonaModel;
+  ppls:Array<PplModel>;
 
   @Column({type:'varchar', nullable:false})
   caratula_causa:string;
 
-  @Column({type:"varchar"})
-  juzgado:string;
+  @ManyToOne(()=>DespachoJudicialModel,{eager:true})
+  despacho_judicial:DespachoJudicialModel;
 
   @ManyToMany(() => HechoPunibleModel)
   @JoinTable()
-  hecho_punible: HechoPunibleModel;
+  hechos_punibles: Array<HechoPunibleModel>;
 
   @OneToOne(() => CondenaModel)
   @JoinColumn()
   condena: CondenaModel;
 
-  @ManyToOne(() => DespachosJudicialesModel)
-  despacho_judicial:DespachosJudicialesModel;
+  @ManyToOne(()=>CircunscripcionJudicialModel)
+  circunscripcion: CircunscripcionJudicialModel;
+
+  @ManyToOne(()=>CiudadModel)
+  ciudad: CiudadModel;
 
   @ManyToOne(() => SituacionJudicialModel, situacionJudicial => situacionJudicial.causas)
   situacionJudicial:SituacionJudicialModel;

@@ -1,7 +1,11 @@
 import { CausaJudicial } from "../entities/causa-judicial.entity";
+import { CircunscripcionJudicial } from "../entities/circunscripcion-judicial.entity";
+import { Ciudad } from "../entities/ciudad.entity";
 import { Concubino } from "../entities/concubino.entity";
+import { Condena } from "../entities/condena.entity";
 import { DatosFamiliares } from "../entities/datos-familiares.entity";
 import { DatosPersonales } from "../entities/datos-personales.entity";
+import { DespachoJudicial } from "../entities/despacho-judicial.entity";
 import { DocumentoOrdenPrision } from "../entities/documentos-ordenan-prision.entity";
 import { EducacionFormacion } from "../entities/educacion-formacion.entity";
 import { EstablecimientoPenitenciario } from "../entities/establecimiento-penitenciario.entity";
@@ -9,6 +13,7 @@ import { EstadoCivil } from "../entities/estado-civil.entity";
 import { Familiar } from "../entities/familiar.entity";
 import { Genero } from "../entities/genero.entity";
 import { GrupoSanguineo } from "../entities/grupo-sanguineo.entity";
+import { HechoPunible } from "../entities/hecho_punible.entity";
 import { IGenericRepository } from "./generic-repository.abstract";
 import { IngresoAPrision } from "../entities/ingreso-a-prision.entity";
 import { LimitacionIdiomatica } from "../entities/limitacion-idiomatica.entity";
@@ -53,7 +58,11 @@ export abstract class IDataService{
   abstract seguridad:IGenericRepository<Seguridad>
   abstract ppl:IGenericRepository<Ppl>
   abstract vinculo_familiar:IGenericRepository<VinculoFamiliar>
-
+  abstract despachoJudicial:IGenericRepository<DespachoJudicial>
+  abstract condena:IGenericRepository<Condena>
+  abstract hechoPunible:IGenericRepository<HechoPunible>
+  abstract circunscripcionJudicial:IGenericRepository<CircunscripcionJudicial>
+  abstract ciudad:IGenericRepository<Ciudad>
   abstract getQueryRunner():any;
   
 }

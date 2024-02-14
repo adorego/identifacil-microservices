@@ -1,16 +1,19 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { CircunscripcionJudicialModel } from "./circunscripcion-judicial.model";
-import { DespachosJudiciales } from "src/core/entities/despachos-judiciales.entity";
+import { DespachoJudicial } from "src/core/entities/despacho-judicial.entity";
 
 @Entity({name:"despachos_judiciales"})
-export class DespachosJudicialesModel extends DespachosJudiciales{
+export class DespachoJudicialModel extends DespachoJudicial{
 
   @PrimaryGeneratedColumn()
   id:number;
 
   @Column({type:"varchar"})
   descripcion:string;
+
+  @Column({type:"varchar"})
+  codigo:string;
 
   @ManyToOne(() => CircunscripcionJudicialModel)
   circunscripcion_judicial:CircunscripcionJudicialModel;

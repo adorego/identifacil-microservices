@@ -4,24 +4,17 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
 import { Persona } from "src/core/entities/persona.entity";
 import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
-import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
 import { Salud } from "src/core/entities/salud.entity";
 import { SaludFisica } from "src/core/entities/salud-fisica.entity";
 import { SaludMental } from "src/core/entities/salud-mental.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 
-export interface RespuestaRegistroSaludfactory{
-  registro_salud:Salud;
-  registro_salud_mental:SaludMental;
-  registro_salud_fisica:SaludFisica;
-  registro_limitacionesIdiomaticas:LimitacionIdiomatica;
-  persona:Persona;
-}
 @Injectable()
 export class RegistroSaludFactory{
   constructor(private dataService:IDataService){}
 
-  async crearRegistroSalud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludfactory>{
+  async generarRegistroSalud(registroSaludDTO:RegistroSaludDTO){
       //**********************Validaciones******************************//
     // console.log("Id de persona:",registroSaludDTO.id_persona);
     if(!registroSaludDTO.id_persona){
@@ -50,14 +43,14 @@ export class RegistroSaludFactory{
     }
     registroSalud.grupo_sanguineo_modificado = registroSaludDTO.grupo_sanguineo_modificado
 
-    if(registroSaludDTO.vacunas_recibidas_modificada){
+    if(registroSaludDTO.vacunas_recibidas_modificada && registroSaludDTO.vacunas_recibidas.length > 0){
       let vacunas_recibidas:Vacuna[] = [];
       if(registroSaludDTO.vacunas_recibidas.length > 0){
         const vacunas:Vacuna[] = await this.dataService.vacuna.getAll();
         
         registroSaludDTO.vacunas_recibidas.map(
           (vacunaId) =>{
-            const vacuna = vacunas.find((vacuna) => vacuna.id === vacunaId.id);
+            const vacuna = vacunas.find((vacuna) => vacuna.id === vacunaId);
             if(!vacuna){
               throw new NotFoundException(`No existe la vacuna con el id:${vacunaId}`);
             }else{
@@ -178,7 +171,7 @@ export class RegistroSaludFactory{
         
         registroSaludDTO.vacunas_recibidas.map(
           (vacunaId) =>{
-            const vacuna = vacunas.find((vacuna) => vacuna.id === vacunaId.id);
+            const vacuna = vacunas.find((vacuna) => vacuna.id === vacunaId);
             if(!vacuna){
               throw new NotFoundException(`No existe la vacuna con el id:${vacunaId}`);
             }else{

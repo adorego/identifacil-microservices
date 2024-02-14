@@ -1,6 +1,7 @@
 import { GrupoSanguineo } from "../../entities/grupo-sanguineo.entity";
 import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
 import { SaludFisica } from "src/core/entities/salud-fisica.entity";
+import { SaludFisicaDTO } from "./salud-fisica.dto";
 import { SaludMental } from "src/core/entities/salud-mental.entity";
 import { Vacuna } from "../../entities/vacuna.entity";
 
@@ -10,7 +11,7 @@ export class RegistroSaludDTO{
   tieneAfeccionADrogas_modificado:boolean;
   grupo_sanguineo:number;
   grupo_sanguineo_modificado:boolean;
-  vacunas_recibidas:Array<{id:number, label:string}>;
+  vacunas_recibidas:Array<number>;
   vacunas_recibidas_modificada:boolean;
   presion_arterial:number;
   presion_arterial_modificada:boolean;
@@ -57,6 +58,6 @@ export class RegistroSaludDTO{
   tieneDificultadParaLeerYEscribir:boolean;
   tieneDificultadParaLeerYEscribir_modificado:boolean;
   saludMental:SaludMental;
-  saludFisica:SaludFisica;
+  saludFisica:SaludFisicaDTO;
   limitacionesIdiomaticas:LimitacionIdiomatica;
 }

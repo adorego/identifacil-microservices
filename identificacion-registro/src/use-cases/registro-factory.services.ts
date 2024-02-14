@@ -6,7 +6,7 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestj
 import { ErrorPersonaEncontrada } from "src/framework/errors/error-persona-encontrada";
 import { Float32ConveterService } from "src/framework/lib/float32-converter.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { IdentificacionUseCase } from "./identificacion-use-case.service";
+import { IdentificacionUseCase } from "./identificacion/identificacion-use-case.service";
 import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";

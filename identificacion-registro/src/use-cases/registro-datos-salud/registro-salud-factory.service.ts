@@ -69,6 +69,7 @@ export class RegistroSaludFactory{
     registroSalud.tieneAfeccionADrogas_modificado = registroSaludDTO.tieneAfeccionADrogas_modificado;
     registroSalud.presion_arterial = registroSaludDTO.presion_arterial;
     registroSalud.presion_arterial_modificada = registroSaludDTO.presion_arterial_modificada;
+    registroSalud.frecuencia_cardiaca = registroSaludDTO.frecuencia_cardiaca;
     registroSalud.frecuencia_cardiaca_modificada = registroSaludDTO.frecuencia_cardiaca_modificada;
     registroSalud.frecuencia_respiratoria = registroSaludDTO.frecuencia_respiratoria;
     registroSalud.frecuencia_respiratoria_modificada = registroSaludDTO.frecuencia_respiratoria_modificada;
@@ -151,7 +152,7 @@ export class RegistroSaludFactory{
 
     //Validar que la persona este registrada
     const personaEncontrada = await this.dataService.persona.get(registroSaludDTO.id_persona);
-    console.log('Persona Encontrada', personaEncontrada);
+    
     if (!personaEncontrada){
       throw new NotFoundException('Esta persona no está registrada');
     }
@@ -165,6 +166,7 @@ export class RegistroSaludFactory{
     }
     registroSaludAActualizar.grupo_sanguineo_modificado = registroSaludDTO.grupo_sanguineo_modificado;
     if(registroSaludDTO.vacunas_recibidas_modificada){
+      console.log("Entro en vacunas recibidas");
       let vacunas_recibidas:Vacuna[] = [];
       if(registroSaludDTO.vacunas_recibidas.length > 0){
         const vacunas:Vacuna[] = await this.dataService.vacuna.getAll();
@@ -181,12 +183,14 @@ export class RegistroSaludFactory{
         );
       }
       registroSaludAActualizar.vacunas_recibidas = vacunas_recibidas;
+      console.log("Vacunas registradas:", registroSaludAActualizar.vacunas_recibidas);
     }
     registroSaludAActualizar.vacunas_recibidas_modificada = registroSaludDTO.vacunas_recibidas_modificada;
     registroSaludAActualizar.tieneAfeccionADrogras = registroSaludDTO.tieneAfeccionADrogras;
     registroSaludAActualizar.tieneAfeccionADrogas_modificado = registroSaludDTO.tieneAfeccionADrogas_modificado;
     registroSaludAActualizar.presion_arterial = registroSaludDTO.presion_arterial;
     registroSaludAActualizar.presion_arterial_modificada = registroSaludDTO.presion_arterial_modificada;
+    registroSaludAActualizar.frecuencia_cardiaca = registroSaludDTO.frecuencia_cardiaca;
     registroSaludAActualizar.frecuencia_cardiaca_modificada = registroSaludDTO.frecuencia_cardiaca_modificada;
     registroSaludAActualizar.frecuencia_respiratoria = registroSaludDTO.frecuencia_respiratoria;
     registroSaludAActualizar.frecuencia_respiratoria_modificada = registroSaludDTO.frecuencia_respiratoria_modificada;
@@ -216,35 +220,36 @@ export class RegistroSaludFactory{
       registroSaludMental = new SaludMental();
       
     }
-    registroSaludMental.sigue_tratamiento_mental = registroSaludDTO.sigue_tratamiento_mental;
-    registroSaludMental.sigue_tratamiento_mental_modificado = registroSaludDTO.sigue_tratamiento_mental_modificado;
-    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas = registroSaludDTO.tiene_antecedentes_de_lesiones_autoinflingidas;
-    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado = registroSaludDTO.tiene_antecedentes_de_lesiones_autoinflingidas_modificado;
-    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico = registroSaludDTO.ha_estado_internado_en_hospital_psiquiatrico;
-    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado = registroSaludDTO.ha_estado_internado_en_hospital_psiquiatrico_modificado;
-    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.reporta_abuso_de_droga_previo_al_ingreso;
+    registroSaludMental.sigue_tratamiento_mental = registroSaludDTO.saludMental.sigue_tratamiento_mental
+    registroSaludMental.sigue_tratamiento_mental_modificado = registroSaludDTO.saludMental.sigue_tratamiento_mental_modificado;
+    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas = registroSaludDTO.saludMental.tiene_antecedentes_de_lesiones_autoinflingidas;
+    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado = registroSaludDTO.saludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado;
+    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico = registroSaludDTO.saludMental.ha_estado_internado_en_hospital_psiquiatrico;
+    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado = registroSaludDTO.saludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado;
+    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso;
     registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado = registroSaludDTO.reporta_abuso_de_droga_previo_al_ingreso_modificado;
-    registroSaludMental.medicacion_actual = registroSaludDTO.medicacion_actual;
-    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.medicacion_actual_modificada;
-    registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
+    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
+    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
     
     let registroSaludFisica = registroSaludAActualizar.saludFisica;
     if(!registroSaludFisica){
       registroSaludFisica = new SaludFisica();
       
     }
-    registroSaludFisica.discapacidad_fisica = registroSaludDTO.discapacidad_fisica;
-    registroSaludFisica.discapacidad_modificada = registroSaludDTO.discapacidad_modificada;
-    
+    registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
+    registroSaludFisica.discapacidad_modificada = registroSaludDTO.saludFisica.discapacidad_modificada;
+    registroSaludFisica.explicacion_de_discapacidad = registroSaludDTO.saludFisica.explicacion_de_discapacidad;
+    registroSaludFisica.explicacion_de_discapacidad_modificada = registroSaludDTO.saludFisica.explicacion_de_discapacidad_modificada;
     let registroLimitacionesIdiomaticas = registroSaludAActualizar.limitacionesIdiomaticas;
     if(!registroLimitacionesIdiomaticas){
       registroLimitacionesIdiomaticas = new LimitacionIdiomatica();
     }
-    registroLimitacionesIdiomaticas.necesitaInterprete = registroSaludDTO.necesitaInterprete;
-    registroLimitacionesIdiomaticas.necesitaInterprete_modificado = registroSaludDTO.necesitaInterprete_modificado;
-    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir = registroSaludDTO.tieneDificultadParaLeerYEscribir;
-    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado = registroSaludDTO.tieneDificultadParaLeerYEscribir_modificado;
+    registroLimitacionesIdiomaticas.necesitaInterprete = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete;
+    registroLimitacionesIdiomaticas.necesitaInterprete_modificado = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete_modificado;
+    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir = registroSaludDTO.limitacionesIdiomaticas.tieneDificultadParaLeerYEscribir;
+    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado = registroSaludDTO.limitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado;
     
     
     return{

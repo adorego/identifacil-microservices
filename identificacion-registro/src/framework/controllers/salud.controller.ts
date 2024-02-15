@@ -24,7 +24,8 @@ export class SaludController{
   async actualizar_salud(@Param() param:any,@Body() registro_salud:RegistroSaludDTO):Promise<RespuestaActualizacionSaludDTO>{
     const respuestaActualizacionSalud = await this.registroPersonaUseCase.actualizar_salud(param.id, registro_salud);
     return{
-      success:true
+      success:true,
+      id:respuestaActualizacionSalud.id
     }
   }
 }

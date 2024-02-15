@@ -120,7 +120,25 @@ export class RegistroUseCase{
   }
 
   async actualizar_salud(id:number,registroSaludDTO:RegistroSaludDTO){
+    try{
+      const respuestaDeRegistroDeSaludFactory = await this.registroSaludFactory.actualizarRegistroSalud(id,registroSaludDTO);
+      const registroSaludMentalGuardada = await this.dataService.saludMental.update(respuestaDeRegistroDeSaludFactory.registro_salud_mental);
+      const registroSaludFisicaGuardada = await this.dataService.saludFisica.update(respuestaDeRegistroDeSaludFactory.registro_salud_fisica);
+      const registroLimitacionesIdiomaticasGuardada = await this.dataService.limitacionesIdiomaticas.update(respuestaDeRegistroDeSaludFactory.registro_limitacionesIdiomaticas);
+      const registroSaludAActualizar = respuestaDeRegistroDeSaludFactory.registro_salud;
+      registroSaludAActualizar.saludMental = registroSaludMentalGuardada;
+      registroSaludAActualizar.saludFisica = registroSaludFisicaGuardada;
+      registroSaludAActualizar.limitacionesIdiomaticas = registroLimitacionesIdiomaticasGuardada;
+      const registroSaludActualizado = await this.dataService.salud.update(registroSaludAActualizar);
     
+      return{
+        success:true,
+        id:registroSaludActualizado.id
+      }
+    }catch(error){
+      this.logger.error(`Error durante el registro de datos de salud:${error}`);
+      throw new HttpException(`Error durante el registro de salud:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async registrar_datosPersonales(registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{

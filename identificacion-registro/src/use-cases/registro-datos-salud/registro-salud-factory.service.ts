@@ -98,28 +98,28 @@ export class RegistroSaludFactory{
 
     // Salud Mental
     const registroSaludMental = new SaludMental();
-    registroSaludMental.sigue_tratamiento_mental = registroSaludDTO.sigue_tratamiento_mental;
-    registroSaludMental.sigue_tratamiento_mental_modificado = registroSaludDTO.sigue_tratamiento_mental_modificado;
-    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas = registroSaludDTO.tiene_antecedentes_de_lesiones_autoinflingidas;
-    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado = registroSaludDTO.tiene_antecedentes_de_lesiones_autoinflingidas_modificado;
-    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico = registroSaludDTO.ha_estado_internado_en_hospital_psiquiatrico;
-    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado = registroSaludDTO.ha_estado_internado_en_hospital_psiquiatrico_modificado;
-    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.reporta_abuso_de_droga_previo_al_ingreso;
-    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado = registroSaludDTO.reporta_abuso_de_droga_previo_al_ingreso_modificado;
-    registroSaludMental.medicacion_actual = registroSaludDTO.medicacion_actual;
-    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.medicacion_actual_modificada;
-    registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.sigue_tratamiento_mental = registroSaludDTO.saludMental.sigue_tratamiento_mental;
+    registroSaludMental.sigue_tratamiento_mental_modificado = registroSaludDTO.saludMental.sigue_tratamiento_mental_modificado;
+    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas = registroSaludDTO.saludMental.tiene_antecedentes_de_lesiones_autoinflingidas;
+    registroSaludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado = registroSaludDTO.saludMental.tiene_antecedentes_de_lesiones_autoinflingidas_modificado;
+    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico = registroSaludDTO.saludMental.ha_estado_internado_en_hospital_psiquiatrico;
+    registroSaludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado = registroSaludDTO.saludMental.ha_estado_internado_en_hospital_psiquiatrico_modificado;
+    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso;
+    registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado;
+    registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
+    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
+    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
     
     const registroSaludFisica = new SaludFisica();
-    registroSaludFisica.discapacidad_fisica = registroSaludDTO.discapacidad_fisica;
-    registroSaludFisica.discapacidad_modificada = registroSaludDTO.discapacidad_modificada;
+    registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
+    registroSaludFisica.discapacidad_modificada = registroSaludDTO.saludFisica.discapacidad_modificada;
     
     const registroLimitacionesIdiomaticas = new LimitacionIdiomatica();
-    registroLimitacionesIdiomaticas.necesitaInterprete = registroSaludDTO.necesitaInterprete;
-    registroLimitacionesIdiomaticas.necesitaInterprete_modificado = registroSaludDTO.necesitaInterprete_modificado;
-    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir = registroSaludDTO.tieneDificultadParaLeerYEscribir;
-    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado = registroSaludDTO.tieneDificultadParaLeerYEscribir_modificado;
+    registroLimitacionesIdiomaticas.necesitaInterprete = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete;
+    registroLimitacionesIdiomaticas.necesitaInterprete_modificado = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete_modificado;
+    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir = registroSaludDTO.limitacionesIdiomaticas.tieneDificultadParaLeerYEscribir;
+    registroLimitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado = registroSaludDTO.limitacionesIdiomaticas.tieneDificultadParaLeerYEscribir_modificado;
     
     
     

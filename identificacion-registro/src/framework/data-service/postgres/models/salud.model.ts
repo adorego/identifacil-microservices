@@ -26,7 +26,7 @@ export class SaludModel extends Salud{
   @Column({type:'boolean', nullable:false})
   tieneAfeccionADrogas_modificado:boolean;
 
-  @ManyToOne(() => GrupoSanguineoModel)
+  @ManyToOne(() => GrupoSanguineoModel,{eager:true})
   @JoinColumn()
   grupo_sanguineo:GrupoSanguineoModel;
 

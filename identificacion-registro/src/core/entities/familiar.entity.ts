@@ -9,4 +9,5 @@ export class Familiar{
   vinculo:VinculoFamiliar;
   establecimiento:EstablecimientoPenitenciario;
   datosFamiliares:DatosFamiliares;
+  esFuncionario:boolean;
 }

@@ -35,9 +35,9 @@ export class RegistroDatosFamiliaresFactory{
      
      let datosFamiliaresGuardados:DatosFamiliares = null;
      try{
-      let familiaresGuardados:Array<Familiar> = null; 
-      if(datosFamiliaresDTO.familiares_modificado){
-          familiaresGuardados = await Promise.all(datosFamiliaresDTO.familiares.map(
+      let familiaresACrear:Array<Familiar> = null; 
+      if(datosFamiliaresDTO.familiares_modificado && datosFamiliaresDTO.tieneCirculoFamiliar){
+        familiaresACrear = await Promise.all(datosFamiliaresDTO.familiares.map(
             async (familiar) =>{
               const crearFamiliar = async (familiar:FamiliarDTO) =>{
                 const vinculo = await this.dataService.vinculo_familiar.get(familiar.vinculo);
@@ -47,10 +47,11 @@ export class RegistroDatosFamiliaresFactory{
                 familiarACrear.apellido = familiar.apellido;
                 familiarACrear.vinculo = vinculo;
                 familiarACrear.establecimiento = establecimiento;
+                familiarACrear.esFuncionario = familiar.esFuncionario;
+                return familiarACrear;
                 
                 
                 
-                return await this.dataService.familiar.create(familiarACrear);
               }
               if(!familiar.establecimiento){
                 throw new HttpException(`El Establecimiento del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
@@ -62,15 +63,15 @@ export class RegistroDatosFamiliaresFactory{
             }
           ))
       }
-      console.log("Familiares Guardados",familiaresGuardados);
-      let concubinoGuardado:Concubino = null;
-      if(datosFamiliaresDTO.concubino_modificado){
+      console.log("Familiares Guardados",familiaresACrear);
+      let concubinoACrear:Concubino = null;
+      if(datosFamiliaresDTO.concubino_modificado && datosFamiliaresDTO.tieneConcubino){
         if(datosFamiliaresDTO.concubino){
-          const concubino = new Concubino();
-          concubino.nombres = datosFamiliaresDTO.concubino.nombres;
-          concubino.apellidos = datosFamiliaresDTO.concubino.apellidos;
-          concubino.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-          concubinoGuardado = await this.dataService.concubino.create(concubino);
+          concubinoACrear = new Concubino();
+          concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
+          concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
+          concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
+          
         }
       }
 
@@ -81,24 +82,19 @@ export class RegistroDatosFamiliaresFactory{
       datosFamiliares.esCabezaDeFamilia_modificado = datosFamiliaresDTO.esCabezaDeFamilia_modificado;
       datosFamiliares.tieneConcubino = datosFamiliaresDTO.tieneConcubino;
       datosFamiliares.tieneConcubino_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
-      datosFamiliares.familiares = familiaresGuardados;
       datosFamiliares.familiares_modificado = datosFamiliaresDTO.familiares_modificado;
-      datosFamiliares.concubino = concubinoGuardado;
       datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
-      datosFamiliaresGuardados = await this.dataService.datosFamiliares.create(datosFamiliares);
-      personaEncontrada.datosFamiliares = datosFamiliaresGuardados;
-      const personaActualizada = await this.dataService.persona.update(personaEncontrada);
       return {
-        datosFamiliares:datosFamiliaresGuardados
+        datosFamiliares:datosFamiliares,
+        concubino:concubinoACrear,
+        familiares:familiaresACrear
       }
     }catch(error){
       
       this.logger.error(`Error al guardar el registro famiiliar:${error}`);
     }
      
-     return {
-      datosFamiliares:datosFamiliaresGuardados
-     }
+     
       
      
      
@@ -113,51 +109,111 @@ export class RegistroDatosFamiliaresFactory{
     if(!datosFamiliares){
       throw new HttpException('No se encontró el registro famiiliar enviado', HttpStatus.BAD_REQUEST);
     }
+    if(!datosFamiliaresDTO.id_persona){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
+    }
     const personaEncontrada = await this.dataService.persona.get(datosFamiliaresDTO.id_persona);
-     if(!personaEncontrada){
-        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
-     } 
-     let familiares:Array<Familiar> = null; 
-     if(datosFamiliaresDTO.familiares_modificado){
-        familiares = await Promise.all(datosFamiliaresDTO.familiares.map(
-          async (familiar) =>{
-            const crearFamiliar = async (familiar:FamiliarDTO) =>{
-              const familiarACrear = new Familiar();
-              familiarACrear.nombre = familiar.nombre;
-              familiarACrear.apellido = familiar.apellido;
-              familiarACrear.vinculo = await this.dataService.vinculo_familiar.get(familiar.vinculo);
-              familiarACrear.establecimiento = await this.dataService.establecimientoPenitenciario.get(familiar.establecimiento);
-              return familiarACrear;
-            }
-            return await crearFamiliar(familiar);
-          }
-        ))
-     }
-     let concubinoAAgregar:Concubino = null;
-     if(datosFamiliaresDTO.concubino_modificado){
-      if(datosFamiliaresDTO.concubino){
-        const concubino = new Concubino();
-        concubino.nombres = datosFamiliaresDTO.concubino.nombres;
-        concubino.apellidos = datosFamiliaresDTO.concubino.apellidos;
-        concubino.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-        concubinoAAgregar = concubino;
-      }
-     }
-     datosFamiliares.tieneCirculoFamiliar = datosFamiliaresDTO.tieneCirculoFamiliar;
-     datosFamiliares.tieneCirculoFamiliar_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
-     datosFamiliares.esCabezaDeFamilia = datosFamiliaresDTO.esCabezaDeFamilia;
-     datosFamiliares.esCabezaDeFamilia_modificado = datosFamiliaresDTO.esCabezaDeFamilia_modificado;
-     datosFamiliares.tieneConcubino = datosFamiliaresDTO.tieneConcubino;
-     datosFamiliares.tieneConcubino_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
-     datosFamiliares.familiares = familiares;
-     datosFamiliares.familiares_modificado = datosFamiliaresDTO.familiares_modificado;
-     datosFamiliares.concubino = concubinoAAgregar;
-     datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
+    if(!personaEncontrada){
+       throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
+    } 
 
-     console.log("datos familiares generados:", datosFamiliares);
-     return{
-      datosFamiliares:datosFamiliares,
+    if(personaEncontrada.datosFamiliares){
+     throw new HttpException('Ya existe un registro de datos familiares', HttpStatus.BAD_REQUEST);
+    }
+    let familiaresACrear:Array<Familiar> = null;
+    const familiares = datosFamiliares.familiares;
+    console.log("Familiares:", datosFamiliares);
+    console.log("Familiares actuales:", familiares);
+    if(familiares && familiares.length > 0){
+      try{
+          //Eliminar los familiares actuales si los hay
+          
+          await Promise.all(familiares.map(
+            async (familiar) =>{
+              await this.dataService.familiar.delete(familiar.id);
+            }
+          ))
+      }catch(error){
+          this.logger.error(`Hubo un error al eliminar los familiares:${error}`);
+          throw new HttpException(`Error al eliminar los datos de familiare:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+    if(datosFamiliaresDTO.tieneCirculoFamiliar && datosFamiliaresDTO.familiares.length >0){
+      try{
+        familiaresACrear = await Promise.all(datosFamiliaresDTO.familiares.map(
+              async (familiar) =>{
+              const crearFamiliar = async (familiar:FamiliarDTO) =>{
+                const vinculo = await this.dataService.vinculo_familiar.get(familiar.vinculo);
+                const establecimiento = await this.dataService.establecimientoPenitenciario.get(familiar.establecimiento);
+                const familiarACrear = new Familiar();
+                familiarACrear.nombre = familiar.nombre;
+                familiarACrear.apellido = familiar.apellido;
+                familiarACrear.vinculo = vinculo;
+                familiarACrear.establecimiento = establecimiento;
+                familiarACrear.esFuncionario = familiar.esFuncionario;
+                return familiarACrear;
+                
+                
+                
+              }
+              if(!familiar.establecimiento){
+                this.logger.error(`El Establecimiento del Familiar no puede ser nulo`);
+                throw new HttpException(`El Establecimiento del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
+                
+              }
+              if(!familiar.vinculo){
+                this.logger.error(`El vinculo del Familiar no puede ser nulo`);
+                throw new HttpException(`El vinculo del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
+              }
+              return await crearFamiliar(familiar);
+            }
+          ))
+        }catch(error){
+          throw new HttpException(`El vinculo del Familiar no puede ser nulo`,HttpStatus.BAD_REQUEST);
+              
+        }
+    }
+    
+    
+    
+    try{
+        const concubinoActual = datosFamiliares.concubino;
+        if(concubinoActual){
+          console.log('Antes de eliminar el concubino');
+          const resultado = await this.dataService.concubino.delete(concubinoActual.id);
+          console.log('Despues de eliminar el concubino');
+          if(resultado === 0){
+            throw new HttpException(`Error al eliminar el concubino actual`,HttpStatus.INTERNAL_SERVER_ERROR);
+          }
+        }
+        let concubinoACrear:Concubino = null;
+        if(datosFamiliaresDTO.concubino_modificado && datosFamiliaresDTO.tieneConcubino){
+          if(datosFamiliaresDTO.concubino){
+            concubinoACrear = new Concubino();
+            concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
+            concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
+            concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
+            
+          }
+        }
+        datosFamiliares.id = id;
+        datosFamiliares.tieneCirculoFamiliar = datosFamiliaresDTO.tieneCirculoFamiliar;
+        datosFamiliares.tieneCirculoFamiliar_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
+        datosFamiliares.esCabezaDeFamilia = datosFamiliaresDTO.esCabezaDeFamilia;
+        datosFamiliares.esCabezaDeFamilia_modificado = datosFamiliaresDTO.esCabezaDeFamilia_modificado;
+        datosFamiliares.tieneConcubino = datosFamiliaresDTO.tieneConcubino;
+        datosFamiliares.tieneConcubino_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
+        datosFamiliares.familiares_modificado = datosFamiliaresDTO.familiares_modificado;
+        datosFamiliares.concubino_modificado = datosFamiliaresDTO.concubino_modificado;
+        return {
+          datosFamiliares:datosFamiliares,
+          concubino:concubinoACrear,
+          familiares:familiaresACrear
+        }
+
+      }catch(error){
       
-     }
+        this.logger.error(`Error al guardar el registro familiar:${error}`);
+      }
   }
 }

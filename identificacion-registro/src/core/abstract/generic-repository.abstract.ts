@@ -11,6 +11,8 @@ export abstract class IGenericRepository<T>{
 
   abstract update(item:T):Promise<T>;
 
+  abstract delete(itemId:number):Promise<number>;
+
   abstract getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any>;
 
   abstract getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>;

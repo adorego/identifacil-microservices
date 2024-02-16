@@ -38,6 +38,7 @@ import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto
 import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
+import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
@@ -199,32 +200,67 @@ export class RegistroUseCase{
     return await this.dataService.educacionFormacion.update(registroDeEducacionAActualizar.registroDeEducacion);
   }
 
-  async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
+  async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
+    try{  
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
-      return null;
+      const concubino = datosFamiliaresACrear.concubino;
+      console.log("Concubino:", concubino);
+      let concubinoGuardado = null;
+      if(concubino){
+        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      }
+      let familiaresGuardados:Array<Familiar> = null;
+      if(datosFamiliaresACrear.familiares.length > 0){
+        familiaresGuardados = await Promise.all(datosFamiliaresACrear.familiares.map(
+          async (familiar) =>{
+            return await this.dataService.familiar.create(familiar);
+          }
+        ))
+        const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
+        registroFamiliarAGuardar.familiares = familiaresGuardados;
+        registroFamiliarAGuardar.concubino = concubinoGuardado;
+        const registroFamiliarGuardado = await this.dataService.datosFamiliares.create(registroFamiliarAGuardar);
+        return{
+          success:true,
+          id:registroFamiliarGuardado.id
+        }
+      }
+    }catch(error){
+      this.logger.error(`Error durante el registro de datos familiares:${error}`);
+      throw new HttpException(`Error durante el registro de datos Familiares:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    }
   }
 
-  async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+  async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
+    console.log("Id a modificar:", id);
     try{
-      const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id,datosFamiliaresDTO);
-      queryRunner.startTransaction();
-      
-      const familiaresGuardados = await queryRunner.manager.save(FamiliarModel,datosFamiliaresAActualizar.datosFamiliares.familiares);
-      const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel, datosFamiliaresAActualizar.datosFamiliares.concubino);
-     
-      datosFamiliaresAActualizar.datosFamiliares.familiares = familiaresGuardados;
-      datosFamiliaresAActualizar.datosFamiliares.concubino = concubinoGuardado;
-
-      queryRunner.commitTransaction();
-      return null
-      
+      const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id, datosFamiliaresDTO);
+      const concubino = datosFamiliaresAActualizar.concubino;
+      let concubinoGuardado = null;
+      if(concubino){
+        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      }
+      let familiaresGuardados:Array<Familiar> = null;
+      if(datosFamiliaresAActualizar.familiares && datosFamiliaresAActualizar.familiares.length > 0){
+        familiaresGuardados = await Promise.all(datosFamiliaresAActualizar.familiares.map(
+          async (familiar) =>{
+            return await this.dataService.familiar.create(familiar);
+          }
+        ))
+       }
+       const registroFamiliarAGuardar = datosFamiliaresAActualizar.datosFamiliares;
+       registroFamiliarAGuardar.familiares = familiaresGuardados;
+       registroFamiliarAGuardar.concubino = concubinoGuardado;
+       console.log("Registro familiar a guardar:", registroFamiliarAGuardar);
+       const registroFamiliarGuardado = await this.dataService.datosFamiliares.update(registroFamiliarAGuardar);
+       return{
+          success:true,
+          id:registroFamiliarGuardado.id
+        }
     }catch(error){
-      queryRunner.rollbackTransaction();
       this.logger.error(`Error durante la actualizacion de datos familiares:${error}`);
       throw new HttpException(`Error durante la actualizacion de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      queryRunner.release();
     }
   }
 

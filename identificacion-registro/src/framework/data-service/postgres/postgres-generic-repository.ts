@@ -36,6 +36,10 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
     return this._repository.save(item);
   }
 
+  async delete(itemId:number): Promise<number> {
+      const result = await this._repository.delete(itemId);
+      return result.affected;
+  }
   getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
       return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
   }

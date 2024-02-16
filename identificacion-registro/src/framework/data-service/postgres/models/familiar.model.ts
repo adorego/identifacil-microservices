@@ -24,6 +24,9 @@ export class FamiliarModel extends Familiar{
   @ManyToOne(()=>EstablecimientoPenitenciarioModel)
   establecimiento:EstablecimientoPenitenciario;
 
+  @Column({type:"boolean", default:false})
+  esFuncionario: boolean;
+
   @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares))
   datosFamiliares:DatosFamiliaresModel;
 }

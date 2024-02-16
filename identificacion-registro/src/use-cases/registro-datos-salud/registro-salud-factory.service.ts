@@ -27,7 +27,9 @@ export class RegistroSaludFactory{
       throw new NotFoundException('Esta persona no está registrada');
     }
    
-    
+    if(personaEncontrada.salud){
+      throw new HttpException(`Error, ya existe un registro de salud previo`, HttpStatus.BAD_REQUEST);
+    }
     
     const registroSalud = new Salud();
     if(registroSaludDTO.grupo_sanguineo_modificado){

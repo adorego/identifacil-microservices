@@ -104,6 +104,7 @@ export class RegistroUseCase{
       const saludFisicaGuardado = await this.dataService.saludFisica.create(registrosGeneradosPorFactory.registro_salud_fisica);
       const limitacionIdiomaticaGuardada = await this.dataService.limitacionesIdiomaticas.create(registrosGeneradosPorFactory.registro_limitacionesIdiomaticas);
       const registroSaludACrear = registrosGeneradosPorFactory.registro_salud;
+      console.log("Registro salud a crear:", registroSaludACrear);
       registroSaludACrear.saludMental = saludMentalGuardado;
       registroSaludACrear.saludFisica = saludFisicaGuardado;
       registroSaludACrear.limitacionesIdiomaticas = limitacionIdiomaticaGuardada;
@@ -112,6 +113,7 @@ export class RegistroUseCase{
         success:true,
         id:registroCreado.id
       }
+      
 
     }catch(error){
       this.logger.error(`Error durante el registro de datos de salud:${error}`);

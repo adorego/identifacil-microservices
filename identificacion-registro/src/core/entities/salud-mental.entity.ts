@@ -11,7 +11,7 @@ export class SaludMental{
   reporta_abuso_de_droga_previo_al_ingreso:boolean;
   reporta_abuso_de_droga_previo_al_ingreso_modificado:boolean;
   medicacion_actual:Array<string>;
-  medicacion_actual_modificada:boolean;
+  medicacion_actual_modificado:boolean;
   tiene_afeccion_severa_por_estupefacientes:boolean;
   tiene_afeccion_severa_por_estupefacientes_modificado:boolean;
   

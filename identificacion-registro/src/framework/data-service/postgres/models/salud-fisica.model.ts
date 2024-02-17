@@ -12,6 +12,12 @@ export class SaludFisicaModel extends SaludFisica{
   discapacidad_fisica:string;
 
   @Column({type:'boolean', nullable:false})
-  discapacidad_modificada:boolean;
+  discapacidad_fisica_modificado:boolean;
+
+  @Column({type:'varchar', nullable:true})
+  explicacion_de_discapacidad:string;
+
+  @Column({type:'boolean', nullable:false})
+  explicacion_de_discapacidad_modificado:boolean;
 
 }

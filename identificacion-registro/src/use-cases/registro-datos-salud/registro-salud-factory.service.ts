@@ -20,7 +20,7 @@ export class RegistroSaludFactory{
     }
       //Validar que la persona este registrada
     const personaEncontrada = await this.dataService.persona.get(registroSaludDTO.id_persona);
-    console.log('Persona Encontrada', personaEncontrada);
+    // console.log('Persona Encontrada', personaEncontrada);
     if (!personaEncontrada){
       throw new NotFoundException('Esta persona no está registrada');
     }
@@ -43,7 +43,7 @@ export class RegistroSaludFactory{
     }
     registroSalud.grupo_sanguineo_modificado = registroSaludDTO.grupo_sanguineo_modificado
 
-    if(registroSaludDTO.vacunas_recibidas_modificada && registroSaludDTO.vacunas_recibidas.length > 0){
+    if(registroSaludDTO.vacunas_recibidas_modificado && registroSaludDTO.vacunas_recibidas.length > 0){
       let vacunas_recibidas:Vacuna[] = [];
       if(registroSaludDTO.vacunas_recibidas.length > 0){
         const vacunas:Vacuna[] = await this.dataService.vacuna.getAll();
@@ -62,19 +62,19 @@ export class RegistroSaludFactory{
       registroSalud.vacunas_recibidas = vacunas_recibidas;
       
     }
-    registroSalud.vacunas_recibidas_modificada = registroSaludDTO.vacunas_recibidas_modificada;
+    registroSalud.vacunas_recibidas_modificado = registroSaludDTO.vacunas_recibidas_modificado;
 
     registroSalud.persona = personaEncontrada;
     registroSalud.tieneAfeccionADrogras = registroSaludDTO.tieneAfeccionADrogras;
     registroSalud.tieneAfeccionADrogas_modificado = registroSaludDTO.tieneAfeccionADrogas_modificado;
     registroSalud.presion_arterial = registroSaludDTO.presion_arterial;
-    registroSalud.presion_arterial_modificada = registroSaludDTO.presion_arterial_modificada;
+    registroSalud.presion_arterial_modificado = registroSaludDTO.presion_arterial_modificado;
     registroSalud.frecuencia_cardiaca = registroSaludDTO.frecuencia_cardiaca;
-    registroSalud.frecuencia_cardiaca_modificada = registroSaludDTO.frecuencia_cardiaca_modificada;
+    registroSalud.frecuencia_cardiaca_modificado = registroSaludDTO.frecuencia_cardiaca_modificado;
     registroSalud.frecuencia_respiratoria = registroSaludDTO.frecuencia_respiratoria;
-    registroSalud.frecuencia_respiratoria_modificada = registroSaludDTO.frecuencia_respiratoria_modificada;
+    registroSalud.frecuencia_respiratoria_modificado = registroSaludDTO.frecuencia_respiratoria_modificado;
     registroSalud.temperatura = registroSaludDTO.temperatura;
-    registroSalud.temperatura_modificada = registroSaludDTO.temperatura_modificada;
+    registroSalud.temperatura_modificado = registroSaludDTO.temperatura_modificado;
     registroSalud.peso = registroSaludDTO.peso;
     registroSalud.peso_modificado = registroSaludDTO.peso_modificado;
     registroSalud.talla = registroSaludDTO.talla;
@@ -92,7 +92,7 @@ export class RegistroSaludFactory{
     registroSalud.tiempo_gestacion = registroSaludDTO.tiempo_gestacion;
     registroSalud.tiempo_gestacion_modificado = registroSaludDTO.tiempo_gestacion_modificado;
     registroSalud.fecha_parto = registroSaludDTO.fecha_parto ?  new Date(`${registroSaludDTO.fecha_parto}`) : null;
-    registroSalud.fecha_parto_modificada = registroSaludDTO.fecha_parto_modificada;
+    registroSalud.fecha_parto_modificado = registroSaludDTO.fecha_parto_modificado;
     
 
 
@@ -107,14 +107,16 @@ export class RegistroSaludFactory{
     registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso;
     registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado;
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
-    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
+    registroSaludMental.medicacion_actual_modificado = registroSaludDTO.saludMental.medicacion_actual_modificado;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes_modificado;
     
     const registroSaludFisica = new SaludFisica();
     registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
-    registroSaludFisica.discapacidad_modificada = registroSaludDTO.saludFisica.discapacidad_modificada;
-    
+    registroSaludFisica.discapacidad_fisica_modificado = registroSaludDTO.saludFisica.discapacidad_fisica_modificado;
+    registroSaludFisica.explicacion_de_discapacidad = registroSaludDTO.saludFisica.explicacion_de_discapacidad;
+    registroSaludFisica.explicacion_de_discapacidad_modificado = registroSaludDTO.saludFisica.explicacion_de_discapacidad_modificado;
+
     const registroLimitacionesIdiomaticas = new LimitacionIdiomatica();
     registroLimitacionesIdiomaticas.necesitaInterprete = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete;
     registroLimitacionesIdiomaticas.necesitaInterprete_modificado = registroSaludDTO.limitacionesIdiomaticas.necesitaInterprete_modificado;
@@ -165,7 +167,7 @@ export class RegistroSaludFactory{
       registroSaludAActualizar.grupo_sanguineo = null;
     }
     registroSaludAActualizar.grupo_sanguineo_modificado = registroSaludDTO.grupo_sanguineo_modificado;
-    if(registroSaludDTO.vacunas_recibidas_modificada){
+    if(registroSaludDTO.vacunas_recibidas_modificado){
       console.log("Entro en vacunas recibidas");
       let vacunas_recibidas:Vacuna[] = [];
       if(registroSaludDTO.vacunas_recibidas.length > 0){
@@ -185,17 +187,17 @@ export class RegistroSaludFactory{
       registroSaludAActualizar.vacunas_recibidas = vacunas_recibidas;
       
     }
-    registroSaludAActualizar.vacunas_recibidas_modificada = registroSaludDTO.vacunas_recibidas_modificada;
+    registroSaludAActualizar.vacunas_recibidas_modificado = registroSaludDTO.vacunas_recibidas_modificado;
     registroSaludAActualizar.tieneAfeccionADrogras = registroSaludDTO.tieneAfeccionADrogras;
     registroSaludAActualizar.tieneAfeccionADrogas_modificado = registroSaludDTO.tieneAfeccionADrogas_modificado;
     registroSaludAActualizar.presion_arterial = registroSaludDTO.presion_arterial;
-    registroSaludAActualizar.presion_arterial_modificada = registroSaludDTO.presion_arterial_modificada;
+    registroSaludAActualizar.presion_arterial_modificado = registroSaludDTO.presion_arterial_modificado;
     registroSaludAActualizar.frecuencia_cardiaca = registroSaludDTO.frecuencia_cardiaca;
-    registroSaludAActualizar.frecuencia_cardiaca_modificada = registroSaludDTO.frecuencia_cardiaca_modificada;
+    registroSaludAActualizar.frecuencia_cardiaca_modificado = registroSaludDTO.frecuencia_cardiaca_modificado;
     registroSaludAActualizar.frecuencia_respiratoria = registroSaludDTO.frecuencia_respiratoria;
-    registroSaludAActualizar.frecuencia_respiratoria_modificada = registroSaludDTO.frecuencia_respiratoria_modificada;
+    registroSaludAActualizar.frecuencia_respiratoria_modificado = registroSaludDTO.frecuencia_respiratoria_modificado;
     registroSaludAActualizar.temperatura = registroSaludDTO.temperatura;
-    registroSaludAActualizar.temperatura_modificada = registroSaludDTO.temperatura_modificada;
+    registroSaludAActualizar.temperatura_modificado = registroSaludDTO.temperatura_modificado;
     registroSaludAActualizar.peso = registroSaludDTO.peso;
     registroSaludAActualizar.peso_modificado = registroSaludDTO.peso_modificado;
     registroSaludAActualizar.talla = registroSaludDTO.talla;
@@ -213,7 +215,7 @@ export class RegistroSaludFactory{
     registroSaludAActualizar.tiempo_gestacion = registroSaludDTO.tiempo_gestacion;
     registroSaludAActualizar.tiempo_gestacion_modificado = registroSaludDTO.tiempo_gestacion_modificado;
     registroSaludAActualizar.fecha_parto = registroSaludDTO.fecha_parto ?  new Date(`${registroSaludDTO.fecha_parto}`) : null;
-    registroSaludAActualizar.fecha_parto_modificada = registroSaludDTO.fecha_parto_modificada;
+    registroSaludAActualizar.fecha_parto_modificado = registroSaludDTO.fecha_parto_modificado;
 
     let registroSaludMental = registroSaludAActualizar.saludMental;
     if(!registroSaludMental){
@@ -229,7 +231,7 @@ export class RegistroSaludFactory{
     registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso = registroSaludDTO.saludMental.reporta_abuso_de_droga_previo_al_ingreso;
     registroSaludMental.reporta_abuso_de_droga_previo_al_ingreso_modificado = registroSaludDTO.reporta_abuso_de_droga_previo_al_ingreso_modificado;
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
-    registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
+    registroSaludMental.medicacion_actual_modificado = registroSaludDTO.saludMental.medicacion_actual_modificado;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes_modificado;
     
@@ -239,9 +241,10 @@ export class RegistroSaludFactory{
       
     }
     registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
-    registroSaludFisica.discapacidad_modificada = registroSaludDTO.saludFisica.discapacidad_modificada;
+    registroSaludFisica.discapacidad_fisica_modificado = registroSaludDTO.saludFisica.discapacidad_fisica_modificado;
     registroSaludFisica.explicacion_de_discapacidad = registroSaludDTO.saludFisica.explicacion_de_discapacidad;
-    registroSaludFisica.explicacion_de_discapacidad_modificada = registroSaludDTO.saludFisica.explicacion_de_discapacidad_modificada;
+    registroSaludFisica.explicacion_de_discapacidad_modificado = registroSaludDTO.saludFisica.explicacion_de_discapacidad_modificado;
+
     let registroLimitacionesIdiomaticas = registroSaludAActualizar.limitacionesIdiomaticas;
     if(!registroLimitacionesIdiomaticas){
       registroLimitacionesIdiomaticas = new LimitacionIdiomatica();

@@ -39,7 +39,7 @@ export class SaludMentalModel extends SaludMental{
   medicacion_actual:Array<string>;
 
   @Column({type:'boolean', array:false})
-  medicacion_actual_modificada:boolean;
+  medicacion_actual_modificado:boolean;
 
   @Column({type:'boolean', nullable:true})
   tiene_afeccion_severa_por_estupefacientes:boolean;

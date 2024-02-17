@@ -109,7 +109,7 @@ export class RegistroSaludFactory{
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
     registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes_modificado;
     
     const registroSaludFisica = new SaludFisica();
     registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
@@ -231,7 +231,7 @@ export class RegistroSaludFactory{
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
     registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes_modificado;
     
     let registroSaludFisica = registroSaludAActualizar.saludFisica;
     if(!registroSaludFisica){

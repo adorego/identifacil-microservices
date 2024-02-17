@@ -1,9 +1,7 @@
-import { HttpCode, HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
-import { Persona } from "src/core/entities/persona.entity";
-import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
 import { Salud } from "src/core/entities/salud.entity";
 import { SaludFisica } from "src/core/entities/salud-fisica.entity";
@@ -111,7 +109,7 @@ export class RegistroSaludFactory{
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
     registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
     
     const registroSaludFisica = new SaludFisica();
     registroSaludFisica.discapacidad_fisica = registroSaludDTO.saludFisica.discapacidad_fisica;
@@ -185,7 +183,7 @@ export class RegistroSaludFactory{
         );
       }
       registroSaludAActualizar.vacunas_recibidas = vacunas_recibidas;
-      console.log("Vacunas registradas:", registroSaludAActualizar.vacunas_recibidas);
+      
     }
     registroSaludAActualizar.vacunas_recibidas_modificada = registroSaludDTO.vacunas_recibidas_modificada;
     registroSaludAActualizar.tieneAfeccionADrogras = registroSaludDTO.tieneAfeccionADrogras;
@@ -233,7 +231,7 @@ export class RegistroSaludFactory{
     registroSaludMental.medicacion_actual = registroSaludDTO.saludMental.medicacion_actual;
     registroSaludMental.medicacion_actual_modificada = registroSaludDTO.saludMental.medicacion_actual_modificada;
     registroSaludMental.tiene_afeccion_severa_por_estupefacientes = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefacientes;
-    registroSaludMental.tiene_afeccion_severa_por_estupefaciente_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
+    registroSaludMental.tiene_afeccion_severa_por_estupefacientes_modificado = registroSaludDTO.saludMental.tiene_afeccion_severa_por_estupefaciente_modificado;
     
     let registroSaludFisica = registroSaludAActualizar.saludFisica;
     if(!registroSaludFisica){

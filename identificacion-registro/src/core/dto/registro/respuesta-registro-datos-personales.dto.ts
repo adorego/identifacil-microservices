@@ -1,4 +1,5 @@
 export class RespuestaRegistroDatosPersonalesDTO{
-  sucess:boolean;
+  success:boolean;
+  id:number
   
 }

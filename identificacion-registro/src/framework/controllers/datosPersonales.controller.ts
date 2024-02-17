@@ -18,10 +18,11 @@ export class DatosPersonalesController{
 
   @Post()
   async create(@Body() registro_datosPersonales:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
-    this.logger.log('Datos reciibidos:', registro_datosPersonales);
-    this.registroPersonaUseCase.registrar_datosPersonales(registro_datosPersonales);
+    this.logger.log('Datos recibidos:', registro_datosPersonales);
+    const respuestaRegistroDatosPersonales = await this.registroPersonaUseCase.registrar_datosPersonales(registro_datosPersonales);
     return{
-      sucess:true
+      success:true,
+      id:respuestaRegistroDatosPersonales.id
     }
   }
 
@@ -30,7 +31,7 @@ export class DatosPersonalesController{
     this.logger.log('Datos recibidos:',`id:${param.id}` ,`datos personales:${datosPersonalesDTO}`);
     const resultadoActualizacionDatosPersonales = await this.registroPersonaUseCase.actualizar_datosPersonales(param.id, datosPersonalesDTO);
     return{
-      datosPersonalesActualizados:resultadoActualizacionDatosPersonales.datosPersonalesActualizados,
+      id:resultadoActualizacionDatosPersonales.id,
       success:true
     }
   }

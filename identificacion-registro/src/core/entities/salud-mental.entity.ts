@@ -13,7 +13,7 @@ export class SaludMental{
   medicacion_actual:Array<string>;
   medicacion_actual_modificada:boolean;
   tiene_afeccion_severa_por_estupefacientes:boolean;
-  tiene_afeccion_severa_por_estupefaciente_modificado:boolean;
+  tiene_afeccion_severa_por_estupefacientes_modificado:boolean;
   
   
 }

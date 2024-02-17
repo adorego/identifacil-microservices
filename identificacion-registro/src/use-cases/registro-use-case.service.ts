@@ -37,7 +37,9 @@ import { RegistroPersonaModel } from "src/framework/data-service/postgres/models
 import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
 import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
+import { RespuestaDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-factory-registro-datos-personales.dto";
 import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
+import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
 import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
@@ -146,12 +148,16 @@ export class RegistroUseCase{
 
   async registrar_datosPersonales(registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
     try{
-        const datosPersonales:DatosPersonales = 
-        await this.registro_datosPersonales_factory.registrarDatosPersonales(registroDatosPersonaleDTO);
-        // console.log("Datos Personales:", datosPersonales);
-        const datosPersonalesCreated = await this.dataService.datosPersonales.create(datosPersonales);
+        const respuestaFactoryDatosPersonales:RespuestaDatosPersonalesDTO
+        = await this.registro_datosPersonales_factory.registrarDatosPersonales(registroDatosPersonaleDTO);
+        const datosPersonalesACrear = respuestaFactoryDatosPersonales.datosPersonales;
+        datosPersonalesACrear.estado_civil = respuestaFactoryDatosPersonales.estado_civil;
+        datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
+        datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
+        const datosPersonalesCreados = await this.dataService.datosPersonales.update(datosPersonalesACrear);
         return{
-          sucess:true
+          id:datosPersonalesCreados.id,
+          success:true
         }
     }
     catch(error){
@@ -163,14 +169,20 @@ export class RegistroUseCase{
 
   async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
     try{
-      const datosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      const respuestaFactoryActualizarDatosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
+      datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
+      datosPersonales.estado_civil = respuestaFactoryActualizarDatosPersonales.estado_civil;
+      const datosPersonalesActualizados = await this.dataService.datosPersonales.update(datosPersonales);
+      
+      
       return {
-        datosPersonalesActualizados:datosPersonales.datosPersonales,
+        id:datosPersonalesActualizados.id,
         success:true
       }
       
     }catch(error){
-      
+      this.logger.error(`Hubo un error al actualizar el registro:${error}`);
       throw new HttpException(`Hubo un error al actualizar el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }

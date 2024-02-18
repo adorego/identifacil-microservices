@@ -10,4 +10,5 @@ export class Familiar{
   establecimiento:EstablecimientoPenitenciario;
   datosFamiliares:DatosFamiliares;
   esFuncionario:boolean;
+  edad:number;
 }

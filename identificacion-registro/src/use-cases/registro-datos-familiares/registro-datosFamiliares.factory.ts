@@ -47,6 +47,7 @@ export class RegistroDatosFamiliaresFactory{
                 familiarACrear.apellido = familiar.apellido;
                 familiarACrear.vinculo = vinculo;
                 familiarACrear.establecimiento = establecimiento;
+                familiarACrear.edad = familiar.edad;
                 familiarACrear.esFuncionario = familiar.esFuncionario;
                 return familiarACrear;
                 
@@ -145,6 +146,7 @@ export class RegistroDatosFamiliaresFactory{
                 const familiarACrear = new Familiar();
                 familiarACrear.nombre = familiar.nombre;
                 familiarACrear.apellido = familiar.apellido;
+                familiarACrear.edad = familiar.edad;
                 familiarACrear.vinculo = vinculo;
                 familiarACrear.establecimiento = establecimiento;
                 familiarACrear.esFuncionario = familiar.esFuncionario;

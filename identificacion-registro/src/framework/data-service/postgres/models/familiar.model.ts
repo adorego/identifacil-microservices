@@ -29,4 +29,8 @@ export class FamiliarModel extends Familiar{
 
   @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares),{onDelete:'CASCADE'})
   datosFamiliares:DatosFamiliaresModel;
+
+
+  @Column({type:"int"})
+  edad:number;
 }

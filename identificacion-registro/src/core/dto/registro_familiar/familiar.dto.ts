@@ -6,5 +6,6 @@ export class FamiliarDTO{
   vinculo:number;
   establecimiento:number;
   esFuncionario:boolean;
+  edad:number;
   
 }

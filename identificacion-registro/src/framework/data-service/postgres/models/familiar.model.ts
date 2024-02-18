@@ -18,10 +18,10 @@ export class FamiliarModel extends Familiar{
   @Column({type:'varchar', nullable:false})
   apellido:string;
 
-  @ManyToOne(()=>VinculoFamiliarModel)
+  @ManyToOne(()=>VinculoFamiliarModel,{eager:true})
   vinculo:VinculoFamiliarModel;
 
-  @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+  @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
   establecimiento:EstablecimientoPenitenciario;
 
   @Column({type:"boolean", default:false})

@@ -27,6 +27,6 @@ export class FamiliarModel extends Familiar{
   @Column({type:"boolean", default:false})
   esFuncionario: boolean;
 
-  @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares))
+  @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares),{onDelete:'CASCADE'})
   datosFamiliares:DatosFamiliaresModel;
 }

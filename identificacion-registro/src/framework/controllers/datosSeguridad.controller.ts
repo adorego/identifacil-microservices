@@ -16,10 +16,11 @@ export class DatosSeguridadController{
   @Post()
   async create(@Body() registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosSeguridadDTO>{
     this.logger.log("Datos enviado:", registroDatosSeguridad, 'metodo:create');
-    await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
+    const respuestaSeguridad = await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
     return(
       {
         success:true,
+        id:respuestaSeguridad.id
       }
     )
   }

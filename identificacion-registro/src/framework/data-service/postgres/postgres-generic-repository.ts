@@ -36,9 +36,9 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
     return this._repository.save(item);
   }
 
-  async delete(itemId:number): Promise<number> {
-      const result = await this._repository.delete(itemId);
-      return result.affected;
+  async delete(item:T): Promise<boolean> {
+      const result = await this._repository.remove(item);
+      return true
   }
   getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
       return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
@@ -89,6 +89,8 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("persona.educacionFormacion", "educacionFormacion")
            .leftJoinAndSelect("persona.seguridad", "seguridad")
            .leftJoinAndSelect("persona.datosFamiliares", "datosFamiliares")
+           .leftJoinAndSelect("datosFamiliares.familiares","familiares")
+           .leftJoinAndSelect("datosFamiliares.concubino","concubino")
            .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
            .where("persona.numero_identificacion = :ci",{ci})
            .getOne()

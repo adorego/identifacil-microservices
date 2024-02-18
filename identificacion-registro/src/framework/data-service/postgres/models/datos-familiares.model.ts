@@ -26,7 +26,7 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @Column({type:'boolean', nullable:true})
   tieneCirculoFamiliar_modificado:boolean;
 
-  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares,{cascade:true, eager:true})
+  @OneToMany(() => FamiliarModel, (familiar) => familiar.datosFamiliares,{cascade:true, eager:true, onDelete:'CASCADE'})
   familiares:FamiliarModel[];
 
   @Column({type:'boolean', nullable:true})
@@ -38,7 +38,7 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @Column({type:'boolean', nullable:true})
   tieneConcubino_modificado:boolean;
   
-  @OneToOne(() => ConcubinoModel, {eager:true,cascade:['remove','insert'],onDelete:'CASCADE'})
+  @OneToOne(() => ConcubinoModel, {eager:true,onDelete:'CASCADE'})
   @JoinColumn()
   concubino:ConcubinoModel;
   

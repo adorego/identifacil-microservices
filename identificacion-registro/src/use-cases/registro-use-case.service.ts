@@ -43,6 +43,7 @@ import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-fac
 import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
+import { RespuestaRegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/respuesta-registro-seguridad.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
 import { SaludFisicaModel } from "src/framework/data-service/postgres/models/salud-fisica.model";
 import { SaludMentalModel } from "src/framework/data-service/postgres/models/salud-mental.model";
@@ -233,6 +234,7 @@ export class RegistroUseCase{
         const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
         registroFamiliarAGuardar.familiares = familiaresGuardados;
         registroFamiliarAGuardar.concubino = concubinoGuardado;
+        registroFamiliarAGuardar.persona = datosFamiliaresACrear.persona;
         const registroFamiliarGuardado = await this.dataService.datosFamiliares.create(registroFamiliarAGuardar);
         return{
           success:true,
@@ -252,7 +254,10 @@ export class RegistroUseCase{
       const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id, datosFamiliaresDTO);
       const concubino = datosFamiliaresAActualizar.concubino;
       let concubinoGuardado = null;
-      if(concubino){
+      if(concubino && concubino.id){
+        concubinoGuardado = await this.dataService.concubino.update(concubino);
+      }
+      if(!concubino.id){
         concubinoGuardado = await this.dataService.concubino.create(concubino);
       }
       let familiaresGuardados:Array<Familiar> = null;
@@ -265,8 +270,11 @@ export class RegistroUseCase{
        }
        const registroFamiliarAGuardar = datosFamiliaresAActualizar.datosFamiliares;
        registroFamiliarAGuardar.familiares = familiaresGuardados;
-       registroFamiliarAGuardar.concubino = concubinoGuardado;
-       console.log("Registro familiar a guardar:", registroFamiliarAGuardar);
+      //  registroFamiliarAGuardar.concubino = concubinoGuardado;
+       registroFamiliarAGuardar.persona = datosFamiliaresAActualizar.persona;
+       registroFamiliarAGuardar.id = datosFamiliaresAActualizar.datosFamiliares.id;
+       console.log('Antes de guardar:', registroFamiliarAGuardar);
+       console.log('Concubino:', registroFamiliarAGuardar.concubino);
        const registroFamiliarGuardado = await this.dataService.datosFamiliares.update(registroFamiliarAGuardar);
        return{
           success:true,
@@ -294,10 +302,14 @@ export class RegistroUseCase{
     }
   }
 
-  async registrar_datos_seguridad(registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<Seguridad>{
+  async registrar_datos_seguridad(registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosSeguridadDTO>{
     try{
       const datosDeSeguridadAGuardar = await this.registro_datosSeguridad_factory.generar_datos_seguridad(registroDatosSeguridad);
-      return await this.dataService.seguridad.create(datosDeSeguridadAGuardar);
+      const respuestaRegistroDeDatosDeSeguridad = await this.dataService.seguridad.create(datosDeSeguridadAGuardar);
+      return{
+        success:true,
+        id:respuestaRegistroDeDatosDeSeguridad.id
+      }
     }catch(error){
       this.logger.error(`Error durante el registro de Datos de Seguridad:${error}`);
       throw new HttpException(`Error al consultar los Datos de Seeguridad`, HttpStatus.INTERNAL_SERVER_ERROR);

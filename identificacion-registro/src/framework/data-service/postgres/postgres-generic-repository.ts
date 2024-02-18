@@ -93,6 +93,8 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("persona.seguridad", "seguridad")
            .leftJoinAndSelect("persona.datosFamiliares", "datosFamiliares")
            .leftJoinAndSelect("datosFamiliares.familiares","familiares")
+           .leftJoinAndSelect("familiares.vinculo","vinculo")
+           .leftJoinAndSelect("familiares.establecimiento","establecimiento")
            .leftJoinAndSelect("datosFamiliares.concubino","concubino")
            .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
            .where("persona.numero_identificacion = :ci",{ci})

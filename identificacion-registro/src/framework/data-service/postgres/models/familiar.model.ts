@@ -31,6 +31,6 @@ export class FamiliarModel extends Familiar{
   datosFamiliares:DatosFamiliaresModel;
 
 
-  @Column({type:"int"})
+  @Column({type:"int", nullable:true})
   edad:number;
 }

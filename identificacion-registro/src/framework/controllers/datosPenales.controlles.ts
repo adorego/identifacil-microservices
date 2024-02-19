@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
@@ -8,7 +8,7 @@ import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-
 
 @Controller('datos_penales')
 export class DatosPenalesController{
-
+  private readonly logger = new Logger('DatosPenalesController');
   constructor(
     private datosPenalesUseCases:DatosPenalesUseCases
   ){
@@ -22,6 +22,7 @@ export class DatosPenalesController{
 
   @Post('causas')
   async create(@Body() causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
+    this.logger.log(`Datos recibidos:`,causaJudicialDTO);
     const respuestaCausaJudicialUseCase = await this.datosPenalesUseCases.createCausaJudicial(causaJudicialDTO);
     return{
       success:true,

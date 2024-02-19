@@ -188,6 +188,7 @@ export class RegistroUseCase{
       console.log("Concubino:", concubino);
       let concubinoGuardado = null;
       if(concubino){
+        console.log("Se va a guardar el concubino:",concubino);
         concubinoGuardado = await this.dataService.concubino.create(concubino);
       }
       let familiaresGuardados:Array<Familiar> = null;
@@ -195,18 +196,25 @@ export class RegistroUseCase{
         familiaresGuardados = await Promise.all(datosFamiliaresACrear.familiares.map(
           async (familiar) =>{
             return await this.dataService.familiar.create(familiar);
+
           }
         ))
-        const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
-        registroFamiliarAGuardar.familiares = familiaresGuardados;
-        registroFamiliarAGuardar.concubino = concubinoGuardado;
-        registroFamiliarAGuardar.persona = datosFamiliaresACrear.persona;
-        const registroFamiliarGuardado = await this.dataService.datosFamiliares.create(registroFamiliarAGuardar);
-        return{
+       }
+      console.log("Concubino guardado:",concubinoGuardado);
+      const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
+      registroFamiliarAGuardar.familiares = familiaresGuardados;
+      registroFamiliarAGuardar.concubino = concubinoGuardado;
+      registroFamiliarAGuardar.persona = datosFamiliaresACrear.persona;
+      const registroFamiliarGuardado = await this.dataService.datosFamiliares.create(registroFamiliarAGuardar);
+      if(!registroFamiliarAGuardar){
+        throw new HttpException("Error al guardar el registro familiar",HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return{
           success:true,
           id:registroFamiliarGuardado.id
         }
-      }
+      
+      
     }catch(error){
       this.logger.error(`Error durante el registro de datos familiares:${error}`);
       throw new HttpException(`Error durante el registro de datos Familiares:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -219,12 +227,13 @@ export class RegistroUseCase{
     try{
       const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id, datosFamiliaresDTO);
       const concubino = datosFamiliaresAActualizar.concubino;
+      
       let concubinoGuardado = null;
       if(concubino && concubino.id){
         concubinoGuardado = await this.dataService.concubino.update(concubino);
       }
-      if(!concubino.id){
-        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      if(!concubino){
+        concubinoGuardado = null;
       }
       let familiaresGuardados:Array<Familiar> = null;
       if(datosFamiliaresAActualizar.familiares && datosFamiliaresAActualizar.familiares.length > 0){
@@ -236,7 +245,7 @@ export class RegistroUseCase{
        }
        const registroFamiliarAGuardar = datosFamiliaresAActualizar.datosFamiliares;
        registroFamiliarAGuardar.familiares = familiaresGuardados;
-      //  registroFamiliarAGuardar.concubino = concubinoGuardado;
+       registroFamiliarAGuardar.concubino = concubinoGuardado;
        registroFamiliarAGuardar.persona = datosFamiliaresAActualizar.persona;
        registroFamiliarAGuardar.id = datosFamiliaresAActualizar.datosFamiliares.id;
        console.log('Antes de guardar:', registroFamiliarAGuardar);

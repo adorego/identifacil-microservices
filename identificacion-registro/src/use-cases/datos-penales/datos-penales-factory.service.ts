@@ -21,7 +21,9 @@ export class DatosPenalesFactory{
     }
     const despachoJudicial = await this.dataService.despachoJudicial.get(causaJudicialDTO.despacho_judicial);
 
-    
+    if(!despachoJudicial){
+      throw new HttpException(`El juzgado enviado no es válido`,HttpStatus.BAD_REQUEST)
+    }
     if(!causaJudicialDTO.hechos_punibles){
       throw new HttpException(`Se deben enviar los hechos punibles de esta causa judicial`,HttpStatus.BAD_REQUEST);
     }
@@ -47,7 +49,7 @@ export class DatosPenalesFactory{
       throw new HttpException(`No se envió correctamente la circunscripcion`,HttpStatus.BAD_REQUEST);
     }
 
-    if(causaJudicialDTO.ppls.length === 0){
+    if(!causaJudicialDTO.ppls || causaJudicialDTO.ppls.length === 0){
       throw new HttpException(`La lista de PPLs relacionados a la causa no puede estar vacia`,HttpStatus.BAD_REQUEST);
     }
     
@@ -61,8 +63,15 @@ export class DatosPenalesFactory{
       throw new HttpException(`No se encontró la ciudad en la base de datos`,HttpStatus.BAD_REQUEST);
     }
 
+    if(!causaJudicialDTO.numeroDeDocumento){
+      throw new HttpException(`El numero de documento de la causa no puede ser nulo`,HttpStatus.BAD_REQUEST);
+    }
     
+    if(!causaJudicialDTO.numeroDeExpediente){
+      throw new HttpException(`El numero de expediente de la causa no puede ser nulo`,HttpStatus.BAD_REQUEST);
+    }
     
+
     const causaJudicial = new CausaJudicial();
     causaJudicial.caratula_causa = causaJudicialDTO.caratula_causa;
     causaJudicial.estado_procesal = causaJudicialDTO.estado_procesal;

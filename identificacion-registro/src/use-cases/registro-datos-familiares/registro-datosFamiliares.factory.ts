@@ -192,7 +192,7 @@ export class RegistroDatosFamiliaresFactory{
             
           }
         }
-        
+        console.log("Concubino a crear:", concubinoACrear);
         datosFamiliares.tieneCirculoFamiliar = datosFamiliaresDTO.tieneCirculoFamiliar;
         datosFamiliares.tieneCirculoFamiliar_modificado = datosFamiliaresDTO.tieneCirculoFamiliar_modificado;
         datosFamiliares.esCabezaDeFamilia = datosFamiliaresDTO.esCabezaDeFamilia;

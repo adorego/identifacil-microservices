@@ -231,10 +231,12 @@ export class RegistroUseCase{
       let concubinoGuardado = null;
       if(concubino && concubino.id){
         concubinoGuardado = await this.dataService.concubino.update(concubino);
+      }else if(concubino){
+        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      }else{
+
       }
-      if(!concubino){
-        concubinoGuardado = null;
-      }
+      
       let familiaresGuardados:Array<Familiar> = null;
       if(datosFamiliaresAActualizar.familiares && datosFamiliaresAActualizar.familiares.length > 0){
         familiaresGuardados = await Promise.all(datosFamiliaresAActualizar.familiares.map(

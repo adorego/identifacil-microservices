@@ -191,7 +191,7 @@ export class RegistroUseCase{
         concubinoGuardado = await this.dataService.concubino.create(concubino);
       }
       let familiaresGuardados:Array<Familiar> = null;
-      if(datosFamiliaresACrear.familiares.length > 0){
+      if(datosFamiliaresACrear.familiares && datosFamiliaresACrear.familiares.length > 0){
         familiaresGuardados = await Promise.all(datosFamiliaresACrear.familiares.map(
           async (familiar) =>{
             return await this.dataService.familiar.create(familiar);

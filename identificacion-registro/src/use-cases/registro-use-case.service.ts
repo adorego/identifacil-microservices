@@ -233,8 +233,6 @@ export class RegistroUseCase{
         concubinoGuardado = await this.dataService.concubino.update(concubino);
       }else if(concubino){
         concubinoGuardado = await this.dataService.concubino.create(concubino);
-      }else{
-
       }
       
       let familiaresGuardados:Array<Familiar> = null;

@@ -177,7 +177,7 @@ export class RegistroDatosFamiliaresFactory{
     
     try{
         let concubinoACrear = datosFamiliares.concubino;
-        if(concubinoACrear){
+        if(concubinoACrear && datosFamiliaresDTO.concubino){
           concubinoACrear.id = concubinoACrear.id;
           concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
           concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;

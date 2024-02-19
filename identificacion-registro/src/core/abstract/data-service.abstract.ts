@@ -30,6 +30,7 @@ import { SituacionJudicial } from "../entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 import { Vacuna } from "../entities/vacuna.entity";
 import { VinculoFamiliar } from "../entities/vinculo-familiar.entity";
+import { Defensor } from "../entities/defensor";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -63,6 +64,6 @@ export abstract class IDataService{
   abstract hechoPunible:IGenericRepository<HechoPunible>
   abstract circunscripcionJudicial:IGenericRepository<CircunscripcionJudicial>
   abstract ciudad:IGenericRepository<Ciudad>
-  abstract getQueryRunner():any;
+  abstract defensor:IGenericRepository<Defensor>
   
 }

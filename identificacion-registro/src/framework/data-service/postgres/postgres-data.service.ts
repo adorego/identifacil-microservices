@@ -40,6 +40,7 @@ import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judic
 import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.model";
 import { Ciudad } from "src/core/entities/ciudad.entity";
 import { CiudadModel } from "./models/ciudad.model";
+import { DefensorModel } from "./models/defensor.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -61,6 +62,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   concubino: PostgresGenericRepository<Concubino>;
   datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
   establecimientoPenitenciario: PostgresGenericRepository<EstablecimientoPenitenciarioModel>;
+  defensor:PostgresGenericRepository<DefensorModel>;
   causas: PostgresGenericRepository<CausaJudicialModel>;
   documentoOrdenPrision: PostgresGenericRepository<DocumentosOrdenanPrisionModel>;
   ingresoAPrision: PostgresGenericRepository<IngresoAPrisionModel>;
@@ -139,6 +141,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private circunscripcionJudicial_repository:Repository<CircunscripcionJudicialModel>,
     @InjectRepository(CiudadModel)
     private ciudad_repository:Repository<CiudadModel>,
+    @InjectRepository(DefensorModel)
+    private defensor_repository:Repository<DefensorModel>,
     ){}
   
   
@@ -178,6 +182,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.hechoPunible = new PostgresGenericRepository<HechoPunibleModel>(this.hecho_punible_reposiitory);
     this.circunscripcionJudicial = new PostgresGenericRepository<CircunscripcionJudicialModel>(this.circunscripcionJudicial_repository);
     this.ciudad = new PostgresGenericRepository<CiudadModel>(this.ciudad_repository);
+    this.defensor = new PostgresGenericRepository<DefensorModel>(this.defensor_repository);
   }
   
   

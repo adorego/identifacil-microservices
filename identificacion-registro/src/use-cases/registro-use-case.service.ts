@@ -1,28 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
-import { Concubino } from "src/core/entities/concubino.entity";
-import { ConcubinoModel } from "src/framework/data-service/postgres/models/concubino.model";
-import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
-import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
-import { DatosPersonales } from "src/core/entities/datos-personales.entity";
-import { DatosPersonalesModel } from "src/framework/data-service/postgres/models/datos-personales.model";
 import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
-import { EducacionFormacionModel } from "src/framework/data-service/postgres/models/educacion-formacion.model";
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
-import { FamiliarModel } from "src/framework/data-service/postgres/models/familiar.model";
 import { GrupoSanguineo } from "src/core/entities/grupo-sanguineo.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { LimitacionIdiomaticaModel } from "src/framework/data-service/postgres/models/limitacion-idiomatica.model";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { Persona } from "src/core/entities/persona.entity";
-import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
 import { Ppl } from "src/core/entities/ppl.entity";
-import { PplModel } from "src/framework/data-service/postgres/models/ppl.model";
-import { QueryRunner } from "typeorm";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
@@ -33,22 +21,15 @@ import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/regis
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
-import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
 import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
 import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
 import { RespuestaDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-factory-registro-datos-personales.dto";
-import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
-import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
 import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { RespuestaRegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/respuesta-registro-seguridad.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
-import { SaludFisicaModel } from "src/framework/data-service/postgres/models/salud-fisica.model";
-import { SaludMentalModel } from "src/framework/data-service/postgres/models/salud-mental.model";
-import { SaludModel } from "src/framework/data-service/postgres/models/salud.model";
-import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
@@ -67,32 +48,22 @@ export class RegistroUseCase{
   ){}
 
   async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-    try{
+    //  console.log("Objecto dataService:", this.dataService);
+     try{
         //Guardar Registro
         // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
-        
-        await queryRunner.startTransaction()
-        const registro = await queryRunner.manager.save(RegistroPersonaModel,personaARegistrar.registro);
-        personaARegistrar.registro = registro;
-        const personaGuardada = await queryRunner.manager.save(PersonaModel,personaARegistrar);
-
-        // const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
-        // personaARegistrar.registro = registroGuardado;
-        // const personaGuardada = await this.dataService.persona.create(personaARegistrar);
+        const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
+        personaARegistrar.registro = registroGuardado;
+        const personaGuardada = await this.dataService.persona.create(personaARegistrar);
         if(personaGuardada.esPPL){
           ppl.persona = personaGuardada;
-          const pplGuardado = await queryRunner.manager.save(PplModel, ppl );
+          const pplGuardado = await this.dataService.ppl.create(ppl);
         }
-        await queryRunner.commitTransaction()
         return personaGuardada;
         // return null
      }catch(error){
-        await queryRunner.rollbackTransaction()
         this.logger.error(`Error durante el registro:${error}`);
         throw new HttpException(`Error durante el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-     }finally{
-        await queryRunner.release()
      }
 
      
@@ -189,24 +160,19 @@ export class RegistroUseCase{
   }
 
   async registrar_educacion(datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestaRegistrarEducacionFormacionUseCaseDTO>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
-      await queryRunner.startTransaction();
-      const datosEducacionFormacion:RespuestaEducacionFactoryDTO = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
-      const educacionFormalCreated = await queryRunner.manager.save(EducacionFormacionModel,datosEducacionFormacion.educacionFormacion);
-      await queryRunner.commitTransaction();
+
+      const respuestaEducacionFactory = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
       return{
         success:true,
-        educacionFormacionCreated:educacionFormalCreated
+        id:respuestaEducacionFactory.educacionFormacion.id
       }
     
     
     }catch(error){
-      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de Educacion:${error}`);
       throw new HttpException(`Error durante el registro de datos de Educación:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      await queryRunner.release()
+    
     }
   }
 

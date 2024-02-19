@@ -24,7 +24,5 @@ export class SituacionJudicialModel extends SituacionJudicial{
   @Column({type:'int', nullable:false})
   cantidad_de_veces_que_ingreso:number;
 
-  @OneToMany(() => CausaJudicialModel, causaJudicial => causaJudicial.situacionJudicial)
-  causas:Array<CausaJudicialModel>;
-  
+   
 }

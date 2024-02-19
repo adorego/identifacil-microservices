@@ -6,9 +6,7 @@ import { CiudadModel } from "./ciudad.model";
 import { CondenaModel } from "./condena.model";
 import { DespachoJudicialModel } from "./despachos-judiciales.model";
 import { HechoPunibleModel } from "./hecho-punible.model";
-import { Ppl } from "src/core/entities/ppl.entity";
-import { PplModel } from "./ppl.model";
-import { SituacionJudicialModel } from "./situacion-judicial.model";
+import { DefensorModel } from "./defensor.model";
 
 @Entity({name:'causa_judicial'})
 export class CausaJudicialModel extends CausaJudicial{
@@ -30,9 +28,8 @@ export class CausaJudicialModel extends CausaJudicial{
   @Column({type:"varchar", nullable:true})
   estado_procesal:string;
 
-  @ManyToMany(() =>PplModel)
-  @JoinTable()
-  ppls:Array<PplModel>;
+  @Column({type:"int",nullable:true})
+  ppls:Array<number>;
 
   @Column({type:'varchar', nullable:false})
   caratula_causa:string;
@@ -54,7 +51,41 @@ export class CausaJudicialModel extends CausaJudicial{
   @ManyToOne(()=>CiudadModel)
   ciudad: CiudadModel;
 
-  @ManyToOne(() => SituacionJudicialModel, situacionJudicial => situacionJudicial.causas)
-  situacionJudicial:SituacionJudicialModel;
+  @Column({type:"date",nullable:true})
+  fecha_de_aprehension:Date;
+  
+  @Column({type:"int",nullable:true})
+  tiempo_de_condena:number;
+
+  @Column({type:"boolean",nullable:true})
+  tiene_anhos_extra_de_seguridad:boolean;
+
+  @Column({type:"int",nullable:true})
+  tiempo_de_seguridad:number;
+
+  @Column({type:"varchar",nullable:true})
+  sentencia_definitiva:string;
+
+  @Column({type:"date",nullable:true})
+  fecha_de_compurgamiento_inicial:Date;
+
+  @Column({type:"date",nullable:true})
+  fecha_de_compurgamiento_recalculada:Date;
+
+  @Column({type:"varchar",nullable:true})
+  juzgado_de_tribunal_de_sentencia:string;
+
+  @Column({type:"varchar",nullable:true})
+  secretaria:string;
+
+  @Column({type:"varchar",nullable:true})
+  lugar_del_hecho:string;
+
+  @Column({type:"varchar",nullable:true})
+  link_de_noticia:string;
+
+  @ManyToOne(()=>DefensorModel)
+  defensor:DefensorModel;
+  
 }
 

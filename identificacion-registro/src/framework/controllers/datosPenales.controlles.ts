@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from "@nestjs/common";
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
+import { RespuestaCrearCausaJudicialDTO } from "src/core/dto/causa/respuesta-crear-causaJudicial.dto";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-use-case.service";
 
@@ -20,7 +21,12 @@ export class DatosPenalesController{
   }
 
   @Post('causas')
-  async create(@Body() causaJudicialDTO:CausaJudicialDTO):Promise<CausaJudicial>{
-    return await this.datosPenalesUseCases.createCausaJudicial(causaJudicialDTO);
+  async create(@Body() causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
+    const respuestaCausaJudicialUseCase = await this.datosPenalesUseCases.createCausaJudicial(causaJudicialDTO);
+    return{
+      success:true,
+      id:respuestaCausaJudicialUseCase.id
+    }
+
   }
 }

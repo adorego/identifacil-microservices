@@ -136,7 +136,7 @@ export class RegistroDatosFamiliaresFactory{
           throw new HttpException(`Error al eliminar los datos de familiare:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
-    if(datosFamiliaresDTO.tieneCirculoFamiliar && datosFamiliaresDTO.familiares.length >0){
+    if(datosFamiliaresDTO.tieneCirculoFamiliar && datosFamiliaresDTO.familiares && datosFamiliaresDTO.familiares.length >0){
       try{
         familiaresACrear = await Promise.all(datosFamiliaresDTO.familiares.map(
               async (familiar) =>{

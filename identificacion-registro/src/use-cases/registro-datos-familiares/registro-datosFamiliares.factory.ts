@@ -176,21 +176,21 @@ export class RegistroDatosFamiliaresFactory{
     
     
     try{
-        let concubinoACrear = datosFamiliares.concubino;
-        if(concubinoACrear && datosFamiliaresDTO.concubino){
-          concubinoACrear.id = concubinoACrear.id;
+        let concubinoACrear:Concubino = null;
+        //El nuevo conyuge es null
+        if(!datosFamiliaresDTO.concubino){
+          concubinoACrear = null;
+          
+        }else if(datosFamiliaresDTO.concubino && !datosFamiliares.concubino){
+          concubinoACrear = new Concubino();
           concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
           concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
-          concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-          
-        }else{
-          if(datosFamiliaresDTO.concubino){
-            concubinoACrear = new Concubino();
-            concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
-            concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
-            concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
-            
-          }
+          concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion
+        }else if(datosFamiliaresDTO.concubino && datosFamiliares.concubino){
+          concubinoACrear.id = datosFamiliares.concubino.id;
+          concubinoACrear.numeroDeIdentificacion = datosFamiliares.concubino.nombres;
+          concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
+          concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
         }
         console.log("Concubino a crear:", concubinoACrear);
         datosFamiliares.tieneCirculoFamiliar = datosFamiliaresDTO.tieneCirculoFamiliar;
@@ -213,4 +213,5 @@ export class RegistroDatosFamiliaresFactory{
         this.logger.error(`Error al guardar el registro familiar:${error}`);
       }
   }
+  
 }

@@ -223,7 +223,7 @@ export class RegistroUseCase{
   }
 
   async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
-    console.log("Id a modificar:", id);
+    
     try{
       const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id, datosFamiliaresDTO);
       const concubino = datosFamiliaresAActualizar.concubino;
@@ -243,14 +243,21 @@ export class RegistroUseCase{
           }
         ))
        }
+       
        const registroFamiliarAGuardar = datosFamiliaresAActualizar.datosFamiliares;
+       const concubinoAEliminar = registroFamiliarAGuardar.concubino;
        registroFamiliarAGuardar.familiares = familiaresGuardados;
        registroFamiliarAGuardar.concubino = concubinoGuardado;
        registroFamiliarAGuardar.persona = datosFamiliaresAActualizar.persona;
        registroFamiliarAGuardar.id = datosFamiliaresAActualizar.datosFamiliares.id;
-       console.log('Antes de guardar:', registroFamiliarAGuardar);
-       console.log('Concubino:', registroFamiliarAGuardar.concubino);
        const registroFamiliarGuardado = await this.dataService.datosFamiliares.update(registroFamiliarAGuardar);
+       if(!concubinoGuardado){
+        try{
+          this.dataService.concubino.delete(concubinoAEliminar);
+        }catch(error){
+          this.logger.error("No se pudo eliminar el registro de concubino:",concubinoAEliminar);
+        }
+       }
        return{
           success:true,
           id:registroFamiliarGuardado.id

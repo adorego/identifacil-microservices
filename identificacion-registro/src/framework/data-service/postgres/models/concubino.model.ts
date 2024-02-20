@@ -20,7 +20,7 @@ export class ConcubinoModel extends Concubino{
   @Column({type:'varchar', nullable:false})
   apellidos:string;
 
-  @OneToOne(() => DatosFamiliaresModel)
+  @OneToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.concubino,{cascade:true})
   datosFamiliares:DatosFamiliaresModel
 
   

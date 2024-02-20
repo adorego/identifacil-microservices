@@ -13,26 +13,36 @@ export class RegistroEducacionFormacionFactory{
 
   }
 
-  async generarDatosEducacionFormacion(datosEducacionFormacion:RegistroEducacionDTO):Promise<RespuestaEducacionFactoryDTO>{
-    if(!datosEducacionFormacion.id_persona){
+  async generarDatosEducacionFormacion(datosEducacionFormacionDTO:RegistroEducacionDTO):Promise<RespuestaEducacionFactoryDTO>{
+    if(!datosEducacionFormacionDTO.id_persona){
       throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
     }
 
-    const PersonaEncontrada = await this.dataService.persona.get(datosEducacionFormacion.id_persona);
-     if(!PersonaEncontrada){
+    const personaEncontrada = await this.dataService.persona.get(datosEducacionFormacionDTO.id_persona);
+     if(!personaEncontrada){
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
      } 
 
-     let educacionFormacion = new EducacionFormacion();
-     educacionFormacion = {
-      ...datosEducacionFormacion,
-      persona:PersonaEncontrada
+     let registroEducacionACrear = new EducacionFormacion();
+     registroEducacionACrear.nivelAcademico = datosEducacionFormacionDTO.nivelAcademico;
+     registroEducacionACrear.nivelAcademico_modificado = datosEducacionFormacionDTO.nivelAcademico_modificado;
+     registroEducacionACrear.institucionEducativa = datosEducacionFormacionDTO.institucionEducativa;
+     registroEducacionACrear.institucionEducativa_modificado = datosEducacionFormacionDTO.institucionEducativa_modificado;
+     registroEducacionACrear.tieneOficio = datosEducacionFormacionDTO.tieneOficio;
+     registroEducacionACrear.tieneOficio_modificado = datosEducacionFormacionDTO.tieneOficio_modificado;
+     registroEducacionACrear.nombreOficio = datosEducacionFormacionDTO.nombreOficio;
+     registroEducacionACrear.nombreOficio_modificado = datosEducacionFormacionDTO.nombreOficio_modificado;
+     registroEducacionACrear.ultimoTrabajo = datosEducacionFormacionDTO.ultimoTrabajo;
+     registroEducacionACrear.ultimoTrabajo_modificado = datosEducacionFormacionDTO.ultimoTrabajo_modificado;
+     
+
     
-    };
+    
    
      return(
       {
-        educacionFormacion:educacionFormacion
+        educacionFormacion:registroEducacionACrear,
+        persona:personaEncontrada
       }
      )
 
@@ -51,13 +61,15 @@ export class RegistroEducacionFormacionFactory{
     }
 
     registroDeEducacion = {
+      id:registroDeEducacion.id,
       ...datosEducacionDTO,
       persona:registroDeEducacion.persona
     
     };
 
     return {
-      registroDeEducacion:registroDeEducacion
+      registroDeEducacion:registroDeEducacion,
+      persona:registroDeEducacion.persona
     }
 
   }

@@ -33,6 +33,7 @@ import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-regis
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
+import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
 
 @Injectable()
 export class RegistroUseCase{
@@ -163,9 +164,13 @@ export class RegistroUseCase{
     try{
 
       const respuestaEducacionFactory = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
+      const registroEducacionAGuardar = respuestaEducacionFactory.educacionFormacion;
+      const persona = respuestaEducacionFactory.persona;
+      registroEducacionAGuardar.persona = persona;
+      const respuestaGuardarRegistro = await this.dataService.educacionFormacion.create(registroEducacionAGuardar);
       return{
         success:true,
-        id:respuestaEducacionFactory.educacionFormacion.id
+        id:respuestaGuardarRegistro.id
       }
     
     
@@ -176,9 +181,22 @@ export class RegistroUseCase{
     }
   }
 
-  async actualizar_educacion(id:number, datosEducacionDTO:RegistroEducacionDTO):Promise<EducacionFormacion>{
-    const registroDeEducacionAActualizar = await this.registro_educacionFormacion_factory.generarActualizacionEducacion(id,datosEducacionDTO);
-    return await this.dataService.educacionFormacion.update(registroDeEducacionAActualizar.registroDeEducacion);
+  async actualizar_educacion(id:number, datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestActualizarDatosEducacionDTO>{
+    try{
+      const respuestaFactoryActualizacionEducacion = await this.registro_educacionFormacion_factory.generarActualizacionEducacion(id,datosEducacionDTO);
+      const registradoAActualizar = respuestaFactoryActualizacionEducacion.registroDeEducacion;
+      const persona = respuestaFactoryActualizacionEducacion.persona
+
+      console.log("Antes de guardar:", respuestaFactoryActualizacionEducacion.registroDeEducacion);
+      const resultadoGuardarEducacion = await this.dataService.educacionFormacion.update(respuestaFactoryActualizacionEducacion.registroDeEducacion);
+      return{
+        success:true,
+        id:resultadoGuardarEducacion.id
+      }
+    }catch(error){
+      this.logger.error("Error al actualizar el registro de Educacion");
+      throw new HttpException("Error al actualizar el registro de Educacion:", error);
+    }
   }
 
   async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{

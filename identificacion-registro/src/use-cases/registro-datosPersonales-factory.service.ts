@@ -48,6 +48,7 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.nacionalidad = nacionalidad;
      datosPersonales.nacionalidad_modificado = datosPersonalesDTO.nacionalidad_modificado;
      datosPersonales.lugarDeNacimiento = datosPersonalesDTO.lugarDeNacimiento;
+     datosPersonales.lugarDeNacimiento_modificado = datosPersonalesDTO.lugarDeNacimiento_modificado;
      datosPersonales.direccion = datosPersonalesDTO.direccion;
      datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;

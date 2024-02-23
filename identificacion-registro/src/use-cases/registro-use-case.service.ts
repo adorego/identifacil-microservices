@@ -34,6 +34,7 @@ import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
 import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
+import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos.dto";
 
 @Injectable()
 export class RegistroUseCase{
@@ -124,7 +125,7 @@ export class RegistroUseCase{
         const respuestaFactoryDatosPersonales:RespuestaDatosPersonalesDTO
         = await this.registro_datosPersonales_factory.registrarDatosPersonales(registroDatosPersonaleDTO);
         const datosPersonalesACrear = respuestaFactoryDatosPersonales.datosPersonales;
-        datosPersonalesACrear.estado_civil = respuestaFactoryDatosPersonales.estado_civil;
+        datosPersonalesACrear.estadoCivil = respuestaFactoryDatosPersonales.estado_civil;
         datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
         datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
         console.log("Datos personales:", datosPersonalesACrear);
@@ -146,7 +147,7 @@ export class RegistroUseCase{
       const respuestaFactoryActualizarDatosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
       const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
       datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
-      datosPersonales.estado_civil = respuestaFactoryActualizarDatosPersonales.estado_civil;
+      datosPersonales.estadoCivil = respuestaFactoryActualizarDatosPersonales.estado_civil;
       console.log("Datos personales:", datosPersonales);
       const datosPersonalesActualizados = await this.dataService.datosPersonales.update(datosPersonales);
       
@@ -273,7 +274,7 @@ export class RegistroUseCase{
        const registroFamiliarGuardado = await this.dataService.datosFamiliares.update(registroFamiliarAGuardar);
        if(!concubinoGuardado){
         try{
-          this.dataService.concubino.delete(concubinoAEliminar);
+          concubinoAEliminar ? this.dataService.concubino.delete(concubinoAEliminar) : null;
         }catch(error){
           this.logger.error("No se pudo eliminar el registro de concubino:",concubinoAEliminar);
         }
@@ -292,6 +293,10 @@ export class RegistroUseCase{
     return await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
   
   
+  }
+
+  async actualizad_datos_judiciales(actualizacionDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>){
+
   }
 
 
@@ -318,10 +323,15 @@ export class RegistroUseCase{
     }
   }
 
-  async actualizar_datos_seguridad(id:number, datosSeguridadDTO:RegistroDatosSeguridadDTO){
+  async actualizar_datos_seguridad(id:number, datosSeguridadDTO:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosDTO>{
     const datosDeSeguridadAActualizar = await this.registro_datosSeguridad_factory.generar_actualizacion_datos_de_seguridad(id,datosSeguridadDTO);
+    console.log("Antes de actualizar:", datosDeSeguridadAActualizar.registroDeSeguridadAActualizar)
     try{
-      return await this.dataService.seguridad.update(datosDeSeguridadAActualizar.registroDeSeguridadAActualizar);
+      const respuestaActualizarRegistroSeguridad = await this.dataService.seguridad.update(datosDeSeguridadAActualizar.registroDeSeguridadAActualizar);
+      return{
+        success:true,
+        id:respuestaActualizarRegistroSeguridad.id
+      }
     }catch(error){
       throw new HttpException(`Error al actualizar el registro de seguridad:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }

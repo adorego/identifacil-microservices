@@ -7,7 +7,7 @@ export class DatosPersonales{
   persona:Persona;
   apodo:string;
   apodo_modificado:boolean;
-  estado_civil:EstadoCivil;
+  estadoCivil:EstadoCivil;
   estadoCivil_modificado:boolean;
   nacionalidad:Nacionalidad;
   nacionalidad_modificado:boolean;

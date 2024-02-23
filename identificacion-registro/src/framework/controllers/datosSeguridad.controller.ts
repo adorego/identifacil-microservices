@@ -26,7 +26,7 @@ export class DatosSeguridadController{
   }
 
   @Put(':id')
-  async update(@Param() param:any, datosSeguridadDTO:RegistroDatosSeguridadDTO){
+  async update(@Param() param:any, @Body() datosSeguridadDTO:RegistroDatosSeguridadDTO){
     this.logger.log("Datos enviado:", datosSeguridadDTO, 'metodo:update');
     const registroDeSeguridadActualizado = await this.registroPersonaUseCase.actualizar_datos_seguridad(param.id,datosSeguridadDTO);
     return{

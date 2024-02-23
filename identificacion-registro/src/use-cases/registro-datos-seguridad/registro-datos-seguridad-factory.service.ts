@@ -40,6 +40,7 @@ export class RegistroDatosSeguridadFactory{
       persona:registroDeSeguridadAActualizar.persona,
       id:registroDeSeguridadAActualizar.id};
 
+    console.log(registroDeSeguridadAActualizar);
     return{
       registroDeSeguridadAActualizar:registroDeSeguridadAActualizar,
       

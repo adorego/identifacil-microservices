@@ -7,7 +7,14 @@ export class DefensorModel extends Defensor{
     id:number;
 
     @Column({type:"varchar"})
-    nombres:string;
+    tipo:"publico" | "privado";
+
+    @Column({type:"varchar"})
+    nombre:string;
+
+    @Column({type:"varchar"})
+    apellido:string;
+
 
     @Column({type:"varchar"})
     telefono:string;

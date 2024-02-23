@@ -24,7 +24,7 @@ export class CausaJudicialDTO{
   secretaria:string;
   lugar_del_hecho:string;
   link_de_noticia:string;
-  defensor:DefensorDTO;
+  defensor:number;
   
     
 }

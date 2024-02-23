@@ -1,18 +1,18 @@
 
-interface oficio_tipo{
+interface oficio{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
   documento:File | null;
 
 }
 
-interface resolucion_tipo{
+interface resolucion{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
   documento:File | null;
 }
 
-interface expediente_tipo{
+interface expediente{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
 }
@@ -27,15 +27,11 @@ export class RegistroDatosJudicialesDTO{
   cantidadDeIngresos_modificado:boolean;
   causa: number;
   causa_modificado:boolean;
-  oficio: string;
-  oficio_modificado:boolean;
-  ultimoTrabajo: string;
-  ultimoTrabajo_modificado:boolean;
-  oficioJudicial: oficio_tipo;
+  oficioJudicial: oficio;
   oficioJudicial_modificado:boolean;
-  resolucion: resolucion_tipo;
+  resolucion: resolucion;
   resolucion_modificado:boolean;
-  expediente: expediente_tipo;
+  expediente: expediente;
   expediente_modificado:boolean;
   caratula: string;
   caratula_modificado:boolean;

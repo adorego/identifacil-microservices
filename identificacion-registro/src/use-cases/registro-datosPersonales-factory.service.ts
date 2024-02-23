@@ -67,6 +67,7 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
      datosPersonales.persona = personaEncontrada
      
+     
      return{
       datosPersonales:datosPersonales,
       nacionalidad:nacionalidad,

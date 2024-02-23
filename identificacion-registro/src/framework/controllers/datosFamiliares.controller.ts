@@ -30,6 +30,8 @@ export class DatosFamiliaresController{
 
     }catch(error){
       this.logger.error('Error al realizar el registro de Datos Familiares');
+      throw new HttpException("Hubo un error al realizar el registro de Datos Familiares",HttpStatus.INTERNAL_SERVER_ERROR);
+      
 
     }
     

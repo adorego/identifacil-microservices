@@ -187,8 +187,9 @@ export class RegistroDatosFamiliaresFactory{
           concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
           concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion
         }else if(datosFamiliaresDTO.concubino && datosFamiliares.concubino){
+          concubinoACrear = datosFamiliares.concubino;
           concubinoACrear.id = datosFamiliares.concubino.id;
-          concubinoACrear.numeroDeIdentificacion = datosFamiliares.concubino.nombres;
+          concubinoACrear.numeroDeIdentificacion = datosFamiliaresDTO.concubino.numeroDeIdentificacion;
           concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
           concubinoACrear.apellidos = datosFamiliaresDTO.concubino.apellidos;
         }

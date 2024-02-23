@@ -6,6 +6,8 @@ import { Condena } from "src/core/entities/condena.entity";
 import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { RespuestaFactoryCausaJudicialDTO } from "src/core/dto/causa/respuesta-factory-causaJudicial.dto";
+import { DefensorDTO } from "src/core/dto/causa/defensot.dto";
+import { Defensor } from "src/core/entities/defensor";
 
 @Injectable()
 export class DatosPenalesFactory{
@@ -49,9 +51,9 @@ export class DatosPenalesFactory{
       throw new HttpException(`No se envió correctamente la circunscripcion`,HttpStatus.BAD_REQUEST);
     }
 
-    if(!causaJudicialDTO.ppls || causaJudicialDTO.ppls.length === 0){
-      throw new HttpException(`La lista de PPLs relacionados a la causa no puede estar vacia`,HttpStatus.BAD_REQUEST);
-    }
+    // if(!causaJudicialDTO.ppls || causaJudicialDTO.ppls.length === 0){
+    //   throw new HttpException(`La lista de PPLs relacionados a la causa no puede estar vacia`,HttpStatus.BAD_REQUEST);
+    // }
     
     
     if(!causaJudicialDTO.ciudad){
@@ -71,6 +73,10 @@ export class DatosPenalesFactory{
       throw new HttpException(`El numero de expediente de la causa no puede ser nulo`,HttpStatus.BAD_REQUEST);
     }
     
+    let defensor:Defensor = null;;
+    if(causaJudicialDTO.defensor){
+      defensor = await this.dataService.defensor.get(causaJudicialDTO.defensor);
+    }
 
     const causaJudicial = new CausaJudicial();
     causaJudicial.caratula_causa = causaJudicialDTO.caratula_causa;
@@ -85,9 +91,9 @@ export class DatosPenalesFactory{
     causaJudicial.numeroDeDocumento = causaJudicialDTO.numeroDeDocumento;
     causaJudicial.numeroDeExpediente = causaJudicialDTO.numeroDeExpediente;
     causaJudicial.ppls = causaJudicialDTO.ppls;
-    causaJudicial.fecha_de_aprehension = causaJudicialDTO.fecha_de_aprehension;
-    causaJudicial.fecha_de_compurgamiento_inicial = causaJudicialDTO.fecha_de_compurgamiento_inicial;
-    causaJudicial.fecha_de_compurgamiento_recalculada = causaJudicialDTO.fecha_de_compurgamiento_recalculada;
+    causaJudicial.fecha_de_aprehension = new Date(causaJudicialDTO.fecha_de_aprehension);
+    causaJudicial.fecha_de_compurgamiento_inicial = new Date(causaJudicialDTO.fecha_de_compurgamiento_inicial);
+    causaJudicial.fecha_de_compurgamiento_recalculada = new Date(causaJudicialDTO.fecha_de_compurgamiento_recalculada);
     causaJudicial.juzgado_de_tribunal_de_sentencia = causaJudicialDTO.juzgado_de_tribunal_de_sentencia;
     causaJudicial.link_de_noticia = causaJudicialDTO.link_de_noticia;
     causaJudicial.lugar_del_hecho = causaJudicialDTO.lugar_del_hecho;
@@ -96,6 +102,7 @@ export class DatosPenalesFactory{
     causaJudicial.tiempo_de_condena = causaJudicialDTO.tiempo_de_condena;
     causaJudicial.tiempo_de_seguridad = causaJudicialDTO.tiempo_de_seguridad;
     causaJudicial.tiene_anhos_extra_de_seguridad = causaJudicialDTO.tiene_anhos_extra_de_seguridad;
+    causaJudicial.defensor = defensor;
     
     
     console.log("Causa Judicial a crear:", causaJudicial);

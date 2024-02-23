@@ -1,10 +1,7 @@
-enum tipo_de_defensor{
-    publico,
-    privado
-}
 
 export class Defensor{
-    tipo:tipo_de_defensor;
+    tipo:"publico" | "privado";
     nombre:string;
+    apellido:string;
     telefono:string;
 }

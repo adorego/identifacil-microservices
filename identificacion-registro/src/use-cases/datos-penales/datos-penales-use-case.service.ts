@@ -25,7 +25,7 @@ export class DatosPenalesUseCases{
     const causaJudicialCreada = await this.dataService.causas.create(causaJudicialACrear);
     return {
       success:true,
-      id:causaJudicialACrear.id
+      id:causaJudicialCreada.id
     }
     }catch(error){
         throw new HttpException(`Error al crear la causa judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);

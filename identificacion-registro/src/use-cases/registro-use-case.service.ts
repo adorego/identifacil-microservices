@@ -127,7 +127,8 @@ export class RegistroUseCase{
         datosPersonalesACrear.estado_civil = respuestaFactoryDatosPersonales.estado_civil;
         datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
         datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
-        const datosPersonalesCreados = await this.dataService.datosPersonales.update(datosPersonalesACrear);
+        console.log("Datos personales:", datosPersonalesACrear);
+        const datosPersonalesCreados = await this.dataService.datosPersonales.create(datosPersonalesACrear);
         return{
           id:datosPersonalesCreados.id,
           success:true
@@ -146,6 +147,7 @@ export class RegistroUseCase{
       const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
       datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
       datosPersonales.estado_civil = respuestaFactoryActualizarDatosPersonales.estado_civil;
+      console.log("Datos personales:", datosPersonales);
       const datosPersonalesActualizados = await this.dataService.datosPersonales.update(datosPersonales);
       
       
@@ -252,7 +254,7 @@ export class RegistroUseCase{
       }else if(concubino){
         concubinoGuardado = await this.dataService.concubino.create(concubino);
       }
-      
+      console.log("Concubino a crear:", concubino);
       let familiaresGuardados:Array<Familiar> = null;
       if(datosFamiliaresAActualizar.familiares && datosFamiliaresAActualizar.familiares.length > 0){
         familiaresGuardados = await Promise.all(datosFamiliaresAActualizar.familiares.map(

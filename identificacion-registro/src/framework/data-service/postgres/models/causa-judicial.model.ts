@@ -28,7 +28,7 @@ export class CausaJudicialModel extends CausaJudicial{
   @Column({type:"varchar", nullable:true})
   estado_procesal:string;
 
-  @Column({type:"int",nullable:true})
+  @Column("int",{array:true})
   ppls:Array<number>;
 
   @Column({type:'varchar', nullable:false})

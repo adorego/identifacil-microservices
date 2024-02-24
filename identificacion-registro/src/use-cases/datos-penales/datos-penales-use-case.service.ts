@@ -19,16 +19,36 @@ export class DatosPenalesUseCases{
   }
 
   async createCausaJudicial(causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
-    try{
-    const respuestaGeneracionCausaJudicialFactory = await this.datosPenalesFactory.creacionDeCausaJudicialGenerar(causaJudicialDTO);
-    const causaJudicialACrear = respuestaGeneracionCausaJudicialFactory.causaJudicial;
-    const causaJudicialCreada = await this.dataService.causas.create(causaJudicialACrear);
-    return {
-      success:true,
-      id:causaJudicialCreada.id
-    }
-    }catch(error){
-        throw new HttpException(`Error al crear la causa judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+      try{
+      const respuestaGeneracionCausaJudicialFactory = await this.datosPenalesFactory.creacionDeCausaJudicialGenerar(causaJudicialDTO);
+      const causaJudicialACrear = respuestaGeneracionCausaJudicialFactory.causaJudicial;
+      const causaJudicialCreada = await this.dataService.causas.create(causaJudicialACrear);
+      return {
+        success:true,
+        id:causaJudicialCreada.id
       }
+      }catch(error){
+          throw new HttpException(`Error al crear la causa judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+    async getHechosPunibles(){
+      return this.dataService.hechoPunible.getAll();
+    }
+
+    async getDefensores(){
+      return this.dataService.defensor.getAll();
+    }
+
+    async getDespachosJudiciales(){
+      return this.dataService.despachoJudicial.getAll();
+    }
+
+    async getCircunscripciones(){
+      return this.dataService.circunscripcionJudicial.getAll();
+    }
+
+    async getCiudades(){
+      return this.dataService.ciudad.getAll();
     }
 }

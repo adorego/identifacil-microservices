@@ -100,5 +100,11 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .where("persona.numero_identificacion = :ci",{ci})
            .getOne()
   }
+
+  // getCausasById(id:number):Promise<T>{
+  //   return this._repository.createQueryBuilder("causas")
+  //           .leftJoinAndSelect("causas.despacho_judicial","despacho_judicial")
+  //           .l
+  // }
 }
   

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Logger, Param, Post } from "@nestjs/common";
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
@@ -20,6 +20,10 @@ export class DatosPenalesController{
     return await this.datosPenalesUseCases.getCausas();
   }
 
+  @Get("causas/:id")
+  async getCausasById(@Param() param):Promise<CausaJudicial>{
+    return await this.datosPenalesUseCases.getCausasById(param.id);
+  }
   @Post('causas')
   async create(@Body() causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
     this.logger.log(`Datos recibidos:`,causaJudicialDTO);

@@ -18,6 +18,9 @@ export class DatosPenalesUseCases{
     return await this.dataService.causas.getAll();
   }
 
+  async getCausasById(id:number):Promise<CausaJudicial>{
+    return await this.dataService.causas.get(id);
+  }
   async createCausaJudicial(causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
       try{
       const respuestaGeneracionCausaJudicialFactory = await this.datosPenalesFactory.creacionDeCausaJudicialGenerar(causaJudicialDTO);

@@ -22,7 +22,7 @@ export class CausaJudicialModel extends CausaJudicial{
   @Column({type:"int", nullable:false})
   anho:number;
 
-  @Column({type:"varchar",nullable:true})
+  @Column({type:"boolean",nullable:true})
   condenado:boolean
   
   @Column({type:"varchar", nullable:true})
@@ -37,7 +37,7 @@ export class CausaJudicialModel extends CausaJudicial{
   @ManyToOne(()=>DespachoJudicialModel,{eager:true})
   despacho_judicial:DespachoJudicialModel;
 
-  @ManyToMany(() => HechoPunibleModel)
+  @ManyToMany(() => HechoPunibleModel,{eager:true})
   @JoinTable()
   hechos_punibles: Array<HechoPunibleModel>;
 
@@ -45,10 +45,10 @@ export class CausaJudicialModel extends CausaJudicial{
   @JoinColumn()
   condena: CondenaModel;
 
-  @ManyToOne(()=>CircunscripcionJudicialModel)
+  @ManyToOne(()=>CircunscripcionJudicialModel,{eager:true})
   circunscripcion: CircunscripcionJudicialModel;
 
-  @ManyToOne(()=>CiudadModel)
+  @ManyToOne(()=>CiudadModel,{eager:true})
   ciudad: CiudadModel;
 
   @Column({type:"date",nullable:true})
@@ -84,7 +84,7 @@ export class CausaJudicialModel extends CausaJudicial{
   @Column({type:"varchar",nullable:true})
   link_de_noticia:string;
 
-  @ManyToOne(()=>DefensorModel)
+  @ManyToOne(()=>DefensorModel,{eager:true})
   defensor:DefensorModel;
   
 }

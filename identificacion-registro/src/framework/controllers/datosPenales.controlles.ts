@@ -106,9 +106,9 @@ export class DatosPenalesController{
   async ciudades(){
     this.logger.log("Llamada a get Ciudades");
     try{
-      const respuestaObtenerCircunscripciones = await this.datosPenalesUseCases.getCiudades();
+      const respuestaObtenerCiudades = await this.datosPenalesUseCases.getCiudades();
        return{
-        circunscripciones:respuestaObtenerCircunscripciones,
+        ciudades:respuestaObtenerCiudades,
         success:true
        } 
       

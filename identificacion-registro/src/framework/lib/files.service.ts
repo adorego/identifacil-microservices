@@ -4,10 +4,18 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 import path from "path";
 
+const filePath = "/opt/identifacil/";
+
 @Injectable()
 export class FileService{
   async almacenar_archivo(archivo:Express.Multer.File, nombreDelArchivo:string):Promise<string>{
-    const fileName = `${nombreDelArchivo}_${path.extname(archivo.originalname)}.${archivo.mimetype}`;
+    let fileName = "";
+    if(path){
+      fileName = `${nombreDelArchivo}_${path.extname(archivo.originalname)}.${archivo.mimetype}`;
+    }else{
+      fileName = `${filePath}${nombreDelArchivo}.${archivo.mimetype}`;
+    }
+    
     console.log("Nombre final de archiivo:", fileName);
     const dirPath = path.join(process.env.TEST_FILE_STORAGE,'upload');
     if(!fs.existsSync(dirPath)){

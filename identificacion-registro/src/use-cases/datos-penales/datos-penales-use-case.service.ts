@@ -1,13 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
 import { DatosPenalesFactory } from "./datos-penales-factory.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { RespuestaCrearCausaJudicialDTO } from "src/core/dto/causa/respuesta-crear-causaJudicial.dto";
+import { RespuestaActualizarCausaUseCaseDTO } from "src/core/dto/causa/respuesta-actualizar-causaJudicial.dto";
 
 @Injectable()
 export class DatosPenalesUseCases{
+  private readonly logger = new Logger("DatosPenalesUseCases");
   constructor(
     private dataService:IDataService,
     private datosPenalesFactory:DatosPenalesFactory
@@ -33,7 +35,21 @@ export class DatosPenalesUseCases{
       }catch(error){
           throw new HttpException(`Error al crear la causa judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
       }
+  }
+
+  async actualizarCausaJudicial(id:number, causaJudicialDTO):Promise<RespuestaActualizarCausaUseCaseDTO>{
+    try{
+      const respuestaFactoryActualizacionCausa = await this.datosPenalesFactory.actualizacionDeCausaJudicialGenerar(id,causaJudicialDTO);
+      const causaJudicialActualizada = await this.dataService.causas.update(respuestaFactoryActualizacionCausa);
+      return{
+        id:causaJudicialActualizada.id,
+        success:true
+      }
+    }catch(error){
+      this.logger.error("Ocurrió un error durante la actualización de la Causa:", error);
+      throw new HttpException("Ocurrió un error durante la actualización de la Causa:", error);
     }
+  }
 
     async getHechosPunibles(){
       return this.dataService.hechoPunible.getAll();

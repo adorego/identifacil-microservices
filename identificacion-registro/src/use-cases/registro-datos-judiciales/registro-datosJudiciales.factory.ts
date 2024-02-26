@@ -94,4 +94,85 @@ export class RegistroDatosJudicialesFactory{
     }
     
   }
+
+  async generar_datos_judiciales_para_actualizar(id:number, registroDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Express.Multer.File, resolucion:Express.Multer.File){
+
+    if(!id){
+      throw new HttpException('El id del registro judicial es invalido', HttpStatus.BAD_REQUEST);
+    }
+    let situacionJudicial:SituacionJudicial = await  this.dataService.situacionJudicial.get(id);
+
+    if(!situacionJudicial){
+      throw new HttpException('El registro judicial enviado es invalido', HttpStatus.BAD_REQUEST);
+    }
+    if(!registroDatosJudicialesDTO.id_persona){
+      throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
+    }
+    const personaEncontrada = await this.dataService.persona.get(registroDatosJudicialesDTO.id_persona);
+    if(!personaEncontrada){
+       throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
+    } 
+    
+    if(!registroDatosJudicialesDTO.oficioJudicial){
+      throw new HttpException('Se debe enviar el oficio judicial', HttpStatus.BAD_REQUEST);
+    }
+
+    if(!registroDatosJudicialesDTO.resolucion){
+      throw new HttpException('Se debe enviar la resolución judicial', HttpStatus.BAD_REQUEST);
+    }
+
+    const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);
+
+    if(!establecimientoPenitenciario){
+      throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
+    }
+
+    const causaJudicial = await this.dataService.causas.get(registroDatosJudicialesDTO.causa);
+    if(!causaJudicial){
+      throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
+    }
+
+    situacionJudicial.primera_vez_en_prision = registroDatosJudicialesDTO.primeraVezEnPrision ;
+    situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
+
+    situacionJudicial.ingresos_a_prision = [];
+    const ingresoAPrision = new IngresoAPrision();
+    ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
+    ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
+    ingresoAPrision.causa = causaJudicial;
+    if(ingresoAPrision.causa.condenado){
+      ingresoAPrision.fecha_de_salida = causaJudicial.fecha_de_compurgamiento_inicial;
+    }else{
+      ingresoAPrision.fecha_de_salida = null
+    }
+
+    const oficioJudicialAGuardar = new DocumentoOrdenPrision();
+    oficioJudicialAGuardar.causa = causaJudicial;
+    oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento);
+    oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial.numeroDeDocumento;
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    
+
+    const resolucionMJAGuardar = new DocumentoOrdenPrision();
+    resolucionMJAGuardar.causa = causaJudicial;
+    resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion.fechaDeDocumento);
+    resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion.numeroDeDocumento;
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudicialesDTO.resolucion.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+   
+    console.log("Documentos que ordenan la prisión:", oficioJudicialAGuardar, resolucionMJAGuardar);
+
+    
+    
+    
+    
+    return{
+      situacionJudicial:situacionJudicial,
+      ingresoAPrision:ingresoAPrision,
+      oficioJudicialAGuardar:oficioJudicialAGuardar,
+      resolucionMJAGuardar:resolucionMJAGuardar
+
+    }
+    
+
+  }
 }

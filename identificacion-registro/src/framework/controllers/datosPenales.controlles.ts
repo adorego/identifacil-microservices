@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpException, Logger, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Logger, Param, Post, Put } from "@nestjs/common";
 
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
 import { RespuestaCrearCausaJudicialDTO } from "src/core/dto/causa/respuesta-crear-causaJudicial.dto";
+import { RespuestaActualizarCausaJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-actualizar-datosJudiciales.dto";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-use-case.service";
 
@@ -26,11 +27,32 @@ export class DatosPenalesController{
   }
   @Post('causas')
   async create(@Body() causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaCrearCausaJudicialDTO>{
-    this.logger.log(`Datos recibidos:`,causaJudicialDTO);
-    const respuestaCausaJudicialUseCase = await this.datosPenalesUseCases.createCausaJudicial(causaJudicialDTO);
-    return{
-      success:true,
-      id:respuestaCausaJudicialUseCase.id
+    try{
+      this.logger.log(`Datos recibidos:`,causaJudicialDTO);
+      const respuestaCausaJudicialUseCase = await this.datosPenalesUseCases.createCausaJudicial(causaJudicialDTO);
+      return{
+        success:true,
+        id:respuestaCausaJudicialUseCase.id
+      }
+    }catch(error){
+      this.logger.error("Error durante el registro de la Causa:", error);
+      throw new HttpException("Error durante el registro de la Causa:", error);
+    }
+
+  }
+
+  @Put("causas/:id")
+  async update(@Param() param:any, @Body() causaJudicialDTO:CausaJudicialDTO):Promise<RespuestaActualizarCausaJudicialDTO>{
+    try{
+      this.logger.log(`Datos recibidos:`,causaJudicialDTO,",id:", param.id);
+      const respuestaCausaJudicialUseCase = await this.datosPenalesUseCases.actualizarCausaJudicial(param.id,causaJudicialDTO);
+      return{
+        success:true,
+        id:respuestaCausaJudicialUseCase.id
+      }
+    }catch(error){
+      this.logger.error("Error durante el registro de la Causa:", error);
+      throw new HttpException("Error durante el registro de la Causa:", error);
     }
 
   }

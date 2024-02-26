@@ -294,10 +294,10 @@ export class RegistroUseCase{
     try{
       const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
       const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
-      const resolucionMjAGuardar = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
+      const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
       const ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
       ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
-      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardar);
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
       const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
       const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
       situacionJudicialAGuardar.ingresos_a_prision.push(ingresoAPrisionGuardado);
@@ -309,12 +309,35 @@ export class RegistroUseCase{
 
     }catch(error){
       this.logger.error("Error al registrar los datos judiciales");
+      throw new HttpException(`Error al registrar los datos judiciales:${error}`,error);
     }
   
   }
 
-  async actualizad_datos_judiciales(actualizacionDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>){
+  async actualizar_datos_judiciales(id:number, actualizacionDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>){
+    try{
+      const respuestaDelFactoryActualizarDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales_para_actualizar(id, actualizacionDatosJudicialesDTO,oficio_judicial[0],resolucion[0]);
+      let situacionJudicialAGuardar = respuestaDelFactoryActualizarDatosJudiciales.situacionJudicial;
+      const ingresoAPrisionAActualizar = respuestaDelFactoryActualizarDatosJudiciales.ingresoAPrision;
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision = [];
+      const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.oficioJudicialAGuardar);
+      const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.resolucionMJAGuardar);
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
+      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAActualizar);
 
+      situacionJudicialAGuardar.ingresos_a_prision[0] = ingresoAPrisionAActualizar;
+      const respuestaActualizacionDatosJudiciales = await this.dataService.situacionJudicial.update(situacionJudicialAGuardar);
+      return{
+        id: respuestaActualizacionDatosJudiciales.id,
+        success:true
+      }
+      
+
+    }catch(error){
+      this.logger.error(`Ocurrio un error durante la actualizacion de Datos Judiciales:${error}`);
+      throw new HttpException(`Ocurrio un error durante la actualizacion de Datos Judiciales:${error}`,error);
+    }
   }
 
 

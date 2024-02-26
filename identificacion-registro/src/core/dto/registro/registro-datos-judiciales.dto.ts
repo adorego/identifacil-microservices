@@ -1,3 +1,4 @@
+import { Oficio } from "src/core/entities/oficio.entity";
 
 interface oficio{
   numeroDeDocumento:string;
@@ -28,11 +29,19 @@ export class RegistroDatosJudicialesDTO{
   fecha_ingreso_a_establecimiento:Date;
   causa: number;
   causa_modificado:boolean;
-  oficioJudicial: oficio;
+  
+  oficioJudicial_numeroDeDocumento:string;
+  oficioJudicial_fechaDeDocumento:Date;
   oficioJudicial_modificado:boolean;
-  resolucion: resolucion;
+  
+  
+  resolucion_numeroDeDocumento:string;
+  resolucion_fechaDeDocumento:Date;
   resolucion_modificado:boolean;
-  expediente: expediente;
+  
+ 
+  expediente_numeroDeDocumento:string;
+  expediente_fechaDeDocumento:Date;
   expediente_modificado:boolean;
   caratula: string;
   caratula_modificado:boolean;

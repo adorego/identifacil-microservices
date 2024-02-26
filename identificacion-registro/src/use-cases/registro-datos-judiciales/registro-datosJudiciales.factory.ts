@@ -31,20 +31,17 @@ export class RegistroDatosJudicialesFactory{
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
     
-    if(registroDatosJudicialesDTO.oficioJudicial && !registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento){
-      throw new HttpException('El oficio judicial debe tener una fecha', HttpStatus.BAD_REQUEST);
+    if(!registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento || !registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento){
+      throw new HttpException('El oficio judicial debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
-    if(registroDatosJudicialesDTO.oficioJudicial && !registroDatosJudicialesDTO.oficioJudicial.numeroDeDocumento){
-      throw new HttpException('El oficio judicial debe tener un numero', HttpStatus.BAD_REQUEST);
+    if(!registroDatosJudicialesDTO.resolucion_numeroDeDocumento || !registroDatosJudicialesDTO.resolucion_fechaDeDocumento){
+      throw new HttpException('La resolución judicial debe tener un numero de documento y una fecha', HttpStatus.BAD_REQUEST);
     }
 
-    if(registroDatosJudicialesDTO.resolucion && !registroDatosJudicialesDTO.resolucion.fechaDeDocumento){
-      throw new HttpException('La resolución judicial debe tener una fecha', HttpStatus.BAD_REQUEST);
-    }
-
-    if(registroDatosJudicialesDTO.resolucion && !registroDatosJudicialesDTO.resolucion.numeroDeDocumento){
-      throw new HttpException('La resolución judicial debe tener un número de documento', HttpStatus.BAD_REQUEST);
+    
+    if(!registroDatosJudicialesDTO.expediente_numeroDeDocumento || !registroDatosJudicialesDTO.expediente_fechaDeDocumento){
+      throw new HttpException('El expediente debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
     const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);
@@ -65,6 +62,8 @@ export class RegistroDatosJudicialesFactory{
     //Generar un registro de Situacion Judicial
     situacionJudicial.primera_vez_en_prision = registroDatosJudicialesDTO.primeraVezEnPrision ;
     situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
+    situacionJudicial.expediente_fecha_de_documento = registroDatosJudicialesDTO.expediente_fechaDeDocumento;
+    situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
     
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
@@ -78,16 +77,16 @@ export class RegistroDatosJudicialesFactory{
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = causaJudicial;
-    oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento);
-    oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial.numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
+    oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
     
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
     resolucionMJAGuardar.causa = causaJudicial;
-    resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion.fechaDeDocumento);
-    resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion.numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudicialesDTO.resolucion.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
+    resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudicialesDTO.resolucion_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
    
     console.log("Documentos que ordenan la prisión:", oficioJudicialAGuardar, resolucionMJAGuardar);
 
@@ -123,12 +122,17 @@ export class RegistroDatosJudicialesFactory{
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
     
-    if(!registroDatosJudicialesDTO.oficioJudicial){
-      throw new HttpException('Se debe enviar el oficio judicial', HttpStatus.BAD_REQUEST);
+    if(!registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento || !registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento){
+      throw new HttpException('El oficio judicial debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
-    if(!registroDatosJudicialesDTO.resolucion){
-      throw new HttpException('Se debe enviar la resolución judicial', HttpStatus.BAD_REQUEST);
+    if(!registroDatosJudicialesDTO.resolucion_numeroDeDocumento || !registroDatosJudicialesDTO.resolucion_fechaDeDocumento){
+      throw new HttpException('La resolución judicial debe tener un numero de documento y una fecha', HttpStatus.BAD_REQUEST);
+    }
+
+    
+    if(!registroDatosJudicialesDTO.expediente_numeroDeDocumento || !registroDatosJudicialesDTO.expediente_fechaDeDocumento){
+      throw new HttpException('El expediente debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
     const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);
@@ -158,16 +162,16 @@ export class RegistroDatosJudicialesFactory{
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = causaJudicial;
-    oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento);
-    oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial.numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
+    oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
     
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
     resolucionMJAGuardar.causa = causaJudicial;
-    resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion.fechaDeDocumento);
-    resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion.numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudicialesDTO.resolucion.fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
+    resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`resolucionMJ/DGEP_${registroDatosJudicialesDTO.resolucion_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
    
     console.log("Documentos que ordenan la prisión:", oficioJudicialAGuardar, resolucionMJAGuardar);
 

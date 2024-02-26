@@ -24,5 +24,9 @@ export class SituacionJudicialModel extends SituacionJudicial{
   @Column({type:'int', nullable:false})
   cantidad_de_veces_que_ingreso:number;
 
-   
+  @Column({type:'varchar', nullable:false})
+  expediente_numero_de_documento:string;
+
+  @Column({type:'date', nullable:false})
+  expediente_fecha_de_documento:Date;
 }

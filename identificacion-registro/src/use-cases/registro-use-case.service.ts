@@ -303,10 +303,9 @@ export class RegistroUseCase{
       ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
       const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
       const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
-      
-      situacionJudicialAGuardar.ingresos_a_prision = new Array<IngresoAPrision>;
-      
-      situacionJudicialAGuardar.ingresos_a_prision.push(ingresoAPrisionGuardado);
+      const ingresos_a_prision = new Array<IngresoAPrision>;
+      ingresos_a_prision.push(ingresoAPrisionGuardado);
+      situacionJudicialAGuardar.ingresos_a_prision = ingresos_a_prision;
       const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
       return{
         id: situacionJudicialGuardada.id,

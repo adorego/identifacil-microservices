@@ -16,15 +16,27 @@ export class PplController{
   }
   @Get('ppls')
   async ppls():Promise<Array<PplDTO>>{
-    return await this.gestionPPLUseCase.getAllPpls();
+    console.log("Entro en ppls");
+    try{
+      return await this.gestionPPLUseCase.getAllPpls();
+    }catch(error){
+      this.logger.error(`Error en la consulta de PPL por id:${error}`);
+      throw new HttpException(`Error en al consulta por id:${error}`, error);
+    }
+   
     
     
   
   }
   @Get('ppls/establecimiento/:establecimiento')
   async ppls_por_establecimiento(@Param() param:any):Promise<Array<PplDTO>>{
-    console.log("Establecimiento:", param.establecimiento);
-    return await this.gestionPPLUseCase.getPPLsByEstablecimiento(param.establecimiento);
+    try{
+      return await this.gestionPPLUseCase.getPPLsByEstablecimiento(param.establecimiento);
+    }catch(error){
+      this.logger.error(`Error en la consulta de PPL por id:${error}`);
+      throw new HttpException(`Error en al consulta por id:${error}`, error);
+    }
+   
     
     
   
@@ -32,8 +44,13 @@ export class PplController{
 
   @Get('ppls/cedula/:cedula')
   async ppls_por_cedula(@Param() param:any):Promise<PplDTO>{
-    console.log("Cedula:", param.cedula);
-    return await this.gestionPPLUseCase.getPPLByCedula(param.cedula);
+    try{
+      return await this.gestionPPLUseCase.getPPLByCedula(param.cedula);
+    }catch(error){
+      this.logger.error(`Error en la consulta de PPL por id:${error}`);
+      throw new HttpException(`Error en al consulta por id:${error}`, error);
+    }
+   
     
     
   
@@ -45,8 +62,8 @@ export class PplController{
       this.logger.log("Lamada a ppl_por_id, parametro:", param.id);
       return await this.gestionPPLUseCase.getPpplById(param.id);
     }catch(error){
-      this.logger.error("Error en la consulta de PPL por id");
-      throw new HttpException("Error en al consulta por id", error);
+      this.logger.error(`Error en la consulta de PPL por id:${error}`);
+      throw new HttpException(`Error en al consulta por id:${error}`, error);
     }
   }
 

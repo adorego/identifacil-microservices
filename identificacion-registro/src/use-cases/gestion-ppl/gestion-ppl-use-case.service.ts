@@ -1,17 +1,21 @@
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable, Logger } from "@nestjs/common";
 import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
 @Injectable()
 export class GestionPPLUseCase{
+  private readonly logger:Logger = new Logger("GestionPPLUseCase");
   constructor(
     private dataService:IDataService,
   ){}
 
   async getAllPpls():Promise<Array<PplDTO>>{
+    try{
+      console.log("Antes de llamar a ppls");
     const ppls:Array<Ppl> = await this.dataService.ppl.getAll();
+    console.log("Get all PPLs:", ppls);
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
           return{
@@ -38,8 +42,14 @@ export class GestionPPLUseCase{
         })
         // console.log("Array de PPLs:",pplsDTOs);
         return pplsDTOs;
+    }catch(error){
+      this.logger.error(`Error en la consulta de PPL por id:${error}`);
+      throw new HttpException(`Error en al consulta por id:${error}`, error);
+    }
+    
 
   }
+
   async getPPLsByEstablecimiento(establecimiento:number):Promise<Array<PplDTO>>{
     
     const ppls:Array<Ppl> = await this.dataService.ppl.getAllPPLsByEstablecimiento(establecimiento);

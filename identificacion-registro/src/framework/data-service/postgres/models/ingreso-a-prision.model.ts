@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { CausaJudicialModel } from "./causa-judicial.model";
 import { DocumentosOrdenanPrisionModel } from "./documentos-ordenan-prision.model";
@@ -28,6 +28,6 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @JoinColumn()
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 
-  @OneToMany(()=>SituacionJudicialModel, situacionJudicial=>situacionJudicial.ingresos_a_prision)
+  @ManyToOne(()=>SituacionJudicialModel, situacionJudicial=>situacionJudicial.ingresos_a_prision)
   situacionJudicial:SituacionJudicialModel
 }

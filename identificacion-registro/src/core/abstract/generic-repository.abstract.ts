@@ -1,4 +1,3 @@
-import { BaseEntityApp } from "../entities/base.entity";
 
 export abstract class IGenericRepository<T>{
   abstract getAll():Promise<Array<T>>;

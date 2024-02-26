@@ -77,7 +77,7 @@ export class GestionPPLUseCase{
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     const ppl = await this.dataService.ppl.getPplByCedula(ci);
-    // console.log("datos Personales:", ppl.persona.datosPersonales);
+    console.log("datos Personales:", ppl.persona.datosPersonales);
     if(!ppl){
       return null
     }else{
@@ -107,7 +107,8 @@ export class GestionPPLUseCase{
   }
 
   async getPpplById(id:number):Promise<PplDTO>|null{
-    const ppl = await this.dataService.ppl.get(id);
+    const ppl = await this.dataService.ppl.getPplById(id);
+    
     if(!ppl){
       return null
     }else{

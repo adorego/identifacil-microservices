@@ -81,6 +81,32 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("persona.genero","genero")
            .leftJoinAndSelect("persona.datosPersonales", "datosPersonales")
+           .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
+           .leftJoinAndSelect("datosPersonales.nacionalidad","nacionalidad")
+           .leftJoinAndSelect("datosPersonales.estadoCivil","estadoCivil")
+           .leftJoinAndSelect("persona.salud", "salud")
+           .leftJoinAndSelect("salud.vacunas_recibidas","vacunas_recibidas")
+           .leftJoinAndSelect("salud.grupo_sanguineo","grupo_sanguineo")
+           .leftJoinAndSelect("salud.saludMental","saludMental")
+           .leftJoinAndSelect("salud.saludFisica","saludFisica")
+           .leftJoinAndSelect("salud.limitacionesIdiomaticas","limitacionesIdiomaticas")
+           .leftJoinAndSelect("persona.educacionFormacion", "educacionFormacion")
+           .leftJoinAndSelect("persona.seguridad", "seguridad")
+           .leftJoinAndSelect("persona.datosFamiliares", "datosFamiliares")
+           .leftJoinAndSelect("datosFamiliares.familiares","familiares")
+           .leftJoinAndSelect("familiares.vinculo","vinculo")
+           .leftJoinAndSelect("familiares.establecimiento","establecimientoFamiliar")
+           .leftJoinAndSelect("datosFamiliares.concubino","concubino")
+           .where("persona.numero_identificacion = :ci",{ci})
+           .getOne()
+  }
+
+  getPplById(id_persona:number):Promise<T>{
+    return this._repository.createQueryBuilder("ppl")
+           .leftJoinAndSelect("ppl.establecimiento_penitenciario","establecimiento")
+           .leftJoinAndSelect("ppl.persona","persona")
+           .leftJoinAndSelect("persona.genero","genero")
+           .leftJoinAndSelect("persona.datosPersonales", "datosPersonales")
            .leftJoinAndSelect("datosPersonales.nacionalidad","nacionalidad")
            .leftJoinAndSelect("datosPersonales.estadoCivil","estadoCivil")
            .leftJoinAndSelect("persona.salud", "salud")
@@ -97,15 +123,9 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("familiares.establecimiento","establecimientoFamiliar")
            .leftJoinAndSelect("datosFamiliares.concubino","concubino")
            .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
-           .leftJoinAndSelect("situacionJudicial.","")
-           .where("persona.numero_identificacion = :ci",{ci})
+           .where("persona.id = :id_persona",{id_persona})
            .getOne()
   }
-
-  // getCausasById(id:number):Promise<T>{
-  //   return this._repository.createQueryBuilder("causas")
-  //           .leftJoinAndSelect("causas.despacho_judicial","despacho_judicial")
-  //           .l
-  // }
+ 
 }
   

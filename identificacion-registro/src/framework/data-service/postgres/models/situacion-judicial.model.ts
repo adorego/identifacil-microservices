@@ -29,6 +29,6 @@ export class SituacionJudicialModel extends SituacionJudicial{
   @Column({type:'date', nullable:false})
   expediente_fecha_de_documento:Date;
 
-  @OneToMany(()=>IngresoAPrisionModel, ingresoAPrision=>ingresoAPrision.situacionJudicial)
+  @OneToMany(()=>IngresoAPrisionModel, ingresoAPrision=>ingresoAPrision.situacionJudicial, {eager:true})
   ingresos_a_prision:Array<IngresoAPrisionModel>;
 }

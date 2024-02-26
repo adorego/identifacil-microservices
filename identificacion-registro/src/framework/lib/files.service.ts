@@ -1,8 +1,9 @@
+import * as path from "path";
+
 import * as fs from "fs";
 
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
-import path from "path";
 
 const filePath = "/opt/identifacil/";
 
@@ -11,7 +12,7 @@ export class FileService{
   async almacenar_archivo(archivo:Express.Multer.File, nombreDelArchivo:string):Promise<string>{
     let fileName = "";
     if(path){
-      fileName = `${nombreDelArchivo}_${path.extname(archivo.originalname)}.${archivo.mimetype}`;
+      fileName = `${nombreDelArchivo}_${path.extname(archivo.originalname)}`;
     }else{
       fileName = `${filePath}${nombreDelArchivo}.${archivo.mimetype}`;
     }

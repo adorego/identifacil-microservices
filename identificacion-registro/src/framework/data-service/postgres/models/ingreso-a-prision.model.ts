@@ -21,7 +21,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @Column({type:"date"})
   fecha_ingreso:Date;
 
-  @Column({type:"date"})
+  @Column({type:"date", nullable:true})
   fecha_de_salida:Date;
 
   @OneToOne(() => EstablecimientoPenitenciarioModel)

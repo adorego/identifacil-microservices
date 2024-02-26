@@ -21,10 +21,12 @@ export class FileService{
         
         console.log("Nombre final de archiivo:", fileName);
         const dirPath = path.join(process.env.TEST_FILE_STORAGE,'upload');
+        console.log("dirPath final:", dirPath);
         if(!fs.existsSync(dirPath)){
           fs.mkdirSync(dirPath, {recursive:true})
         }
         const finalPath = path.join(dirPath, fileName);
+        console.log("Final path:", finalPath);
         if(archivo){
           try{
             const writeStream = fs.createWriteStream(finalPath);
@@ -34,7 +36,7 @@ export class FileService{
             throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
           }
         }else{
-          console.log('La foto no existe');
+          console.log('No existe el archivo a guardar');
           throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
       

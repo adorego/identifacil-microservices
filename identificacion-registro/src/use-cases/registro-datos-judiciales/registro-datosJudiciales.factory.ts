@@ -68,7 +68,7 @@ export class RegistroDatosJudicialesFactory{
     situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
     situacionJudicial.expediente_fecha_de_documento = registroDatosJudicialesDTO.expediente_fechaDeDocumento;
     situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
-    situacionJudicial.persona = personaEncontrada;
+    
     
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
@@ -84,15 +84,18 @@ export class RegistroDatosJudicialesFactory{
     oficioJudicialAGuardar.causa = causaJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
     oficioJudicialAGuardar.tipo = "oficio judicial";
+    console.log("Oficio se guardo con exito", oficioJudicialAGuardar.ruta);
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
     resolucionMJAGuardar.causa = causaJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.resolucion_fechaDeDocumento}_${registroDatosJudicialesDTO.id_persona}`)
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.id_persona}`)
     resolucionMJAGuardar.tipo = "resolucion MJ";
+    console.log("Resolucion se guardo con exito", resolucionMJAGuardar.ruta);
+
 
     console.log("Documentos que ordenan la prisión:", oficioJudicialAGuardar, resolucionMJAGuardar);
 
@@ -104,7 +107,8 @@ export class RegistroDatosJudicialesFactory{
       situacionJudicial:situacionJudicial,
       ingresoAPrision:ingresoAPrision,
       oficioJudicialAGuardar:oficioJudicialAGuardar,
-      resolucionMJAGuardar:resolucionMJAGuardar
+      resolucionMJAGuardar:resolucionMJAGuardar,
+      persona:personaEncontrada
 
     }
     
@@ -155,7 +159,7 @@ export class RegistroDatosJudicialesFactory{
     situacionJudicial.primera_vez_en_prision = registroDatosJudicialesDTO.primeraVezEnPrision ;
     situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
 
-    situacionJudicial.ingresos_a_prision = [];
+    
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
     ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;

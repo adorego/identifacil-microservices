@@ -7,8 +7,8 @@ export class SituacionJudicial{
   persona:Persona;
   primera_vez_en_prision:boolean;
   cantidad_de_veces_que_ingreso:number;
-  ingresos_a_prision:Array<IngresoAPrision>;
   expediente_numero_de_documento:string;
   expediente_fecha_de_documento:Date;
+  ingresos_a_prision:Array<IngresoAPrision>;
 
 }

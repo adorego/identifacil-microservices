@@ -25,6 +25,7 @@ export class RegistroDatosJudicialesDTO{
   primeraVezEnPrision_modificado:boolean;
   cantidadDeIngresos: number;
   cantidadDeIngresos_modificado:boolean;
+  fecha_ingreso_a_establecimiento:Date;
   causa: number;
   causa_modificado:boolean;
   oficioJudicial: oficio;

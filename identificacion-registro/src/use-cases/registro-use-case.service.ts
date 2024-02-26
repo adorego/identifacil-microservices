@@ -35,6 +35,7 @@ import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
 import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
 import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos.dto";
+import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-registro-datosJudiciales.dto";
 
 @Injectable()
 export class RegistroUseCase{
@@ -289,9 +290,26 @@ export class RegistroUseCase{
     }
   }
 
-  async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<SituacionJudicial>{
-    return await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
-  
+  async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<RespuestaRegistroJudicialDTO>{
+    try{
+      const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+      const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
+      const resolucionMjAGuardar = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
+      const ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardar);
+      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
+      const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
+      situacionJudicialAGuardar.ingresos_a_prision.push(ingresoAPrisionGuardado);
+      const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
+      return{
+        id: situacionJudicialGuardada.id,
+        success:true
+      }
+
+    }catch(error){
+      this.logger.error("Error al registrar los datos judiciales");
+    }
   
   }
 

@@ -106,6 +106,33 @@ export class GestionPPLUseCase{
     }
   }
 
+  async getPpplById(id:number):Promise<PplDTO>|null{
+    const ppl = await this.dataService.ppl.get(id);
+    if(!ppl){
+      return null
+    }else{
+      return{
+        id_persona:ppl.persona.id,
+        nombre:ppl.persona.nombre,
+        apellido:ppl.persona.apellido,
+        numero_de_identificacion:ppl.persona.numero_identificacion,
+        apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
+        genero:ppl.persona.genero ? ppl.persona.genero.id : null,
+        fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
+        establecimiento:ppl.establecimiento_penitenciario.id,
+        establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
+        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
+        estado_perfil:this.verificar_perfil(ppl.persona),
+        datosPersonales:ppl.persona.datosPersonales,
+        datosDeSalud:ppl.persona.salud,
+        datosDeSeguridad:ppl.persona.seguridad,
+        datosFamiliares:ppl.persona.datosFamiliares,
+        datosJudiciales:ppl.persona.situacionJudicial,
+        datosEducacion:ppl.persona.educacionFormacion,
+      }
+    }
+  }
+
   
   verificar_perfil(persona:Persona){
     return true;

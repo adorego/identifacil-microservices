@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, HttpException, Logger, Param } from "@nestjs/common";
 
 import { GestionPPLUseCase } from "src/use-cases/gestion-ppl/gestion-ppl-use-case.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
@@ -7,6 +7,7 @@ import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
 @Controller('gestion_ppl')
 export class PplController{
+  private readonly logger:Logger = new Logger("PplController");
 
   constructor(
     private gestionPPLUseCase:GestionPPLUseCase
@@ -38,12 +39,15 @@ export class PplController{
   
   }
 
-  // async ppl_por_ci(numeroDeIdentificacion:string):Promise<PplDTO>{
-
-  // }
-
-  // async ppl_por_nombre(nombre_y_apellido:string):Promise<Array<PplDTO>>{
-
-  // }
+  @Get("ppls/:id")
+  async ppls_por_id(@Param() param:any):Promise<PplDTO>{
+    try{
+      this.logger.log("Lamada a ppl_por_id, parametro:", param.id);
+      return await this.gestionPPLUseCase.getPpplById(param.id);
+    }catch(error){
+      this.logger.error("Error en la consulta de PPL por id");
+      throw new HttpException("Error en al consulta por id", error);
+    }
+  }
 
 }

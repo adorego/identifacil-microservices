@@ -30,12 +30,20 @@ export class RegistroDatosJudicialesFactory{
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
     
-    if(!registroDatosJudicialesDTO.oficioJudicial){
-      throw new HttpException('Se debe enviar el oficio judicial', HttpStatus.BAD_REQUEST);
+    if(registroDatosJudicialesDTO.oficioJudicial && !registroDatosJudicialesDTO.oficioJudicial.fechaDeDocumento){
+      throw new HttpException('El oficio judicial debe tener una fecha', HttpStatus.BAD_REQUEST);
     }
 
-    if(!registroDatosJudicialesDTO.resolucion){
-      throw new HttpException('Se debe enviar la resolución judicial', HttpStatus.BAD_REQUEST);
+    if(registroDatosJudicialesDTO.oficioJudicial && !registroDatosJudicialesDTO.oficioJudicial.numeroDeDocumento){
+      throw new HttpException('El oficio judicial debe tener un numero', HttpStatus.BAD_REQUEST);
+    }
+
+    if(registroDatosJudicialesDTO.resolucion && !registroDatosJudicialesDTO.resolucion.fechaDeDocumento){
+      throw new HttpException('La resolución judicial debe tener una fecha', HttpStatus.BAD_REQUEST);
+    }
+
+    if(registroDatosJudicialesDTO.resolucion && !registroDatosJudicialesDTO.resolucion.numeroDeDocumento){
+      throw new HttpException('La resolución judicial debe tener un número de documento', HttpStatus.BAD_REQUEST);
     }
 
     const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);

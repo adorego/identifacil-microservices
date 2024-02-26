@@ -1,6 +1,7 @@
 import { CausaJudicial } from "./causa-judicial.entity";
 import { DocumentoOrdenPrision } from "./documentos-ordenan-prision.entity";
 import { EstablecimientoPenitenciario } from "./establecimiento-penitenciario.entity";
+import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class IngresoAPrision{
   id:number;
@@ -9,5 +10,6 @@ export class IngresoAPrision{
   fecha_ingreso:Date;
   fecha_de_salida:Date;
   establecimiento_penitenciario:EstablecimientoPenitenciario;
+  situacionJudicial:SituacionJudicial;
 
 }

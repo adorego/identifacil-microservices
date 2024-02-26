@@ -6,6 +6,7 @@ import { HechoPunibleModel } from "./hecho-punible.model";
 import { PersonaModel } from "./persona.model";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
+import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
 
 @Entity({name:'situacion_judicial'})
 export class SituacionJudicialModel extends SituacionJudicial{
@@ -27,4 +28,7 @@ export class SituacionJudicialModel extends SituacionJudicial{
 
   @Column({type:'date', nullable:false})
   expediente_fecha_de_documento:Date;
+
+  @OneToMany(()=>IngresoAPrisionModel, ingresoAPrision=>ingresoAPrision.situacionJudicial)
+  ingresos_a_prision:Array<IngresoAPrisionModel>;
 }

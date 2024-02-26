@@ -39,7 +39,7 @@ export class PplController{
   
   }
 
-  @Get("ppls/:id")
+  @Get("ppls/id/:id")
   async ppls_por_id(@Param() param:any):Promise<PplDTO>{
     try{
       this.logger.log("Lamada a ppl_por_id, parametro:", param.id);

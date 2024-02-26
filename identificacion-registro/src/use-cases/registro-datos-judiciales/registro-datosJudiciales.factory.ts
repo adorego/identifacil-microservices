@@ -22,6 +22,7 @@ export class RegistroDatosJudicialesFactory{
 
   async generar_datos_judiciales(registroDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Express.Multer.File, resolucion:Express.Multer.File):Promise<RespuestaFactoryDatosJudiciales>{
    
+    console.log("Datos al ingreso del factory:", registroDatosJudicialesDTO);
     if(!registroDatosJudicialesDTO.id_persona){
       throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);
     }
@@ -57,6 +58,7 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
     }
     
+    console.log("Datos despues de las validaciones del factory:", registroDatosJudicialesDTO);
     let situacionJudicial = new SituacionJudicial();
     
 

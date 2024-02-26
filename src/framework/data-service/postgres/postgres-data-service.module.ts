@@ -5,7 +5,7 @@ import { ConcubinoModel } from "./models/concubino.model";
 import { CondenaModel } from "./models/condena.model";
 import { DatosFamiliaresModel } from "./models/datos-familiares.model";
 import { DatosPersonalesModel } from "./models/datos-personales.model";
-import { DespachosJudicialesModel } from "./models/despachos-judiciales.model";
+import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
 import { DocumentosOrdenanPrisionModel } from "./models/documentos-ordenan-prision.model";
 import { EducacionFormacionModel } from "./models/educacion-formacion.model";
 import { EstablecimientoPenitenciarioModel } from "./models/establecimiento-penitenciario.model";
@@ -36,6 +36,7 @@ import { TipoIdentificacionModel } from "./models/tipo_identificacion.model";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { VacunaModel } from "./models/vacuna.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
+import { DefensorModel } from "./models/defensor.model";
 
 @Module({
   imports:[
@@ -74,10 +75,12 @@ import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
       IngresoAPrisionModel,
       CondenaModel,
       CircunscripcionJudicialModel,
-      DespachosJudicialesModel,
       OficioModel,
       PplModel,
       VinculoFamiliarModel,
+      DespachoJudicialModel,
+      DefensorModel
+      
       
     
     

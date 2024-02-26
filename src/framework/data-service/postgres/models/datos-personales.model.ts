@@ -19,50 +19,50 @@ export class DatosPersonalesModel extends DatosPersonales{
   @OneToOne(() => PersonaModel, (persona) => persona.datosPersonales)
   persona:PersonaModel;
 
-  @ManyToOne(()=>EstadoCivilModel,{eager:true})
+  @ManyToOne(()=>EstadoCivilModel)
   estadoCivil:EstadoCivilModel;
 
-  @Column({type:"boolean", nullable:true})
+  @Column({type:"boolean"})
   estadoCivil_modificado:boolean;
   
   @ManyToOne(()=>NacionalidadModel,{eager:true})
   nacionalidad:NacionalidadModel;
 
-  @Column({type:"boolean", nullable:true})
+  @Column({type:"boolean"})
   nacionalidad_modificado:boolean;
 
   @Column({type:"varchar", nullable:true})
   lugarDeNacimiento:string;
 
-  @Column({type:"boolean", nullable:true})
+  @Column({type:"boolean"})
   lugarDeNacimiento_modificado:boolean;
 
   @Column({type:"varchar", nullable:true})
   direccion:string;
 
-  @Column({type:"boolean", nullable:true})
+  @Column({type:"boolean"})
   direccion_modificado:boolean;
 
-  @Column({type:"varchar", nullable:true})
+  @Column({type:"varchar"})
   barrioCompania:string;
 
   @Column({type:"boolean", nullable:true})
   barrioCompania_modificado:boolean;
 
   
-  @Column({type:"varchar", nullable:true})
+  @Column({type:"varchar"})
   numeroDeContacto:string;
 
   @Column({type:"boolean", nullable:true})
   numeroDeContacto_modificado:boolean;
 
-  @Column({type:"varchar", nullable:true})
+  @Column({type:"varchar"})
   contactoDeEmergencia1:string;
 
   @Column({type:"boolean", nullable:true})
   contactoDeEmergencia1_modificado:boolean;
 
-  @Column({type:"varchar", nullable:true})
+  @Column({type:"varchar"})
   contactoDeEmergencia2:string;
 
   @Column({type:"boolean", nullable:true})

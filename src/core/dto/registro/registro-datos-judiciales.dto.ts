@@ -1,18 +1,19 @@
+import { Oficio } from "src/core/entities/oficio.entity";
 
-interface oficio_tipo{
+interface oficio{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
   documento:File | null;
 
 }
 
-interface resolucion_tipo{
+interface resolucion{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
   documento:File | null;
 }
 
-interface expediente_tipo{
+interface expediente{
   numeroDeDocumento:string;
   fechaDeDocumento:string;
 }
@@ -25,17 +26,22 @@ export class RegistroDatosJudicialesDTO{
   primeraVezEnPrision_modificado:boolean;
   cantidadDeIngresos: number;
   cantidadDeIngresos_modificado:boolean;
+  fecha_ingreso_a_establecimiento:Date;
   causa: number;
   causa_modificado:boolean;
-  oficio: string;
-  oficio_modificado:boolean;
-  ultimoTrabajo: string;
-  ultimoTrabajo_modificado:boolean;
-  oficioJudicial: oficio_tipo;
+  
+  oficioJudicial_numeroDeDocumento:string;
+  oficioJudicial_fechaDeDocumento:Date;
   oficioJudicial_modificado:boolean;
-  resolucion: resolucion_tipo;
+  
+  
+  resolucion_numeroDeDocumento:string;
+  resolucion_fechaDeDocumento:Date;
   resolucion_modificado:boolean;
-  expediente: expediente_tipo;
+  
+ 
+  expediente_numeroDeDocumento:string;
+  expediente_fechaDeDocumento:Date;
   expediente_modificado:boolean;
   caratula: string;
   caratula_modificado:boolean;

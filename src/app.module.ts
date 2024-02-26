@@ -1,6 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
+import { DatosPenalesModule } from './use-cases/datos-penales/datos-penales.module';
 import { GestionPPLModule } from './use-cases/gestion-ppl/getion-ppl.module';
-import { IdentificacionUseCaseModule } from './use-cases/identificacion-use-case.module';
+import { IdentificacionUseCaseModule } from './use-cases/identificacion/identificacion-use-case.module';
 import { LibModule } from './framework/lib/lib.modules';
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
@@ -19,14 +20,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:"registro-postgres-srv",
-      // host:process.env.TEST_DB_HOST,
+      // host:"registro-postgres-srv",
+      host:process.env.TEST_DB_HOST,
       port: 5432,
       username:'identifacil',
       password:'clave',
       logging:true,
-      // database:'identifacil_registro',
-      database:'identifacil-registro',
+      database:'identifacil_registro',
+      // database:'identifacil-registro',
       migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,
       autoLoadEntities:true,
@@ -39,6 +40,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     IdentificacionUseCaseModule,
     LibModule,
     GestionPPLModule,
+    DatosPenalesModule
   
   ],
   controllers: [],

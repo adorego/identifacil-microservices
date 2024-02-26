@@ -33,6 +33,14 @@ import { SeguridadModel } from "./models/seguridad.model";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplModel } from "./models/ppl.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
+import { CondenaModel } from "./models/condena.model";
+import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
+import { HechoPunibleModel } from "./models/hecho-punible.model";
+import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judicial.entity";
+import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.model";
+import { Ciudad } from "src/core/entities/ciudad.entity";
+import { CiudadModel } from "./models/ciudad.model";
+import { DefensorModel } from "./models/defensor.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -54,6 +62,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   concubino: PostgresGenericRepository<Concubino>;
   datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
   establecimientoPenitenciario: PostgresGenericRepository<EstablecimientoPenitenciarioModel>;
+  defensor:PostgresGenericRepository<DefensorModel>;
   causas: PostgresGenericRepository<CausaJudicialModel>;
   documentoOrdenPrision: PostgresGenericRepository<DocumentosOrdenanPrisionModel>;
   ingresoAPrision: PostgresGenericRepository<IngresoAPrisionModel>;
@@ -62,7 +71,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   seguridad: PostgresGenericRepository<SeguridadModel>;
   ppl: PostgresGenericRepository<PplModel>;
   vinculo_familiar: IGenericRepository<VinculoFamiliarModel>;
-
+  condena: IGenericRepository<CondenaModel>;
+  despachoJudicial: IGenericRepository<DespachoJudicialModel>;
+  hechoPunible: IGenericRepository<HechoPunibleModel>;
+  circunscripcionJudicial: IGenericRepository<CircunscripcionJudicialModel>;
+  ciudad:IGenericRepository<CiudadModel>
   constructor(
     @InjectRepository(PersonaModel)
     private persona_repository:Repository<PersonaModel>,
@@ -117,7 +130,19 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectDataSource()
     private dataSource:DataSource,
     @InjectRepository(VinculoFamiliarModel)
-    private vinculo_familiar_repository:Repository<VinculoFamiliarModel>
+    private vinculo_familiar_repository:Repository<VinculoFamiliarModel>,
+    @InjectRepository(CondenaModel)
+    private condena_repository:Repository<CondenaModel>,
+    @InjectRepository(DespachoJudicialModel)
+    private despacho_judicial_repository:Repository<DespachoJudicialModel>,
+    @InjectRepository(HechoPunibleModel)
+    private hecho_punible_reposiitory:Repository<HechoPunibleModel>,
+    @InjectRepository(CircunscripcionJudicialModel)
+    private circunscripcionJudicial_repository:Repository<CircunscripcionJudicialModel>,
+    @InjectRepository(CiudadModel)
+    private ciudad_repository:Repository<CiudadModel>,
+    @InjectRepository(DefensorModel)
+    private defensor_repository:Repository<DefensorModel>,
     ){}
   
   
@@ -152,6 +177,12 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.seguridad = new PostgresGenericRepository<SeguridadModel>(this.seguridad_repository);
     this.ppl = new PostgresGenericRepository<PplModel>(this.ppl_repository);
     this.vinculo_familiar = new PostgresGenericRepository<VinculoFamiliarModel>(this.vinculo_familiar_repository);
+    this.condena = new PostgresGenericRepository<CondenaModel>(this.condena_repository);
+    this.despachoJudicial = new PostgresGenericRepository<DespachoJudicialModel>(this.despacho_judicial_repository);
+    this.hechoPunible = new PostgresGenericRepository<HechoPunibleModel>(this.hecho_punible_reposiitory);
+    this.circunscripcionJudicial = new PostgresGenericRepository<CircunscripcionJudicialModel>(this.circunscripcionJudicial_repository);
+    this.ciudad = new PostgresGenericRepository<CiudadModel>(this.ciudad_repository);
+    this.defensor = new PostgresGenericRepository<DefensorModel>(this.defensor_repository);
   }
   
   

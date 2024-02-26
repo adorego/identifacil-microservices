@@ -18,12 +18,19 @@ export class FamiliarModel extends Familiar{
   @Column({type:'varchar', nullable:false})
   apellido:string;
 
-  @ManyToOne(()=>VinculoFamiliarModel)
+  @ManyToOne(()=>VinculoFamiliarModel,{eager:true})
   vinculo:VinculoFamiliarModel;
 
-  @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+  @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
   establecimiento:EstablecimientoPenitenciario;
 
-  @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares))
+  @Column({type:"boolean", default:false})
+  esFuncionario: boolean;
+
+  @ManyToOne(() => DatosFamiliaresModel, (datosFamiliares => datosFamiliares.familiares),{onDelete:'CASCADE'})
   datosFamiliares:DatosFamiliaresModel;
+
+
+  @Column({type:"int", nullable:true})
+  edad:number;
 }

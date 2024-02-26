@@ -5,5 +5,8 @@ import { Persona } from "src/core/entities/persona.entity";
 
 export class RespuestaGenerarRegistroDatosFamiliaresDTO{
   datosFamiliares:DatosFamiliares;
+  concubino:Concubino;
+  familiares:Array<Familiar>;
+  persona:Persona;
   
 }

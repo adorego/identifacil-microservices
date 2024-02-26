@@ -1,29 +1,16 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { RegistroSaludFactory, RespuestaRegistroSaludfactory } from "./registro-salud-factory.service";
 
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
-import { Concubino } from "src/core/entities/concubino.entity";
-import { ConcubinoModel } from "src/framework/data-service/postgres/models/concubino.model";
-import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
-import { DatosFamiliaresModel } from "src/framework/data-service/postgres/models/datos-familiares.model";
-import { DatosPersonales } from "src/core/entities/datos-personales.entity";
-import { DatosPersonalesModel } from "src/framework/data-service/postgres/models/datos-personales.model";
 import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
-import { EducacionFormacionModel } from "src/framework/data-service/postgres/models/educacion-formacion.model";
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
-import { FamiliarModel } from "src/framework/data-service/postgres/models/familiar.model";
 import { GrupoSanguineo } from "src/core/entities/grupo-sanguineo.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { LimitacionIdiomaticaModel } from "src/framework/data-service/postgres/models/limitacion-idiomatica.model";
 import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { Oficio } from "src/core/entities/oficio.entity";
 import { Persona } from "src/core/entities/persona.entity";
-import { PersonaModel } from "src/framework/data-service/postgres/models/persona.model";
 import { Ppl } from "src/core/entities/ppl.entity";
-import { PplModel } from "src/framework/data-service/postgres/models/ppl.model";
-import { QueryRunner } from "typeorm";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
@@ -34,27 +21,30 @@ import { RegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/regis
 import { RegistroDatosSeguridadFactory } from "./registro-datos-seguridad/registro-datos-seguridad-factory.service";
 import { RegistroEducacionDTO } from "src/core/dto/registro/registro-educacion.dto";
 import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory.service";
-import { RegistroPersonaModel } from "src/framework/data-service/postgres/models/registro-persona.model";
-import { RegistroSaludDTO } from "src/core/dto/registro/registro-salud.dto";
+import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
+import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
-import { RespuestaEducacionFactoryDTO } from "src/core/dto/respuesta-educacion-factory.dto";
+import { RespuestaDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-factory-registro-datos-personales.dto";
+import { RespuestaRegistrarDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-registrar-datos-familiares.dto";
 import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/registro/respuesta-registrar-educacion-use-case.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
+import { RespuestaRegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/respuesta-registro-seguridad.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
-import { SaludFisicaModel } from "src/framework/data-service/postgres/models/salud-fisica.model";
-import { SaludMentalModel } from "src/framework/data-service/postgres/models/salud-mental.model";
-import { SaludModel } from "src/framework/data-service/postgres/models/salud.model";
-import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
+import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
+import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos.dto";
+import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-registro-datosJudiciales.dto";
+import { DocumentosOrdenanPrisionModel } from "src/framework/data-service/postgres/models/documentos-ordenan-prision.model";
+import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
 
 @Injectable()
 export class RegistroUseCase{
   private readonly logger = new Logger('RegistroUseCase');
   constructor(
     private dataService:IDataService,
-    private registro_salud_factory:RegistroSaludFactory,
+    private registroSaludFactory:RegistroSaludFactory,
     private registro_datosPersonales_factory:RegistroDatosPersonalesFactory,
     private registro_educacionFormacion_factory:RegistroEducacionFormacionFactory,
     private registro_datosFamiliares_factory:RegistroDatosFamiliaresFactory,
@@ -63,32 +53,22 @@ export class RegistroUseCase{
   ){}
 
   async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-    try{
+    //  console.log("Objecto dataService:", this.dataService);
+     try{
         //Guardar Registro
         // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);
-        
-        await queryRunner.startTransaction()
-        const registro = await queryRunner.manager.save(RegistroPersonaModel,personaARegistrar.registro);
-        personaARegistrar.registro = registro;
-        const personaGuardada = await queryRunner.manager.save(PersonaModel,personaARegistrar);
-
-        // const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
-        // personaARegistrar.registro = registroGuardado;
-        // const personaGuardada = await this.dataService.persona.create(personaARegistrar);
+        const registroGuardado = await this.dataService.registro.create(personaARegistrar.registro);
+        personaARegistrar.registro = registroGuardado;
+        const personaGuardada = await this.dataService.persona.create(personaARegistrar);
         if(personaGuardada.esPPL){
           ppl.persona = personaGuardada;
-          const pplGuardado = await queryRunner.manager.save(PplModel, ppl );
+          const pplGuardado = await this.dataService.ppl.create(ppl);
         }
-        await queryRunner.commitTransaction()
         return personaGuardada;
         // return null
      }catch(error){
-        await queryRunner.rollbackTransaction()
         this.logger.error(`Error durante el registro:${error}`);
         throw new HttpException(`Error durante el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-     }finally{
-        await queryRunner.release()
      }
 
      
@@ -97,81 +77,65 @@ export class RegistroUseCase{
 
   async registrar_salud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{
     
-    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.crearRegistroSalud(registroSaludDTO);
-    
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-
     try{
-      await queryRunner.startTransaction();
-      const registroDeSaludACrear = registro_salud.registro_salud;
-      const persona = registro_salud.persona;
-      //Salud Mental
-      const registroDeSaludMentalGuardado = await queryRunner.manager.save(SaludMentalModel,registro_salud.registro_salud_mental);
-      registroDeSaludACrear.saludMental = registroDeSaludMentalGuardado;
-      
-      //Salud Fisica
-      const registroDeSaludFisicaGuardado = await queryRunner.manager.save(SaludFisicaModel,registro_salud.registro_salud_fisica);
-      registroDeSaludACrear.saludFisica = registroDeSaludFisicaGuardado;
-      //Limitaciones idiomaticas
-      const limitacionesIdiomaticasGuardado = await queryRunner.manager.save(LimitacionIdiomaticaModel,registro_salud.registro_limitacionesIdiomaticas);
-      registroDeSaludACrear.limitacionesIdiomaticas = limitacionesIdiomaticasGuardado;
-
-      //Finalmente guardo el registro de salud
-      const registroDeSaludGuardado = await queryRunner.manager.save(SaludModel, registroDeSaludACrear);
-      persona.salud = registroDeSaludGuardado;
-      //Actualizar Persona
-      const updatedPersona:Persona  = await queryRunner.manager.save(PersonaModel,persona);
-      await queryRunner.commitTransaction()
-      return {
-        success:true
+      const registrosGeneradosPorFactory = await this.registroSaludFactory.generarRegistroSalud(registroSaludDTO);
+      const saludMentalGuardado = await this.dataService.saludMental.create(registrosGeneradosPorFactory.registro_salud_mental);
+      const saludFisicaGuardado = await this.dataService.saludFisica.create(registrosGeneradosPorFactory.registro_salud_fisica);
+      const limitacionIdiomaticaGuardada = await this.dataService.limitacionesIdiomaticas.create(registrosGeneradosPorFactory.registro_limitacionesIdiomaticas);
+      const registroSaludACrear = registrosGeneradosPorFactory.registro_salud;
+      console.log("Registro salud a crear:", registroSaludACrear);
+      registroSaludACrear.saludMental = saludMentalGuardado;
+      registroSaludACrear.saludFisica = saludFisicaGuardado;
+      registroSaludACrear.limitacionesIdiomaticas = limitacionIdiomaticaGuardada;
+      const registroCreado = await this.dataService.salud.create(registroSaludACrear);
+      return{
+        success:true,
+        id:registroCreado.id
       }
-        
+      
+
     }catch(error){
-      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de salud:${error}`);
       throw new HttpException(`Error durante el registro de salud:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      await queryRunner.release()
     }
 
   }
 
   async actualizar_salud(id:number,registroSaludDTO:RegistroSaludDTO){
-    const registro_salud:RespuestaRegistroSaludfactory = await this.registro_salud_factory.actualizarRegistroSalud(id,registroSaludDTO);
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
-    const registroSaludAActualizar = registro_salud.registro_salud;
     try{
-      queryRunner.startTransaction();
-      const registroSaludMentalActualizado = await queryRunner.manager.save(SaludMentalModel, registro_salud.registro_salud_mental);
-      registroSaludAActualizar.saludMental = registroSaludMentalActualizado;
-
-      const registroSaludFisicaActualizado = await queryRunner.manager.save(SaludFisicaModel, registro_salud.registro_salud_fisica);
-      registroSaludAActualizar.saludFisica = registroSaludFisicaActualizado;
-      
-      const registroLimitacionesIdiomaticasActualizado = await queryRunner.manager.save(LimitacionIdiomaticaModel, registro_salud.registro_limitacionesIdiomaticas);
-      registroSaludAActualizar.limitacionesIdiomaticas = registroLimitacionesIdiomaticasActualizado;
-
-      const registroSaludActualizado = await queryRunner.manager.save(SaludModel,registro_salud.registro_salud);
-      queryRunner.commitTransaction();
+      const respuestaDeRegistroDeSaludFactory = await this.registroSaludFactory.actualizarRegistroSalud(id,registroSaludDTO);
+      const registroSaludMentalGuardada = await this.dataService.saludMental.update(respuestaDeRegistroDeSaludFactory.registro_salud_mental);
+      const registroSaludFisicaGuardada = await this.dataService.saludFisica.update(respuestaDeRegistroDeSaludFactory.registro_salud_fisica);
+      const registroLimitacionesIdiomaticasGuardada = await this.dataService.limitacionesIdiomaticas.update(respuestaDeRegistroDeSaludFactory.registro_limitacionesIdiomaticas);
+      const registroSaludAActualizar = respuestaDeRegistroDeSaludFactory.registro_salud;
+      registroSaludAActualizar.saludMental = registroSaludMentalGuardada;
+      registroSaludAActualizar.saludFisica = registroSaludFisicaGuardada;
+      registroSaludAActualizar.limitacionesIdiomaticas = registroLimitacionesIdiomaticasGuardada;
+      const registroSaludActualizado = await this.dataService.salud.update(registroSaludAActualizar);
+    
       return{
-        registroSaludActualizado:registroSaludActualizado
+        success:true,
+        id:registroSaludActualizado.id
       }
     }catch(error){
-      queryRunner.rollbackTransaction();
-      this.logger.error(`Ocurrio un error al actualizar el registro de Salud:${error}`);
-    }finally{
-      queryRunner.release();
+      this.logger.error(`Error durante el registro de datos de salud:${error}`);
+      throw new HttpException(`Error durante el registro de salud:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async registrar_datosPersonales(registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaRegistroDatosPersonalesDTO>{
     try{
-        const datosPersonales:DatosPersonales = 
-        await this.registro_datosPersonales_factory.registrarDatosPersonales(registroDatosPersonaleDTO);
-        // console.log("Datos Personales:", datosPersonales);
-        const datosPersonalesCreated = await this.dataService.datosPersonales.create(datosPersonales);
+        const respuestaFactoryDatosPersonales:RespuestaDatosPersonalesDTO
+        = await this.registro_datosPersonales_factory.registrarDatosPersonales(registroDatosPersonaleDTO);
+        const datosPersonalesACrear = respuestaFactoryDatosPersonales.datosPersonales;
+        datosPersonalesACrear.estadoCivil = respuestaFactoryDatosPersonales.estado_civil;
+        datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
+        datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
+        console.log("Datos personales:", datosPersonalesACrear);
+        const datosPersonalesCreados = await this.dataService.datosPersonales.create(datosPersonalesACrear);
         return{
-          sucess:true
+          id:datosPersonalesCreados.id,
+          success:true
         }
     }
     catch(error){
@@ -183,78 +147,202 @@ export class RegistroUseCase{
 
   async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
     try{
-      const datosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      const respuestaFactoryActualizarDatosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
+      datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
+      datosPersonales.estadoCivil = respuestaFactoryActualizarDatosPersonales.estado_civil;
+      console.log("Datos personales:", datosPersonales);
+      const datosPersonalesActualizados = await this.dataService.datosPersonales.update(datosPersonales);
+      
+      
       return {
-        datosPersonalesActualizados:datosPersonales.datosPersonales,
+        id:datosPersonalesActualizados.id,
         success:true
       }
       
     }catch(error){
-      
+      this.logger.error(`Hubo un error al actualizar el registro:${error}`);
       throw new HttpException(`Hubo un error al actualizar el registro:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async registrar_educacion(datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestaRegistrarEducacionFormacionUseCaseDTO>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
     try{
-      await queryRunner.startTransaction();
-      const datosEducacionFormacion:RespuestaEducacionFactoryDTO = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
-      const educacionFormalCreated = await queryRunner.manager.save(EducacionFormacionModel,datosEducacionFormacion.educacionFormacion);
-      await queryRunner.commitTransaction();
+
+      const respuestaEducacionFactory = await this.registro_educacionFormacion_factory.generarDatosEducacionFormacion(datosEducacionDTO);
+      const registroEducacionAGuardar = respuestaEducacionFactory.educacionFormacion;
+      const persona = respuestaEducacionFactory.persona;
+      registroEducacionAGuardar.persona = persona;
+      const respuestaGuardarRegistro = await this.dataService.educacionFormacion.create(registroEducacionAGuardar);
       return{
         success:true,
-        educacionFormacionCreated:educacionFormalCreated
+        id:respuestaGuardarRegistro.id
       }
     
     
     }catch(error){
-      await queryRunner.rollbackTransaction()
       this.logger.error(`Error durante el registro de datos de Educacion:${error}`);
       throw new HttpException(`Error durante el registro de datos de Educación:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      await queryRunner.release()
+    
     }
   }
 
-  async actualizar_educacion(id:number, datosEducacionDTO:RegistroEducacionDTO):Promise<EducacionFormacion>{
-    const registroDeEducacionAActualizar = await this.registro_educacionFormacion_factory.generarActualizacionEducacion(id,datosEducacionDTO);
-    return await this.dataService.educacionFormacion.update(registroDeEducacionAActualizar.registroDeEducacion);
-  }
-
-  async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
-      const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
-      return null;
-  }
-
-  async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<DatosFamiliares>{
-    const queryRunner:QueryRunner = this.dataService.getQueryRunner();
+  async actualizar_educacion(id:number, datosEducacionDTO:RegistroEducacionDTO):Promise<RespuestActualizarDatosEducacionDTO>{
     try{
-      const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id,datosFamiliaresDTO);
-      queryRunner.startTransaction();
-      
-      const familiaresGuardados = await queryRunner.manager.save(FamiliarModel,datosFamiliaresAActualizar.datosFamiliares.familiares);
-      const concubinoGuardado = await queryRunner.manager.save(ConcubinoModel, datosFamiliaresAActualizar.datosFamiliares.concubino);
-     
-      datosFamiliaresAActualizar.datosFamiliares.familiares = familiaresGuardados;
-      datosFamiliaresAActualizar.datosFamiliares.concubino = concubinoGuardado;
+      const respuestaFactoryActualizacionEducacion = await this.registro_educacionFormacion_factory.generarActualizacionEducacion(id,datosEducacionDTO);
+      const registradoAActualizar = respuestaFactoryActualizacionEducacion.registroDeEducacion;
+      const persona = respuestaFactoryActualizacionEducacion.persona
 
-      queryRunner.commitTransaction();
-      return null
+      console.log("Antes de guardar:", respuestaFactoryActualizacionEducacion.registroDeEducacion);
+      const resultadoGuardarEducacion = await this.dataService.educacionFormacion.update(respuestaFactoryActualizacionEducacion.registroDeEducacion);
+      return{
+        success:true,
+        id:resultadoGuardarEducacion.id
+      }
+    }catch(error){
+      this.logger.error("Error al actualizar el registro de Educacion");
+      throw new HttpException("Error al actualizar el registro de Educacion:", error);
+    }
+  }
+
+  async registrar_datos_familiares(datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
+    try{  
+      const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
+      const concubino = datosFamiliaresACrear.concubino;
+      console.log("Concubino:", concubino);
+      let concubinoGuardado = null;
+      if(concubino){
+        console.log("Se va a guardar el concubino:",concubino);
+        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      }
+      let familiaresGuardados:Array<Familiar> = null;
+      if(datosFamiliaresACrear.familiares && datosFamiliaresACrear.familiares.length > 0){
+        familiaresGuardados = await Promise.all(datosFamiliaresACrear.familiares.map(
+          async (familiar) =>{
+            return await this.dataService.familiar.create(familiar);
+
+          }
+        ))
+       }
+      console.log("Concubino guardado:",concubinoGuardado);
+      const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
+      registroFamiliarAGuardar.familiares = familiaresGuardados;
+      registroFamiliarAGuardar.concubino = concubinoGuardado;
+      registroFamiliarAGuardar.persona = datosFamiliaresACrear.persona;
+      const registroFamiliarGuardado = await this.dataService.datosFamiliares.create(registroFamiliarAGuardar);
+      if(!registroFamiliarAGuardar){
+        throw new HttpException("Error al guardar el registro familiar",HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return{
+          success:true,
+          id:registroFamiliarGuardado.id
+        }
+      
       
     }catch(error){
-      queryRunner.rollbackTransaction();
-      this.logger.error(`Error durante la actualizacion de datos familiares:${error}`);
-      throw new HttpException(`Error durante la actualizacion de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
-    }finally{
-      queryRunner.release();
+      this.logger.error(`Error durante el registro de datos familiares:${error}`);
+      throw new HttpException(`Error durante el registro de datos Familiares:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    
     }
   }
 
-  async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<SituacionJudicial>{
-    return await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+  async actualizar_datos_familiares(id:number, datosFamiliaresDTO:RegistroDatosFamiliaresDTO):Promise<RespuestaRegistrarDatosFamiliaresDTO>{
+    
+    try{
+      const datosFamiliaresAActualizar = await this.registro_datosFamiliares_factory.actualizar_datos_familiares(id, datosFamiliaresDTO);
+      const concubino = datosFamiliaresAActualizar.concubino;
+      
+      let concubinoGuardado = null;
+      if(concubino && concubino.id){
+        concubinoGuardado = await this.dataService.concubino.update(concubino);
+      }else if(concubino){
+        concubinoGuardado = await this.dataService.concubino.create(concubino);
+      }
+      console.log("Concubino a crear:", concubino);
+      let familiaresGuardados:Array<Familiar> = null;
+      if(datosFamiliaresAActualizar.familiares && datosFamiliaresAActualizar.familiares.length > 0){
+        familiaresGuardados = await Promise.all(datosFamiliaresAActualizar.familiares.map(
+          async (familiar) =>{
+            return await this.dataService.familiar.create(familiar);
+          }
+        ))
+       }
+       
+       const registroFamiliarAGuardar = datosFamiliaresAActualizar.datosFamiliares;
+       const concubinoAEliminar = registroFamiliarAGuardar.concubino;
+       registroFamiliarAGuardar.familiares = familiaresGuardados;
+       registroFamiliarAGuardar.concubino = concubinoGuardado;
+       registroFamiliarAGuardar.persona = datosFamiliaresAActualizar.persona;
+       registroFamiliarAGuardar.id = datosFamiliaresAActualizar.datosFamiliares.id;
+       const registroFamiliarGuardado = await this.dataService.datosFamiliares.update(registroFamiliarAGuardar);
+       if(!concubinoGuardado){
+        try{
+          concubinoAEliminar ? this.dataService.concubino.delete(concubinoAEliminar) : null;
+        }catch(error){
+          this.logger.error("No se pudo eliminar el registro de concubino:",concubinoAEliminar);
+        }
+       }
+       return{
+          success:true,
+          id:registroFamiliarGuardado.id
+        }
+    }catch(error){
+      this.logger.error(`Error durante la actualizacion de datos familiares:${error}`);
+      throw new HttpException(`Error durante la actualizacion de Datos Familiares:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<RespuestaRegistroJudicialDTO>{
+    try{
+      const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+      const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
+      const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
+      const ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision = new Array<DocumentosOrdenanPrisionModel>;
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
+      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
+      const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
+      const ingresos_a_prision = new Array<IngresoAPrision>;
+      ingresos_a_prision.push(ingresoAPrisionGuardado);
+      situacionJudicialAGuardar.ingresos_a_prision = ingresos_a_prision;
+      const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
+      return{
+        id: situacionJudicialGuardada.id,
+        success:true
+      }
+
+    }catch(error){
+      this.logger.error(`Error durante en la creación de Datos Judiciales:${error}`);
+      throw new HttpException(`Error durante la creación de datos judiciales:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   
-  
+  }
+
+  async actualizar_datos_judiciales(id:number, actualizacionDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>){
+    try{
+      const respuestaDelFactoryActualizarDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales_para_actualizar(id, actualizacionDatosJudicialesDTO,oficio_judicial[0],resolucion[0]);
+      let situacionJudicialAGuardar = respuestaDelFactoryActualizarDatosJudiciales.situacionJudicial;
+      const ingresoAPrisionAActualizar = respuestaDelFactoryActualizarDatosJudiciales.ingresoAPrision;
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision = [];
+      const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.oficioJudicialAGuardar);
+      const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.resolucionMJAGuardar);
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
+      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
+      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAActualizar);
+
+      situacionJudicialAGuardar.ingresos_a_prision[0] = ingresoAPrisionAActualizar;
+      const respuestaActualizacionDatosJudiciales = await this.dataService.situacionJudicial.update(situacionJudicialAGuardar);
+      return{
+        id: respuestaActualizacionDatosJudiciales.id,
+        success:true
+      }
+      
+
+    }catch(error){
+      this.logger.error(`Ocurrio un error durante la actualizacion de Datos Judiciales:${error}`);
+      throw new HttpException(`Ocurrio un error durante la actualizacion de Datos Judiciales:${error}`,error);
+    }
   }
 
 
@@ -267,20 +355,29 @@ export class RegistroUseCase{
     }
   }
 
-  async registrar_datos_seguridad(registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<Seguridad>{
+  async registrar_datos_seguridad(registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosSeguridadDTO>{
     try{
       const datosDeSeguridadAGuardar = await this.registro_datosSeguridad_factory.generar_datos_seguridad(registroDatosSeguridad);
-      return await this.dataService.seguridad.create(datosDeSeguridadAGuardar);
+      const respuestaRegistroDeDatosDeSeguridad = await this.dataService.seguridad.create(datosDeSeguridadAGuardar);
+      return{
+        success:true,
+        id:respuestaRegistroDeDatosDeSeguridad.id
+      }
     }catch(error){
       this.logger.error(`Error durante el registro de Datos de Seguridad:${error}`);
       throw new HttpException(`Error al consultar los Datos de Seeguridad`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async actualizar_datos_seguridad(id:number, datosSeguridadDTO:RegistroDatosSeguridadDTO){
+  async actualizar_datos_seguridad(id:number, datosSeguridadDTO:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosDTO>{
     const datosDeSeguridadAActualizar = await this.registro_datosSeguridad_factory.generar_actualizacion_datos_de_seguridad(id,datosSeguridadDTO);
+    console.log("Antes de actualizar:", datosDeSeguridadAActualizar.registroDeSeguridadAActualizar)
     try{
-      return await this.dataService.seguridad.update(datosDeSeguridadAActualizar.registroDeSeguridadAActualizar);
+      const respuestaActualizarRegistroSeguridad = await this.dataService.seguridad.update(datosDeSeguridadAActualizar.registroDeSeguridadAActualizar);
+      return{
+        success:true,
+        id:respuestaActualizarRegistroSeguridad.id
+      }
     }catch(error){
       throw new HttpException(`Error al actualizar el registro de seguridad:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }

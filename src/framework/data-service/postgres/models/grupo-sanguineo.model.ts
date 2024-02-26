@@ -11,6 +11,5 @@ export class GrupoSanguineoModel extends GrupoSanguineo{
   @Column()
   nombre:string;
 
-  @OneToMany(() => SaludModel, (salud) => salud.grupo_sanguineo)
-  personasSalud:SaludModel[];
+  
 }

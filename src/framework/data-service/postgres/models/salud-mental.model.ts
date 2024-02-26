@@ -9,7 +9,7 @@ export class SaludMentalModel extends SaludMental{
   id:number;
   
   @Column({type:'boolean', nullable:true})
-  sigue_tratamiento_salud_mental:boolean;
+  sigue_tratamiento_mental:boolean;
 
   @Column({type:'boolean', nullable:false})
   sigue_tratamiento_mental_modificado:boolean;
@@ -39,13 +39,13 @@ export class SaludMentalModel extends SaludMental{
   medicacion_actual:Array<string>;
 
   @Column({type:'boolean', array:false})
-  medicacion_actual_modificada:boolean;
+  medicacion_actual_modificado:boolean;
 
   @Column({type:'boolean', nullable:true})
   tiene_afeccion_severa_por_estupefacientes:boolean;
 
   @Column({type:'boolean', array:false})
-  tiene_afeccion_severa_por_estupefaciente_modificado:boolean;
+  tiene_afeccion_severa_por_estupefacientes_modificado:boolean;
 
   
 }

@@ -1,9 +1,10 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { CausaJudicialModel } from "./causa-judicial.model";
 import { DocumentosOrdenanPrisionModel } from "./documentos-ordenan-prision.model";
 import { EstablecimientoPenitenciarioModel } from "./establecimiento-penitenciario.model";
 import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
+import { SituacionJudicialModel } from "./situacion-judicial.model";
 
 @Entity({name:"ingreso_a_prision"})
 export class IngresoAPrisionModel extends IngresoAPrision{
@@ -26,4 +27,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @OneToOne(() => EstablecimientoPenitenciarioModel)
   @JoinColumn()
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
+
+  @ManyToOne(()=>SituacionJudicialModel, situacionJudicial=>situacionJudicial.ingresos_a_prision)
+  situacionJudicial:SituacionJudicialModel
 }

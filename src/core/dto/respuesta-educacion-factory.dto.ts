@@ -3,4 +3,5 @@ import { Persona } from "../entities/persona.entity";
 
 export class RespuestaEducacionFactoryDTO{
   educacionFormacion:EducacionFormacion;
+  persona:Persona;
 }

@@ -1,4 +1,4 @@
-import { Concubino } from "src/core/entities/concubino.entity";
+import { ConcubinoDTO } from "./concubino.dto";
 import { FamiliarDTO } from "./familiar.dto";
 
 export class RegistroDatosFamiliaresDTO{
@@ -11,6 +11,6 @@ export class RegistroDatosFamiliaresDTO{
   familiares_modificado:boolean;
   tieneConcubino:boolean;
   tieneConcubino_modificado:boolean;
-  concubino:Concubino;
+  concubino:ConcubinoDTO;
   concubino_modificado:boolean;
 }

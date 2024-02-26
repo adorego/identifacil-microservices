@@ -26,7 +26,7 @@ export class SaludModel extends Salud{
   @Column({type:'boolean', nullable:false})
   tieneAfeccionADrogas_modificado:boolean;
 
-  @OneToOne(() => GrupoSanguineoModel)
+  @ManyToOne(() => GrupoSanguineoModel,{eager:true})
   @JoinColumn()
   grupo_sanguineo:GrupoSanguineoModel;
 
@@ -38,31 +38,31 @@ export class SaludModel extends Salud{
   vacunas_recibidas:Array<VacunaModel>;
 
   @Column({type:'boolean', nullable:false})
-  vacunas_recibidas_modificada:boolean;
+  vacunas_recibidas_modificado:boolean;
 
   @Column({type:'decimal', nullable:true})
   presion_arterial:number;
 
   @Column({type:'boolean', nullable:false})
-  presion_arterial_modificada:boolean;
+  presion_arterial_modificado:boolean;
 
   @Column({type:'decimal', nullable:true})
   frecuencia_cardiaca:number;
 
   @Column({type:'boolean', nullable:false})
-  frecuencia_cardiaca_modificada:boolean;
+  frecuencia_cardiaca_modificado:boolean;
 
   @Column({type:'decimal', nullable:true})
   frecuencia_respiratoria:number;
 
   @Column({type:'boolean', nullable:false})
-  frecuencia_respiratoria_modificada:boolean;
+  frecuencia_respiratoria_modificado:boolean;
 
   @Column({type:'decimal', nullable:true})
   temperatura:number;
 
   @Column({type:'boolean', nullable:false})
-  temperatura_modificada:boolean;
+  temperatura_modificado:boolean;
 
   @Column({type:'decimal', nullable:true})
   peso:number;
@@ -116,7 +116,7 @@ export class SaludModel extends Salud{
   fecha_parto:Date;
 
   @Column({type:'boolean', nullable:false})
-  fecha_parto_modificada:boolean;
+  fecha_parto_modificado:boolean;
 
   @OneToOne(() => SaludFisicaModel,{cascade:true, eager:true})
   @JoinColumn()

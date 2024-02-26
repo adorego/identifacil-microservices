@@ -37,8 +37,10 @@ export class RegistroDatosSeguridadFactory{
       throw new HttpException('No se encontró el registro de seguridad enviado', HttpStatus.BAD_REQUEST);
     }
     registroDeSeguridadAActualizar = {...datosDeSeguridadDTO, 
-      persona:registroDeSeguridadAActualizar.persona};
+      persona:registroDeSeguridadAActualizar.persona,
+      id:registroDeSeguridadAActualizar.id};
 
+    console.log(registroDeSeguridadAActualizar);
     return{
       registroDeSeguridadAActualizar:registroDeSeguridadAActualizar,
       

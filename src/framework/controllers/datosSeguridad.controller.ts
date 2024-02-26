@@ -16,16 +16,17 @@ export class DatosSeguridadController{
   @Post()
   async create(@Body() registroDatosSeguridad:RegistroDatosSeguridadDTO):Promise<RespuestaRegistroDatosSeguridadDTO>{
     this.logger.log("Datos enviado:", registroDatosSeguridad, 'metodo:create');
-    await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
+    const respuestaSeguridad = await this.registroPersonaUseCase.registrar_datos_seguridad(registroDatosSeguridad);
     return(
       {
         success:true,
+        id:respuestaSeguridad.id
       }
     )
   }
 
   @Put(':id')
-  async update(@Param() param:any, datosSeguridadDTO:RegistroDatosSeguridadDTO){
+  async update(@Param() param:any, @Body() datosSeguridadDTO:RegistroDatosSeguridadDTO){
     this.logger.log("Datos enviado:", datosSeguridadDTO, 'metodo:update');
     const registroDeSeguridadActualizado = await this.registroPersonaUseCase.actualizar_datos_seguridad(param.id,datosSeguridadDTO);
     return{

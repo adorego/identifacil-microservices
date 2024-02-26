@@ -2,7 +2,7 @@ import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/commo
 import { IdentificacionPersonaDTO } from "src/core/dto/identificacion-persona.dto";
 import { IdentificacionRespuestaDTO } from "src/core/dto/identificacion-respuesta.dto";
 import { RespuestaIdentificacionPPLDTO } from "src/core/dto/identificacion/respuesta-identificacion-ppl.dto";
-import { IdentificacionUseCase } from "src/use-cases/identificacion-use-case.service";
+import { IdentificacionUseCase } from "src/use-cases/identificacion/identificacion-use-case.service";
 
 // import { IdentificacionUseCase } from "src/use-cases/identificacion-use-case.service";
 

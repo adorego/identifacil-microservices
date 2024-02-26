@@ -5,4 +5,5 @@ import { SaludMental } from "../../entities/salud-mental.entity";
 
 export class RespuestaRegistroSaludDTO{
   success:boolean;
+  id:number;
 }

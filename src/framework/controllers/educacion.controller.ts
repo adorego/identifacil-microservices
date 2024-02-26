@@ -20,15 +20,22 @@ export class EducacionFormacionController{
     console.log("Respuesta Use Case:", respuestaRegistrarEducacionUseCase)
     return(
       {
-        success:true
+        success:true,
+        id:respuestaRegistrarEducacionUseCase.id
       }
     )
     
   }
 
   @Put(':id')
-  async actualizar_educacion(@Param() id, @Body() registroEducacionDTO){
+  async actualizar_educacion(@Param() param, @Body() registroEducacionDTO):Promise<RespuestaRegistroEducacionFormacionDTO>{
     this.logger.log('Datos recibidos:',registroEducacionDTO);
-    const respuestaActualizarEducacionCase = await this.registroPersonaUseCase.actualizar_educacion(id,registroEducacionDTO);
+    const respuestaActualizarEducacionCase = await this.registroPersonaUseCase.actualizar_educacion(param.id,registroEducacionDTO);
+    return(
+      {
+        success:true,
+        id:respuestaActualizarEducacionCase.id
+      }
+    )
   }
 }

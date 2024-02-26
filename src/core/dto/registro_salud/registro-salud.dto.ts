@@ -1,8 +1,6 @@
-import { GrupoSanguineo } from "../../entities/grupo-sanguineo.entity";
-import { LimitacionIdiomatica } from "src/core/entities/limitacion-idiomatica.entity";
-import { SaludFisica } from "src/core/entities/salud-fisica.entity";
-import { SaludMental } from "src/core/entities/salud-mental.entity";
-import { Vacuna } from "../../entities/vacuna.entity";
+import { LimitacionesIdiomaticasDTO } from "./limitaciones-idiomaticas.dto";
+import { SaludFisicaDTO } from "./salud-fisica.dto";
+import { SaludMentalDTO } from "./salud-mental.dto";
 
 export class RegistroSaludDTO{
   id_persona:number;
@@ -10,16 +8,16 @@ export class RegistroSaludDTO{
   tieneAfeccionADrogas_modificado:boolean;
   grupo_sanguineo:number;
   grupo_sanguineo_modificado:boolean;
-  vacunas_recibidas:Array<{id:number, label:string}>;
-  vacunas_recibidas_modificada:boolean;
+  vacunas_recibidas:Array<number>;
+  vacunas_recibidas_modificado:boolean;
   presion_arterial:number;
-  presion_arterial_modificada:boolean;
+  presion_arterial_modificado:boolean;
   frecuencia_cardiaca:number;
-  frecuencia_cardiaca_modificada:boolean;
+  frecuencia_cardiaca_modificado:boolean;
   frecuencia_respiratoria:number;
-  frecuencia_respiratoria_modificada:boolean;
+  frecuencia_respiratoria_modificado:boolean;
   temperatura:number;
-  temperatura_modificada:boolean;
+  temperatura_modificado:boolean;
   peso:number;
   peso_modificado:boolean;
   talla:number;
@@ -37,9 +35,9 @@ export class RegistroSaludDTO{
   tiempo_gestacion:number;
   tiempo_gestacion_modificado:boolean;
   fecha_parto:Date;
-  fecha_parto_modificada:boolean;
+  fecha_parto_modificado:boolean;
   discapacidad_fisica:string;
-  discapacidad_modificada:boolean;
+  discapacidad_modificado:boolean;
   sigue_tratamiento_mental:boolean;
   sigue_tratamiento_mental_modificado:boolean;
   tiene_antecedentes_de_lesiones_autoinflingidas:boolean;
@@ -49,14 +47,14 @@ export class RegistroSaludDTO{
   reporta_abuso_de_droga_previo_al_ingreso:boolean;
   reporta_abuso_de_droga_previo_al_ingreso_modificado:boolean;
   medicacion_actual:Array<string>;
-  medicacion_actual_modificada:boolean;
+  medicacion_actual_modificado:boolean;
   tiene_afeccion_severa_por_estupefacientes:boolean;
   tiene_afeccion_severa_por_estupefaciente_modificado:boolean;
   necesitaInterprete:boolean;
   necesitaInterprete_modificado:boolean;
   tieneDificultadParaLeerYEscribir:boolean;
   tieneDificultadParaLeerYEscribir_modificado:boolean;
-  saludMental:SaludMental;
-  saludFisica:SaludFisica;
-  limitacionesIdiomaticas:LimitacionIdiomatica;
+  saludMental:SaludMentalDTO;
+  saludFisica:SaludFisicaDTO;
+  limitacionesIdiomaticas:LimitacionesIdiomaticasDTO;
 }

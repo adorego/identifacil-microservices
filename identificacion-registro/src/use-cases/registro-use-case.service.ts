@@ -36,6 +36,8 @@ import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
 import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
 import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos.dto";
 import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-registro-datosJudiciales.dto";
+import { DocumentosOrdenanPrisionModel } from "src/framework/data-service/postgres/models/documentos-ordenan-prision.model";
+import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
 
 @Injectable()
 export class RegistroUseCase{
@@ -296,10 +298,14 @@ export class RegistroUseCase{
       const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
       const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
       const ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
+      ingresoAPrisionAGuardar.documentos_que_ordenan_prision = new Array<DocumentosOrdenanPrisionModel>;
       ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
       ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
       const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
       const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
+      if(!situacionJudicialAGuardar.ingresos_a_prision){
+        situacionJudicialAGuardar.ingresos_a_prision = new Array<IngresoAPrision>;
+      }
       situacionJudicialAGuardar.ingresos_a_prision.push(ingresoAPrisionGuardado);
       const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
       return{

@@ -308,8 +308,8 @@ export class RegistroUseCase{
       }
 
     }catch(error){
-      this.logger.error("Error al registrar los datos judiciales");
-      throw new HttpException(`Error al registrar los datos judiciales:${error}`,error);
+      this.logger.error(`Error durante en la creación de Datos Judiciales:${error}`);
+      throw new HttpException(`Error durante la creación de datos judiciales:${error} `, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   
   }

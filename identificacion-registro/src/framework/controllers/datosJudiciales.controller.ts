@@ -29,7 +29,7 @@ export class DatosJudicialesController{
     @Body() registroDatosJudiciales:RegistroDatosJudicialesDTO):Promise<RespuestaRegistroDatosJudicialesDTO>{
       try{
         this.logger.log("Datos recibidos:", registroDatosJudiciales, 'metodo:create');
-        this.logger.log("Documentos recibidos:", documentos);
+        //this.logger.log("Documentos recibidos:", documentos);
         const respuesta_registro_datos_judiciales = 
         await this.registroPersonaUseCase.registrar_datos_judiciales(registroDatosJudiciales,documentos.oficioJudicial_documento, documentos.resolucion_documento)
         

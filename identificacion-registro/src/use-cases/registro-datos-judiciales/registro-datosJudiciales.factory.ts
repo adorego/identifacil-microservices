@@ -30,6 +30,10 @@ export class RegistroDatosJudicialesFactory{
     if(!personaEncontrada){
        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
+
+    if(personaEncontrada.situacionJudicial){
+      throw new HttpException('Ya existe un registro de Situacion Judicial', HttpStatus.BAD_REQUEST);
+    }
     
     if(!registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento || !registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento){
       throw new HttpException('El oficio judicial debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
@@ -64,7 +68,7 @@ export class RegistroDatosJudicialesFactory{
     situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
     situacionJudicial.expediente_fecha_de_documento = registroDatosJudicialesDTO.expediente_fechaDeDocumento;
     situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
-    
+    situacionJudicial.persona = personaEncontrada;
     
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;

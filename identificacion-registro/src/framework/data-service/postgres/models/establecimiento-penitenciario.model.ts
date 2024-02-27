@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
@@ -14,6 +14,6 @@ export class EstablecimientoPenitenciarioModel extends EstablecimientoPenitencia
   @Column({type:"varchar"})
   direccion:string;
 
-  @ManyToOne(()=>IngresoAPrisionModel)
+  @OneToMany(()=>IngresoAPrisionModel, ingresosAPrision =>ingresosAPrision.establecimiento_penitenciario)
   ingresos_a_prision:Array<IngresoAPrisionModel>;
 }

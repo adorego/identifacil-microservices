@@ -82,8 +82,8 @@ export class RegistroDatosJudicialesFactory{
     
     
     const ingresoAPrision = new IngresoAPrision();
-    ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
-    ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
+    ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento ? registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento : new Date();
+    //ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
     ingresoAPrision.causa = causaJudicial;
     if(ingresoAPrision.causa.condenado){
       ingresoAPrision.fecha_de_salida = causaJudicial.fecha_de_compurgamiento_inicial;
@@ -117,7 +117,8 @@ export class RegistroDatosJudicialesFactory{
       ingresoAPrision:ingresoAPrision,
       oficioJudicialAGuardar:oficioJudicialAGuardar,
       resolucionMJAGuardar:resolucionMJAGuardar,
-      persona:personaEncontrada
+      persona:personaEncontrada,
+      establecimiento:establecimientoPenitenciario
 
     }
     
@@ -207,7 +208,8 @@ export class RegistroDatosJudicialesFactory{
       ingresoAPrision:ingresoAPrision,
       oficioJudicialAGuardar:oficioJudicialAGuardar,
       resolucionMJAGuardar:resolucionMJAGuardar,
-      persona:personaEncontrada
+      persona:personaEncontrada,
+      establecimiento:establecimientoPenitenciario
 
     }
     

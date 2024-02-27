@@ -86,7 +86,7 @@ export class IdentificacionUseCase{
   }
   async cargar_modelos(){
     try{
-      const modelsPath = path.join(__dirname,'../../models/');
+      const modelsPath = path.join(__dirname,'../../../models');
       console.log("Directorio de los modelos:", modelsPath);
       await faceapi.nets.faceLandmark68Net.loadFromDisk(modelsPath);
       await faceapi.nets.faceRecognitionNet.loadFromDisk(modelsPath);

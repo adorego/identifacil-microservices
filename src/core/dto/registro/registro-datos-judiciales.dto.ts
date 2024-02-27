@@ -45,7 +45,7 @@ export class RegistroDatosJudicialesDTO{
   expediente_modificado:boolean;
   caratula: string;
   caratula_modificado:boolean;
-  hechoPunible: string;
+  hechoPunible: number;
   hechoPunible_modificado:boolean;
   sentenciaDefinitiva?: string;
   sentenciaDefinitiva_modificado:boolean;

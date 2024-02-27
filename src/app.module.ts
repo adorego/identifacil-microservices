@@ -26,7 +26,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username:'identifacil',
       password:'clave',
       logging:true,
-      // database:'identifacil_registro',
+      //database:'identifacil_registro',
       database:'identifacil-registro',
       migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,

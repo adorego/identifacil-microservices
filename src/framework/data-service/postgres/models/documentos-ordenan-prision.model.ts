@@ -21,7 +21,7 @@ export class DocumentosOrdenanPrisionModel extends DocumentoOrdenPrision{
   @ManyToOne(() => CausaJudicialModel)
   causa:CausaJudicialModel;
 
-  @ManyToOne(() => IngresoAPrisionModel, (ingresoAPrision)=> ingresoAPrision.documento_que_ordenan_prision)
+  @ManyToOne(() => IngresoAPrisionModel, (ingresoAPrision)=> ingresoAPrision.documentos_que_ordenan_prision)
   ingreso_a_prision:IngresoAPrisionModel;
 
   @Column({type:'varchar'})

@@ -294,19 +294,36 @@ export class RegistroUseCase{
 
   async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<RespuestaRegistroJudicialDTO>{
     try{
+      console.log("Inicio de use case 1");
+      if(!oficio_judicial && !resolucion){
+        throw new HttpException("No se enviaron los documentos oficio judicial ni resolucion", HttpStatus.BAD_REQUEST);
+      }
       const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+      
       const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
       const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
-      const ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
-      ingresoAPrisionAGuardar.documentos_que_ordenan_prision = new Array<DocumentosOrdenanPrisionModel>;
-      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
-      ingresoAPrisionAGuardar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
-      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
+      console.log("Inicio de use case 2");
       const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
-      const ingresos_a_prision = new Array<IngresoAPrision>;
-      ingresos_a_prision.push(ingresoAPrisionGuardado);
-      situacionJudicialAGuardar.ingresos_a_prision = ingresos_a_prision;
+      
       const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
+      
+      
+      console.log("Llego aca");
+      
+       let ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
+       ingresoAPrisionAGuardar.documentos_que_ordenan_prision = [oficioJudicialGuardado,resolucionMjAGuardada];
+       ingresoAPrisionAGuardar.situacionJudicial = situacionJudicialGuardada;
+       ingresoAPrisionAGuardar.establecimiento_penitenciario = respuestaDatosJudiciales.establecimiento;
+       const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
+      
+       const personAActualizar = respuestaDatosJudiciales.persona;
+       personAActualizar.situacionJudicial = situacionJudicialGuardada;
+       const personaActualizada = this.dataService.persona.update(personAActualizar);
+
+       
+
+      
+
       return{
         id: situacionJudicialGuardada.id,
         success:true
@@ -322,19 +339,33 @@ export class RegistroUseCase{
   async actualizar_datos_judiciales(id:number, actualizacionDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>){
     try{
       const respuestaDelFactoryActualizarDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales_para_actualizar(id, actualizacionDatosJudicialesDTO,oficio_judicial[0],resolucion[0]);
-      let situacionJudicialAGuardar = respuestaDelFactoryActualizarDatosJudiciales.situacionJudicial;
-      const ingresoAPrisionAActualizar = respuestaDelFactoryActualizarDatosJudiciales.ingresoAPrision;
-      ingresoAPrisionAActualizar.documentos_que_ordenan_prision = [];
+      
       const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.oficioJudicialAGuardar);
       const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDelFactoryActualizarDatosJudiciales.resolucionMJAGuardar);
-      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(oficioJudicialGuardado);
-      ingresoAPrisionAActualizar.documentos_que_ordenan_prision.push(resolucionMjAGuardada);
-      const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAActualizar);
+      
+      const situacionJudicialAGuardar = respuestaDelFactoryActualizarDatosJudiciales.situacionJudicial;
+      
+      const situacionJudicialGuardada = await this.dataService.situacionJudicial.update(situacionJudicialAGuardar);
+      
+      
+      
+      
+       let ingresoAPrisionAGuardar = respuestaDelFactoryActualizarDatosJudiciales.ingresoAPrision;
+       ingresoAPrisionAGuardar.documentos_que_ordenan_prision = [oficioJudicialGuardado,resolucionMjAGuardada];
+       ingresoAPrisionAGuardar.situacionJudicial = situacionJudicialGuardada;
+       const ingresoAPrisionGuardado = await this.dataService.ingresoAPrision.create(ingresoAPrisionAGuardar);
+      
+       const personAActualizar = respuestaDelFactoryActualizarDatosJudiciales.persona;
+       personAActualizar.situacionJudicial = situacionJudicialGuardada;
+       const personaActualizada = this.dataService.persona.update(personAActualizar);
+      
 
-      situacionJudicialAGuardar.ingresos_a_prision[0] = ingresoAPrisionAActualizar;
-      const respuestaActualizacionDatosJudiciales = await this.dataService.situacionJudicial.update(situacionJudicialAGuardar);
       return{
-        id: respuestaActualizacionDatosJudiciales.id,
+        id: situacionJudicialGuardada.id,
+        success:true
+      }
+      return{
+        id: situacionJudicialGuardada.id,
         success:true
       }
       

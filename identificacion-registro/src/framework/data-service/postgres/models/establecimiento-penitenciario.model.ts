@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
+import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
 
 @Entity({name:"establecimiento_penitenciario"})
 export class EstablecimientoPenitenciarioModel extends EstablecimientoPenitenciario{
@@ -12,4 +13,7 @@ export class EstablecimientoPenitenciarioModel extends EstablecimientoPenitencia
 
   @Column({type:"varchar"})
   direccion:string;
+
+  @ManyToOne(()=>IngresoAPrisionModel)
+  ingresos_a_prision:Array<IngresoAPrisionModel>;
 }

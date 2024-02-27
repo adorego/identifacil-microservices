@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { CausaJudicialModel } from "./causa-judicial.model";
 import { DocumentosOrdenanPrisionModel } from "./documentos-ordenan-prision.model";
@@ -7,6 +7,7 @@ import { PersonaModel } from "./persona.model";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
+import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 
 @Entity({name:'situacion_judicial'})
 export class SituacionJudicialModel extends SituacionJudicial{
@@ -31,4 +32,7 @@ export class SituacionJudicialModel extends SituacionJudicial{
 
   @OneToMany(()=>IngresoAPrisionModel, ingresoAPrision=>ingresoAPrision.situacionJudicial,{eager:true})
   ingresos_a_prision:Array<IngresoAPrisionModel>;
+
+  @ManyToOne(()=>HechoPunibleModel)
+  hecho_punible: HechoPunibleModel;
 }

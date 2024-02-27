@@ -1,4 +1,5 @@
 import { CausaJudicial } from "./causa-judicial.entity";
+import { HechoPunible } from "./hecho_punible.entity";
 import { IngresoAPrision } from "./ingreso-a-prision.entity";
 import { Persona } from "./persona.entity";
 
@@ -10,5 +11,8 @@ export class SituacionJudicial{
   expediente_numero_de_documento:string;
   expediente_fecha_de_documento:Date;
   ingresos_a_prision:Array<IngresoAPrision>;
+  caratula:string;
+  hecho_punible:HechoPunible;
+
 
 }

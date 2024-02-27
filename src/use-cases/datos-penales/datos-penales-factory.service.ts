@@ -3,11 +3,11 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { CausaJudicialDTO } from "src/core/dto/causa/causa.dto";
 import { Condena } from "src/core/entities/condena.entity";
+import { Defensor } from "src/core/entities/defensor";
+import { DefensorDTO } from "src/core/dto/causa/defensot.dto";
 import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { RespuestaFactoryCausaJudicialDTO } from "src/core/dto/causa/respuesta-factory-causaJudicial.dto";
-import { DefensorDTO } from "src/core/dto/causa/defensot.dto";
-import { Defensor } from "src/core/entities/defensor";
 
 @Injectable()
 export class DatosPenalesFactory{
@@ -56,14 +56,14 @@ export class DatosPenalesFactory{
     // }
     
     
-    if(!causaJudicialDTO.ciudad){
-      throw new HttpException(`Se debe enviar una ciudad valida para la causa`,HttpStatus.BAD_REQUEST);
-    }
+    // if(!causaJudicialDTO.ciudad){
+    //   throw new HttpException(`Se debe enviar una ciudad valida para la causa`,HttpStatus.BAD_REQUEST);
+    // }
 
-    const ciudad = await this.dataService.ciudad.get(causaJudicialDTO.ciudad);
-    if(!ciudad){
-      throw new HttpException(`No se encontró la ciudad en la base de datos`,HttpStatus.BAD_REQUEST);
-    }
+    // const ciudad = await this.dataService.ciudad.get(causaJudicialDTO.ciudad);
+    // if(!ciudad){
+    //   throw new HttpException(`No se encontró la ciudad en la base de datos`,HttpStatus.BAD_REQUEST);
+    // }
 
     if(!causaJudicialDTO.numeroDeDocumento){
       throw new HttpException(`El numero de documento de la causa no puede ser nulo`,HttpStatus.BAD_REQUEST);
@@ -87,7 +87,7 @@ export class DatosPenalesFactory{
     causaJudicial.despacho_judicial = despachoJudicial;
     causaJudicial.estado_procesal = causaJudicialDTO.estado_procesal;
     causaJudicial.hechos_punibles = hechos_punibles;
-    causaJudicial.ciudad = ciudad;
+    // causaJudicial.ciudad = ciudad;
     causaJudicial.numeroDeDocumento = causaJudicialDTO.numeroDeDocumento;
     causaJudicial.numeroDeExpediente = causaJudicialDTO.numeroDeExpediente;
     causaJudicial.ppls = causaJudicialDTO.ppls;

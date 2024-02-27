@@ -1,3 +1,4 @@
 export class BaseEntityApp{
-  id:number
+  id:number;
+  
 }

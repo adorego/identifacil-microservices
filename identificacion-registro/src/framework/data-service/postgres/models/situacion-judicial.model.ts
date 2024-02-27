@@ -33,6 +33,9 @@ export class SituacionJudicialModel extends SituacionJudicial{
   @OneToMany(()=>IngresoAPrisionModel, ingresoAPrision=>ingresoAPrision.situacionJudicial,{eager:true})
   ingresos_a_prision:Array<IngresoAPrisionModel>;
 
+  @Column({type:'varchar', nullable:true})
+  caratula:string;
+
   @ManyToOne(()=>HechoPunibleModel)
   hecho_punible: HechoPunibleModel;
 }

@@ -15,8 +15,8 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @JoinColumn()
   causa:CausaJudicialModel;
 
-  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision)
-  documento_que_ordenan_prision:Array<DocumentosOrdenanPrisionModel>;
+  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision,{eager:true})
+  documentos_que_ordenan_prision:Array<DocumentosOrdenanPrisionModel>;
 
   @Column({type:"date"})
   fecha_ingreso:Date;

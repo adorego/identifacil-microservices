@@ -36,6 +36,9 @@ export class SituacionJudicialModel extends SituacionJudicial{
   @Column({type:'varchar', nullable:true})
   caratula:string;
 
+  @Column({type:'varchar', nullable:true})
+  sentencia_definitiva:string;
+
   @ManyToOne(()=>HechoPunibleModel)
   hecho_punible: HechoPunibleModel;
 }

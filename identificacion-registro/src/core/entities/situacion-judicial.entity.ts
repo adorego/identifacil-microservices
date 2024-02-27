@@ -10,6 +10,7 @@ export class SituacionJudicial{
   cantidad_de_veces_que_ingreso:number;
   expediente_numero_de_documento:string;
   expediente_fecha_de_documento:Date;
+  sentencia_definitiva:string;
   ingresos_a_prision:Array<IngresoAPrision>;
   caratula:string;
   hecho_punible:HechoPunible;

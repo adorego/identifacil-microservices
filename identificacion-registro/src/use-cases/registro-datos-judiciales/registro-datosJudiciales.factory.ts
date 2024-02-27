@@ -77,6 +77,7 @@ export class RegistroDatosJudicialesFactory{
     situacionJudicial.expediente_fecha_de_documento = registroDatosJudicialesDTO.expediente_fechaDeDocumento;
     situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
     situacionJudicial.caratula = registroDatosJudicialesDTO.caratula;
+    situacionJudicial.sentencia_definitiva = registroDatosJudicialesDTO.sentenciaDefinitiva;
     situacionJudicial.hecho_punible = hecho_punible;
     
     

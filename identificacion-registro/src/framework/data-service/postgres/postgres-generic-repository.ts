@@ -86,6 +86,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("situacionJudicial.ingresos_a_prision", "ingresos_a_prision")
            .leftJoinAndSelect("ingresos_a_prision.establecimiento_penitenciario", "establecimiento_penitenciario")
            .leftJoinAndSelect("ingresos_a_prision.causa", "causa")
+           .leftJoinAndSelect("ingresos_a_prision.documentos_que_ordenan_prision", "documentos_que_ordenan_prision")
            .leftJoinAndSelect("datosPersonales.nacionalidad","nacionalidad")
            .leftJoinAndSelect("datosPersonales.estadoCivil","estadoCivil")
            .leftJoinAndSelect("persona.salud", "salud")
@@ -131,6 +132,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("situacionJudicial.ingresos_a_prision", "ingresos_a_prision")
            .leftJoinAndSelect("ingresos_a_prision.establecimiento_penitenciario", "establecimiento_penitenciario")
            .leftJoinAndSelect("ingresos_a_prision.causa", "causa")
+           .leftJoinAndSelect("ingresos_a_prision.documentos_que_ordenan_prision", "documentos_que_ordenan_prision")
            .where("persona.id = :id_persona",{id_persona})
            .getOne()
   }

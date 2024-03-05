@@ -1,4 +1,4 @@
-import { CausaJudicial } from "../entities/causa-judicial.entity";
+import { ExpedienteJudicial } from "../entities/expediente-judicial.entity";
 import { CircunscripcionJudicial } from "../entities/circunscripcion-judicial.entity";
 import { Ciudad } from "../entities/ciudad.entity";
 import { Concubino } from "../entities/concubino.entity";
@@ -31,6 +31,8 @@ import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 import { Vacuna } from "../entities/vacuna.entity";
 import { VinculoFamiliar } from "../entities/vinculo-familiar.entity";
 import { Defensor } from "../entities/defensor";
+import { CausaJudicialModel } from "src/framework/data-service/postgres/models/causa-judicial.model";
+import { HechoPunibleCausaJudicialModel } from "src/framework/data-service/postgres/models/hecho-punible-causa-judicial.model";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -51,7 +53,8 @@ export abstract class IDataService{
   abstract concubino:IGenericRepository<Concubino>
   abstract datosFamiliares:IGenericRepository<DatosFamiliares>
   abstract establecimientoPenitenciario:IGenericRepository<EstablecimientoPenitenciario>
-  abstract causas:IGenericRepository<CausaJudicial>
+  abstract causaJudicial:IGenericRepository<CausaJudicialModel>
+  abstract expediente:IGenericRepository<ExpedienteJudicial>
   abstract documentoOrdenPrision:IGenericRepository<DocumentoOrdenPrision>
   abstract ingresoAPrision:IGenericRepository<IngresoAPrision>
   abstract situacionJudicial:IGenericRepository<SituacionJudicial>
@@ -60,10 +63,10 @@ export abstract class IDataService{
   abstract ppl:IGenericRepository<Ppl>
   abstract vinculo_familiar:IGenericRepository<VinculoFamiliar>
   abstract despachoJudicial:IGenericRepository<DespachoJudicial>
-  abstract condena:IGenericRepository<Condena>
   abstract hechoPunible:IGenericRepository<HechoPunible>
   abstract circunscripcionJudicial:IGenericRepository<CircunscripcionJudicial>
   abstract ciudad:IGenericRepository<Ciudad>
   abstract defensor:IGenericRepository<Defensor>
+  abstract hechoPunibleCausaJudicial:IGenericRepository<HechoPunibleCausaJudicialModel>
   
 }

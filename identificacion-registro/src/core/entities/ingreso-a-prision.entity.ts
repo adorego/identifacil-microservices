@@ -1,11 +1,11 @@
-import { CausaJudicial } from "./causa-judicial.entity";
+import { ExpedienteJudicial } from "./expediente-judicial.entity";
 import { DocumentoOrdenPrision } from "./documentos-ordenan-prision.entity";
 import { EstablecimientoPenitenciario } from "./establecimiento-penitenciario.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class IngresoAPrision{
   id:number;
-  causa:CausaJudicial;
+  expedienteJudicial:ExpedienteJudicial;
   documentos_que_ordenan_prision:Array<DocumentoOrdenPrision>;
   fecha_ingreso:Date;
   fecha_de_salida:Date;

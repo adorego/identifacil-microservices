@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { CausaJudicialModel } from "./causa-judicial.model";
 import { DocumentoOrdenPrision } from "src/core/entities/documentos-ordenan-prision.entity";
 import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
+import { ExpedienteJudicialModel } from "./expediente-judicial.model";
 
 @Entity({name:'documentos_ordenan_prision'})
 export class DocumentosOrdenanPrisionModel extends DocumentoOrdenPrision{
@@ -18,8 +18,8 @@ export class DocumentosOrdenanPrisionModel extends DocumentoOrdenPrision{
   @Column({type:'varchar'})
   tipo:string;
 
-  @ManyToOne(() => CausaJudicialModel)
-  causa:CausaJudicialModel;
+  @ManyToOne(() => ExpedienteJudicialModel)
+  expediente:ExpedienteJudicialModel;
 
   @ManyToOne(() => IngresoAPrisionModel, (ingresoAPrision)=> ingresoAPrision.documentos_que_ordenan_prision)
   ingreso_a_prision:IngresoAPrisionModel;

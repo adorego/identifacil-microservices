@@ -1,8 +1,6 @@
-import { CausaJudicialModel } from "./models/causa-judicial.model";
 import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.model";
 import { CiudadModel } from "./models/ciudad.model";
 import { ConcubinoModel } from "./models/concubino.model";
-import { CondenaModel } from "./models/condena.model";
 import { DatosFamiliaresModel } from "./models/datos-familiares.model";
 import { DatosPersonalesModel } from "./models/datos-personales.model";
 import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
@@ -37,6 +35,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { VacunaModel } from "./models/vacuna.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
 import { DefensorModel } from "./models/defensor.model";
+import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
+import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
+import { CausaJudicialModel } from "./models/causa-judicial.model";
 
 @Module({
   imports:[
@@ -45,7 +46,6 @@ import { DefensorModel } from "./models/defensor.model";
       PersonaModel, 
       GeneroModel, 
       TipoIdentificacionModel,
-      CausaJudicialModel,
       ConcubinoModel,
       DatosFamiliaresModel,
       DocumentosOrdenanPrisionModel,
@@ -73,13 +73,15 @@ import { DefensorModel } from "./models/defensor.model";
       HechoPunibleModel,
       SituacionJudicialModel,
       IngresoAPrisionModel,
-      CondenaModel,
       CircunscripcionJudicialModel,
       OficioModel,
       PplModel,
       VinculoFamiliarModel,
       DespachoJudicialModel,
-      DefensorModel
+      DefensorModel,
+      ExpedienteJudicialModel,
+      HechoPunibleCausaJudicialModel,
+      CausaJudicialModel
       
       
     

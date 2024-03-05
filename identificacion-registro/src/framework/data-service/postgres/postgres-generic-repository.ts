@@ -2,6 +2,7 @@ import { FindOptionsWhere, Repository } from "typeorm";
 
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
+import { HechoPunible_CausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   
@@ -40,17 +41,15 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
       const result = await this._repository.remove(item);
       return true
   }
-  getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
+  async  getPropertiesFromTable(properties:Array<string>, tableName:string):Promise<any> {
       return this._repository.query(`SELECT ${[...properties]} FROM ${tableName}`)
   }
 
-  getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion:string):Promise<Array<T>>{
-    return this._repository.createQueryBuilder("causa")
-          .leftJoin("causa.persona","persona")
-          .where("persona.numero_identificacion = :numero_de_identificacion ",{numero_de_identificacion:numeroDeIdentificacion})
-          .getMany()
-
-
+  async getHechoPunibleCausaByIds(id_hechoPunible:number, id_causaJudicial:number):Promise<T>{
+    return this._repository.createQueryBuilder("hechopunible_causajudicial")
+           .where("hechopunible_causajudicial.hecho_punible = :hecho_punible",{hecho_punible:id_hechoPunible})
+           .andWhere("hechopunible_causajudicial.causa_judicial = :causa_judicial",{causa_judicial:id_causaJudicial})
+           .getOne()
   }
 
   getAllPPLsByEstablecimiento(establecimiento:number):Promise<Array<T>>{

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 
-import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
+import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { DocumentoOrdenPrision } from "src/core/entities/documentos-ordenan-prision.entity";
 import { FileService } from "src/framework/lib/files.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
@@ -55,18 +55,12 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
     }
 
-    const causaJudicial = await this.dataService.causas.get(registroDatosJudicialesDTO.causa);
-    if(!causaJudicial){
+    const expedienteJudicial = await this.dataService.expediente.get(registroDatosJudicialesDTO.causa);
+    if(!expedienteJudicial){
       throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
     }
     
-    if(!registroDatosJudicialesDTO.hechoPunible){
-      throw new HttpException("No se envió un hecho punible valido", HttpStatus.BAD_REQUEST);
-    }
-    const hecho_punible = await this.dataService.hechoPunible.get(registroDatosJudicialesDTO.hechoPunible);
-    if(!hecho_punible){
-      throw new HttpException("No se el hecho punible enviado", HttpStatus.BAD_REQUEST);
-    }
+    
 
     let situacionJudicial = new SituacionJudicial();
     
@@ -78,21 +72,21 @@ export class RegistroDatosJudicialesFactory{
     situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
     situacionJudicial.caratula = registroDatosJudicialesDTO.caratula;
     situacionJudicial.sentencia_definitiva = registroDatosJudicialesDTO.sentenciaDefinitiva;
-    situacionJudicial.hecho_punible = hecho_punible;
+    
     
     
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento ? registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento : new Date();
     //ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
-    ingresoAPrision.causa = causaJudicial;
-    if(ingresoAPrision.causa.condenado){
-      ingresoAPrision.fecha_de_salida = causaJudicial.fecha_de_compurgamiento_inicial;
+    ingresoAPrision.expedienteJudicial = expedienteJudicial;
+    if(ingresoAPrision.expedienteJudicial.condenado){
+      ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
     }else{
       ingresoAPrision.fecha_de_salida = null
     }
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
-    oficioJudicialAGuardar.causa = causaJudicial;
+    oficioJudicialAGuardar.causa = expedienteJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
     oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
@@ -100,7 +94,7 @@ export class RegistroDatosJudicialesFactory{
     
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
-    resolucionMJAGuardar.causa = causaJudicial;
+    resolucionMJAGuardar.causa = expedienteJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
     resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.id_persona}`)
@@ -161,8 +155,8 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
     }
 
-    const causaJudicial = await this.dataService.causas.get(registroDatosJudicialesDTO.causa);
-    if(!causaJudicial){
+    const expedienteJudicial = await this.dataService.expediente.get(registroDatosJudicialesDTO.expediente_id);
+    if(!expedienteJudicial){
       throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
     }
 
@@ -174,15 +168,15 @@ export class RegistroDatosJudicialesFactory{
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
     ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
-    ingresoAPrision.causa = causaJudicial;
-    if(ingresoAPrision.causa.condenado){
-      ingresoAPrision.fecha_de_salida = causaJudicial.fecha_de_compurgamiento_inicial;
+    ingresoAPrision.expedienteJudicial = expedienteJudicial;
+    if(ingresoAPrision.expedienteJudicial.condenado){
+      ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
     }else{
       ingresoAPrision.fecha_de_salida = null
     }
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
-    oficioJudicialAGuardar.causa = causaJudicial;
+    oficioJudicialAGuardar.causa = expedienteJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
     oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
@@ -190,7 +184,7 @@ export class RegistroDatosJudicialesFactory{
     
 
     const resolucionMJAGuardar = new DocumentoOrdenPrision();
-    resolucionMJAGuardar.causa = causaJudicial;
+    resolucionMJAGuardar.causa = expedienteJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
     resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.id_persona}`)

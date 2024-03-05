@@ -1,16 +1,20 @@
 import { Condena } from "src/core/entities/condena.entity";
-import { DefensorDTO } from "./defensot.dto";
-
-export class CausaJudicialDTO{
+import { DefensorDTO } from "./defensor.dto";
+interface hechoPunibleCausa{
+  hecho_punible:number;
+  causa_judicial:number;
+}
+export class ExpedienteJudicialDTO{
+  numeroDeExpediente:number;
+  fechaDeExpediente:Date;
   condenado:boolean;
   estado_procesal:string;
-  caratula_causa:string;
+  caratula_expediente:string;
   despacho_judicial:number;
-  hechos_punibles:Array<number>;
+  hechosPuniblesCausas:Array<hechoPunibleCausa>;
   ppls:Array<number>;
   circunscripcion:number;
   ciudad:number;
-  numeroDeExpediente:number;
   numeroDeDocumento:number;
   anho:number;
   fecha_de_aprehension:Date;

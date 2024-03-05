@@ -10,6 +10,7 @@ import { HechoPunible_CausaJudicial } from "src/core/entities/hecho-punible-caus
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { HechoPunible } from "src/core/entities/hecho_punible.entity";
+import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 
 @Injectable()
 export class DatosPenalesUseCases{
@@ -20,7 +21,9 @@ export class DatosPenalesUseCases{
   ){
 
   }
-  
+  async getExpedientes():Promise<Array<ExpedienteJudicial>>{
+    return await this.dataService.expediente.getAll();
+  }
   async crearExpedienteJudicial(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{
       try{
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.creacionDeExpedienteJudicialGenerar(expedienteDTO);
@@ -161,7 +164,10 @@ export class DatosPenalesUseCases{
     }
     await Promise.all(hechoPunible.causas.map(
       async (causa) =>{
-        await this.dataService.causaJudicial.delete(causa);
+        const respuesta = await this.dataService.causaJudicial.delete(causa);
+        if(!respuesta){
+          throw new HttpException(`No se pudo eliminar la causa:${causa.id}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
       }
     ));
     hechoPunible.nombre = hechoPunibleDTO.nombre;

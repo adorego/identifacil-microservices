@@ -55,9 +55,9 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
     }
 
-    const expedienteJudicial = await this.dataService.expediente.get(registroDatosJudicialesDTO.causa);
+    const expedienteJudicial = await this.dataService.expediente.get(registroDatosJudicialesDTO.expediente_id);
     if(!expedienteJudicial){
-      throw new HttpException("No existe la causa judicial", HttpStatus.BAD_REQUEST);
+      throw new HttpException("No existe el expediente judicial", HttpStatus.BAD_REQUEST);
     }
     
     

@@ -27,8 +27,6 @@ export class RegistroDatosJudicialesDTO{
   cantidadDeIngresos: number;
   cantidadDeIngresos_modificado:boolean;
   fecha_ingreso_a_establecimiento:Date;
-  causa: number;
-  causa_modificado:boolean;
   
   oficioJudicial_numeroDeDocumento:string;
   oficioJudicial_fechaDeDocumento:Date;

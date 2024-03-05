@@ -8,7 +8,7 @@ import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 export class CausaJudicialModel extends CausaJudicial{
     @PrimaryGeneratedColumn()
     id:number;
-    @Column({type:"varchar", nullable:false, unique:true})
+    @Column({type:"varchar", nullable:false})
     codigo:string;
 
     @Column({type:"varchar", nullable:false})

@@ -147,6 +147,20 @@ export class DatosPenalesUseCases{
     if(hechoPunibleDTO.causas.length == 0){
       throw new HttpException(`Debe haber por lo menos una causa asociada a este hecho punible`, HttpStatus.BAD_REQUEST)
     }
+    
+    const hechoPunible = await this.dataService.hechoPunible.get(id);
+    if(!hechoPunible){
+      throw new HttpException(`No se encontró el Hecho Punible`, HttpStatus.BAD_REQUEST)
+    }
+    await Promise.all(hechoPunible.causas.map(
+      async (causa) =>{
+        console.log("Se va a eliminar la causa:", causa);
+        const respuesta = await this.dataService.causaJudicial.delete(causa);
+        if(!respuesta){
+          throw new HttpException(`No se pudo eliminar la causa:${causa.id}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+      }
+    ));
     let causasCreadas:Array<CausaJudicial> = null;
     if(hechoPunibleDTO.causas && hechoPunibleDTO.causas.length > 0){
       causasCreadas = await Promise.all(hechoPunibleDTO.causas.map(
@@ -158,18 +172,6 @@ export class DatosPenalesUseCases{
         }
       ))
     }
-    const hechoPunible = await this.dataService.hechoPunible.get(id);
-    if(!hechoPunible){
-      throw new HttpException(`No se encontró el Hecho Punible`, HttpStatus.BAD_REQUEST)
-    }
-    await Promise.all(hechoPunible.causas.map(
-      async (causa) =>{
-        const respuesta = await this.dataService.causaJudicial.delete(causa);
-        if(!respuesta){
-          throw new HttpException(`No se pudo eliminar la causa:${causa.id}`,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-      }
-    ));
     hechoPunible.nombre = hechoPunibleDTO.nombre;
     hechoPunible.codigo = hechoPunibleDTO.codigo;
     hechoPunible.causas = causasCreadas;

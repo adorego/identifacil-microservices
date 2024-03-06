@@ -1,8 +1,6 @@
 import { FindOptionsWhere, Repository } from "typeorm";
 
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
-import { PplDTO } from "src/core/dto/ppl/ppl.dto";
-import { HechoPunible_CausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   

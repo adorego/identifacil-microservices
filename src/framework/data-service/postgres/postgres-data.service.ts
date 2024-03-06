@@ -24,7 +24,6 @@ import { FamiliarModel } from "./models/familiar.model";
 import { ConcubinoModel } from "./models/concubino.model";
 import { DatosFamiliaresModel } from "./models/datos-familiares.model";
 import { EstablecimientoPenitenciarioModel } from "./models/establecimiento-penitenciario.model";
-import { CausaJudicialModel } from "./models/causa-judicial.model";
 import { DocumentosOrdenanPrisionModel } from "./models/documentos-ordenan-prision.model";
 import { IngresoAPrisionModel } from "./models/ingreso-a-prision.model";
 import { SituacionJudicialModel } from "./models/situacion-judicial.model";
@@ -33,7 +32,6 @@ import { SeguridadModel } from "./models/seguridad.model";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplModel } from "./models/ppl.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
-import { CondenaModel } from "./models/condena.model";
 import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
 import { HechoPunibleModel } from "./models/hecho-punible.model";
 import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judicial.entity";
@@ -41,6 +39,11 @@ import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.
 import { Ciudad } from "src/core/entities/ciudad.entity";
 import { CiudadModel } from "./models/ciudad.model";
 import { DefensorModel } from "./models/defensor.model";
+import { CausaJudicialModel } from "./models/causa-judicial.model";
+import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
+import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
+import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
+import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-compurgamiento-recalculada.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -60,10 +63,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   educacionFormacion:PostgresGenericRepository<EducacionFormacionModel>;
   familiar: PostgresGenericRepository<Familiar>;
   concubino: PostgresGenericRepository<Concubino>;
+  causaJudicial: IGenericRepository<CausaJudicialModel>;
+  expediente: IGenericRepository<ExpedienteJudicial>;
   datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
   establecimientoPenitenciario: PostgresGenericRepository<EstablecimientoPenitenciarioModel>;
   defensor:PostgresGenericRepository<DefensorModel>;
-  causas: PostgresGenericRepository<CausaJudicialModel>;
   documentoOrdenPrision: PostgresGenericRepository<DocumentosOrdenanPrisionModel>;
   ingresoAPrision: PostgresGenericRepository<IngresoAPrisionModel>;
   situacionJudicial: PostgresGenericRepository<SituacionJudicialModel>;
@@ -71,11 +75,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   seguridad: PostgresGenericRepository<SeguridadModel>;
   ppl: PostgresGenericRepository<PplModel>;
   vinculo_familiar: IGenericRepository<VinculoFamiliarModel>;
-  condena: IGenericRepository<CondenaModel>;
   despachoJudicial: IGenericRepository<DespachoJudicialModel>;
   hechoPunible: IGenericRepository<HechoPunibleModel>;
   circunscripcionJudicial: IGenericRepository<CircunscripcionJudicialModel>;
   ciudad:IGenericRepository<CiudadModel>
+  hechoPunibleCausaJudicial: IGenericRepository<HechoPunibleCausaJudicialModel>;
+  historial_de_compurgamiento_recalculada: IGenericRepository<HistorialCompurgamientoRecalculadaModel>;
+
   constructor(
     @InjectRepository(PersonaModel)
     private persona_repository:Repository<PersonaModel>,
@@ -114,7 +120,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectRepository(EstablecimientoPenitenciarioModel)
     private establecimientosPenitenciarios_repository:Repository<EstablecimientoPenitenciarioModel>,
     @InjectRepository(CausaJudicialModel)
-    private causas_repository:Repository<CausaJudicialModel>,
+    private causaJudicial_repository:Repository<CausaJudicialModel>,
     @InjectRepository(DocumentosOrdenanPrisionModel)
     private documentos_ordenan_prision_repository:Repository<DocumentosOrdenanPrisionModel>,
     @InjectRepository(IngresoAPrisionModel)
@@ -131,8 +137,6 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private dataSource:DataSource,
     @InjectRepository(VinculoFamiliarModel)
     private vinculo_familiar_repository:Repository<VinculoFamiliarModel>,
-    @InjectRepository(CondenaModel)
-    private condena_repository:Repository<CondenaModel>,
     @InjectRepository(DespachoJudicialModel)
     private despacho_judicial_repository:Repository<DespachoJudicialModel>,
     @InjectRepository(HechoPunibleModel)
@@ -143,6 +147,14 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private ciudad_repository:Repository<CiudadModel>,
     @InjectRepository(DefensorModel)
     private defensor_repository:Repository<DefensorModel>,
+    @InjectRepository(ExpedienteJudicialModel)
+    private expediente_repository:Repository<ExpedienteJudicialModel>,
+    @InjectRepository(HechoPunibleCausaJudicialModel)
+    private hechoPunibleCausaJudicial_repository:Repository<HechoPunibleCausaJudicialModel>,
+    @InjectRepository(HistorialCompurgamientoRecalculadaModel)
+    private historialCompurgamientoRecalculado_repository:Repository<HistorialCompurgamientoRecalculadaModel>,
+
+
     ){}
   
   
@@ -169,7 +181,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.concubino = new PostgresGenericRepository<ConcubinoModel>(this.concubino_repository);
     this.datosFamiliares = new PostgresGenericRepository<DatosFamiliaresModel>(this.datosFamiliares_repository);
     this.establecimientoPenitenciario = new PostgresGenericRepository<EstablecimientoPenitenciarioModel>(this.establecimientosPenitenciarios_repository);
-    this.causas = new PostgresGenericRepository<CausaJudicialModel>(this.causas_repository);
+    this.expediente = new PostgresGenericRepository<ExpedienteJudicial>(this.expediente_repository)
+    this.causaJudicial = new PostgresGenericRepository<CausaJudicialModel>(this.causaJudicial_repository);
     this.documentoOrdenPrision = new PostgresGenericRepository<DocumentosOrdenanPrisionModel>(this.documentos_ordenan_prision_repository);
     this.ingresoAPrision = new PostgresGenericRepository<IngresoAPrisionModel>(this.ingreso_a_prision_repository);
     this.situacionJudicial = new PostgresGenericRepository<SituacionJudicialModel>(this.situacion_judicial_repository);
@@ -177,12 +190,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.seguridad = new PostgresGenericRepository<SeguridadModel>(this.seguridad_repository);
     this.ppl = new PostgresGenericRepository<PplModel>(this.ppl_repository);
     this.vinculo_familiar = new PostgresGenericRepository<VinculoFamiliarModel>(this.vinculo_familiar_repository);
-    this.condena = new PostgresGenericRepository<CondenaModel>(this.condena_repository);
     this.despachoJudicial = new PostgresGenericRepository<DespachoJudicialModel>(this.despacho_judicial_repository);
     this.hechoPunible = new PostgresGenericRepository<HechoPunibleModel>(this.hecho_punible_reposiitory);
     this.circunscripcionJudicial = new PostgresGenericRepository<CircunscripcionJudicialModel>(this.circunscripcionJudicial_repository);
     this.ciudad = new PostgresGenericRepository<CiudadModel>(this.ciudad_repository);
     this.defensor = new PostgresGenericRepository<DefensorModel>(this.defensor_repository);
+    this.hechoPunibleCausaJudicial = new PostgresGenericRepository<HechoPunibleCausaJudicialModel>(this.hechoPunibleCausaJudicial_repository);
+    this.historial_de_compurgamiento_recalculada = new PostgresGenericRepository<HistorialCompurgamientoRecalculadaModel>(this.historialCompurgamientoRecalculado_repository);
   }
   
   

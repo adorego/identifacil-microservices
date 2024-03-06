@@ -102,18 +102,7 @@ export class RegistroController{
   }
 
   
-  @Get('causas')
-  async causasJudiciales(@Query() parametros:CausasJudicialesParameter){
-    
-    const causas = await this.registroPersonaUseCase.causas_judiciales(parametros.ci);
-    
-    return(
-      {
-        causas:causas,
-        success:true
-      }
-    )
-  }
+  
 
   
   @Get('oficios')

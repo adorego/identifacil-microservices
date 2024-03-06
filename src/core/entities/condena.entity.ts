@@ -1,7 +1,7 @@
-import { CausaJudicial } from "./causa-judicial.entity";
+import { ExpedienteJudicial } from "./expediente-judicial.entity";
 
 export class Condena{
   id?:number;
-  causa:CausaJudicial;
+  causa:ExpedienteJudicial;
   anhos:number;
 } 

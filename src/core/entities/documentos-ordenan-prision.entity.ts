@@ -1,10 +1,10 @@
-import { CausaJudicial } from "./causa-judicial.entity";
+import { ExpedienteJudicial } from "./expediente-judicial.entity";
 
 export class DocumentoOrdenPrision{
   id:number;
   numero_documento:string;
   tipo:string;
   fecha:Date;
-  causa:CausaJudicial;
+  causa:ExpedienteJudicial;
   ruta:string;
 }

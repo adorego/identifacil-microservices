@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 
-import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
+import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
@@ -443,17 +443,7 @@ export class RegistroUseCase{
     }
   }
 
-  async causas_judiciales(numeroDeIdentificacion:string):Promise<Array<CausaJudicial>>{
-    try{
-      
-      const causas = await this.dataService.causas.getAllCausasByNumeroDeIdentificacion(numeroDeIdentificacion);
-      
-      return causas;
-    }catch(error){
-      this.logger.error(`Error al consultar las causas del PPL:${error}`)
-      throw new HttpException('Error al consultar las causas del PPL', HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-  }
+  
 
   async oficios():Promise<Array<Oficio>>{
     try{

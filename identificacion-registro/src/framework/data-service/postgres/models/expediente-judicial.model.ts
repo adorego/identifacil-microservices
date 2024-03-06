@@ -41,7 +41,7 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @ManyToOne(()=>DespachoJudicialModel,{eager:true})
   despacho_judicial:DespachoJudicialModel;
 
-  @ManyToMany(() => HechoPunibleCausaJudicialModel, hechosPuniblesCausas=>hechosPuniblesCausas.expedientes,{cascade:true})
+  @ManyToMany(() => HechoPunibleCausaJudicialModel, hechosPuniblesCausas=>hechosPuniblesCausas.expedientes,{cascade:true, eager:true})
   hechosPuniblesCausas: Array<HechoPunibleCausaJudicialModel>;
 
   @ManyToOne(()=>CircunscripcionJudicialModel,{eager:true})

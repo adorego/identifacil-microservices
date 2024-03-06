@@ -38,6 +38,7 @@ import { DefensorModel } from "./models/defensor.model";
 import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
 import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
 import { CausaJudicialModel } from "./models/causa-judicial.model";
+import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-compurgamiento-recalculada.model";
 
 @Module({
   imports:[
@@ -81,7 +82,8 @@ import { CausaJudicialModel } from "./models/causa-judicial.model";
       DefensorModel,
       ExpedienteJudicialModel,
       HechoPunibleCausaJudicialModel,
-      CausaJudicialModel
+      CausaJudicialModel,
+      HistorialCompurgamientoRecalculadaModel
       
       
     

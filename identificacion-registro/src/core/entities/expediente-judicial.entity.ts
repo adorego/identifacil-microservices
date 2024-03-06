@@ -5,6 +5,7 @@ import { Defensor } from "./defensor";
 import { DespachoJudicial } from "./despacho-judicial.entity";
 import { HechoPunible_CausaJudicial } from "./hecho-punible-causa-judicial.entity";
 import { HechoPunible } from "./hecho_punible.entity";
+import { HistorialDeCompurgamientoRecalculada } from "./historial-compurgamiento-recalculo.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class ExpedienteJudicial
@@ -29,6 +30,7 @@ export class ExpedienteJudicial
   sentencia_definitiva:string;
   fecha_de_compurgamiento_inicial:Date;
   fecha_de_compurgamiento_recalculada:Date;
+  historial_de_compurgamiento_recalculada:Array<HistorialDeCompurgamientoRecalculada>;
   juzgado_de_tribunal_de_sentencia:string;
   secretaria:string;
   lugar_del_hecho:string;

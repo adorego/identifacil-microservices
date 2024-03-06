@@ -38,7 +38,7 @@ export class DatosPenalesFactory{
         const fechaExpediente = new Date(expedienteDTO.fechaDeExpediente);
         console.log("Fecha de expediente:", fechaExpediente);
         
-        if(!expedienteDTO.condenado){
+        if(expedienteDTO.condenado == null){
           throw new HttpException(`Debe enviarse la situación judicial`,HttpStatus.BAD_REQUEST)
         }
 

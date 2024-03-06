@@ -43,6 +43,7 @@ import { CausaJudicialModel } from "./models/causa-judicial.model";
 import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
 import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
+import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-compurgamiento-recalculada.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -79,7 +80,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   circunscripcionJudicial: IGenericRepository<CircunscripcionJudicialModel>;
   ciudad:IGenericRepository<CiudadModel>
   hechoPunibleCausaJudicial: IGenericRepository<HechoPunibleCausaJudicialModel>;
-
+  historial_de_compurgamiento_recalculada: IGenericRepository<HistorialCompurgamientoRecalculadaModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -150,7 +151,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private expediente_repository:Repository<ExpedienteJudicialModel>,
     @InjectRepository(HechoPunibleCausaJudicialModel)
     private hechoPunibleCausaJudicial_repository:Repository<HechoPunibleCausaJudicialModel>,
-    
+    @InjectRepository(HistorialCompurgamientoRecalculadaModel)
+    private historialCompurgamientoRecalculado_repository:Repository<HistorialCompurgamientoRecalculadaModel>,
 
 
     ){}
@@ -194,6 +196,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.ciudad = new PostgresGenericRepository<CiudadModel>(this.ciudad_repository);
     this.defensor = new PostgresGenericRepository<DefensorModel>(this.defensor_repository);
     this.hechoPunibleCausaJudicial = new PostgresGenericRepository<HechoPunibleCausaJudicialModel>(this.hechoPunibleCausaJudicial_repository);
+    this.historial_de_compurgamiento_recalculada = new PostgresGenericRepository<HistorialCompurgamientoRecalculadaModel>(this.historialCompurgamientoRecalculado_repository);
   }
   
   

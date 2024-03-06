@@ -7,6 +7,7 @@ import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity
 import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-use-case.service";
 import { ExpedienteJudicialDTO } from "../../core/dto/datosPenales/expediente.dto";
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
+import { HistorialCompurgamientoRecalculadoListDTO } from "src/core/dto/datosPenales/historial-compurgamiento-recalculado.dto";
 
 @Controller('datos_penales')
 export class DatosPenalesController{
@@ -59,6 +60,11 @@ export class DatosPenalesController{
       throw new HttpException("Error durante la actualizacion del expediente judicial:", HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+
+  }
+
+  @Post("expedientes/:id/historial_compurgamiento_recalculado")
+  async create_historial_compugamiento(@Body() historialCompurgamientoDTO:HistorialCompurgamientoRecalculadoListDTO){
 
   }
 

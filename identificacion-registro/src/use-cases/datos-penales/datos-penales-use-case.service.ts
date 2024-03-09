@@ -30,7 +30,9 @@ export class DatosPenalesUseCases{
     return await this.dataService.expediente.getAll();
   }
 
-
+  async getExpedienteById(id:number):Promise<ExpedienteJudicial>{
+    return await this.dataService.expediente.get(id);
+  }
   async crearExpedienteJudicial(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{
       try{
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.creacionDeExpedienteJudicialGenerar(expedienteDTO);

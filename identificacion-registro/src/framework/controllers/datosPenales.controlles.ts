@@ -29,6 +29,17 @@ export class DatosPenalesController{
       throw new HttpException(`Error al consultar los expedientes:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Get("expedientes/:id")
+  async getExpedienteById(@Param() param){
+    try{
+      this.logger.log("Llamada a getExpedienteById");
+      return this.datosPenalesUseCases.getExpedienteById(param.id)
+    }catch(error){
+      this.logger.error(`Error al consultar los expedientes:${error}`);
+      throw new HttpException(`Error al consultar los expedientes:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
   
   @Post('expedientes')
   async create(@Body() expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{

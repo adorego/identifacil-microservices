@@ -20,7 +20,7 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @Column({type:"int", nullable:false,unique:true})
+  @Column({type:"varchar", nullable:false,unique:true})
   numeroDeExpediente:string;
 
   @Column({type:"boolean",nullable:false})

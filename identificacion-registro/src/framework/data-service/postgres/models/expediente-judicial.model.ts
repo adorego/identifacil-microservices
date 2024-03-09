@@ -21,7 +21,7 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   id:number;
 
   @Column({type:"int", nullable:false,unique:true})
-  numeroDeExpediente:number;
+  numeroDeExpediente:string;
 
   @Column({type:"boolean",nullable:false})
   condenado:boolean

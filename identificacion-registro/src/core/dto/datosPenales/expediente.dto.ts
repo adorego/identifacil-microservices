@@ -7,7 +7,7 @@ export interface hechoPunibleCausa{
   causa_judicial:number;
 }
 export class ExpedienteJudicialDTO{
-  numeroDeExpediente:number;
+  numeroDeExpediente:string;
   condenado:boolean;
   estado_procesal:string;
   caratula_expediente:string;

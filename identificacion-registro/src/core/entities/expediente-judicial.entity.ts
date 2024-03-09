@@ -12,8 +12,8 @@ import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class ExpedienteJudicial
 {
-  id?:number;
-  numeroDeExpediente:number;
+  id:number;
+  numeroDeExpediente:string;
   estado_procesal:string;
   condenado:boolean;
   pplsEnExpediente:Array<PplEnExpediente>;

@@ -9,7 +9,8 @@ import { ExpedienteJudicialModel } from "./expediente-judicial.model";
 export class PplEnExpedienteModel extends PplEnExpediente{
     @PrimaryGeneratedColumn()
     id:number;
-    @ManyToOne(()=>PplModel)
+    
+    @ManyToOne(()=>PplModel,ppl=>ppl.pplEnExpedientes,{eager:true})
     ppl:PplModel;
 
     @OneToOne(()=>CondenaModel,{eager:true})

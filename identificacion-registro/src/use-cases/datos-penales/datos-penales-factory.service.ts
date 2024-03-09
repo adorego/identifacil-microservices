@@ -89,14 +89,15 @@ export class DatosPenalesFactory{
           }
         ))
 
-        console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
+        //console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
         let pplsEnExpediente:Array<PplEnExpediente> = [];
         if(expedienteDTO.ppls && expedienteDTO.ppls.length > 0){
           pplsEnExpediente = await Promise.all(expedienteDTO.ppls.map(
             async (ppl) =>{
-              const pplEncontrado = await this.dataService.ppl.get(ppl.id_ppl);
+              const pplEncontrado = await   await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
+              console.log("PPLEncontrado:",pplEncontrado);
               if(!pplEncontrado){
-                throw new HttpException(`No se encontró el PPL enviado:id:${ppl.id_ppl}`,HttpStatus.BAD_REQUEST);
+                throw new HttpException(`No se encontró el PPL enviado con id_persona:id:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
               }
               const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
               pplEnExpediente.ppl = pplEncontrado;
@@ -319,9 +320,9 @@ export class DatosPenalesFactory{
       if(expedienteDTO.ppls && expedienteDTO.ppls.length > 0){
         pplsEnExpediente = await Promise.all(expedienteDTO.ppls.map(
           async (ppl) =>{
-            const pplEncontrado = await this.dataService.ppl.get(ppl.id_ppl);
+            const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
             if(!pplEncontrado){
-              throw new HttpException(`No se encontró el PPL enviado:id:${ppl.id_ppl}`,HttpStatus.BAD_REQUEST);
+              throw new HttpException(`No se encontró el PPL enviado con el id de persona:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
             }
             const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
             pplEnExpediente.ppl = pplEncontrado;

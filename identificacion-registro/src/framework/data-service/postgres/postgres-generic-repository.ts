@@ -150,5 +150,11 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
             .getMany()
   }
  
+  getPPLByIdPersona(id: number):Promise<T> {
+    return this._repository.createQueryBuilder("ppl")
+          .leftJoinAndSelect("ppl.persona","persona")
+          .where("persona.id = :id",{id})
+          .getOne()
+  }
 }
   

@@ -27,4 +27,6 @@ export abstract class IGenericRepository<T>{
   abstract getTiempoDeCondenaByCombination(anhos:number,meses:number):Promise<T>;
 
   abstract getExpedientesByPersonaId(id:number);
+
+  abstract getPPLByIdPersona(id:number);
 }

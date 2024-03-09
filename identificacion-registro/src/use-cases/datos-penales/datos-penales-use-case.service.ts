@@ -110,7 +110,7 @@ export class DatosPenalesUseCases{
                 pplEnExpediente.condena = condenaCreada;
               }
               const pplEnExpedienteCreado = await this.dataService.pplEnExpediente.create(pplEnExpediente);
-              //console.log("PplEnExpediente guardado:", pplEnExpedienteCreado);
+              console.log("Persona de PplEnExpediente guardado:", pplEnExpedienteCreado.ppl.persona);
               return pplEnExpedienteCreado;
             }
           ))
@@ -126,7 +126,7 @@ export class DatosPenalesUseCases{
         //console.log("Después de asignar PplEnExpedienteCreado");
         expedienteACrear.despacho_judicial = respuestaGeneracionExpedienteJudicialFactory.despachoJudicial;
         expedienteACrear.hechosPuniblesCausas = hechosPuniblesCausasCreadas;
-        console.log("Antes de crear:", expedienteACrear);
+        //console.log("Antes de crear:", expedienteACrear);
         const expedienteJudicialCreado = await this.dataService.expediente.create(expedienteACrear);
         
         return {
@@ -250,15 +250,7 @@ export class DatosPenalesUseCases{
 
 
   async getExpedientesByIdPersona(id:number):Promise<Array<ExpedienteJudicial>>{
-    const expedientes = await this.dataService.expediente.getAll();
-    const persona = await this.dataService.persona.get(id);
-    const pplsEnExpediente = expedientes.map(
-      (expediente) =>{
-        return expediente.pplsEnExpediente
-      }
-    );
-    console.log(pplsEnExpediente);
-    return null;
+    return this.dataService.expediente.getExpedientesByPersonaId(id);
   }
   async getHechosPunibles(){
     return this.dataService.hechoPunible.getAll();

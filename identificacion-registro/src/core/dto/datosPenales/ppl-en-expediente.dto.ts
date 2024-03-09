@@ -7,7 +7,7 @@ interface DisminucionDePena{
 }
 
 export class PPLsEnExpedienteDTO{
-    id_ppl:number;
+    id_persona:number;
     condenado:boolean;
     hechosPuniblesCausas:Array<hechoPunibleCausa>;
     defensor:number;

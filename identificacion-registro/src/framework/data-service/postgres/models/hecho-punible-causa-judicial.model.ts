@@ -1,14 +1,12 @@
-import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
-import { HechoPunible } from "src/core/entities/hecho_punible.entity";
-import { Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { HechoPunibleModel } from "./hecho-punible.model";
 import { CausaJudicialModel } from "./causa-judicial.model";
-import { HechoPunible_CausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
-import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
+import { HechoPunibleCausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 import { ExpedienteJudicialModel } from "./expediente-judicial.model";
+import { CondenaModel } from "./condena.model";
 
 @Entity({name:"hechopunible_causajudicial"})
-export class HechoPunibleCausaJudicialModel extends HechoPunible_CausaJudicial{
+export class HechoPunibleCausaJudicialModel extends HechoPunibleCausaJudicial{
 
     @PrimaryGeneratedColumn()
     id:number;
@@ -20,6 +18,7 @@ export class HechoPunibleCausaJudicialModel extends HechoPunible_CausaJudicial{
     causa_judicial:CausaJudicialModel;
 
     @ManyToMany(()=>ExpedienteJudicialModel, expediente=>expediente.hechosPuniblesCausas)
-    @JoinTable()
-    expedientes:Array<ExpedienteJudicial>;
+    expedientes:Array<ExpedienteJudicialModel>;
+
+    
 }

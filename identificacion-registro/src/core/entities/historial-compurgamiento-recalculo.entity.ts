@@ -6,5 +6,5 @@ export class HistorialDeCompurgamientoRecalculada{
     descripcion:string;
     nuevaFecha:Date;
     documento:String;
-    expediente:ExpedienteJudicial;
+    
 }

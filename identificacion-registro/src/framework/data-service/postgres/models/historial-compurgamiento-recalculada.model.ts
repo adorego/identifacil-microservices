@@ -16,6 +16,5 @@ export class HistorialCompurgamientoRecalculadaModel extends HistorialDeCompurga
     @Column({type:"varchar"})
     documento:string;
 
-    @ManyToOne(()=>ExpedienteJudicialModel, expediente=>expediente.historial_de_compurgamiento_recalculada)
-    expediente:ExpedienteJudicialModel;
+    
 }

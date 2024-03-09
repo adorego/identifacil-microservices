@@ -39,6 +39,9 @@ import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
 import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
 import { CausaJudicialModel } from "./models/causa-judicial.model";
 import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-compurgamiento-recalculada.model";
+import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
+import { CondenaModel } from "./models/condena.model";
+import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
 
 @Module({
   imports:[
@@ -83,7 +86,10 @@ import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-comp
       ExpedienteJudicialModel,
       HechoPunibleCausaJudicialModel,
       CausaJudicialModel,
-      HistorialCompurgamientoRecalculadaModel
+      HistorialCompurgamientoRecalculadaModel,
+      PplEnExpedienteModel,
+      CondenaModel,
+      TiempoDeCondenaModel,
       
       
     

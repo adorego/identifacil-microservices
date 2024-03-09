@@ -1,5 +1,5 @@
 import { CausaJudicial } from "./causa-judicial.entity";
-import { HechoPunible_CausaJudicial } from "./hecho-punible-causa-judicial.entity";
+import { HechoPunibleCausaJudicial } from "./hecho-punible-causa-judicial.entity";
 
 
 export class HechoPunible{
@@ -7,6 +7,6 @@ export class HechoPunible{
   nombre:string;
   codigo:string;
   causas:Array<CausaJudicial>;
-  hechosPuniblesCausas:Array<HechoPunible_CausaJudicial>;
+  hechosPuniblesCausas:Array<HechoPunibleCausaJudicial>;
   
 }

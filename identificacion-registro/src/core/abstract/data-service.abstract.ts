@@ -30,9 +30,12 @@ import { TipoIdentificacion } from "../entities/tipo-identificacion.entity";
 import { Vacuna } from "../entities/vacuna.entity";
 import { VinculoFamiliar } from "../entities/vinculo-familiar.entity";
 import { Defensor } from "../entities/defensor";
-import { CausaJudicialModel } from "src/framework/data-service/postgres/models/causa-judicial.model";
-import { HechoPunibleCausaJudicialModel } from "src/framework/data-service/postgres/models/hecho-punible-causa-judicial.model";
-import { HistorialCompurgamientoRecalculadaModel } from "src/framework/data-service/postgres/models/historial-compurgamiento-recalculada.model";
+import { HechoPunibleCausaJudicial } from "../entities/hecho-punible-causa-judicial.entity";
+import { HistorialDeCompurgamientoRecalculada } from "../entities/historial-compurgamiento-recalculo.entity";
+import { CausaJudicial } from "../entities/causa-judicial.entity";
+import { PplEnExpediente } from "../entities/pplEnExpediente.entity";
+import { TiempoDeCondena } from "../entities/tiempo_de_condena.entity";
+import { Condena } from "../entities/condena.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -53,7 +56,7 @@ export abstract class IDataService{
   abstract concubino:IGenericRepository<Concubino>
   abstract datosFamiliares:IGenericRepository<DatosFamiliares>
   abstract establecimientoPenitenciario:IGenericRepository<EstablecimientoPenitenciario>
-  abstract causaJudicial:IGenericRepository<CausaJudicialModel>
+  abstract causaJudicial:IGenericRepository<CausaJudicial>
   abstract expediente:IGenericRepository<ExpedienteJudicial>
   abstract documentoOrdenPrision:IGenericRepository<DocumentoOrdenPrision>
   abstract ingresoAPrision:IGenericRepository<IngresoAPrision>
@@ -67,7 +70,9 @@ export abstract class IDataService{
   abstract circunscripcionJudicial:IGenericRepository<CircunscripcionJudicial>
   abstract ciudad:IGenericRepository<Ciudad>
   abstract defensor:IGenericRepository<Defensor>
-  abstract hechoPunibleCausaJudicial:IGenericRepository<HechoPunibleCausaJudicialModel>
-  abstract historial_de_compurgamiento_recalculada:IGenericRepository<HistorialCompurgamientoRecalculadaModel>
-  
+  abstract hechoPunibleCausaJudicial:IGenericRepository<HechoPunibleCausaJudicial>
+  abstract historial_de_compurgamiento_recalculada:IGenericRepository<HistorialDeCompurgamientoRecalculada>
+  abstract pplEnExpediente:IGenericRepository<PplEnExpediente>
+  abstract tiempoDeCondena:IGenericRepository<TiempoDeCondena>
+  abstract condena:IGenericRepository<Condena>
 }

@@ -2,7 +2,7 @@ import { FindOptionsWhere, Repository } from "typeorm";
 
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
-import { HechoPunible_CausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
+import { HechoPunibleCausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   
@@ -49,6 +49,8 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
     return this._repository.createQueryBuilder("hechopunible_causajudicial")
            .where("hechopunible_causajudicial.hecho_punible = :hecho_punible",{hecho_punible:id_hechoPunible})
            .andWhere("hechopunible_causajudicial.causa_judicial = :causa_judicial",{causa_judicial:id_causaJudicial})
+           .leftJoinAndSelect("hechopunible_causajudicial.hecho_punible","hecho_punible")
+           .leftJoinAndSelect("hechopunible_causajudicial.causa_judicial","causa_judicial")
            .getOne()
   }
 
@@ -130,6 +132,22 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .leftJoinAndSelect("ingresos_a_prision.documentos_que_ordenan_prision", "documentos_que_ordenan_prision")
            .where("persona.id = :id_persona",{id_persona})
            .getOne()
+  }
+
+  getTiempoDeCondenaByCombination(anhos:number,meses:number):Promise<T>{
+    return this._repository.createQueryBuilder("TiempoDeCondena")
+            .where("TiempoDeCondena.anhos = :anhos",{anhos:anhos})
+            .andWhere("TiempoDeCondena.meses = :meses",{meses:meses})
+            .getOne()
+  }
+
+  getExpedientesByPersonaId(id:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("ExpedienteJudicial")
+            .leftJoinAndSelect("ExpedienteJudicial.pplsEnExpediente","pplsEnExpediente")
+            .leftJoinAndSelect("pplsEnExpediente.ppl","ppl")
+            .leftJoinAndSelect("ppl.persona","persona")
+            .where("persona.id = :id_persona",{id_persona:id})
+            .getMany()
   }
  
 }

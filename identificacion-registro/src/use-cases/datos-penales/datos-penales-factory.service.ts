@@ -43,7 +43,7 @@ export class DatosPenalesFactory{
           throw new HttpException(`Debe enviarse la caratula del expediente`,HttpStatus.BAD_REQUEST)
         }
         
-        if(!expedienteDTO.hechosPuniblesCausas){
+        if(!expedienteDTO.hechosPuniblesCausas || expedienteDTO.hechosPuniblesCausas.length == 0){
           throw new HttpException(`Debe enviarse el/los hechos punibles del expediente`,HttpStatus.BAD_REQUEST)
         }
 
@@ -95,54 +95,58 @@ export class DatosPenalesFactory{
           pplsEnExpediente = await Promise.all(expedienteDTO.ppls.map(
             async (ppl) =>{
               const pplEncontrado = await   await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
-              console.log("PPLEncontrado:",pplEncontrado);
+              //console.log("PPLEncontrado:",pplEncontrado);
               if(!pplEncontrado){
                 throw new HttpException(`No se encontró el PPL enviado con id_persona:id:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
               }
               const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
               pplEnExpediente.ppl = pplEncontrado;
+
+              //Hechos punibles de PPL
+              let hechosPuniblesCausasPPL:Array<HechoPunibleCausaJudicial> = [];
+              if(ppl.hechosPuniblesCausas && ppl.hechosPuniblesCausas.length > 0){
+                hechosPuniblesCausasPPL = await Promise.all(ppl.hechosPuniblesCausas.map(
+                  async (hechoPunibleCausa)=>{
+                    if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
+                      throw new HttpException(`Los hechos punibles deben enviarse en formato [HechoPunible][Causa-Judicial]`, HttpStatus.BAD_REQUEST);
+                    }
+                    try{
+                      const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
+                      if(!hechoPunible){
+                        throw new HttpException(`No se encuentra el hecho punible enviado`, HttpStatus.BAD_REQUEST);
+                      }
+                      //console.log("Hecho Punible:", hechoPunible);
+                      const causaJudicial = hechoPunible.causas.filter(
+                        (causa) => causa.id === hechoPunibleCausa[1]
+                      )
+                      if(!causaJudicial){
+                        throw new HttpException(`No se encuentra la causa judicial enviada`, HttpStatus.BAD_REQUEST);
+                      }
+                      //console.log("Causa Judicial:", causaJudicial);
+                      let hechoPunibleCausaJudicial:HechoPunibleCausaJudicial = await this.dataService.hechoPunibleCausaJudicial.getHechoPunibleCausaByIds(hechoPunible.id, causaJudicial[0].id);
+                      if(!hechoPunibleCausaJudicial){
+                        hechoPunibleCausaJudicial = new HechoPunibleCausaJudicial();
+                        hechoPunibleCausaJudicial.hecho_punible = hechoPunible;
+                        hechoPunibleCausaJudicial.causa_judicial = causaJudicial[0];
+                      }
+                     
+        
+                      return hechoPunibleCausaJudicial
+                    }catch(error){
+                      this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
+                      throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                  }
+                ))
+                //console.log("Hechos puniblesCausas:", hechosPuniblesCausasPPL);
+                
+              }
+              pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPPL;
               
               if(expedienteDTO.condenado && ppl.condenado){
+                console.log("Entro en sección condenado");
                 pplEnExpediente.condena = new Condena();
-                let hechosPuniblesCausasPPL:Array<HechoPunibleCausaJudicial> = [];
-                if(ppl.hechosPuniblesCausas && ppl.hechosPuniblesCausas.length > 0){
-                  hechosPuniblesCausasPPL = await Promise.all(ppl.hechosPuniblesCausas.map(
-                    async (hechoPunibleCausa)=>{
-                      if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
-                        throw new HttpException(`Los hechos punibles deben enviarse en formato [HechoPunible][Causa-Judicial]`, HttpStatus.BAD_REQUEST);
-                      }
-                      try{
-                        const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
-                        if(!hechoPunible){
-                          throw new HttpException(`No se encuentra el hecho punible enviado`, HttpStatus.BAD_REQUEST);
-                        }
-                        //console.log("Hecho Punible:", hechoPunible);
-                        const causaJudicial = hechoPunible.causas.filter(
-                          (causa) => causa.id === hechoPunibleCausa[1]
-                        )
-                        if(!causaJudicial){
-                          throw new HttpException(`No se encuentra la causa judicial enviada`, HttpStatus.BAD_REQUEST);
-                        }
-                        //console.log("Causa Judicial:", causaJudicial);
-                        let hechoPunibleCausaJudicial:HechoPunibleCausaJudicial = await this.dataService.hechoPunibleCausaJudicial.getHechoPunibleCausaByIds(hechoPunible.id, causaJudicial[0].id);
-                        if(!hechoPunibleCausaJudicial){
-                          hechoPunibleCausaJudicial = new HechoPunibleCausaJudicial();
-                          hechoPunibleCausaJudicial.hecho_punible = hechoPunible;
-                          hechoPunibleCausaJudicial.causa_judicial = causaJudicial[0];
-                        }
-                       
-          
-                        return hechoPunibleCausaJudicial
-                      }catch(error){
-                        this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
-                        throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-                      }
-                    }
-                  ))
-                  //console.log("Hechos puniblesCausas:", hechosPuniblesCausasPPL);
-                  
-                }
-                pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPPL;
+                
                 
                 const tiempo_de_condena = new TiempoDeCondena();
                 tiempo_de_condena.anhos = ppl.condena.anhos;
@@ -163,16 +167,17 @@ export class DatosPenalesFactory{
                   pplEnExpediente.defensor = defensor;
                 }
                 //console.log("pplEnExpediente:", pplEnExpediente);
-                return pplEnExpediente;
+                
                 
               }
+              return pplEnExpediente;
             }
            
           ))
           
         }
         
-        //console.log("PplsEnExpediente:", pplsEnExpediente);
+        console.log("PplsEnExpediente:", pplsEnExpediente);
         let despachoJudicial:DespachoJudicial = null;
         if(expedienteDTO.despacho_judicial){
           despachoJudicial = await this.dataService.despachoJudicial.get(expedienteDTO.despacho_judicial);

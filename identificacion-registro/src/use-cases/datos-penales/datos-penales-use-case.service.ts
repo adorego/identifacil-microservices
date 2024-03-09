@@ -35,7 +35,7 @@ export class DatosPenalesUseCases{
       try{
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.creacionDeExpedienteJudicialGenerar(expedienteDTO);
         let hechosPuniblesCausasCreadas = null;
-        //console.log("Datos recibidos:", respuestaGeneracionExpedienteJudicialFactory);
+        //console.log("Datos recibidos en use case:", respuestaGeneracionExpedienteJudicialFactory);
         if(respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales 
           && respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales.length > 0){
           
@@ -63,14 +63,18 @@ export class DatosPenalesUseCases{
         //Crear el objeto PPLEnExpediente
         //console.log("Antes de crear los ppls por expediente");
         let pplsEnExpedienteCreados:Array<PplEnExpediente> = [];
-        if(respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente && respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente.length > 0){
-          //console.log("Hay ppls en el expediente");
+        if(respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente !== undefined && 
+          respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente !== null && 
+          respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente.length > 0){
+          //console.log("Hay ppls en el expediente",respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente);
           const pplsEnExpedienteACrear = respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente;
+          //console.log("pplEnExpediente:",pplsEnExpedienteACrear);
           pplsEnExpedienteCreados = await Promise.all(pplsEnExpedienteACrear.map(
             async (pplEnExpediente)=>{
               //console.log("Ppl para expediente:", pplEnExpediente);
               //Crear hechos puniblesCausas de este PPL
               let hechosPuniblesCausasPorPpl:Array<HechoPunibleCausaJudicial> = [];
+              //console.log("PPLEnExpediente:", pplEnExpediente);
               if(pplEnExpediente.hechosPuniblesCausas && pplEnExpediente.hechosPuniblesCausas.length > 0){
                 hechosPuniblesCausasPorPpl = await Promise.all(pplEnExpediente.hechosPuniblesCausas.map(
                   async (hechoPunibleCausa)=>{

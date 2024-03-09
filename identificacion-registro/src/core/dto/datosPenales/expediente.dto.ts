@@ -16,7 +16,6 @@ export class ExpedienteJudicialDTO{
   ppls:Array<PPLsEnExpedienteDTO>;
   circunscripcion:number;
   ciudad:number;
-  numeroDeDocumento:number;
   anho:number;
   juzgado_de_tribunal_de_sentencia:string;
   secretaria:string;

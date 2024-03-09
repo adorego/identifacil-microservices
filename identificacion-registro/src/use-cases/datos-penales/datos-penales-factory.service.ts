@@ -211,7 +211,6 @@ export class DatosPenalesFactory{
         expedienteJudicial.estado_procesal = expedienteDTO.estado_procesal;
         expedienteJudicial.caratula_expediente = expedienteDTO.caratula_expediente;
         expedienteJudicial.despacho_judicial = despachoJudicial;
-        expedienteJudicial.numeroDeDocumento = expedienteDTO.numeroDeDocumento;
         expedienteJudicial.anho = expedienteDTO.anho;
         expedienteJudicial.juzgado_de_tribunal_de_sentencia = expedienteDTO.juzgado_de_tribunal_de_sentencia;
         expedienteJudicial.secretaria = expedienteDTO.secretaria;
@@ -436,7 +435,6 @@ export class DatosPenalesFactory{
       expedienteJudicial.estado_procesal = expedienteDTO.estado_procesal;
       expedienteJudicial.caratula_expediente = expedienteDTO.caratula_expediente;
       expedienteJudicial.despacho_judicial = despachoJudicial;
-      expedienteJudicial.numeroDeDocumento = expedienteDTO.numeroDeDocumento;
       expedienteJudicial.anho = expedienteDTO.anho;
       expedienteJudicial.juzgado_de_tribunal_de_sentencia = expedienteDTO.juzgado_de_tribunal_de_sentencia;
       expedienteJudicial.secretaria = expedienteDTO.secretaria;

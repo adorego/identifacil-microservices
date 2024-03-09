@@ -22,7 +22,6 @@ export class ExpedienteJudicial
   circunscripcion:CircunscripcionJudicial;
   ciudad:Ciudad;
   hechosPuniblesCausas:Array<HechoPunibleCausaJudicial>;
-  numeroDeDocumento:number;
   anho:number;
   fecha_de_aprehension:Date;
   juzgado_de_tribunal_de_sentencia:string;

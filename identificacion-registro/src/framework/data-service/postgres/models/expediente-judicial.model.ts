@@ -51,9 +51,6 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
 
 
   @Column({type:"int", nullable:true})
-  numeroDeDocumento:number;
-
-  @Column({type:"int", nullable:true})
   anho:number;
 
   

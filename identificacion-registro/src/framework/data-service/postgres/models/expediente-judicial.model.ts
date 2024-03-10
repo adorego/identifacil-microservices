@@ -26,6 +26,9 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @Column({type:"boolean",nullable:false})
   condenado:boolean
   
+  @Column({type:'varchar', nullable:false})
+  estado_procesal:string;
+
   
   @OneToMany(() => PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.expediente,{eager:true, cascade:true})
   pplsEnExpediente:Array<PplEnExpedienteModel>;
@@ -54,8 +57,6 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   anho:number;
 
   
-  @Column({type:"date",nullable:true})
-  fecha_de_aprehension:Date;
   
   @Column({type:"varchar",nullable:true})
   juzgado_de_tribunal_de_sentencia:string;
@@ -69,6 +70,11 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @Column({type:"varchar",nullable:true})
   link_de_noticia:string;
  
+  @Column({type:"varchar",nullable:true})
+  sentencia_definitiva:string;
+
+  @Column({type:"date",nullable:true})
+  fecha_sentencia_definitiva:Date;
   
 }
 

@@ -25,7 +25,6 @@ export class DatosPenalesFactory{
 
   async creacionDeExpedienteJudicialGenerar(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaFactoryExpedienteJudicialDTO>{
    
-   console.log("Ingresó a creacionExpedienteJudicialGenerar:", expedienteDTO);
     
     try{
 
@@ -91,8 +90,8 @@ export class DatosPenalesFactory{
 
         //console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
         let pplsEnExpediente:Array<PplEnExpediente> = [];
-        if(expedienteDTO.ppls && expedienteDTO.ppls.length > 0){
-          pplsEnExpediente = await Promise.all(expedienteDTO.ppls.map(
+        if(expedienteDTO.ppls_en_expediente && expedienteDTO.ppls_en_expediente.length > 0){
+          pplsEnExpediente = await Promise.all(expedienteDTO.ppls_en_expediente.map(
             async (ppl) =>{
               const pplEncontrado = await   await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
               //console.log("PPLEncontrado:",pplEncontrado);
@@ -142,16 +141,16 @@ export class DatosPenalesFactory{
                 
               }
               pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPPL;
-              
-              if(expedienteDTO.condenado && ppl.condenado){
-                console.log("Entro en sección condenado");
+              pplEnExpediente.condenado = ppl.condenado;
+              if(ppl.condenado){
+                
+                pplEnExpediente.condenado = ppl.condenado;
                 pplEnExpediente.condena = new Condena();
-                
-                
                 const tiempo_de_condena = new TiempoDeCondena();
                 tiempo_de_condena.anhos = ppl.condena.anhos;
                 tiempo_de_condena.meses = ppl.condena.meses;
                 pplEnExpediente.condena.tiempo_de_condena = tiempo_de_condena;
+                
                 if(ppl.tiene_anhos_extra_por_medida_de_seguridad){
                   const condena_extra_por_medida_de_seguridad = new TiempoDeCondena();
                   condena_extra_por_medida_de_seguridad.anhos = ppl.anhos_extra_por_medida_de_seguridad.anhos;
@@ -159,17 +158,31 @@ export class DatosPenalesFactory{
                   pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = condena_extra_por_medida_de_seguridad;
                   pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = true;
                 }
-                if(ppl.defensor){
-                  const defensor = await this.dataService.defensor.get(ppl.defensor);
-                  if(!defensor){
-                    throw new HttpException(`No se ha encontrado al defensor con id:${defensor.id}`,HttpStatus.BAD_REQUEST);
-                  }
-                  pplEnExpediente.defensor = defensor;
-                }
+                pplEnExpediente.condena.fecha_de_compurgamiento_inicial = ppl.fecha_de_compurgamiento_inicial;
+               
+                //Historial de recalculo de condena
+                // if(ppl.fecha_de_compurgamiento_recalculada && ppl.fecha_de_compurgamiento_recalculada.length > 0){
+                //   const historial_recalculo_compurgamiento = ppl.fecha_de_compurgamiento_recalculada;
+                //   historial_recalculo_compurgamiento.map(
+                //     (historial)=>{
+
+                //     }
+                //   )
+                // }
                 //console.log("pplEnExpediente:", pplEnExpediente);
                 
                 
               }
+              if(ppl.defensor){
+                const defensor = await this.dataService.defensor.get(ppl.defensor);
+                if(!defensor){
+                  throw new HttpException(`No se ha encontrado al defensor con id:${defensor.id}`,HttpStatus.BAD_REQUEST);
+                }
+                pplEnExpediente.defensor = defensor;
+              }
+              pplEnExpediente.fecha_de_aprehension = ppl.fecha_de_aprehension;
+              pplEnExpediente.sentencia_definitiva = ppl.sentencia_definitiva;
+              pplEnExpediente.fecha_sentencia_definitiva = ppl.fecha_sentencia_definitiva;
               return pplEnExpediente;
             }
            
@@ -216,6 +229,8 @@ export class DatosPenalesFactory{
         expedienteJudicial.secretaria = expedienteDTO.secretaria;
         expedienteJudicial.lugar_del_hecho = expedienteDTO.lugar_del_hecho;
         expedienteJudicial.link_de_noticia = expedienteDTO.link_de_noticia;
+        expedienteJudicial.sentencia_definitiva = expedienteDTO.sentencia_definitiva;
+        expedienteJudicial.fecha_sentencia_definitiva = expedienteDTO.fecha_sentencia_definitiva;
        
        
       return{
@@ -321,8 +336,8 @@ export class DatosPenalesFactory{
 
       console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
       let pplsEnExpediente:Array<PplEnExpediente> = [];
-      if(expedienteDTO.ppls && expedienteDTO.ppls.length > 0){
-        pplsEnExpediente = await Promise.all(expedienteDTO.ppls.map(
+      if(expedienteDTO.ppls_en_expediente && expedienteDTO.ppls_en_expediente.length > 0){
+        pplsEnExpediente = await Promise.all(expedienteDTO.ppls_en_expediente.map(
           async (ppl) =>{
             const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
             if(!pplEncontrado){
@@ -392,9 +407,10 @@ export class DatosPenalesFactory{
                 pplEnExpediente.defensor = defensor;
               }
               //console.log("pplEnExpediente:", pplEnExpediente);
-              return pplEnExpediente;
+             
               
             }
+            return pplEnExpediente;
           }
          
         ))

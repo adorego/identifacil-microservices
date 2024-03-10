@@ -23,11 +23,12 @@ export class ExpedienteJudicial
   ciudad:Ciudad;
   hechosPuniblesCausas:Array<HechoPunibleCausaJudicial>;
   anho:number;
-  fecha_de_aprehension:Date;
   juzgado_de_tribunal_de_sentencia:string;
   secretaria:string;
   lugar_del_hecho:string;
   link_de_noticia:string;
+  sentencia_definitiva:string;
+  fecha_sentencia_definitiva:Date;
   
   
   

@@ -3,18 +3,13 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { ExpedienteJudicialDTO } from "src/core/dto/datosPenales/expediente.dto";
 import { DatosPenalesFactory } from "./datos-penales-factory.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { RespuestaActualizarCausaUseCaseDTO } from "src/core/dto/datosPenales/respuesta-actualizar-causaJudicial.dto";
 import { RespuestaCrearExpedienteJudicialDTO } from "src/core/dto/datosPenales/respuesta-crear-expedienteJudicial.dto";
-import { HechoPunibleCausaJudicialModel } from "src/framework/data-service/postgres/models/hecho-punible-causa-judicial.model";
 import { HechoPunibleCausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
 import { CausaJudicial } from "src/core/entities/causa-judicial.entity";
 import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
-import { TiempoDeCondena } from "src/core/entities/tiempo_de_condena.entity";
-import { Condena } from "src/core/entities/condena.entity";
-import { RespuestaGenerarRegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/respuesta-generacion-datos-familiares.dto";
 import { RespuestGenericaActualizarCrearDTO } from "src/core/dto/respuesta-generica-actualizar-crear.dto";
 
 @Injectable()
@@ -92,8 +87,7 @@ export class DatosPenalesUseCases{
               //Asociar hechosPuniblesCausas creadas
               pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPorPpl;
               //Si tiene condena crear la condena en la BD
-              //console.log("Antes de entrar a pplEnExpediente");
-              if(pplEnExpediente.condena){
+               if(pplEnExpediente.condenado){
                 let tiempoDeCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.tiempo_de_condena.anhos, pplEnExpediente.condena.tiempo_de_condena.meses);
                 
                 if(!tiempoDeCondena){
@@ -110,10 +104,11 @@ export class DatosPenalesUseCases{
                 pplEnExpediente.condena.tiempo_de_condena = tiempoDeCondena;
                 pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = tiempoExtraCondena;
                 pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad;
-                //console.log("Antes de crear la condena",pplEnExpediente.condena);
+                console.log("Antes de crear la condena",pplEnExpediente.condena);
                 const condenaCreada = await this.dataService.condena.create(pplEnExpediente.condena);
-                //console.log("Despues de crear la condena");
+                console.log("Despues de crear la condena",condenaCreada);
                 pplEnExpediente.condena = condenaCreada;
+                
               }
               const pplEnExpedienteCreado = await this.dataService.pplEnExpediente.create(pplEnExpediente);
               console.log("Persona de PplEnExpediente guardado:", pplEnExpedienteCreado.ppl.persona);

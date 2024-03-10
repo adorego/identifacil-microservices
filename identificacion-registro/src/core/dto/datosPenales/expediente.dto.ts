@@ -13,7 +13,7 @@ export class ExpedienteJudicialDTO{
   caratula_expediente:string;
   despacho_judicial:number;
   hechosPuniblesCausas:Array<hechoPunibleCausa>;
-  ppls:Array<PPLsEnExpedienteDTO>;
+  ppls_en_expediente:Array<PPLsEnExpedienteDTO>;
   circunscripcion:number;
   ciudad:number;
   anho:number;
@@ -21,6 +21,8 @@ export class ExpedienteJudicialDTO{
   secretaria:string;
   lugar_del_hecho:string;
   link_de_noticia:string;
+  sentencia_definitiva:string;
+  fecha_sentencia_definitiva:Date;
   
   
     

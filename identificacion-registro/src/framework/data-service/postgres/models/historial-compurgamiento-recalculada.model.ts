@@ -1,6 +1,7 @@
 import { HistorialDeCompurgamientoRecalculada } from "src/core/entities/historial-compurgamiento-recalculo.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ExpedienteJudicialModel } from "./expediente-judicial.model";
+import { CondenaModel } from "./condena.model";
 
 @Entity({name:"historial_compurgamiento_recalculado"})
 export class HistorialCompurgamientoRecalculadaModel extends HistorialDeCompurgamientoRecalculada{
@@ -16,5 +17,6 @@ export class HistorialCompurgamientoRecalculadaModel extends HistorialDeCompurga
     @Column({type:"varchar"})
     documento:string;
 
-    
+    @ManyToMany(()=>CondenaModel,condena=>condena.historial_recalculo_compurgamiento)
+    condena:CondenaModel;
 }

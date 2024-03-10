@@ -27,7 +27,7 @@ export class PplEnExpedienteModel extends PplEnExpediente{
     @ManyToOne(()=>ExpedienteJudicialModel, expediente=>expediente.ppls_en_expediente)
     expediente:ExpedienteJudicialModel;
 
-    @ManyToMany(()=>HechoPunibleCausaJudicialModel,hechoPunibleCausa=>hechoPunibleCausa.pplEnExpediente)
+    @ManyToMany(()=>HechoPunibleCausaJudicialModel,hechoPunibleCausa=>hechoPunibleCausa.pplEnExpediente,{eager:true})
     @JoinTable()
     hechosPuniblesCausas:Array<HechoPunibleCausaJudicialModel>;
    

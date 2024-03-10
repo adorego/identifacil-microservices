@@ -123,7 +123,7 @@ export class DatosPenalesUseCases{
         expedienteACrear.circunscripcion = respuestaGeneracionExpedienteJudicialFactory.circunscripcion;
         expedienteACrear.ciudad = respuestaGeneracionExpedienteJudicialFactory.ciudad;
         //console.log("Antes de asignar PplEnExpedienteCreado");
-        expedienteACrear.pplsEnExpediente = pplsEnExpedienteCreados;
+        expedienteACrear.ppls_en_expediente = pplsEnExpedienteCreados;
         //console.log("Después de asignar PplEnExpedienteCreado");
         expedienteACrear.despacho_judicial = respuestaGeneracionExpedienteJudicialFactory.despachoJudicial;
         expedienteACrear.hechosPuniblesCausas = hechosPuniblesCausasCreadas;
@@ -196,7 +196,7 @@ export class DatosPenalesUseCases{
               pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPorPpl;
               //Si tiene condena crear la condena en la BD
               //console.log("Antes de entrar a pplEnExpediente");
-              if(pplEnExpediente.condena){
+              if(pplEnExpediente.condenado){
                 let tiempoDeCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.tiempo_de_condena.anhos, pplEnExpediente.condena.tiempo_de_condena.meses);
                 
                 if(!tiempoDeCondena){
@@ -231,7 +231,7 @@ export class DatosPenalesUseCases{
         expedienteACrear.circunscripcion = respuestaGeneracionExpedienteJudicialFactory.circunscripcion;
         expedienteACrear.ciudad = respuestaGeneracionExpedienteJudicialFactory.ciudad;
         //console.log("Antes de asignar PplEnExpedienteCreado");
-        expedienteACrear.pplsEnExpediente = pplsEnExpedienteCreados;
+        expedienteACrear.ppls_en_expediente = pplsEnExpedienteCreados;
         //console.log("Después de asignar PplEnExpedienteCreado");
         expedienteACrear.despacho_judicial = respuestaGeneracionExpedienteJudicialFactory.despachoJudicial;
         expedienteACrear.hechosPuniblesCausas = hechosPuniblesCausasCreadas;

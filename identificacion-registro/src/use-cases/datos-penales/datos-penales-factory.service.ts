@@ -190,7 +190,7 @@ export class DatosPenalesFactory{
           
         }
         
-        console.log("PplsEnExpediente:", pplsEnExpediente);
+       
         let despachoJudicial:DespachoJudicial = null;
         if(expedienteDTO.despacho_judicial){
           despachoJudicial = await this.dataService.despachoJudicial.get(expedienteDTO.despacho_judicial);
@@ -231,6 +231,7 @@ export class DatosPenalesFactory{
         expedienteJudicial.link_de_noticia = expedienteDTO.link_de_noticia;
         expedienteJudicial.sentencia_definitiva = expedienteDTO.sentencia_definitiva;
         expedienteJudicial.fecha_sentencia_definitiva = expedienteDTO.fecha_sentencia_definitiva;
+        expedienteJudicial.fecha_del_hecho = expedienteDTO.fecha_del_hecho;
        
        
       return{
@@ -257,8 +258,8 @@ export class DatosPenalesFactory{
       }
       const expedienteAActualizar = await this.dataService.expediente.get(id);
       //Borrar PPLsEnExpediente
-      if(expedienteAActualizar.pplsEnExpediente && expedienteAActualizar.pplsEnExpediente.length > 0){
-        expedienteAActualizar.pplsEnExpediente.map(
+      if(expedienteAActualizar.ppls_en_expediente && expedienteAActualizar.ppls_en_expediente.length > 0){
+        expedienteAActualizar.ppls_en_expediente.map(
           async (pplEnExpediente) =>{
             const condena_a_eliminar = pplEnExpediente.condena;
             const resultado_pplEnExpediente = await this.dataService.pplEnExpediente.delete(pplEnExpediente);
@@ -298,57 +299,56 @@ export class DatosPenalesFactory{
 
       let hechosPuniblesCausasDeExpediente:Array<HechoPunibleCausaJudicial> = [];
       hechosPuniblesCausasDeExpediente = await Promise.all(expedienteDTO.hechosPuniblesCausas.map(
-        async (hechoPunibleCausa) =>{
-          if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
-            throw new HttpException(`Los hechos punibles deben enviarse en formato [HechoPunible][Causa-Judicial]`, HttpStatus.BAD_REQUEST);
-          }
-          try{
-            const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
-            if(!hechoPunible){
-              throw new HttpException(`No se encuentra el hecho punible enviado`, HttpStatus.BAD_REQUEST);
+          async (hechoPunibleCausa) =>{
+            if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
+              throw new HttpException(`Los hechos punibles deben enviarse en formato [HechoPunible][Causa-Judicial]`, HttpStatus.BAD_REQUEST);
             }
-            //console.log("Hecho Punible:", hechoPunible);
-            const causaJudicial = hechoPunible.causas.filter(
-              (causa) => causa.id === hechoPunibleCausa[1]
-            )
-            if(!causaJudicial){
-              throw new HttpException(`No se encuentra la causa judicial enviada`, HttpStatus.BAD_REQUEST);
-            }
-            //console.log("Causa Judicial:", causaJudicial);
-            let hechoPunibleCausaJudicial:HechoPunibleCausaJudicial = await this.dataService.hechoPunibleCausaJudicial.getHechoPunibleCausaByIds(hechoPunible.id, causaJudicial[0].id);
-           
-            if(!hechoPunibleCausaJudicial){
-              hechoPunibleCausaJudicial = new HechoPunibleCausaJudicial();
-              hechoPunibleCausaJudicial.hecho_punible = hechoPunible;
-              hechoPunibleCausaJudicial.causa_judicial = causaJudicial[0];
-            }
-           
-            //console.log("HechoPunibleCausaJudicial:", hechoPunibleCausaJudicial);
+            try{
+              const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
+              if(!hechoPunible){
+                throw new HttpException(`No se encuentra el hecho punible enviado`, HttpStatus.BAD_REQUEST);
+              }
+              //console.log("Hecho Punible:", hechoPunible);
+              const causaJudicial = hechoPunible.causas.filter(
+                (causa) => causa.id === hechoPunibleCausa[1]
+              )
+              if(!causaJudicial){
+                throw new HttpException(`No se encuentra la causa judicial enviada`, HttpStatus.BAD_REQUEST);
+              }
+              //console.log("Causa Judicial:", causaJudicial);
+              let hechoPunibleCausaJudicial:HechoPunibleCausaJudicial = await this.dataService.hechoPunibleCausaJudicial.getHechoPunibleCausaByIds(hechoPunible.id, causaJudicial[0].id);
+             
+              if(!hechoPunibleCausaJudicial){
+                hechoPunibleCausaJudicial = new HechoPunibleCausaJudicial();
+                hechoPunibleCausaJudicial.hecho_punible = hechoPunible;
+                hechoPunibleCausaJudicial.causa_judicial = causaJudicial[0];
+              }
+             
+              //console.log("HechoPunibleCausaJudicial:", hechoPunibleCausaJudicial);
 
-            return hechoPunibleCausaJudicial
-          }catch(error){
-            this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
-            throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-          }
-          
-        }
-      ))
-
-      console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
-      let pplsEnExpediente:Array<PplEnExpediente> = [];
-      if(expedienteDTO.ppls_en_expediente && expedienteDTO.ppls_en_expediente.length > 0){
-        pplsEnExpediente = await Promise.all(expedienteDTO.ppls_en_expediente.map(
-          async (ppl) =>{
-            const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
-            if(!pplEncontrado){
-              throw new HttpException(`No se encontró el PPL enviado con el id de persona:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
+              return hechoPunibleCausaJudicial
+            }catch(error){
+              this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
+              throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
-            pplEnExpediente.ppl = pplEncontrado;
             
-            if(expedienteDTO.condenado && ppl.condenado){
-              //Borrar condena actual
-              pplEnExpediente.condena = new Condena();
+          }
+        ))
+
+        //console.log("Hechos punibles del expediente:", hechosPuniblesCausasDeExpediente);
+        let pplsEnExpediente:Array<PplEnExpediente> = [];
+        if(expedienteDTO.ppls_en_expediente && expedienteDTO.ppls_en_expediente.length > 0){
+          pplsEnExpediente = await Promise.all(expedienteDTO.ppls_en_expediente.map(
+            async (ppl) =>{
+              const pplEncontrado = await   await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
+              //console.log("PPLEncontrado:",pplEncontrado);
+              if(!pplEncontrado){
+                throw new HttpException(`No se encontró el PPL enviado con id_persona:id:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
+              }
+              const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
+              pplEnExpediente.ppl = pplEncontrado;
+
+              //Hechos punibles de PPL
               let hechosPuniblesCausasPPL:Array<HechoPunibleCausaJudicial> = [];
               if(ppl.hechosPuniblesCausas && ppl.hechosPuniblesCausas.length > 0){
                 hechosPuniblesCausasPPL = await Promise.all(ppl.hechosPuniblesCausas.map(
@@ -388,16 +388,37 @@ export class DatosPenalesFactory{
                 
               }
               pplEnExpediente.hechosPuniblesCausas = hechosPuniblesCausasPPL;
-              const tiempo_de_condena = new TiempoDeCondena();
-              tiempo_de_condena.anhos = ppl.condena.anhos;
-              tiempo_de_condena.meses = ppl.condena.meses;
-              pplEnExpediente.condena.tiempo_de_condena = tiempo_de_condena;
-              if(ppl.tiene_anhos_extra_por_medida_de_seguridad){
-                const condena_extra_por_medida_de_seguridad = new TiempoDeCondena();
-                condena_extra_por_medida_de_seguridad.anhos = ppl.anhos_extra_por_medida_de_seguridad.anhos;
-                condena_extra_por_medida_de_seguridad.meses = ppl.anhos_extra_por_medida_de_seguridad.meses;
-                pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = condena_extra_por_medida_de_seguridad;
-                pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = true;
+              pplEnExpediente.condenado = ppl.condenado;
+              if(ppl.condenado){
+                
+                pplEnExpediente.condenado = ppl.condenado;
+                pplEnExpediente.condena = new Condena();
+                const tiempo_de_condena = new TiempoDeCondena();
+                tiempo_de_condena.anhos = ppl.condena.anhos;
+                tiempo_de_condena.meses = ppl.condena.meses;
+                pplEnExpediente.condena.tiempo_de_condena = tiempo_de_condena;
+                
+                if(ppl.tiene_anhos_extra_por_medida_de_seguridad){
+                  const condena_extra_por_medida_de_seguridad = new TiempoDeCondena();
+                  condena_extra_por_medida_de_seguridad.anhos = ppl.anhos_extra_por_medida_de_seguridad.anhos;
+                  condena_extra_por_medida_de_seguridad.meses = ppl.anhos_extra_por_medida_de_seguridad.meses;
+                  pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = condena_extra_por_medida_de_seguridad;
+                  pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = true;
+                }
+                pplEnExpediente.condena.fecha_de_compurgamiento_inicial = ppl.fecha_de_compurgamiento_inicial;
+               
+                //Historial de recalculo de condena
+                // if(ppl.fecha_de_compurgamiento_recalculada && ppl.fecha_de_compurgamiento_recalculada.length > 0){
+                //   const historial_recalculo_compurgamiento = ppl.fecha_de_compurgamiento_recalculada;
+                //   historial_recalculo_compurgamiento.map(
+                //     (historial)=>{
+
+                //     }
+                //   )
+                // }
+                //console.log("pplEnExpediente:", pplEnExpediente);
+                
+                
               }
               if(ppl.defensor){
                 const defensor = await this.dataService.defensor.get(ppl.defensor);
@@ -406,43 +427,40 @@ export class DatosPenalesFactory{
                 }
                 pplEnExpediente.defensor = defensor;
               }
-              //console.log("pplEnExpediente:", pplEnExpediente);
-             
-              
+              pplEnExpediente.fecha_de_aprehension = ppl.fecha_de_aprehension;
+              pplEnExpediente.sentencia_definitiva = ppl.sentencia_definitiva;
+              pplEnExpediente.fecha_sentencia_definitiva = ppl.fecha_sentencia_definitiva;
+              return pplEnExpediente;
             }
-            return pplEnExpediente;
-          }
-         
-        ))
+           
+          ))
+          
+        }
         
-      }
-      
-      //console.log("PplsEnExpediente:", pplsEnExpediente);
-      let despachoJudicial:DespachoJudicial = null;
-      if(expedienteDTO.despacho_judicial){
-        despachoJudicial = await this.dataService.despachoJudicial.get(expedienteDTO.despacho_judicial);
-        if(!despachoJudicial){
-          throw new HttpException(`No se encontró el despacho Judicial enviado`, HttpStatus.INTERNAL_SERVER_ERROR);
+       
+        let despachoJudicial:DespachoJudicial = null;
+        if(expedienteDTO.despacho_judicial){
+          despachoJudicial = await this.dataService.despachoJudicial.get(expedienteDTO.despacho_judicial);
+          if(!despachoJudicial){
+            throw new HttpException(`No se encontró el despacho Judicial enviado`, HttpStatus.INTERNAL_SERVER_ERROR);
+          }
         }
-      }
 
-      let circunscripcion:CircunscripcionJudicial = null;
-      if(expedienteDTO.circunscripcion){
-        circunscripcion = await this.dataService.circunscripcionJudicial.get(expedienteDTO.circunscripcion);
-        if(!circunscripcion){
-          throw new HttpException(`No se encontró la circunscripción enviada`, HttpStatus.BAD_REQUEST);
+        let circunscripcion:CircunscripcionJudicial = null;
+        if(expedienteDTO.circunscripcion){
+          circunscripcion = await this.dataService.circunscripcionJudicial.get(expedienteDTO.circunscripcion);
+          if(!circunscripcion){
+            throw new HttpException(`No se encontró la circunscripción enviada`, HttpStatus.BAD_REQUEST);
+          }
         }
-      }
 
-      let ciudad:Ciudad = null;
-      if(expedienteDTO.ciudad){
-        ciudad = await this.dataService.ciudad.get(expedienteDTO.ciudad)
-        if(!ciudad){
-          throw new HttpException(`No se encontró la circunscripción enviada`, HttpStatus.BAD_REQUEST);
+        let ciudad:Ciudad = null;
+        if(expedienteDTO.ciudad){
+          ciudad = await this.dataService.ciudad.get(expedienteDTO.ciudad)
+          if(!ciudad){
+            throw new HttpException(`No se encontró la circunscripción enviada`, HttpStatus.BAD_REQUEST);
+          }
         }
-      }
-
-     
 
       const expedienteJudicial = expedienteAActualizar;
       expedienteJudicial.numeroDeExpediente = expedienteDTO.numeroDeExpediente;
@@ -456,6 +474,9 @@ export class DatosPenalesFactory{
       expedienteJudicial.secretaria = expedienteDTO.secretaria;
       expedienteJudicial.lugar_del_hecho = expedienteDTO.lugar_del_hecho;
       expedienteJudicial.link_de_noticia = expedienteDTO.link_de_noticia;
+      expedienteJudicial.sentencia_definitiva = expedienteDTO.sentencia_definitiva;
+      expedienteJudicial.fecha_sentencia_definitiva = expedienteDTO.fecha_sentencia_definitiva;
+      expedienteJudicial.fecha_del_hecho = expedienteDTO.fecha_del_hecho;
      
      
       return{

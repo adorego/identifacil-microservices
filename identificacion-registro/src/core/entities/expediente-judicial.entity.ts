@@ -16,7 +16,7 @@ export class ExpedienteJudicial
   numeroDeExpediente:string;
   estado_procesal:string;
   condenado:boolean;
-  pplsEnExpediente:Array<PplEnExpediente>;
+  ppls_en_expediente:Array<PplEnExpediente>;
   caratula_expediente:string;
   despacho_judicial:DespachoJudicial;
   circunscripcion:CircunscripcionJudicial;
@@ -29,6 +29,7 @@ export class ExpedienteJudicial
   link_de_noticia:string;
   sentencia_definitiva:string;
   fecha_sentencia_definitiva:Date;
+  fecha_del_hecho:Date;
   
   
   

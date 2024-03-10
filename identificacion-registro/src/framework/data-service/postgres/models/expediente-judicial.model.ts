@@ -29,9 +29,11 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @Column({type:'varchar', nullable:false})
   estado_procesal:string;
 
+  @Column({type:"date",nullable:true})
+  fecha_del_hecho: Date;
   
   @OneToMany(() => PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.expediente,{eager:true, cascade:true})
-  pplsEnExpediente:Array<PplEnExpedienteModel>;
+  ppls_en_expediente:Array<PplEnExpedienteModel>;
 
   @Column({type:'varchar', nullable:false})
   caratula_expediente:string;

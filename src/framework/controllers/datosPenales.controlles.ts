@@ -8,6 +8,7 @@ import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-
 import { ExpedienteJudicialDTO } from "../../core/dto/datosPenales/expediente.dto";
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
 import { HistorialCompurgamientoRecalculadoListDTO } from "src/core/dto/datosPenales/historial-compurgamiento-recalculado.dto";
+import { PPLsEnExpedienteDTO } from "src/core/dto/datosPenales/ppl-en-expediente.dto";
 
 @Controller('datos_penales')
 export class DatosPenalesController{
@@ -23,6 +24,17 @@ export class DatosPenalesController{
     try{
       this.logger.log("Llamada a getAll Expedientes");
       return this.datosPenalesUseCases.getExpedientes()
+    }catch(error){
+      this.logger.error(`Error al consultar los expedientes:${error}`);
+      throw new HttpException(`Error al consultar los expedientes:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get("expedientes/:id")
+  async getExpedienteById(@Param() param){
+    try{
+      this.logger.log("Llamada a getExpedienteById");
+      return this.datosPenalesUseCases.getExpedienteById(param.id)
     }catch(error){
       this.logger.error(`Error al consultar los expedientes:${error}`);
       throw new HttpException(`Error al consultar los expedientes:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,6 +80,26 @@ export class DatosPenalesController{
 
   }
 
+  @Post("expedientes/:id/ppls")
+  async agregar_ppl_al_expediente(@Body() pplEnExpedienteDTO:PPLsEnExpedienteDTO){
+
+  }
+
+  @Put("expedientes/:id/ppls/:id_pplEnExpediente")
+  async actualizar_ppl_al_expediente(@Body() pplEnExpedienteDTO:PPLsEnExpedienteDTO){
+
+  }
+
+  @Get("expedientesByIdPersona/:id")
+  async getExpedientesByIdPersona(@Param() param){
+    try{
+        this.datosPenalesUseCases.getExpedientesByIdPersona(param.id)
+    }catch(error){
+      this.logger.error("Error al consultar el expediente por el ID de la Persona:", error);
+      throw new HttpException(`Error al consultar el expediente por el ID de la Persona:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+  }
   @Get("hechos_punibles")
   async hechos_punibles(){
     this.logger.log("Llamada a get hechos punible");

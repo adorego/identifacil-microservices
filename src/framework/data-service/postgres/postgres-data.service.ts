@@ -34,9 +34,7 @@ import { PplModel } from "./models/ppl.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
 import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
 import { HechoPunibleModel } from "./models/hecho-punible.model";
-import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judicial.entity";
 import { CircunscripcionJudicialModel } from "./models/circunscripcion-judicial.model";
-import { Ciudad } from "src/core/entities/ciudad.entity";
 import { CiudadModel } from "./models/ciudad.model";
 import { DefensorModel } from "./models/defensor.model";
 import { CausaJudicialModel } from "./models/causa-judicial.model";
@@ -44,6 +42,10 @@ import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity
 import { ExpedienteJudicialModel } from "./models/expediente-judicial.model";
 import { HechoPunibleCausaJudicialModel } from "./models/hecho-punible-causa-judicial.model";
 import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-compurgamiento-recalculada.model";
+import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
+import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
+import { CondenaModel } from "./models/condena.model";
+import { Condena } from "src/core/entities/condena.entity";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -81,6 +83,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   ciudad:IGenericRepository<CiudadModel>
   hechoPunibleCausaJudicial: IGenericRepository<HechoPunibleCausaJudicialModel>;
   historial_de_compurgamiento_recalculada: IGenericRepository<HistorialCompurgamientoRecalculadaModel>;
+  pplEnExpediente: IGenericRepository<PplEnExpedienteModel>;
+  tiempoDeCondena: IGenericRepository<TiempoDeCondenaModel>;
+  condena: IGenericRepository<CondenaModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -153,7 +158,12 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private hechoPunibleCausaJudicial_repository:Repository<HechoPunibleCausaJudicialModel>,
     @InjectRepository(HistorialCompurgamientoRecalculadaModel)
     private historialCompurgamientoRecalculado_repository:Repository<HistorialCompurgamientoRecalculadaModel>,
-
+    @InjectRepository(PplEnExpedienteModel)
+    private pplEnExpediente_repository:Repository<PplEnExpedienteModel>,
+    @InjectRepository(TiempoDeCondenaModel)
+    private tiempo_de_condena_repository:Repository<TiempoDeCondenaModel>,
+    @InjectRepository(CondenaModel)
+    private condena_repository:Repository<CondenaModel>,
 
     ){}
   
@@ -197,6 +207,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.defensor = new PostgresGenericRepository<DefensorModel>(this.defensor_repository);
     this.hechoPunibleCausaJudicial = new PostgresGenericRepository<HechoPunibleCausaJudicialModel>(this.hechoPunibleCausaJudicial_repository);
     this.historial_de_compurgamiento_recalculada = new PostgresGenericRepository<HistorialCompurgamientoRecalculadaModel>(this.historialCompurgamientoRecalculado_repository);
+    this.pplEnExpediente = new PostgresGenericRepository<PplEnExpedienteModel>(this.pplEnExpediente_repository);
+    this.tiempoDeCondena = new PostgresGenericRepository<TiempoDeCondenaModel>(this.tiempo_de_condena_repository);
+    this.condena = new PostgresGenericRepository<CondenaModel>(this.condena_repository);
+  
   }
   
   

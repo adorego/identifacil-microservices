@@ -1,4 +1,4 @@
-import { HechoPunible_CausaJudicial } from "../entities/hecho-punible-causa-judicial.entity";
+import { HechoPunibleCausaJudicial } from "../entities/hecho-punible-causa-judicial.entity";
 
 export abstract class IGenericRepository<T>{
   abstract getAll():Promise<Array<T>>;
@@ -23,4 +23,10 @@ export abstract class IGenericRepository<T>{
   abstract getPplById(id:number):Promise<T>;
 
   abstract getHechoPunibleCausaByIds(id_hechoPunible:number, id_causaJudicial:number):Promise<T>;
+
+  abstract getTiempoDeCondenaByCombination(anhos:number,meses:number):Promise<T>;
+
+  abstract getExpedientesByPersonaId(id:number);
+
+  abstract getPPLByIdPersona(id:number);
 }

@@ -79,11 +79,11 @@ export class RegistroDatosJudicialesFactory{
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento ? registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento : new Date();
     //ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
     ingresoAPrision.expedienteJudicial = expedienteJudicial;
-    if(ingresoAPrision.expedienteJudicial.condenado){
-      ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
-    }else{
-      ingresoAPrision.fecha_de_salida = null
-    }
+    // if(ingresoAPrision.expedienteJudicial.condenado){
+    //   ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
+    // }else{
+    //   ingresoAPrision.fecha_de_salida = null
+    // }
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = expedienteJudicial;
@@ -169,11 +169,11 @@ export class RegistroDatosJudicialesFactory{
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
     ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
     ingresoAPrision.expedienteJudicial = expedienteJudicial;
-    if(ingresoAPrision.expedienteJudicial.condenado){
-      ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
-    }else{
-      ingresoAPrision.fecha_de_salida = null
-    }
+    // if(ingresoAPrision.expedienteJudicial.condenado){
+    //   ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
+    // }else{
+    //   ingresoAPrision.fecha_de_salida = null
+    // }
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = expedienteJudicial;

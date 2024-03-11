@@ -3,40 +3,34 @@ import { Ciudad } from "./ciudad.entity";
 import { Condena } from "./condena.entity";
 import { Defensor } from "./defensor";
 import { DespachoJudicial } from "./despacho-judicial.entity";
-import { HechoPunible_CausaJudicial } from "./hecho-punible-causa-judicial.entity";
+import { HechoPunibleCausaJudicial } from "./hecho-punible-causa-judicial.entity";
 import { HechoPunible } from "./hecho_punible.entity";
 import { HistorialDeCompurgamientoRecalculada } from "./historial-compurgamiento-recalculo.entity";
+import { Ppl } from "./ppl.entity";
+import { PplEnExpediente } from "./pplEnExpediente.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class ExpedienteJudicial
 {
-  id?:number;
-  numeroDeExpediente:number;
-  fechaDeExpediente:Date;
+  id:number;
+  numeroDeExpediente:string;
   estado_procesal:string;
   condenado:boolean;
-  ppls:Array<number>;
+  ppls_en_expediente:Array<PplEnExpediente>;
   caratula_expediente:string;
   despacho_judicial:DespachoJudicial;
   circunscripcion:CircunscripcionJudicial;
   ciudad:Ciudad;
-  hechosPuniblesCausas:Array<HechoPunible_CausaJudicial>
-  numeroDeDocumento:number;
+  hechosPuniblesCausas:Array<HechoPunibleCausaJudicial>;
   anho:number;
-  fecha_de_aprehension:Date;
-  tiempo_de_condena:number;
-  tiene_anhos_extra_de_seguridad:boolean;
-  tiempo_de_seguridad:number;
-  sentencia_definitiva:string;
-  fecha_de_compurgamiento_inicial:Date;
-  fecha_de_compurgamiento_recalculada:Date;
-  historial_de_compurgamiento_recalculada:Array<HistorialDeCompurgamientoRecalculada>;
   juzgado_de_tribunal_de_sentencia:string;
   secretaria:string;
   lugar_del_hecho:string;
   link_de_noticia:string;
-  defensor:Defensor;
-
+  sentencia_definitiva:string;
+  fecha_sentencia_definitiva:Date;
+  fecha_del_hecho:Date;
+  
   
   
 }

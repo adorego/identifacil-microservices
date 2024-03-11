@@ -8,32 +8,32 @@ import { HechoPunibleModel } from "./hecho-punible.model";
 import { DefensorModel } from "./defensor.model";
 import { HechoPunibleCausaJudicialModel } from "./hecho-punible-causa-judicial.model";
 import { HistorialCompurgamientoRecalculadaModel } from "./historial-compurgamiento-recalculada.model";
+import { Ppl } from "src/core/entities/ppl.entity";
+import { PplModel } from "./ppl.model";
+import { Condena } from "src/core/entities/condena.entity";
+import { CondenaModel } from "./condena.model";
+import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
+import { PplEnExpedienteModel } from "./ppl-en-expediente.model";
 
 @Entity({name:'expediente_judicial'})
 export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @Column({type:"int", nullable:false,unique:true})
-  numeroDeExpediente:number;
-
-  @Column({type:Date, nullable:false})
-  fechaDeExpediente: Date;
-
-  @Column({type:"int", nullable:true})
-  numeroDeDocumento:number;
-
-  @Column({type:"int", nullable:true})
-  anho:number;
+  @Column({type:"varchar", nullable:false,unique:true})
+  numeroDeExpediente:string;
 
   @Column({type:"boolean",nullable:false})
   condenado:boolean
   
-  @Column({type:"varchar", nullable:true})
+  @Column({type:'varchar', nullable:false})
   estado_procesal:string;
 
-  @Column("int",{array:true, nullable:true})
-  ppls:Array<number>;
+  @Column({type:"date",nullable:true})
+  fecha_del_hecho: Date;
+  
+  @OneToMany(() => PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.expediente,{eager:true, cascade:true})
+  ppls_en_expediente:Array<PplEnExpedienteModel>;
 
   @Column({type:'varchar', nullable:false})
   caratula_expediente:string;
@@ -41,39 +41,25 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @ManyToOne(()=>DespachoJudicialModel,{eager:true})
   despacho_judicial:DespachoJudicialModel;
 
-  @ManyToMany(() => HechoPunibleCausaJudicialModel, hechosPuniblesCausas=>hechosPuniblesCausas.expedientes,{cascade:true, eager:true})
-  hechosPuniblesCausas: Array<HechoPunibleCausaJudicialModel>;
-
   @ManyToOne(()=>CircunscripcionJudicialModel,{eager:true})
   circunscripcion: CircunscripcionJudicialModel;
 
+  
   @ManyToOne(()=>CiudadModel,{eager:true})
   ciudad: CiudadModel;
 
-  @Column({type:"date",nullable:true})
-  fecha_de_aprehension:Date;
+   
+  @ManyToMany(() => HechoPunibleCausaJudicialModel, hechosPuniblesCausas=>hechosPuniblesCausas.expedientes,{eager:true})
+  @JoinTable()
+  hechosPuniblesCausas: Array<HechoPunibleCausaJudicialModel>;
+
+
+
+  @Column({type:"int", nullable:true})
+  anho:number;
+
   
-  @Column({type:"int",nullable:true})
-  tiempo_de_condena:number;
-
-  @Column({type:"boolean",nullable:true})
-  tiene_anhos_extra_de_seguridad:boolean;
-
-  @Column({type:"int",nullable:true})
-  tiempo_de_seguridad:number;
-
-  @Column({type:"varchar",nullable:true})
-  sentencia_definitiva:string;
-
-  @Column({type:"date",nullable:true})
-  fecha_de_compurgamiento_inicial:Date;
-
-  @Column({type:"date",nullable:true})
-  fecha_de_compurgamiento_recalculada:Date;
-
-  @OneToMany(()=>HistorialCompurgamientoRecalculadaModel, historial=>historial.expediente)
-  historial_de_compurgamiento_recalculada:Array<HistorialCompurgamientoRecalculadaModel>;
-
+  
   @Column({type:"varchar",nullable:true})
   juzgado_de_tribunal_de_sentencia:string;
 
@@ -85,9 +71,12 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
 
   @Column({type:"varchar",nullable:true})
   link_de_noticia:string;
+ 
+  @Column({type:"varchar",nullable:true})
+  sentencia_definitiva:string;
 
-  @ManyToOne(()=>DefensorModel,{eager:true})
-  defensor:DefensorModel;
+  @Column({type:"date",nullable:true})
+  fecha_sentencia_definitiva:Date;
   
 }
 

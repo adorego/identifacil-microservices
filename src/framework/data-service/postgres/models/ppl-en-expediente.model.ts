@@ -31,12 +31,12 @@ export class PplEnExpedienteModel extends PplEnExpediente{
     @JoinTable()
     hechosPuniblesCausas:Array<HechoPunibleCausaJudicialModel>;
    
-    @Column({type:"varchar"})
+    @Column({type:"varchar",nullable:true})
     sentencia_definitiva:string;
 
-    @Column({type:"date"})
+    @Column({type:"date",nullable:true})
     fecha_sentencia_definitiva:Date;
 
-    @Column({type:"date"})
+    @Column({type:"date",nullable:true})
     fecha_de_aprehension:Date;
 }

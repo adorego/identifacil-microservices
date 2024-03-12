@@ -45,11 +45,12 @@ export class DatosPenalesController{
   async create(@Body() expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{
     try{
       this.logger.log(`Datos recibidos:`,expedienteDTO);
-      const respuestaCrearExpedienteJudicial = await this.datosPenalesUseCases.crearExpedienteJudicial(expedienteDTO);
-      return{
-        success:true,
-        id:respuestaCrearExpedienteJudicial?.id
-      }
+      // const respuestaCrearExpedienteJudicial = await this.datosPenalesUseCases.crearExpedienteJudicial(expedienteDTO);
+      // return{
+      //   success:true,
+      //   id:respuestaCrearExpedienteJudicial?.id
+      // }
+      return null
     }catch(error){
       this.logger.error("Error durante la creacion del expediente judicial:", error);
       throw new HttpException("Error durante el registro del expediente judicial:", HttpStatus.INTERNAL_SERVER_ERROR);

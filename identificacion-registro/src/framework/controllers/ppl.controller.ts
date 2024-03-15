@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Logger, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post } from "@nestjs/common";
 
 import { GestionPPLUseCase } from "src/use-cases/gestion-ppl/gestion-ppl-use-case.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
@@ -59,11 +59,12 @@ export class PplController{
   @Get("ppls/id/:id")
   async ppls_por_id(@Param() param:any):Promise<PplDTO>{
     try{
+     
       this.logger.log("Lamada a ppl_por_id, parametro:", param.id);
       return await this.gestionPPLUseCase.getPpplById(param.id);
     }catch(error){
       this.logger.error(`Error en la consulta de PPL por id:${error}`);
-      throw new HttpException(`Error en al consulta por id:${error}`, error);
+      throw new HttpException(`Error en al consulta por id:${error}`, HttpStatus.BAD_REQUEST);
     }
   }
 

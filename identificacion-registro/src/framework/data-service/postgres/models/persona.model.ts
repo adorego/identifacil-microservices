@@ -86,7 +86,7 @@ export class PersonaModel extends Persona{
   @Column({type:"boolean",default:false})
   tiene_contacto_en_embajada: boolean;
   
-  @ManyToOne(()=>ContactoDeEmbajadaModel)
+  @ManyToOne(()=>ContactoDeEmbajadaModel,{eager:true})
   contactoDeEmbajadaoConsulado:ContactoDeEmbajadaModel
 
 }

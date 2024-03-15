@@ -53,7 +53,7 @@ export class RegistroUseCase{
   ){}
 
   async registrar(personaARegistrar:Persona, ppl:Ppl):Promise<Persona>{
-    //  console.log("Objecto dataService:", this.dataService);
+    this.logger.log("Llamado a registrar PPL, datos:", personaARegistrar);
      try{
         //Guardar Registro
         // console.log("descriptorFacial1:", personaARegistrar.registro.descriptorFacial1);

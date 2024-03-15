@@ -103,8 +103,7 @@ export class RegistroFactory{
     persona.registro = registro;
     
     let contactoEnEmbajadaCreado:ContactoEnEmbajada = null;
-    if(crearRegistroPersonaDTO.es_extranjero){
-      if(crearRegistroPersonaDTO. mantiene_contacto_con_consulado_o_embajada){
+    if(crearRegistroPersonaDTO.es_extranjero && crearRegistroPersonaDTO. mantiene_contacto_con_consulado_o_embajada){
         const pais = await this.dataService.pais.get(crearRegistroPersonaDTO.pais_de_embajada);
         if(pais == null){
           throw new HttpException(`No se encuentra el país enviado`,HttpStatus.BAD_REQUEST);
@@ -120,8 +119,8 @@ export class RegistroFactory{
           contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajada)
          }
          persona.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
-      }
     }
+    
     if(persona.esPPL){
       const ppl = new Ppl();
       ppl.persona = persona;

@@ -7,14 +7,17 @@ import { SaludFisica } from "src/core/entities/salud-fisica.entity";
 import { SaludMental } from "src/core/entities/salud-mental.entity";
 import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
+import { TipoIdentificacion } from "src/core/entities/tipo-identificacion.entity";
 
 export class PplDTO{
   id_persona:number;
   nombre:string;
   apellido:string;
+  tipo_de_documento:TipoIdentificacion;
   numero_de_identificacion:string;
   establecimiento:number;
   establecimiento_nombre:string;
+  foto:string;
   // nacionalidad:number;
   apodo:string;
   genero:number;

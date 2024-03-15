@@ -72,5 +72,9 @@ export class DatosJudicialesController{
           } 
         }
   
-
+    @Post('expedientes')
+    async create_expediente(@Body() datos:any){
+        console.log("Llamado a POST de expedientes");
+        console.log('Datos:',datos);
+    } 
 }

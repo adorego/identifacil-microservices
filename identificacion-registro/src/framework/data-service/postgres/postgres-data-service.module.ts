@@ -42,6 +42,7 @@ import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-comp
 import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
 import { CondenaModel } from "./models/condena.model";
 import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
+import { ContactoDeEmbajadaModel } from "./models/contacto_embajada.model";
 
 @Module({
   imports:[
@@ -90,6 +91,7 @@ import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
       PplEnExpedienteModel,
       CondenaModel,
       TiempoDeCondenaModel,
+      ContactoDeEmbajadaModel,
       
       
     

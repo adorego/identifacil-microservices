@@ -1,4 +1,5 @@
 import { HechoPunibleCausaJudicial } from "../entities/hecho-punible-causa-judicial.entity";
+import { Pais } from "../entities/pais.entity";
 
 export abstract class IGenericRepository<T>{
   abstract getAll():Promise<Array<T>>;
@@ -29,4 +30,6 @@ export abstract class IGenericRepository<T>{
   abstract getExpedientesByPersonaId(id:number);
 
   abstract getPPLByIdPersona(id:number);
+
+  abstract getContactoDeEmbajadaByDatos(nombre:string,numero:string,pais:Pais):Promise<T>;
 }

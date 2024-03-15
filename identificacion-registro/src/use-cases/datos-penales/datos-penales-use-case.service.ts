@@ -144,7 +144,8 @@ export class DatosPenalesUseCases{
     try{
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.actualizacionDeExpedienteJudicialGenerar(id,expedienteDTO);
         let hechosPuniblesCausasCreadas = null;
-        //console.log("Datos recibidos:", respuestaGeneracionExpedienteJudicialFactory);
+        //console.log("Datos recibidos en actualizar use case:", respuestaGeneracionExpedienteJudicialFactory);
+       
         if(respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales 
           && respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales.length > 0){
           
@@ -177,6 +178,7 @@ export class DatosPenalesUseCases{
           const pplsEnExpedienteACrear = respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente;
           pplsEnExpedienteCreados = await Promise.all(pplsEnExpedienteACrear.map(
             async (pplEnExpediente)=>{
+              console.log("Condena del PPL:", pplEnExpediente.condena);
               //console.log("Ppl para expediente:", pplEnExpediente);
               //Crear hechos puniblesCausas de este PPL
               let hechosPuniblesCausasPorPpl:Array<HechoPunibleCausaJudicial> = [];
@@ -197,33 +199,34 @@ export class DatosPenalesUseCases{
               //Si tiene condena crear la condena en la BD
               //console.log("Antes de entrar a pplEnExpediente");
               if(pplEnExpediente.condenado){
-                let tiempoDeCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.tiempo_de_condena.anhos, pplEnExpediente.condena.tiempo_de_condena.meses);
                 
+                let tiempoDeCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.tiempo_de_condena.anhos, pplEnExpediente.condena.tiempo_de_condena.meses);
                 if(!tiempoDeCondena){
                   tiempoDeCondena = await this.dataService.tiempoDeCondena.create(pplEnExpediente.condena.tiempo_de_condena);
                 }
+                console.log("Tiempo de condena:", tiempoDeCondena);
                 let tiempoExtraCondena =null;
                 if(pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad){
                   tiempoExtraCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.anhos, pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.meses);
                 }
-                if(!tiempoExtraCondena){
+                if(!tiempoExtraCondena && pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad && pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.anhos !== 0){
                   tiempoExtraCondena = await this.dataService.tiempoDeCondena.create(pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad);
                 }
-                //console.log("Tiempo de condena:",tiempoDeCondena,"Tiempo extra de condena:", tiempoExtraCondena);
+                console.log("Tiempo de condena:",tiempoDeCondena,"Tiempo extra de condena:", tiempoExtraCondena);
                 pplEnExpediente.condena.tiempo_de_condena = tiempoDeCondena;
                 pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = tiempoExtraCondena;
                 pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad;
-                //console.log("Antes de crear la condena",pplEnExpediente.condena);
+                console.log("Antes de crear la condena",pplEnExpediente.condena);
                 const condenaCreada = await this.dataService.condena.create(pplEnExpediente.condena);
                 //console.log("Despues de crear la condena");
                 pplEnExpediente.condena = condenaCreada;
               }
               const pplEnExpedienteCreado = await this.dataService.pplEnExpediente.create(pplEnExpediente);
-              //console.log("PplEnExpediente guardado:", pplEnExpedienteCreado);
+              console.log("PplEnExpediente guardado:", pplEnExpedienteCreado);
               return pplEnExpedienteCreado;
             }
           ))
-          //console.log("La lista de PPL en expediente es:", pplsEnExpedienteCreados);
+          console.log("La lista de PPL en expediente es:", pplsEnExpedienteCreados);
         }
         //console.log("PplEnExpediente creados:", pplsEnExpedienteCreados);
         const expedienteACrear = respuestaGeneracionExpedienteJudicialFactory.expedienteJudicial;

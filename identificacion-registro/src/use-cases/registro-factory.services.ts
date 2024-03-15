@@ -12,6 +12,7 @@ import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroPersona } from "src/core/entities/registro-persona.entity";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
+import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 
 @Injectable()
 export class RegistroFactory{
@@ -100,6 +101,27 @@ export class RegistroFactory{
     // console.log('Persona:', persona);
     // console.log('Registro:', registro);
     persona.registro = registro;
+    
+    let contactoEnEmbajadaCreado:ContactoEnEmbajada = null;
+    if(crearRegistroPersonaDTO.es_extranjero){
+      if(crearRegistroPersonaDTO. mantiene_contacto_con_consulado_o_embajada){
+        const pais = await this.dataService.pais.get(crearRegistroPersonaDTO.pais_de_embajada);
+        if(pais == null){
+          throw new HttpException(`No se encuentra el país enviado`,HttpStatus.BAD_REQUEST);
+        }
+         const contactoEnEmbajada = new ContactoEnEmbajada();
+         contactoEnEmbajada.nombre =  crearRegistroPersonaDTO.nombre_de_contacto_en_consulado_o_embajada;
+         contactoEnEmbajada.numero = crearRegistroPersonaDTO.numero_de_contacto_en_consulado_o_embajada;
+         contactoEnEmbajada.pais = pais;
+         const contactoDeEmbajadaEncontrado = await this.dataService.contactoDeEmbajada.getContactoDeEmbajadaByDatos(contactoEnEmbajada.nombre,contactoEnEmbajada.numero,contactoEnEmbajada.pais);
+         if(contactoDeEmbajadaEncontrado!==null){
+          contactoEnEmbajadaCreado = contactoDeEmbajadaEncontrado
+         }else{
+          contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajada)
+         }
+         persona.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
+      }
+    }
     if(persona.esPPL){
       const ppl = new Ppl();
       ppl.persona = persona;

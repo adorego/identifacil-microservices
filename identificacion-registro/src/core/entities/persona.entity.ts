@@ -11,6 +11,7 @@ import { SaludMental } from "./salud-mental.entity";
 import { Seguridad } from "./seguridad.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
 import { TipoIdentificacion } from "./tipo-identificacion.entity";
+import { ContactoEnEmbajada } from "./contacto_embajada.entity";
 
 export class Persona{
   id:number;
@@ -31,5 +32,6 @@ export class Persona{
   seguridad:Seguridad;
   datosFamiliares:DatosFamiliares;
   situacionJudicial:SituacionJudicial;
-
+  tiene_contacto_en_embajada:boolean;
+  contactoDeEmbajadaoConsulado:ContactoEnEmbajada
 }

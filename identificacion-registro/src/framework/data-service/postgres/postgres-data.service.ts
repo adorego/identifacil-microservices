@@ -46,6 +46,10 @@ import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
 import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
 import { CondenaModel } from "./models/condena.model";
 import { Condena } from "src/core/entities/condena.entity";
+import { Pais } from "src/core/entities/pais.entity";
+import { PaisModel } from "./models/pais.model";
+import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
+import { ContactoDeEmbajadaModel } from "./models/contacto_embajada.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -86,6 +90,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   pplEnExpediente: IGenericRepository<PplEnExpedienteModel>;
   tiempoDeCondena: IGenericRepository<TiempoDeCondenaModel>;
   condena: IGenericRepository<CondenaModel>;
+  pais: IGenericRepository<PaisModel>;
+  contactoDeEmbajada: IGenericRepository<ContactoDeEmbajadaModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -164,6 +170,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private tiempo_de_condena_repository:Repository<TiempoDeCondenaModel>,
     @InjectRepository(CondenaModel)
     private condena_repository:Repository<CondenaModel>,
+    @InjectRepository(PaisModel)
+    private pais_repository:Repository<PaisModel>,
+    @InjectRepository(ContactoDeEmbajadaModel)
+    private contacto_de_embajada_repository:Repository<ContactoDeEmbajadaModel>,
 
     ){}
   
@@ -210,6 +220,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.pplEnExpediente = new PostgresGenericRepository<PplEnExpedienteModel>(this.pplEnExpediente_repository);
     this.tiempoDeCondena = new PostgresGenericRepository<TiempoDeCondenaModel>(this.tiempo_de_condena_repository);
     this.condena = new PostgresGenericRepository<CondenaModel>(this.condena_repository);
+    this.pais = new PostgresGenericRepository<PaisModel>(this.pais_repository);
+    this.contactoDeEmbajada = new PostgresGenericRepository<ContactoDeEmbajadaModel>(this.contacto_de_embajada_repository)
   
   }
   

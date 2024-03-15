@@ -36,6 +36,8 @@ import { CausaJudicial } from "../entities/causa-judicial.entity";
 import { PplEnExpediente } from "../entities/pplEnExpediente.entity";
 import { TiempoDeCondena } from "../entities/tiempo_de_condena.entity";
 import { Condena } from "../entities/condena.entity";
+import { Pais } from "../entities/pais.entity";
+import { ContactoEnEmbajada } from "../entities/contacto_embajada.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -75,4 +77,6 @@ export abstract class IDataService{
   abstract pplEnExpediente:IGenericRepository<PplEnExpediente>
   abstract tiempoDeCondena:IGenericRepository<TiempoDeCondena>
   abstract condena:IGenericRepository<Condena>
+  abstract pais:IGenericRepository<Pais>
+  abstract contactoDeEmbajada:IGenericRepository<ContactoEnEmbajada>
 }

@@ -14,6 +14,7 @@ import { SaludModel } from "./salud.model";
 import { SeguridadModel } from "./seguridad.model";
 import { SituacionJudicialModel } from "./situacion-judicial.model";
 import { TipoIdentificacionModel } from "./tipo_identificacion.model";
+import { ContactoDeEmbajadaModel } from "./contacto_embajada.model";
 
 @Entity({name:'persona'})
 export class PersonaModel extends Persona{
@@ -81,5 +82,11 @@ export class PersonaModel extends Persona{
   @OneToOne(() => SituacionJudicialModel, situacionJuridica => situacionJuridica.persona, {cascade: true, eager: true, onDelete:'CASCADE'} )
   @JoinColumn()
   situacionJudicial:SituacionJudicialModel;
+
+  @Column({type:"boolean",default:false})
+  tiene_contacto_en_embajada: boolean;
+  
+  @ManyToOne(()=>ContactoDeEmbajadaModel)
+  contactoDeEmbajadaoConsulado:ContactoDeEmbajadaModel
 
 }

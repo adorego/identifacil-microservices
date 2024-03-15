@@ -11,12 +11,16 @@ import { PplController } from "./controllers/ppl.controller";
 import { RegistroController } from "src/framework/controllers/registro.controller";
 import { RegistroUseCasesModule } from "src/use-cases/registro-use-case.module";
 import { SaludController } from "./controllers/salud.controller";
+import { DatosPenalesController } from "./controllers/datosPenales.controller";
+import { DatosPenalesModule } from "src/use-cases/datos-penales/datos-penales.module";
 
 @Module({
   imports:[
     RegistroUseCasesModule,
     IdentificacionUseCaseModule,
     GestionPPLModule,
+    DatosPenalesModule,
+
   ],
   providers:[
     
@@ -31,6 +35,7 @@ import { SaludController } from "./controllers/salud.controller";
     DatosSeguridadController,
     DatosJudicialesController,
     PplController,
+    
   ]
 })
 

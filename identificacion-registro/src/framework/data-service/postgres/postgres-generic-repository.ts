@@ -3,6 +3,7 @@ import { FindOptionsWhere, Repository } from "typeorm";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 import { HechoPunibleCausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
+import { Pais } from "src/core/entities/pais.entity";
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   
@@ -155,6 +156,15 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
           .leftJoinAndSelect("ppl.persona","persona")
           .where("persona.id = :id",{id})
           .getOne()
+  }
+
+  getContactoDeEmbajadaByDatos(nombre:string,numero:string,pais:Pais):Promise<T>{
+    return this._repository.createQueryBuilder("contactoDeEmbajada")
+            .leftJoinAndSelect("contactoDeEmbajada.pais","pais")
+            .where("contactoDeEmbajada.nombre = :nombre",{nombre})
+            .andWhere("contactoDeEmbajada.numero = :numero",{numero})
+            .andWhere("contactoDeEmbajada.pais =:pais",{pais})
+            .getOne()
   }
 }
   

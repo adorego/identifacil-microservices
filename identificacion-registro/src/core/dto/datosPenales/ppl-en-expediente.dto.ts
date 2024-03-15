@@ -1,5 +1,8 @@
-import { hechoPunibleCausa } from "./expediente.dto";
-
+//import { hechoPunibleCausa } from "./expediente.dto";
+interface hechoPunibleCausa{
+    hecho_punible:number;
+    causa_judicial:number;
+}
 interface DisminucionDePena{
     descripcion:string;
     fecha_recalculada:Date;

@@ -10,12 +10,14 @@ import { RegistroEducacionFormacionFactory } from "./educacion-formacion-factory
 import { RegistroFactory } from "./registro-factory.services";
 import { RegistroSaludFactory } from "./registro-datos-salud/registro-salud-factory.service";
 import { RegistroUseCase } from "./registro-use-case.service";
+import { DatosPenalesModule } from "./datos-penales/datos-penales.module";
 
 @Module({
   imports:[
     PostgresDataServiceModule,
     LibModule,
     IdentificacionUseCaseModule,
+    DatosPenalesModule
   ],
   providers:[
     RegistroUseCase,

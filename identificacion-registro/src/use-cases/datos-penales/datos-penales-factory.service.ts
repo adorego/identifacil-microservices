@@ -397,7 +397,7 @@ export class DatosPenalesFactory{
                 tiempo_de_condena.anhos = ppl.condena.anhos;
                 tiempo_de_condena.meses = ppl.condena.meses;
                 pplEnExpediente.condena.tiempo_de_condena = tiempo_de_condena;
-                
+                pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = ppl.tiene_anhos_extra_por_medida_de_seguridad;
                 if(ppl.tiene_anhos_extra_por_medida_de_seguridad){
                   const condena_extra_por_medida_de_seguridad = new TiempoDeCondena();
                   condena_extra_por_medida_de_seguridad.anhos = ppl.anhos_extra_por_medida_de_seguridad.anhos;

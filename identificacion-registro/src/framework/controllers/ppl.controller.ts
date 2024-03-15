@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, Logger, Param } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Logger, Param, Post } from "@nestjs/common";
 
 import { GestionPPLUseCase } from "src/use-cases/gestion-ppl/gestion-ppl-use-case.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
@@ -67,4 +67,9 @@ export class PplController{
     }
   }
 
+  @Post('prueba_post')
+  async prueba(@Body() datos:any){
+    console.log('datos:',datos);
+    return "ok"
+  }
 }

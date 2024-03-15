@@ -1,0 +1,23 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+build:
+  artifacts:
+  - image: adorego/cliente
+    context: cliente
+    docker:
+        dockerfile: Dockerfile
+  - image: adorego/consulta-ci
+    context: consulta-ci
+    docker:
+        dockerfile: Dockerfile
+  - image: adorego/registro
+    context: identificacion-registro
+    docker:
+        dockerfile: Dockerfile
+  # - image: adorego/auth
+  #   context: auth-identifacil
+  #   docker:
+  #       dockerfile: Dockerfile
+manifests:
+  rawYaml:
+     - ./infra/k8s/*

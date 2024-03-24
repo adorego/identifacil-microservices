@@ -43,6 +43,13 @@ import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
 import { CondenaModel } from "./models/condena.model";
 import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
 import { ContactoDeEmbajadaModel } from "./models/contacto_embajada.model";
+import { MovimientoModel } from "./models/movimiento.model";
+import { MotivoDeTrasladoModel } from "./models/motivo-traslado.model";
+import { MedidaDeSeguridadModel } from "./models/medida-de-seguridad.model";
+import { CustodioModel } from "./models/custodio.model";
+import { ChoferModel } from "./models/chofer.model";
+import { VehiculoModel } from "./models/vehiculo.model";
+import { FuncionarioModel } from "./models/funcionario.model";
 
 @Module({
   imports:[
@@ -92,6 +99,13 @@ import { ContactoDeEmbajadaModel } from "./models/contacto_embajada.model";
       CondenaModel,
       TiempoDeCondenaModel,
       ContactoDeEmbajadaModel,
+      MovimientoModel,
+      MotivoDeTrasladoModel,
+      MedidaDeSeguridadModel,
+      CustodioModel,
+      ChoferModel,
+      VehiculoModel,
+      FuncionarioModel,
       
       
     

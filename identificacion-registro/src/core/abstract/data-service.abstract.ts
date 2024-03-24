@@ -38,6 +38,13 @@ import { TiempoDeCondena } from "../entities/tiempo_de_condena.entity";
 import { Condena } from "../entities/condena.entity";
 import { Pais } from "../entities/pais.entity";
 import { ContactoEnEmbajada } from "../entities/contacto_embajada.entity";
+import { Movimiento } from "../entities/movimiento.entity";
+import { MotivoDeTraslado } from "../entities/motivo-traslado.entity";
+import { MedidaDeSeguridad } from "../entities/medida-de-seguridad.entity";
+import { Vehiculo } from "../entities/vehiculo.entity";
+import { Funcionario } from "../entities/funcionario.entity";
+import { Custodio } from "../entities/custodio.entity";
+import { Chofer } from "../entities/chofer.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -79,4 +86,11 @@ export abstract class IDataService{
   abstract condena:IGenericRepository<Condena>
   abstract pais:IGenericRepository<Pais>
   abstract contactoDeEmbajada:IGenericRepository<ContactoEnEmbajada>
+  abstract movimiento:IGenericRepository<Movimiento>
+  abstract motivoDeTraslado:IGenericRepository<MotivoDeTraslado>
+  abstract medidaDeSeguridad:IGenericRepository<MedidaDeSeguridad>
+  abstract custodio:IGenericRepository<Custodio>
+  abstract chofer:IGenericRepository<Chofer>
+  abstract vehiculo:IGenericRepository<Vehiculo>
+  abstract funcionario:IGenericRepository<Funcionario>
 }

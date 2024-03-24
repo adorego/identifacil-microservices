@@ -13,6 +13,7 @@ import { RegistroUseCasesModule } from "src/use-cases/registro-use-case.module";
 import { SaludController } from "./controllers/salud.controller";
 import { DatosPenalesController } from "./controllers/datosPenales.controller";
 import { DatosPenalesModule } from "src/use-cases/datos-penales/datos-penales.module";
+import { MovimientosController } from "./controllers/movimientos.controller";
 
 @Module({
   imports:[

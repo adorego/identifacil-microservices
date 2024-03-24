@@ -175,5 +175,12 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
             .andWhere("contactoDeEmbajada.pais =:pais",{pais})
             .getOne()
   }
+
+  getFuncionariosPorEstablecimiento(id_establecimiento:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("funcionariosPorEstablecimiento")
+            .leftJoinAndSelect("funcionariosPorEstablecimiento.establecimiento","establecimiento")
+            .where("establecimiento.id = :id",{id:id_establecimiento})
+            .getMany()
+  }
 }
   

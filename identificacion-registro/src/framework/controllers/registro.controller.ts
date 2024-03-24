@@ -25,10 +25,7 @@ export class RegistroController{
     private registroPersonaUseCase:RegistroUseCase,
     
   ){}
-  @Get('saludar')
-  getHola(){
-    return "Hola como estas"
-  }
+ 
 
 
   @Post('registro_persona')

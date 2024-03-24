@@ -15,7 +15,7 @@ import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-fac
 import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 
 @Injectable()
-export class RegistroFactory{
+export class  RegistroFactory{
   constructor(private dataService:IDataService,
     private identificarUseCase:IdentificacionUseCase,
     private float32ConverterService:Float32ConveterService
@@ -141,13 +141,13 @@ export class RegistroFactory{
   }
 
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
-      const fileName = `${numero_identificacion}_${numero_foto.toString()}${path.extname(foto[0].originalname)}`;
+      const fileName = `${numero_identificacion}_${numero_foto.toString()}.${path.extname(foto[0].originalname)}`;
       console.log('Nombre del archivo:', fileName);
-      const dirPath = path.join(process.env.TEST_FILE_STORAGE,'upload');
+      const dirPath = path.join(process.env.FILE_STORAGE,'');
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
-      const finalPath = path.join(dirPath, fileName);
+      const finalPath = path.join(process.env.ASSETS_LOCATION, fileName);
       console.log('finalPath:', finalPath);
       // console.log('Buffer de la foto:', foto[0].buffer);
       if(foto[0]){

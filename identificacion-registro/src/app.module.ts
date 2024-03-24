@@ -9,6 +9,9 @@ import { PostgresDataServiceModule } from './framework/data-service/postgres/pos
 import { RegistroIdentificacionModule } from './framework/identificacion-registro.module';
 import { RegistroUseCasesModule } from './use-cases/registro-use-case.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 
 @Module({
   imports: [
@@ -32,7 +35,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       autoLoadEntities:true,
     }),
-    ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname,'..','public'),
+      serveRoot:process.env.ASSETS_LOCATION
+    }),
     
     RegistroIdentificacionModule,
     PostgresDataServiceModule,
@@ -40,7 +46,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     IdentificacionUseCaseModule,
     LibModule,
     GestionPPLModule,
-    DatosPenalesModule
+    DatosPenalesModule,
+    MovimientosModule
   
   ],
   controllers: [],

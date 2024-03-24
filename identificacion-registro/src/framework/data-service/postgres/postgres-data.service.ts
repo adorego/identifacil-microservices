@@ -45,11 +45,16 @@ import { HistorialCompurgamientoRecalculadaModel } from "./models/historial-comp
 import { PplEnExpedienteModel } from "./models/ppl-en-expediente.model";
 import { TiempoDeCondenaModel } from "./models/tiempo_de_condena.model";
 import { CondenaModel } from "./models/condena.model";
-import { Condena } from "src/core/entities/condena.entity";
-import { Pais } from "src/core/entities/pais.entity";
 import { PaisModel } from "./models/pais.model";
-import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 import { ContactoDeEmbajadaModel } from "./models/contacto_embajada.model";
+import { MovimientoModel } from "./models/movimiento.model";
+import { MotivoDeTrasladoModel } from "./models/motivo-traslado.model";
+import { MedidaDeSeguridadModel } from "./models/medida-de-seguridad.model";
+import { VehiculoModel } from "./models/vehiculo.model";
+import { CustodioModel } from "./models/custodio.model";
+import { FuncionarioModel } from "./models/funcionario.model";
+import { Chofer } from "src/core/entities/chofer.entity";
+import { ChoferModel } from "./models/chofer.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -92,6 +97,14 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   condena: IGenericRepository<CondenaModel>;
   pais: IGenericRepository<PaisModel>;
   contactoDeEmbajada: IGenericRepository<ContactoDeEmbajadaModel>;
+  //Movimientos
+  movimiento:IGenericRepository<MovimientoModel>
+  motivoDeTraslado:IGenericRepository<MotivoDeTrasladoModel>
+  medidaDeSeguridad:IGenericRepository<MedidaDeSeguridadModel>
+  custodio:IGenericRepository<CustodioModel>
+  vehiculo:IGenericRepository<VehiculoModel>
+  funcionario: IGenericRepository<FuncionarioModel>;
+  chofer: IGenericRepository<ChoferModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -174,6 +187,22 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private pais_repository:Repository<PaisModel>,
     @InjectRepository(ContactoDeEmbajadaModel)
     private contacto_de_embajada_repository:Repository<ContactoDeEmbajadaModel>,
+    @InjectRepository(MovimientoModel)
+    private movimiento_repository:Repository<MovimientoModel>,
+    @InjectRepository(MotivoDeTrasladoModel)
+    private motivo_de_traslado_repository:Repository<MotivoDeTrasladoModel>,
+    @InjectRepository(MedidaDeSeguridadModel)
+    private medidad_de_seguridad_repository:Repository<MedidaDeSeguridadModel>,
+    @InjectRepository(CustodioModel)
+    private custodio_repository:Repository<CustodioModel>,
+    @InjectRepository(VehiculoModel)
+    private vehiculo_repository:Repository<VehiculoModel>,
+    @InjectRepository(FuncionarioModel)
+    private funcionario_repository:Repository<FuncionarioModel>,
+    @InjectRepository(ChoferModel)
+    private chofer_repository:Repository<ChoferModel>,
+    
+
 
     ){}
   
@@ -222,6 +251,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.condena = new PostgresGenericRepository<CondenaModel>(this.condena_repository);
     this.pais = new PostgresGenericRepository<PaisModel>(this.pais_repository);
     this.contactoDeEmbajada = new PostgresGenericRepository<ContactoDeEmbajadaModel>(this.contacto_de_embajada_repository)
+    this.movimiento = new PostgresGenericRepository<MovimientoModel>(this.movimiento_repository)
+    this.motivoDeTraslado = new PostgresGenericRepository<MotivoDeTrasladoModel>(this.motivo_de_traslado_repository)
+    this.medidaDeSeguridad = new PostgresGenericRepository<MedidaDeSeguridadModel>(this.medidad_de_seguridad_repository)
+    this.custodio = new PostgresGenericRepository<CustodioModel>(this.custodio_repository)
+    this.vehiculo = new PostgresGenericRepository<VehiculoModel>(this.vehiculo_repository)
+    this.funcionario = new PostgresGenericRepository<FuncionarioModel>(this.funcionario_repository)
+    this.chofer = new PostgresGenericRepository<ChoferModel>(this.chofer_repository)
   
   }
   

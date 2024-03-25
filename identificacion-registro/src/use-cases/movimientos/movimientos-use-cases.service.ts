@@ -21,7 +21,7 @@ export class MovimientosUseCases{
                 id:movimientoCreado.id
             }
         }catch(error){
-            throw new HttpException(`Error al crear el movimiento:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(`Error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     async actualizarMovimiento(id:number,movimientoDTO:MovimientoDTO){
@@ -33,7 +33,7 @@ export class MovimientosUseCases{
                 id:movimientoActualizado.id
             }
         }catch(error){
-            throw new HttpException(`Error al crear el movimiento:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new HttpException(`Error al actualizar el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

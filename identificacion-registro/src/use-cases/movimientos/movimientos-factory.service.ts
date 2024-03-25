@@ -225,7 +225,7 @@ export class MovimientosFactory{
                 async (ppl) =>{
                     const pplEncontrado = await this.dataService.ppl.get(ppl);
                     if(!pplEncontrado){
-                        throw new HttpException(`No se encontró la medida de seguridad:${ppl}`,HttpStatus.BAD_REQUEST);
+                        throw new HttpException(`No se encontró el ppl:${ppl}`,HttpStatus.BAD_REQUEST);
                     }
                     return pplEncontrado;
                 }

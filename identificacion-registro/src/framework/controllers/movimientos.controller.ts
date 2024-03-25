@@ -96,7 +96,7 @@ export class MovimientosController{
     @Get('vehiculos')
     async vehiculos(){
         try{
-            const respuestaMovimientoUseCase = await this.movimientoUseCase.choferes();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.vehiculos();
             return{
                 ...respuestaMovimientoUseCase
             }

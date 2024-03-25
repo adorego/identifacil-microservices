@@ -45,8 +45,16 @@ export class MovimientosUseCases{
         return await this.dataService.motivoDeTraslado.getAll();
     }
 
+    async motivos_de_traslados_por_id(id:number){
+        return await this.dataService.motivoDeTraslado.get(id);
+    }
+
     async medidas_de_seguridad(){
         return await this.dataService.medidaDeSeguridad.getAll();
+    }
+
+    async medidas_de_seguridad_por_id(id:number){
+        return await this.dataService.medidaDeSeguridad.get(id);
     }
 
     async custodios(){

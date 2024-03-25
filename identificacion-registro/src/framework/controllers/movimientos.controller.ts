@@ -57,10 +57,34 @@ export class MovimientosController{
         }
     }
 
+    @Get('motivos_de_traslado/:id')
+    async motivos_de_traslado_por_id(@Param() param){
+        try{
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.motivos_de_traslados_por_id(param.id);
+            return{
+                ...respuestaMovimientoUseCase
+            }
+        }catch(error){
+
+        }
+    }
+
     @Get('medidas_de_seguridad')
     async medidas_de_seguridad(){
         try{
             const respuestaMovimientoUseCase = await this.movimientoUseCase.medidas_de_seguridad();
+            return{
+                ...respuestaMovimientoUseCase
+            }
+        }catch(error){
+            throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get('medidas_de_seguridad/:id')
+    async medidas_de_seguridad_por_id(@Param() param){
+        try{
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.medidas_de_seguridad_por_id(param.id);
             return{
                 ...respuestaMovimientoUseCase
             }

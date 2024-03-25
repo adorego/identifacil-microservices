@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { MovimientosFactory } from "./movimientos-factory.service";
 import { MovimientoDTO } from "src/core/dto/movimientos/movimiento.dto";
+import { RespuestaUseCaseMovimientoDTO } from "src/core/dto/movimientos/respuesta-use-case-movimiento.dto";
 
 @Injectable()
 export class MovimientosUseCases{
@@ -11,7 +12,7 @@ export class MovimientosUseCases{
         private movimientosFactory:MovimientosFactory
     ){}
 
-    async crearMovimiento(movimientoDTO:MovimientoDTO){
+    async crearMovimiento(movimientoDTO:MovimientoDTO):Promise<RespuestaUseCaseMovimientoDTO>{
         try{
             const respuestaMovimientoFactory = await this.movimientosFactory.crearMovimiento(movimientoDTO);
             const movimientoCreado = await this.dataService.movimiento.create(respuestaMovimientoFactory.movimiento);

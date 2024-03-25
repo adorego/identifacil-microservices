@@ -12,9 +12,9 @@ export class MovimientosController{
     @Post()
     async create(@Body() movimientoDTO:MovimientoDTO){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.crearMovimiento(movimientoDTO);
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.crearMovimiento(movimientoDTO);
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -24,9 +24,9 @@ export class MovimientosController{
     @Put(':id')
     async update(@Param() param:any, @Body() movimientoDTO:MovimientoDTO){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.actualizarMovimiento(param.id, movimientoDTO);
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.actualizarMovimiento(param.id, movimientoDTO);
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -36,9 +36,9 @@ export class MovimientosController{
     @Get('funcionarios_por_establecimiento/:id')
     async get_funcionarios_por_establecimiento(@Param() param:any){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.funcionariosPorEstablecimiento(param.id)
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.funcionariosPorEstablecimiento(param.id)
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,9 +48,9 @@ export class MovimientosController{
     @Get('motivos_de_traslado')
     async motivos_de_traslado(){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.motivos_de_traslados();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.motivos_de_traslados();
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,9 +60,9 @@ export class MovimientosController{
     @Get('medidas_de_seguridad')
     async medidas_de_seguridad(){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.medidas_de_seguridad();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.medidas_de_seguridad();
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -72,9 +72,9 @@ export class MovimientosController{
     @Get('custodios')
     async custodios(){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.custodios();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.custodios();
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,9 +84,9 @@ export class MovimientosController{
     @Get('choferes')
     async choferes(){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.choferes();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.choferes();
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,9 +96,9 @@ export class MovimientosController{
     @Get('vehiculos')
     async vehiculos(){
         try{
-            const respuestaMovimientoUseCase = this.movimientoUseCase.choferes();
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.choferes();
             return{
-                respuestaMovimientoUseCase
+                ...respuestaMovimientoUseCase
             }
         }catch(error){
             throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);

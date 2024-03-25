@@ -53,7 +53,6 @@ import { MedidaDeSeguridadModel } from "./models/medida-de-seguridad.model";
 import { VehiculoModel } from "./models/vehiculo.model";
 import { CustodioModel } from "./models/custodio.model";
 import { FuncionarioModel } from "./models/funcionario.model";
-import { Chofer } from "src/core/entities/chofer.entity";
 import { ChoferModel } from "./models/chofer.model";
 
 @Injectable()
@@ -74,8 +73,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   educacionFormacion:PostgresGenericRepository<EducacionFormacionModel>;
   familiar: PostgresGenericRepository<Familiar>;
   concubino: PostgresGenericRepository<Concubino>;
-  causaJudicial: IGenericRepository<CausaJudicialModel>;
-  expediente: IGenericRepository<ExpedienteJudicial>;
+  causaJudicial: PostgresGenericRepository<CausaJudicialModel>;
+  expediente: PostgresGenericRepository<ExpedienteJudicial>;
   datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
   establecimientoPenitenciario: PostgresGenericRepository<EstablecimientoPenitenciarioModel>;
   defensor:PostgresGenericRepository<DefensorModel>;
@@ -85,26 +84,26 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   oficios: PostgresGenericRepository<OficioModel>;
   seguridad: PostgresGenericRepository<SeguridadModel>;
   ppl: PostgresGenericRepository<PplModel>;
-  vinculo_familiar: IGenericRepository<VinculoFamiliarModel>;
-  despachoJudicial: IGenericRepository<DespachoJudicialModel>;
-  hechoPunible: IGenericRepository<HechoPunibleModel>;
-  circunscripcionJudicial: IGenericRepository<CircunscripcionJudicialModel>;
-  ciudad:IGenericRepository<CiudadModel>
-  hechoPunibleCausaJudicial: IGenericRepository<HechoPunibleCausaJudicialModel>;
-  historial_de_compurgamiento_recalculada: IGenericRepository<HistorialCompurgamientoRecalculadaModel>;
-  pplEnExpediente: IGenericRepository<PplEnExpedienteModel>;
-  tiempoDeCondena: IGenericRepository<TiempoDeCondenaModel>;
-  condena: IGenericRepository<CondenaModel>;
-  pais: IGenericRepository<PaisModel>;
-  contactoDeEmbajada: IGenericRepository<ContactoDeEmbajadaModel>;
+  vinculo_familiar: PostgresGenericRepository<VinculoFamiliarModel>;
+  despachoJudicial: PostgresGenericRepository<DespachoJudicialModel>;
+  hechoPunible: PostgresGenericRepository<HechoPunibleModel>;
+  circunscripcionJudicial: PostgresGenericRepository<CircunscripcionJudicialModel>;
+  ciudad:PostgresGenericRepository<CiudadModel>
+  hechoPunibleCausaJudicial: PostgresGenericRepository<HechoPunibleCausaJudicialModel>;
+  historial_de_compurgamiento_recalculada: PostgresGenericRepository<HistorialCompurgamientoRecalculadaModel>;
+  pplEnExpediente: PostgresGenericRepository<PplEnExpedienteModel>;
+  tiempoDeCondena: PostgresGenericRepository<TiempoDeCondenaModel>;
+  condena: PostgresGenericRepository<CondenaModel>;
+  pais: PostgresGenericRepository<PaisModel>;
+  contactoDeEmbajada: PostgresGenericRepository<ContactoDeEmbajadaModel>;
   //Movimientos
-  movimiento:IGenericRepository<MovimientoModel>
-  motivoDeTraslado:IGenericRepository<MotivoDeTrasladoModel>
-  medidaDeSeguridad:IGenericRepository<MedidaDeSeguridadModel>
-  custodio:IGenericRepository<CustodioModel>
-  vehiculo:IGenericRepository<VehiculoModel>
-  funcionario: IGenericRepository<FuncionarioModel>;
-  chofer: IGenericRepository<ChoferModel>;
+  movimiento:PostgresGenericRepository<MovimientoModel>
+  motivoDeTraslado:PostgresGenericRepository<MotivoDeTrasladoModel>
+  medidaDeSeguridad:PostgresGenericRepository<MedidaDeSeguridadModel>
+  custodio:PostgresGenericRepository<CustodioModel>
+  vehiculo:PostgresGenericRepository<VehiculoModel>
+  funcionario: PostgresGenericRepository<FuncionarioModel>;
+  chofer: PostgresGenericRepository<ChoferModel>;
 
   constructor(
     @InjectRepository(PersonaModel)

@@ -14,8 +14,8 @@ export class MovimientoModel extends Movimiento{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @Column({type:"int2"})
-    numero_de_documento:number;
+    @Column({type:"varchar",unique:true})
+    numero_de_documento:string;
 
     @Column({type:"date"})
     fecha_de_documento:Date;
@@ -52,7 +52,7 @@ export class MovimientoModel extends Movimiento{
     @ManyToOne(()=>EstablecimientoPenitenciarioModel)
     destinoTraslado:EstablecimientoPenitenciarioModel;
     
-    @Column({type:"varchar"})
+    @Column({type:"varchar",nullable:true})
     documentoAdjunto:string;
     
     @ManyToMany(()=>PplModel)

@@ -1,5 +1,5 @@
 import { Funcionario } from "src/core/entities/funcionario.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EstablecimientoPenitenciarioModel } from "./establecimiento-penitenciario.model";
 
 @Entity({name:"funcionario"})
@@ -16,7 +16,6 @@ export class FuncionarioModel extends Funcionario{
     @Column({type:"varchar"})
     cedula:string;
 
-    @OneToOne(()=>EstablecimientoPenitenciarioModel)
-    @JoinColumn()
+    @ManyToOne(()=>EstablecimientoPenitenciarioModel)
     establecimiento:EstablecimientoPenitenciarioModel
 }

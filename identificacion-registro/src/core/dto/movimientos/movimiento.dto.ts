@@ -1,7 +1,7 @@
 
 
 export class MovimientoDTO{
-    numero_de_documento:number;
+    numero_de_documento:string;
     fecha_de_documento:Date;
     fecha_de_traslado:Date;
     autorizado_por:number;

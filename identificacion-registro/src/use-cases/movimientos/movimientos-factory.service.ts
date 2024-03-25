@@ -35,15 +35,20 @@ export class MovimientosFactory{
         }
         let custodios_encontrados=null;
         if(movimientoDTO.custodios.length > 0){
+            
             custodios_encontrados = await Promise.all(movimientoDTO.custodios.map(
                 async (custodio) =>{
+                    
                     const custodioEncontrado = await this.dataService.custodio.get(custodio);
+                    
                     if(!custodioEncontrado){
-                        throw new HttpException(`No se encontró la medida de seguridad:${custodio}`,HttpStatus.BAD_REQUEST);
+                        throw new HttpException(`No se encontró al custodio:${custodio}`,HttpStatus.BAD_REQUEST);
                     }
+                    return custodioEncontrado;
                 }
             ))
         }
+        
         if(!movimientoDTO.chofer){
             throw new HttpException(`Se debe enviar un chofer registrado`,HttpStatus.BAD_REQUEST);
         }
@@ -82,6 +87,7 @@ export class MovimientosFactory{
         }
 
         const establecimiento_destino = await this.dataService.establecimientoPenitenciario.get(movimientoDTO.destinoTraslado);
+        console.log("Estalecimiento destino:", establecimiento_destino);
         if(!establecimiento_destino){
             throw new HttpException(`Se se encontró el Establecimiento Destino:${movimientoDTO.destinoTraslado}`,HttpStatus.BAD_REQUEST);
         }
@@ -98,6 +104,7 @@ export class MovimientosFactory{
                     if(!pplEncontrado){
                         throw new HttpException(`No se encontró la medida de seguridad:${ppl}`,HttpStatus.BAD_REQUEST);
                     }
+                    return pplEncontrado;
                 }
             ))
         }
@@ -116,6 +123,7 @@ export class MovimientosFactory{
         movimientoACrear.destinoTraslado = establecimiento_destino;
         movimientoACrear.ppls = ppls_encontrados;
 
+        console.log("Fecha de doc:",movimientoACrear.fecha_de_documento,",Fecha de traslado:",movimientoACrear.fecha_de_traslado);
         return{
             movimiento:movimientoACrear
         }
@@ -150,15 +158,20 @@ export class MovimientosFactory{
         }
         let custodios_encontrados=null;
         if(movimientoDTO.custodios.length > 0){
+            
             custodios_encontrados = await Promise.all(movimientoDTO.custodios.map(
                 async (custodio) =>{
+                    
                     const custodioEncontrado = await this.dataService.custodio.get(custodio);
+                    
                     if(!custodioEncontrado){
-                        throw new HttpException(`No se encontró la medida de seguridad:${custodio}`,HttpStatus.BAD_REQUEST);
+                        throw new HttpException(`No se encontró al custodio:${custodio}`,HttpStatus.BAD_REQUEST);
                     }
+                    return custodioEncontrado;
                 }
             ))
         }
+        
         if(!movimientoDTO.chofer){
             throw new HttpException(`Se debe enviar un chofer registrado`,HttpStatus.BAD_REQUEST);
         }
@@ -197,6 +210,7 @@ export class MovimientosFactory{
         }
 
         const establecimiento_destino = await this.dataService.establecimientoPenitenciario.get(movimientoDTO.destinoTraslado);
+        console.log("Estalecimiento destino:", establecimiento_destino);
         if(!establecimiento_destino){
             throw new HttpException(`Se se encontró el Establecimiento Destino:${movimientoDTO.destinoTraslado}`,HttpStatus.BAD_REQUEST);
         }
@@ -213,6 +227,7 @@ export class MovimientosFactory{
                     if(!pplEncontrado){
                         throw new HttpException(`No se encontró la medida de seguridad:${ppl}`,HttpStatus.BAD_REQUEST);
                     }
+                    return pplEncontrado;
                 }
             ))
         }

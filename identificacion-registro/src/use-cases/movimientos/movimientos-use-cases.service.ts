@@ -37,6 +37,10 @@ export class MovimientosUseCases{
         }
     }
 
+    async movimientos(){
+        return this.dataService.movimiento.getAll();
+    }
+
     async funcionariosPorEstablecimiento(id_establecimiento:number){
         return await this.dataService.funcionario.getFuncionariosPorEstablecimiento(id_establecimiento);
     }

@@ -222,10 +222,10 @@ export class MovimientosFactory{
         let ppls_encontrados=null;
         if(movimientoDTO.ppls.length > 0){
             ppls_encontrados = await Promise.all(movimientoDTO.ppls.map(
-                async (ppl) =>{
-                    const pplEncontrado = await this.dataService.ppl.get(ppl);
+                async (id_persona_ppl) =>{
+                    const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(id_persona_ppl);
                     if(!pplEncontrado){
-                        throw new HttpException(`No se encontró el ppl:${ppl}`,HttpStatus.BAD_REQUEST);
+                        throw new HttpException(`No se encontró el ppl:${id_persona_ppl}`,HttpStatus.BAD_REQUEST);
                     }
                     return pplEncontrado;
                 }

@@ -129,4 +129,16 @@ export class MovimientosController{
         }
     }
 
+    @Get()
+    async getMovimientos(){
+        try{
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.movimientos();
+            return{
+                ...respuestaMovimientoUseCase
+            }
+        }catch(error){
+            throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -33,6 +33,30 @@ export class MovimientosController{
         }
     }
 
+    @Get()
+    async getMovimientos(){
+        try{
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.movimientos();
+            return{
+                ...respuestaMovimientoUseCase
+            }
+        }catch(error){
+            throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get('/:id')
+    async getMovimientosById(@Param() param){
+        try{
+            const respuestaMovimientoUseCase = await this.movimientoUseCase.movimientoById(param.id);
+            return{
+                ...respuestaMovimientoUseCase
+            }
+        }catch(error){
+            throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @Get('funcionarios_por_establecimiento/:id')
     async get_funcionarios_por_establecimiento(@Param() param:any){
         try{
@@ -129,16 +153,6 @@ export class MovimientosController{
         }
     }
 
-    @Get()
-    async getMovimientos(){
-        try{
-            const respuestaMovimientoUseCase = await this.movimientoUseCase.movimientos();
-            return{
-                ...respuestaMovimientoUseCase
-            }
-        }catch(error){
-            throw new HttpException(`Ocurrio un error al crear el traslado:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    
 
 }

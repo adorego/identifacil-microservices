@@ -46,10 +46,10 @@ export class MovimientoModel extends Movimiento{
     @ManyToOne(()=>VehiculoModel)
     vehiculo:VehiculoModel;
 
-    @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+    @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
     origenTraslado:EstablecimientoPenitenciarioModel;
 
-    @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+    @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
     destinoTraslado:EstablecimientoPenitenciarioModel;
     
     @Column({type:"varchar",nullable:true})

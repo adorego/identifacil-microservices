@@ -147,7 +147,7 @@ export class  RegistroFactory{
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
-      const finalPath = path.join(process.env.ASSETS_LOCATION, fileName);
+      const finalPath = path.join(process.env.FILE_STORAGE, fileName);
       console.log('finalPath:', finalPath);
       // console.log('Buffer de la foto:', foto[0].buffer);
       if(foto[0]){
@@ -163,7 +163,7 @@ export class  RegistroFactory{
         throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
       }
 
-      return finalPath;
+      return process.env.ASSETS_LOCATION+"/"+fileName;
   }
 
   transformar_descriptor(dato:string):Array<number>{

@@ -141,9 +141,9 @@ export class  RegistroFactory{
   }
 
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
-      const fileName = `${numero_identificacion}_${numero_foto.toString()}.${path.extname(foto[0].originalname)}`;
+      const fileName = `${numero_identificacion}_${numero_foto.toString()}.jpg`;
       console.log('Nombre del archivo:', fileName);
-      const dirPath = path.join(process.env.FILE_STORAGE,'');
+      const dirPath = process.env.FILE_STORAGE;
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
@@ -163,7 +163,7 @@ export class  RegistroFactory{
         throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
       }
 
-      return process.env.ASSETS_LOCATION+"/"+fileName;
+      return path.join(process.env.ASSETS_LOCATION,fileName);
   }
 
   transformar_descriptor(dato:string):Array<number>{

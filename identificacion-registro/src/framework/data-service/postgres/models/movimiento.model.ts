@@ -23,27 +23,27 @@ export class MovimientoModel extends Movimiento{
     @Column({type:"date"})
     fecha_de_traslado:Date;
 
-    @ManyToOne(()=>FuncionarioModel)
+    @ManyToOne(()=>FuncionarioModel,{eager:true})
     autorizado_por:FuncionarioModel;
 
-    @ManyToOne(()=>MotivoDeTrasladoModel)
+    @ManyToOne(()=>MotivoDeTrasladoModel,{eager:true})
     motivo_de_traslado:MotivoDeTrasladoModel;
 
-    @ManyToMany(()=>MedidaDeSeguridadModel)
+    @ManyToMany(()=>MedidaDeSeguridadModel,{eager:true})
     @JoinTable()
     medidas_de_seguridad:Array<MedidaDeSeguridadModel>;
 
     @Column({type:"varchar"})
     descripcion_motivo:string;
 
-    @ManyToMany(()=>CustodioModel)
+    @ManyToMany(()=>CustodioModel,{eager:true})
     @JoinTable()
     custodios:Array<CustodioModel>;
 
-    @ManyToOne(()=>ChoferModel)
+    @ManyToOne(()=>ChoferModel,{eager:true})
     chofer:ChoferModel;
 
-    @ManyToOne(()=>VehiculoModel)
+    @ManyToOne(()=>VehiculoModel,{eager:true})
     vehiculo:VehiculoModel;
 
     @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
@@ -55,7 +55,7 @@ export class MovimientoModel extends Movimiento{
     @Column({type:"varchar",nullable:true})
     documentoAdjunto:string;
     
-    @ManyToMany(()=>PplModel)
+    @ManyToMany(()=>PplModel,{eager:true})
     @JoinTable()
     ppls:Array<PplModel>
 }

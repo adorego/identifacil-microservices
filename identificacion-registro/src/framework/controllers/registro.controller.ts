@@ -61,6 +61,16 @@ export class RegistroController{
   }
 
   @Post('registro_fotos')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      {name:'foto1', maxCount:1},
+      {name:'foto2', maxCount:1},
+      {name:'foto3', maxCount:1},
+      {name:'foto4', maxCount:1},
+      {name:'foto5', maxCount:1},
+
+    ])
+  )
   async registro_fotos(@UploadedFiles() fotos: {
     foto1: Array<Express.Multer.File>, 
     foto2: Array<Express.Multer.File>,
@@ -68,11 +78,21 @@ export class RegistroController{
     foto4: Array<Express.Multer.File>,
     foto5: Array<Express.Multer.File>},
     @Body() nombres_fotos:RegistroDeFotosDTO):Promise<RespuestaRegistroFotosDTO>{
+      //console.log('Entro en registro_fotos',fotos,nombres_fotos);
       try{
         const respuestaRegistroDeFotos = await this.registroPersonaUseCase.registrar_fotos(fotos,nombres_fotos);
+        console.log("Respuesta de registrar_fotos use case:",respuestaRegistroDeFotos);
+        const registro_fotos_creado = respuestaRegistroDeFotos.registro_fotos.map(
+          (registro_foto) =>{
+            return{
+              nombre:registro_foto.nombre,
+              foto:registro_foto.foto
+            }
+          }
+        )
         return{
           success:respuestaRegistroDeFotos.success,
-          registro_de_fotos:respuestaRegistroDeFotos.registro_fotos,
+          registro_de_fotos:registro_fotos_creado,
           id:respuestaRegistroDeFotos.id
         }
       }catch(error){

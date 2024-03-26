@@ -145,20 +145,35 @@ export class  RegistroFactory{
     }
   }
 
-  async generar_registro_de_fotos(foto1:Array<Express.Multer.File>,
-    nombre_foto1:string,foto2:Array<Express.Multer.File>,
-    nombre_foto2:string,foto3:Array<Express.Multer.File>,
-    nombre_foto3:string,foto4:Array<Express.Multer.File>,
-    nombre_foto4:string,foto5:Array<Express.Multer.File>,
-    nombre_foto5:string,id_persona:number):Promise<RespuestaGenerarRegistroDeFotos>{
+  async generar_registro_de_fotos(
+    foto1:Array<Express.Multer.File>,nombre_foto1:string,
+    foto2:Array<Express.Multer.File>,nombre_foto2:string,
+    foto3:Array<Express.Multer.File>,nombre_foto3:string,
+    foto4:Array<Express.Multer.File>,nombre_foto4:string,
+    foto5:Array<Express.Multer.File>,nombre_foto5:string,
+    id_persona:number):Promise<RespuestaGenerarRegistroDeFotos>{
+      console.log("Foto1",foto1);
+      console.log("Nombre",nombre_foto1);
+      console.log("Foto2",foto2);
+      console.log("Nombre2",nombre_foto2);
+      console.log("Foto3",foto3);
+      console.log("Nombre3",nombre_foto3);
+      console.log("Foto4",foto4);
+      console.log("Nombre4",nombre_foto4);
+      
       const pplEncontrado:Ppl = await this.dataService.ppl.getPPLByIdPersona(id_persona);
       if(!pplEncontrado){
         throw new HttpException(`No se encontró la persona enviada:${id_persona}`,HttpStatus.BAD_REQUEST);
       }
+      const personaEncontrada:Persona = await this.dataService.persona.get(id_persona);
+      if(!personaEncontrada){
+        throw new HttpException(`No se encontró la persona enviada:${id_persona}`,HttpStatus.BAD_REQUEST);
+      }
+
       const registro_de_fotos:Array<RegistroFoto> = new Array<RegistroFoto>();
 
       if(foto1!==null){
-        const archivo_foto1 = await this.almacenar_foto_registro(foto1,`${pplEncontrado.persona.ci}-${nombre_foto1}`);
+        const archivo_foto1 = await this.almacenar_foto_registro(foto1,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto1}`);
         const registro_foto1 = new RegistroFoto();
         registro_foto1.nombre = nombre_foto1;
         registro_foto1.foto = archivo_foto1;
@@ -166,8 +181,8 @@ export class  RegistroFactory{
         registro_de_fotos.push(registro_foto1);
       }
      
-      if(foto2!==null){
-        const archivo_foto2 = await this.almacenar_foto_registro(foto2,`${pplEncontrado.persona.ci}-${nombre_foto2}`);
+      if(foto2){
+        const archivo_foto2 = await this.almacenar_foto_registro(foto2,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto2}`);
         const registro_foto2 = new RegistroFoto();
         registro_foto2.nombre = nombre_foto2;
         registro_foto2.foto = archivo_foto2;
@@ -176,8 +191,8 @@ export class  RegistroFactory{
       }
       
 
-      if(foto3!==null){
-        const archivo_foto3 = await this.almacenar_foto_registro(foto3,`${pplEncontrado.persona.ci}-${nombre_foto3}`);
+      if(foto3){
+        const archivo_foto3 = await this.almacenar_foto_registro(foto3,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto3}`);
         const registro_foto3 = new RegistroFoto();
         registro_foto3.nombre = nombre_foto3;
         registro_foto3.foto = archivo_foto3;
@@ -186,8 +201,8 @@ export class  RegistroFactory{
       }
      
      
-      if(foto4!==null){
-        const archivo_foto4 = await this.almacenar_foto_registro(foto4,`${pplEncontrado.persona.ci}-${nombre_foto4}`);
+      if(foto4){
+        const archivo_foto4 = await this.almacenar_foto_registro(foto4,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto4}`);
         const registro_foto4 = new RegistroFoto();
         registro_foto4.nombre = nombre_foto4;
         registro_foto4.foto = archivo_foto4;
@@ -195,8 +210,8 @@ export class  RegistroFactory{
         registro_de_fotos.push(registro_foto4);
       }
       
-      if(foto5!==null){
-        const archivo_foto5 = await this.almacenar_foto_registro(foto5,`${pplEncontrado.persona.ci}-${nombre_foto5}`);
+      if(foto5){
+        const archivo_foto5 = await this.almacenar_foto_registro(foto5,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto5}`);
         const registro_foto5 = new RegistroFoto();
         registro_foto5.nombre = nombre_foto5;
         registro_foto5.foto = archivo_foto5;

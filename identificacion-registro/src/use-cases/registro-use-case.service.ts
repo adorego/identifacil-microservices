@@ -88,6 +88,7 @@ export class RegistroUseCase{
   }
 
   async registrar_fotos(fotos:fotosDePPL,registroDeFotosDTO:RegistroDeFotosDTO){
+    //console.log("fotos:",fotos,"registroDeFotos:",registroDeFotosDTO);
     const respuestaRegistroFactory = 
     await this.registroFactory.generar_registro_de_fotos(
       fotos.foto1,

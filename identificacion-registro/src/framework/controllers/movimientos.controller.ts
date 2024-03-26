@@ -45,7 +45,7 @@ export class MovimientosController{
         }
     }
 
-    @Get('/:id')
+    @Get('getPorId/:id')
     async getMovimientosById(@Param() param){
         try{
             const respuestaMovimientoUseCase = await this.movimientoUseCase.movimientoById(param.id);

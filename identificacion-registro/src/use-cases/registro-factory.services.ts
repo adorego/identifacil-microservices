@@ -147,7 +147,7 @@ export class  RegistroFactory{
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
-      const finalPath = path.join(process.env.FILE_STORAGE, fileName);
+      const finalPath = path.join(dirPath, fileName);
       console.log('finalPath:', finalPath);
       // console.log('Buffer de la foto:', foto[0].buffer);
       if(foto[0]){

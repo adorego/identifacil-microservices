@@ -45,6 +45,7 @@ import { Vehiculo } from "../entities/vehiculo.entity";
 import { Funcionario } from "../entities/funcionario.entity";
 import { Custodio } from "../entities/custodio.entity";
 import { Chofer } from "../entities/chofer.entity";
+import { RegistroFoto } from "../entities/registro_foto.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -93,4 +94,5 @@ export abstract class IDataService{
   abstract chofer:IGenericRepository<Chofer>
   abstract vehiculo:IGenericRepository<Vehiculo>
   abstract funcionario:IGenericRepository<Funcionario>
+  abstract registro_foto:IGenericRepository<RegistroFoto>
 }

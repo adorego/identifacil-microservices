@@ -3,10 +3,8 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne,
 import { EstablecimientoPenitenciarioModel } from "./establecimiento-penitenciario.model";
 import { PersonaModel } from "./persona.model";
 import { Ppl } from "src/core/entities/ppl.entity";
-import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
-import { ExpedienteJudicialModel } from "./expediente-judicial.model";
 import { PplEnExpedienteModel } from "./ppl-en-expediente.model";
-import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
+import { RegistroFotoModel } from "./registro-foto.model";
 
 @Entity({name:"ppl"})
 export class PplModel extends Ppl{
@@ -25,4 +23,7 @@ export class PplModel extends Ppl{
 
   @OneToMany(()=>PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.ppl)
   pplEnExpedientes:Array<PplEnExpedienteModel>;
+
+  @OneToMany(()=>RegistroFotoModel, registro_foto=>registro_foto.ppl)
+  registro_de_fotos:Array<RegistroFotoModel>;
 } 

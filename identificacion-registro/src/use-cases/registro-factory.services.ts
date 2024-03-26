@@ -13,6 +13,11 @@ import { RegistroPersona } from "src/core/entities/registro-persona.entity";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RespuestaFactoryRegistroPPL } from "src/core/dto/registro/respuesta-factory-registro-ppl.dto";
 import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
+import { RegistroFoto } from "src/core/entities/registro_foto.entity";
+import { RespuestaGenerarRegistroDeFotos } from "src/core/dto/registro/respuesta-generar-registro-de-fotos.dto";
+
+const FILE_STORAGE="/public"
+const ASSETS_LOCATION="/archivos"
 
 @Injectable()
 export class  RegistroFactory{
@@ -140,10 +145,76 @@ export class  RegistroFactory{
     }
   }
 
+  async generar_registro_de_fotos(foto1:Array<Express.Multer.File>,
+    nombre_foto1:string,foto2:Array<Express.Multer.File>,
+    nombre_foto2:string,foto3:Array<Express.Multer.File>,
+    nombre_foto3:string,foto4:Array<Express.Multer.File>,
+    nombre_foto4:string,foto5:Array<Express.Multer.File>,
+    nombre_foto5:string,id_persona:number):Promise<RespuestaGenerarRegistroDeFotos>{
+      const pplEncontrado:Ppl = await this.dataService.ppl.getPPLByIdPersona(id_persona);
+      if(!pplEncontrado){
+        throw new HttpException(`No se encontró la persona enviada:${id_persona}`,HttpStatus.BAD_REQUEST);
+      }
+      const registro_de_fotos:Array<RegistroFoto> = new Array<RegistroFoto>();
+
+      if(foto1!==null){
+        const archivo_foto1 = await this.almacenar_foto_registro(foto1,`${pplEncontrado.persona.ci}-${nombre_foto1}`);
+        const registro_foto1 = new RegistroFoto();
+        registro_foto1.nombre = nombre_foto1;
+        registro_foto1.foto = archivo_foto1;
+        registro_foto1.ppl = pplEncontrado;
+        registro_de_fotos.push(registro_foto1);
+      }
+     
+      if(foto2!==null){
+        const archivo_foto2 = await this.almacenar_foto_registro(foto2,`${pplEncontrado.persona.ci}-${nombre_foto2}`);
+        const registro_foto2 = new RegistroFoto();
+        registro_foto2.nombre = nombre_foto2;
+        registro_foto2.foto = archivo_foto2;
+        registro_foto2.ppl = pplEncontrado;
+        registro_de_fotos.push(registro_foto2);
+      }
+      
+
+      if(foto3!==null){
+        const archivo_foto3 = await this.almacenar_foto_registro(foto3,`${pplEncontrado.persona.ci}-${nombre_foto3}`);
+        const registro_foto3 = new RegistroFoto();
+        registro_foto3.nombre = nombre_foto3;
+        registro_foto3.foto = archivo_foto3;
+        registro_foto3.ppl = pplEncontrado;
+        registro_de_fotos.push(registro_foto3);
+      }
+     
+     
+      if(foto4!==null){
+        const archivo_foto4 = await this.almacenar_foto_registro(foto4,`${pplEncontrado.persona.ci}-${nombre_foto4}`);
+        const registro_foto4 = new RegistroFoto();
+        registro_foto4.nombre = nombre_foto4;
+        registro_foto4.foto = archivo_foto4;
+        registro_foto4.ppl = pplEncontrado;
+        registro_de_fotos.push(registro_foto4);
+      }
+      
+      if(foto5!==null){
+        const archivo_foto5 = await this.almacenar_foto_registro(foto5,`${pplEncontrado.persona.ci}-${nombre_foto5}`);
+        const registro_foto5 = new RegistroFoto();
+        registro_foto5.nombre = nombre_foto5;
+        registro_foto5.foto = archivo_foto5;
+        registro_foto5.ppl = pplEncontrado;
+        registro_de_fotos.push(registro_foto5);
+      }
+      
+
+      return{
+        registro_de_fotos:registro_de_fotos,
+        ppl:pplEncontrado
+      }
+
+  }
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
       const fileName = `${numero_identificacion}_${numero_foto.toString()}.jpg`;
       console.log('Nombre del archivo:', fileName);
-      const dirPath = path.join(process.cwd(),process.env.FILE_STORAGE);
+      const dirPath = path.join(process.cwd(),FILE_STORAGE);
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
@@ -163,8 +234,34 @@ export class  RegistroFactory{
         throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
       }
 
-      return path.join(process.env.ASSETS_LOCATION,fileName);
+      return path.join(ASSETS_LOCATION,fileName);
   }
+
+  async almacenar_foto_registro(foto:Array<Express.Multer.File>, nombre_foto:string):Promise<string>{
+    const fileName = `${nombre_foto}.jpg`;
+    console.log('Nombre del archivo:', fileName);
+    const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    if(!fs.existsSync(dirPath)){
+      fs.mkdirSync(dirPath, {recursive:true})
+    }
+    const finalPath = path.join(dirPath, fileName);
+    console.log('finalPath:', finalPath);
+    // console.log('Buffer de la foto:', foto[0].buffer);
+    if(foto[0]){
+      try{
+        const writeStream = fs.createWriteStream(finalPath);
+        writeStream.write(foto[0].buffer);
+        writeStream.end();
+      }catch(error){
+        throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }else{
+      console.log('La foto no existe');
+      throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return path.join(ASSETS_LOCATION,fileName);
+}
 
   transformar_descriptor(dato:string):Array<number>{
      return dato.substring(1, dato.length).split(',').map(

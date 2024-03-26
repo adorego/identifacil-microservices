@@ -13,6 +13,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 
+const DEVELOPMENT_PRODUCTION = 0; //0 Development, 1 Production
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -23,21 +25,19 @@ import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
     }),
     TypeOrmModule.forRoot({
       type:'postgres',
-      //host:"registro-postgres-srv",
-      host:process.env.TEST_DB_HOST,
+      host:DEVELOPMENT_PRODUCTION===0 ? process.env.TEST_DB_HOST : "registro-postgres-srv",
       port: 5432,
       username:'identifacil',
       password:'clave',
       logging:true,
-      database:'identifacil_registro',
-      //database:'identifacil-registro',
+      database:DEVELOPMENT_PRODUCTION===0 ? 'identifacil_registro' : 'identifacil-registro',
       migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,
       autoLoadEntities:true,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname,'..','public'),
-      serveRoot:process.env.ASSETS_LOCATION
+      serveRoot:"/archivos"
     }),
     
     RegistroIdentificacionModule,

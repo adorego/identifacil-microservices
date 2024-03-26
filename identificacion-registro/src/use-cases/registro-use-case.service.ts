@@ -38,12 +38,24 @@ import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos
 import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-registro-datosJudiciales.dto";
 import { DocumentosOrdenanPrisionModel } from "src/framework/data-service/postgres/models/documentos-ordenan-prision.model";
 import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
+import { RegistroDeFotosDTO } from "src/core/dto/registro/registro-de-fotos.dto";
+import { RegistroFactory } from "./registro-factory.services";
+import { RegistroFoto } from "src/core/entities/registro_foto.entity";
+
+interface fotosDePPL{
+  foto1:Array<Express.Multer.File>;
+  foto2:Array<Express.Multer.File>;
+  foto3:Array<Express.Multer.File>;
+  foto4:Array<Express.Multer.File>;
+  foto5:Array<Express.Multer.File>;
+}
 
 @Injectable()
 export class RegistroUseCase{
   private readonly logger = new Logger('RegistroUseCase');
   constructor(
     private dataService:IDataService,
+    private registroFactory:RegistroFactory,
     private registroSaludFactory:RegistroSaludFactory,
     private registro_datosPersonales_factory:RegistroDatosPersonalesFactory,
     private registro_educacionFormacion_factory:RegistroEducacionFormacionFactory,
@@ -73,6 +85,41 @@ export class RegistroUseCase{
 
      
 
+  }
+
+  async registrar_fotos(fotos:fotosDePPL,registroDeFotosDTO:RegistroDeFotosDTO){
+    const respuestaRegistroFactory = 
+    await this.registroFactory.generar_registro_de_fotos(
+      fotos.foto1,
+      registroDeFotosDTO.nombre_foto1,
+      fotos.foto2,
+      registroDeFotosDTO.nombre_foto2,
+      fotos.foto3,
+      registroDeFotosDTO.nombre_foto3,
+      fotos.foto4,
+      registroDeFotosDTO.nombre_foto4,
+      fotos.foto5,
+      registroDeFotosDTO.nombre_foto5,
+      registroDeFotosDTO.id_persona
+      )
+    
+      const registro_fotos_creado:Array<RegistroFoto> = new Array<RegistroFoto>();
+      for(let i=0;i<respuestaRegistroFactory.registro_de_fotos.length;i++){
+        const registro_foto = await this.dataService.registro_foto.create(respuestaRegistroFactory.registro_de_fotos[i]);
+        registro_fotos_creado.push(registro_foto);
+      }
+
+      respuestaRegistroFactory.ppl.registro_de_fotos = registro_fotos_creado;
+      const pplActualizado = await this.dataService.ppl.update(respuestaRegistroFactory.ppl);
+      
+    
+    return{
+      success:true,
+      registro_fotos:pplActualizado.registro_de_fotos,
+      id: pplActualizado.id
+      
+
+    }
   }
 
   async registrar_salud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{

@@ -54,6 +54,8 @@ import { VehiculoModel } from "./models/vehiculo.model";
 import { CustodioModel } from "./models/custodio.model";
 import { FuncionarioModel } from "./models/funcionario.model";
 import { ChoferModel } from "./models/chofer.model";
+import { RegistroFoto } from "src/core/entities/registro_foto.entity";
+import { RegistroFotoModel } from "./models/registro-foto.model";
 
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
@@ -104,6 +106,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   vehiculo:PostgresGenericRepository<VehiculoModel>
   funcionario: PostgresGenericRepository<FuncionarioModel>;
   chofer: PostgresGenericRepository<ChoferModel>;
+  registro_foto: PostgresGenericRepository<RegistroFotoModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -200,6 +203,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private funcionario_repository:Repository<FuncionarioModel>,
     @InjectRepository(ChoferModel)
     private chofer_repository:Repository<ChoferModel>,
+    @InjectRepository(RegistroFotoModel)
+    private registro_foto_repository:Repository<RegistroFotoModel>,
     
 
 
@@ -257,6 +262,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.vehiculo = new PostgresGenericRepository<VehiculoModel>(this.vehiculo_repository)
     this.funcionario = new PostgresGenericRepository<FuncionarioModel>(this.funcionario_repository)
     this.chofer = new PostgresGenericRepository<ChoferModel>(this.chofer_repository)
+    this.registro_foto = new PostgresGenericRepository<RegistroFotoModel>(this.registro_foto_repository)
   
   }
   

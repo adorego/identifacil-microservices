@@ -50,6 +50,7 @@ import { CustodioModel } from "./models/custodio.model";
 import { ChoferModel } from "./models/chofer.model";
 import { VehiculoModel } from "./models/vehiculo.model";
 import { FuncionarioModel } from "./models/funcionario.model";
+import { RegistroFotoModel } from "./models/registro-foto.model";
 
 @Module({
   imports:[
@@ -106,6 +107,7 @@ import { FuncionarioModel } from "./models/funcionario.model";
       ChoferModel,
       VehiculoModel,
       FuncionarioModel,
+      RegistroFotoModel,
       
       
     

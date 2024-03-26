@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { RegistroPersonaDTO } from "src/core/dto/registro/registro-persona.dto";
 import { RegistroSaludDTO } from "src/core/dto/registro_salud/registro-salud.dto";
@@ -12,10 +12,14 @@ import { RegistroFactory } from "src/use-cases/registro-factory.services";
 import { RegistroUseCase } from "src/use-cases/registro-use-case.service";
 import { log } from "console";
 import { RespuestaActualizacionSaludDTO } from "src/core/dto/registro_salud/respuesta-actualizacioin-salud.dto";
+import { RespuestaRegistroFotosDTO } from "src/core/dto/registro/respuesta-registro-fotos.dto";
+import { RegistroDeFotosDTO } from "src/core/dto/registro/registro-de-fotos.dto";
 
 interface CausasJudicialesParameter{
   ci:string;
 }
+
+
 
 @Controller()
 export class RegistroController{
@@ -56,7 +60,27 @@ export class RegistroController{
     return {sucess:true, id_persona:savedPersona.id, foto1:savedPersona.registro.foto1}
   }
 
-  
+  @Post('registro_fotos')
+  async registro_fotos(@UploadedFiles() fotos: {
+    foto1: Array<Express.Multer.File>, 
+    foto2: Array<Express.Multer.File>,
+    foto3: Array<Express.Multer.File>,
+    foto4: Array<Express.Multer.File>,
+    foto5: Array<Express.Multer.File>},
+    @Body() nombres_fotos:RegistroDeFotosDTO):Promise<RespuestaRegistroFotosDTO>{
+      try{
+        const respuestaRegistroDeFotos = await this.registroPersonaUseCase.registrar_fotos(fotos,nombres_fotos);
+        return{
+          success:respuestaRegistroDeFotos.success,
+          registro_de_fotos:respuestaRegistroDeFotos.registro_fotos,
+          id:respuestaRegistroDeFotos.id
+        }
+      }catch(error){
+        throw new HttpException(`Error al generar el registro de las fotos:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    
+    
+  }
   
 
   @Get('grupos_sanguineos')

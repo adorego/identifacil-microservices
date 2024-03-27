@@ -81,7 +81,7 @@ export class RegistroController{
       //console.log('Entro en registro_fotos',fotos,nombres_fotos);
       try{
         const respuestaRegistroDeFotos = await this.registroPersonaUseCase.registrar_fotos(fotos,nombres_fotos);
-        console.log("Respuesta de registrar_fotos use case:",respuestaRegistroDeFotos);
+        //console.log("Respuesta de registrar_fotos use case:",respuestaRegistroDeFotos);
         const registro_fotos_creado = respuestaRegistroDeFotos.registro_fotos.map(
           (registro_foto) =>{
             return{
@@ -102,6 +102,45 @@ export class RegistroController{
     
   }
   
+  @Put('registro_fotos')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      {name:'foto1', maxCount:1},
+      {name:'foto2', maxCount:1},
+      {name:'foto3', maxCount:1},
+      {name:'foto4', maxCount:1},
+      {name:'foto5', maxCount:1},
+
+    ])
+  )
+  async update_fotos(@UploadedFiles() fotos: {
+    foto1: Array<Express.Multer.File>, 
+    foto2: Array<Express.Multer.File>,
+    foto3: Array<Express.Multer.File>,
+    foto4: Array<Express.Multer.File>,
+    foto5: Array<Express.Multer.File>},
+    @Body() nombres_fotos:RegistroDeFotosDTO):Promise<RespuestaRegistroFotosDTO>{
+    
+      try{
+        const respuestaActualizacionDeFotos = await this.registroPersonaUseCase.actualizar_fotos(fotos,nombres_fotos);
+        const registro_fotos_actualizado = respuestaActualizacionDeFotos.registro_fotos.map(
+          (registro_foto) =>{
+            return{
+              nombre:registro_foto.nombre,
+              foto:registro_foto.foto
+            }
+          }
+        )
+        return{
+          success:respuestaActualizacionDeFotos.success,
+          registro_de_fotos:registro_fotos_actualizado,
+          id:respuestaActualizacionDeFotos.id
+        }
+      }catch(error){
+        throw new HttpException(`Error al actualizar el registro de las fotos:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    
+    }
 
   @Get('grupos_sanguineos')
   async grupos_sanguineos():Promise<RespuestaGrupoSanguineoDTO>{

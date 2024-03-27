@@ -123,6 +123,55 @@ export class RegistroUseCase{
     }
   }
 
+  async actualizar_fotos(fotos:fotosDePPL,registroDeFotosDTO:RegistroDeFotosDTO){
+    //console.log("fotos:",fotos,"registroDeFotos:",registroDeFotosDTO);
+    const respuestaRegistroFactory = 
+    await this.registroFactory.generar_registro_de_fotos(
+      fotos.foto1,
+      registroDeFotosDTO.nombre_foto1,
+      fotos.foto2,
+      registroDeFotosDTO.nombre_foto2,
+      fotos.foto3,
+      registroDeFotosDTO.nombre_foto3,
+      fotos.foto4,
+      registroDeFotosDTO.nombre_foto4,
+      fotos.foto5,
+      registroDeFotosDTO.nombre_foto5,
+      registroDeFotosDTO.id_persona
+      )
+
+      const registroFotosActual = respuestaRegistroFactory.ppl.registro_de_fotos;
+      console.log("Ppl encontrado:",respuestaRegistroFactory.ppl);
+      console.log("registro de fotos actual:",registroFotosActual);
+      respuestaRegistroFactory.registro_de_fotos.map(
+        async (registro_foto,index)=>{
+            if(registroFotosActual[index]){
+              const registro_actual = registroFotosActual[index];
+              registro_actual.foto = registro_foto.foto;
+              registro_actual.nombre = registro_foto.nombre;
+              this.dataService.registro_foto.update(registro_actual);
+            }else{
+              const nuevo_registro = new RegistroFoto();
+              nuevo_registro.nombre = registro_foto.nombre;
+              nuevo_registro.foto = registro_foto.foto;
+              nuevo_registro.ppl = respuestaRegistroFactory.ppl;
+              const registroFotocreado = await this.dataService.registro_foto.create(nuevo_registro);
+              registroFotosActual.push(registroFotocreado);
+            }
+        }
+
+      )
+
+      const pplActualizado = await this.dataService.ppl.update(respuestaRegistroFactory.ppl);
+      return{
+        success:true,
+        registro_fotos:pplActualizado.registro_de_fotos,
+        id: pplActualizado.id
+        
+  
+      }
+  }
+
   async registrar_salud(registroSaludDTO:RegistroSaludDTO):Promise<RespuestaRegistroSaludDTO>{
     
     try{

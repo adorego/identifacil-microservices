@@ -13,11 +13,19 @@ export class GestionPPLUseCase{
 
   async getAllPpls():Promise<Array<PplDTO>>{
     try{
-      console.log("Antes de llamar a ppls");
-    const ppls:Array<Ppl> = await this.dataService.ppl.getAll();
-    console.log("Get all PPLs:", ppls);
-    const pplsDTOs:Array<PplDTO> = ppls.map(
+      //console.log("Antes de llamar a ppls");
+      const ppls:Array<Ppl> = await this.dataService.ppl.getAll();
+      //console.log("Get all PPLs:", ppls);
+      const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
+        const fotos_de_registro = ppl.registro_de_fotos.map(
+          foto =>{
+            return{
+              nombre:foto.nombre,
+              foto:foto.foto
+            }
+          }
+        )
           return{
             id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
@@ -26,6 +34,7 @@ export class GestionPPLUseCase{
             apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
             genero:ppl.persona.genero ? ppl.persona.genero.id : null,
             foto:ppl.persona.registro.foto1,
+            registro_de_fotos:fotos_de_registro,
             tipo_de_documento:ppl.persona.tipo_identificacion,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario.id,
@@ -58,7 +67,14 @@ export class GestionPPLUseCase{
     // console.log("PPls devueltos:", ppls);
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
-          console.log(ppl);
+        const fotos_de_registro = ppl.registro_de_fotos.map(
+          foto =>{
+            return{
+              nombre:foto.nombre,
+              foto:foto.foto
+            }
+          }
+        )
           return{
             id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
@@ -74,6 +90,7 @@ export class GestionPPLUseCase{
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             foto:ppl.persona.registro.foto1,
+            registro_de_fotos:fotos_de_registro,
             datosDeSalud:ppl.persona.salud,
             datosDeSeguridad:ppl.persona.seguridad,
             datosFamiliares:ppl.persona.datosFamiliares,
@@ -91,11 +108,20 @@ export class GestionPPLUseCase{
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     const ppl = await this.dataService.ppl.getPplByCedula(ci);
-    console.log("datos Personales:", ppl.persona.datosPersonales);
+    
     if(!ppl){
       return null
     }else{
+      const fotos_de_registro = ppl.registro_de_fotos.map(
+        foto =>{
+          return{
+            nombre:foto.nombre,
+            foto:foto.foto
+          }
+        }
+      )
       return{
+        
         id_persona:ppl.persona.id,
         nombre:ppl.persona.nombre,
         apellido:ppl.persona.apellido,
@@ -107,6 +133,7 @@ export class GestionPPLUseCase{
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
         foto:ppl.persona.registro.foto1,
+        registro_de_fotos:fotos_de_registro,
         // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
@@ -128,6 +155,14 @@ export class GestionPPLUseCase{
     if(!ppl){
       return null
     }else{
+      const fotos_de_registro = ppl.registro_de_fotos.map(
+        foto =>{
+          return{
+            nombre:foto.nombre,
+            foto:foto.foto
+          }
+        }
+      )
       return{
         id_persona:ppl.persona.id,
         nombre:ppl.persona.nombre,
@@ -137,6 +172,7 @@ export class GestionPPLUseCase{
         genero:ppl.persona.genero ? ppl.persona.genero.id : null,
         tipo_de_documento:ppl.persona.tipo_identificacion,
         foto:ppl.persona.registro.foto1,
+        registro_de_fotos:fotos_de_registro,
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,

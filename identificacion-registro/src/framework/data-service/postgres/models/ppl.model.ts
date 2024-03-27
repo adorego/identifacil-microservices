@@ -24,6 +24,6 @@ export class PplModel extends Ppl{
   @OneToMany(()=>PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.ppl)
   pplEnExpedientes:Array<PplEnExpedienteModel>;
 
-  @OneToMany(()=>RegistroFotoModel, registro_foto=>registro_foto.ppl)
+  @OneToMany(()=>RegistroFotoModel, registro_foto=>registro_foto.ppl,{eager:true})
   registro_de_fotos:Array<RegistroFotoModel>;
 } 

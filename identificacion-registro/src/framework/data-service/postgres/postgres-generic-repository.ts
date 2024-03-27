@@ -57,6 +57,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
 
   getAllPPLsByEstablecimiento(establecimiento:number):Promise<Array<T>>{
     return this._repository.createQueryBuilder("ppl")
+           .leftJoinAndSelect("ppl.registro_de_fotos","registro_de_fotos")
            .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("persona.genero","genero")
            .leftJoinAndSelect("persona.tipo_identificacion","tipo_documento")
@@ -83,6 +84,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   getPplByCedula(ci:string):Promise<T>{
     return this._repository.createQueryBuilder("ppl")
            .leftJoinAndSelect("ppl.establecimiento_penitenciario","establecimiento")
+           .leftJoinAndSelect("ppl.registro_de_fotos","registro_de_fotos")
            .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("persona.tipo_identificacion","tipo_documento")
            .leftJoinAndSelect("persona.genero","genero")
@@ -115,6 +117,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   getPplById(id_persona:number):Promise<T>{
     return this._repository.createQueryBuilder("ppl")
            .leftJoinAndSelect("ppl.establecimiento_penitenciario","establecimiento")
+           .leftJoinAndSelect("ppl.registro_de_fotos","registro_de_fotos")
            .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("persona.genero","genero")
            .leftJoinAndSelect("persona.tipo_identificacion","tipo_documento")

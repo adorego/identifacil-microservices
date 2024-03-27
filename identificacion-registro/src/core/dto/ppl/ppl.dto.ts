@@ -18,6 +18,7 @@ export class PplDTO{
   establecimiento:number;
   establecimiento_nombre:string;
   foto:string;
+  registro_de_fotos:Array<{nombre:string,foto:string}>
   // nacionalidad:number;
   apodo:string;
   genero:number;

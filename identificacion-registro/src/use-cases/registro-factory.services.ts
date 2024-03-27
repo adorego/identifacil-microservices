@@ -152,14 +152,7 @@ export class  RegistroFactory{
     foto4:Array<Express.Multer.File>,nombre_foto4:string,
     foto5:Array<Express.Multer.File>,nombre_foto5:string,
     id_persona:number):Promise<RespuestaGenerarRegistroDeFotos>{
-      console.log("Foto1",foto1);
-      console.log("Nombre",nombre_foto1);
-      console.log("Foto2",foto2);
-      console.log("Nombre2",nombre_foto2);
-      console.log("Foto3",foto3);
-      console.log("Nombre3",nombre_foto3);
-      console.log("Foto4",foto4);
-      console.log("Nombre4",nombre_foto4);
+      
       
       const pplEncontrado:Ppl = await this.dataService.ppl.getPPLByIdPersona(id_persona);
       if(!pplEncontrado){
@@ -172,7 +165,7 @@ export class  RegistroFactory{
 
       const registro_de_fotos:Array<RegistroFoto> = new Array<RegistroFoto>();
 
-      if(foto1!==null){
+      if(foto1){
         const archivo_foto1 = await this.almacenar_foto_registro(foto1,`${pplEncontrado.persona.numero_identificacion}-${nombre_foto1}`);
         const registro_foto1 = new RegistroFoto();
         registro_foto1.nombre = nombre_foto1;

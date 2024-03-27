@@ -139,30 +139,18 @@ export class RegistroUseCase{
       registroDeFotosDTO.nombre_foto5,
       registroDeFotosDTO.id_persona
       )
-
-      const registroFotosActual = respuestaRegistroFactory.ppl.registro_de_fotos;
-      console.log("Ppl encontrado:",respuestaRegistroFactory.ppl);
-      console.log("registro de fotos actual:",registroFotosActual);
-      respuestaRegistroFactory.registro_de_fotos.map(
-        async (registro_foto,index)=>{
-            if(registroFotosActual[index]){
-              const registro_actual = registroFotosActual[index];
-              registro_actual.foto = registro_foto.foto;
-              registro_actual.nombre = registro_foto.nombre;
-              this.dataService.registro_foto.update(registro_actual);
-            }else{
-              const nuevo_registro = new RegistroFoto();
-              nuevo_registro.nombre = registro_foto.nombre;
-              nuevo_registro.foto = registro_foto.foto;
-              nuevo_registro.ppl = respuestaRegistroFactory.ppl;
-              const registroFotocreado = await this.dataService.registro_foto.create(nuevo_registro);
-              registroFotosActual.push(registroFotocreado);
-            }
+     
+      const registros_fotos_creado = await Promise.all(respuestaRegistroFactory.registro_de_fotos.map(
+        async (registro_foto)=>{
+          const registro_foto_creado = await this.dataService.registro_foto.create(registro_foto);
+          return registro_foto_creado;
         }
+      ))
 
-      )
+      respuestaRegistroFactory.ppl.registro_de_fotos = registros_fotos_creado;
 
       const pplActualizado = await this.dataService.ppl.update(respuestaRegistroFactory.ppl);
+      
       return{
         success:true,
         registro_fotos:pplActualizado.registro_de_fotos,

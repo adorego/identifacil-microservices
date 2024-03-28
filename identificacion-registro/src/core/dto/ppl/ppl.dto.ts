@@ -8,6 +8,7 @@ import { SaludMental } from "src/core/entities/salud-mental.entity";
 import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "src/core/entities/tipo-identificacion.entity";
+import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
 
 export class PplDTO{
   id_persona:number;
@@ -19,7 +20,7 @@ export class PplDTO{
   establecimiento_nombre:string;
   foto:string;
   registro_de_fotos:Array<{nombre:string,foto:string}>
-  // nacionalidad:number;
+  ingresos_a_prision:Array<IngresoAPrision>
   apodo:string;
   genero:number;
   fechaDeNacimiento:Date;

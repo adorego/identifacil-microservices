@@ -150,7 +150,7 @@ export class RegistroUseCase{
       respuestaRegistroFactory.ppl.registro_de_fotos = registros_fotos_creado;
 
       const pplActualizado = await this.dataService.ppl.update(respuestaRegistroFactory.ppl);
-      
+
       return{
         success:true,
         registro_fotos:pplActualizado.registro_de_fotos,
@@ -379,21 +379,18 @@ export class RegistroUseCase{
 
   async registrar_datos_judiciales(registroDatosJudiciales:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<RespuestaRegistroJudicialDTO>{
     try{
-      console.log("Inicio de use case 1");
-      if(!oficio_judicial && !resolucion){
-        throw new HttpException("No se enviaron los documentos oficio judicial ni resolucion", HttpStatus.BAD_REQUEST);
-      }
-      const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial[0],resolucion[0]);
+      
+      const respuestaDatosJudiciales = await this.registro_datosJudiciales_factory.generar_datos_judiciales(registroDatosJudiciales,oficio_judicial,resolucion);
       
       const oficioJudicialGuardado = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.oficioJudicialAGuardar);
       const resolucionMjAGuardada = await this.dataService.documentoOrdenPrision.create(respuestaDatosJudiciales.resolucionMJAGuardar);
-      console.log("Inicio de use case 2");
+      
       const situacionJudicialAGuardar = respuestaDatosJudiciales.situacionJudicial;
       
       const situacionJudicialGuardada = await this.dataService.situacionJudicial.create(situacionJudicialAGuardar);
       
       
-      console.log("Llego aca");
+      
       
        let ingresoAPrisionAGuardar = respuestaDatosJudiciales.ingresoAPrision;
        ingresoAPrisionAGuardar.documentos_que_ordenan_prision = [oficioJudicialGuardado,resolucionMjAGuardada];

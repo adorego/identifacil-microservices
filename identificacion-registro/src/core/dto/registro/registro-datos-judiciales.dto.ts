@@ -19,33 +19,18 @@ interface expediente{
 }
 export class RegistroDatosJudicialesDTO{
   id_persona:number;
-  establecimientoPenitenciario:number;
-  situacionJudicial: string;
-  situacionJudicial_modificado:boolean;
-  primeraVezEnPrision: boolean;
-  primeraVezEnPrision_modificado:boolean;
-  cantidadDeIngresos: number;
-  cantidadDeIngresos_modificado:boolean;
+  establecimiento_penitenciario:number;
+  primeraVezEnPrision:boolean;
+  cantidadDeIngresos:number;
   fecha_ingreso_a_establecimiento:Date;
-  
+  pabellon:string;
+  celda:string;
+  expediente_id:number;
   oficioJudicial_numeroDeDocumento:string;
   oficioJudicial_fechaDeDocumento:Date;
-  oficioJudicial_modificado:boolean;
-  
-  
+  //oficioJudicial_documento
   resolucion_numeroDeDocumento:string;
   resolucion_fechaDeDocumento:Date;
-  resolucion_modificado:boolean;
-  
- 
-  expediente_id:number;
-  expediente_numeroDeDocumento:string;
-  expediente_fechaDeDocumento:Date;
-  expediente_modificado:boolean;
-  caratula: string;
-  caratula_modificado:boolean;
-  hechoPunible: number;
-  hechoPunible_modificado:boolean;
-  sentenciaDefinitiva?: string;
-  sentenciaDefinitiva_modificado:boolean;
+  //resolucion_documento
+
 }

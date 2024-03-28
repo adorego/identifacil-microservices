@@ -27,6 +27,12 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @ManyToOne(() => EstablecimientoPenitenciarioModel, establecimientoPenitenciario =>establecimientoPenitenciario.ingresos_a_prision)
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 
+  @Column({type:"varchar"})
+  pabellon:string;
+
+  @Column({type:"varchar"})
+  celda:string;
+
   @ManyToOne(()=>SituacionJudicialModel, situacionJudicial=>situacionJudicial.ingresos_a_prision)
   situacionJudicial:SituacionJudicialModel
 }

@@ -10,6 +10,8 @@ export class IngresoAPrision{
   fecha_ingreso:Date;
   fecha_de_salida:Date;
   establecimiento_penitenciario:EstablecimientoPenitenciario;
+  pabellon:string;
+  celda:string;
   situacionJudicial:SituacionJudicial;
 
 }

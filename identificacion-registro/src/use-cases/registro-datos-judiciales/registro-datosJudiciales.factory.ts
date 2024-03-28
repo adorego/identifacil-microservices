@@ -8,7 +8,6 @@ import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
 import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { RespuestaFactoryDatosJudiciales } from "src/core/dto/registro_datos_judiciales/respuesta-factory-datosJudiciales.dto";
-import { error } from "console";
 
 @Injectable()
 export class RegistroDatosJudicialesFactory{
@@ -21,7 +20,7 @@ export class RegistroDatosJudicialesFactory{
 
   }
 
-  async generar_datos_judiciales(registroDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Express.Multer.File, resolucion:Express.Multer.File):Promise<RespuestaFactoryDatosJudiciales>{
+  async generar_datos_judiciales(registroDatosJudicialesDTO:RegistroDatosJudicialesDTO, oficio_judicial:Array<Express.Multer.File>, resolucion:Array<Express.Multer.File>):Promise<RespuestaFactoryDatosJudiciales>{
    
     
     if(!registroDatosJudicialesDTO.id_persona){
@@ -40,26 +39,33 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException('El oficio judicial debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
+    if(!oficio_judicial){
+      throw new HttpException('No se envió el oficio judicial', HttpStatus.BAD_REQUEST);
+    }
+
     if(!registroDatosJudicialesDTO.resolucion_numeroDeDocumento || !registroDatosJudicialesDTO.resolucion_fechaDeDocumento){
       throw new HttpException('La resolución judicial debe tener un numero de documento y una fecha', HttpStatus.BAD_REQUEST);
     }
 
-    
-    if(!registroDatosJudicialesDTO.expediente_numeroDeDocumento || !registroDatosJudicialesDTO.expediente_fechaDeDocumento){
-      throw new HttpException('El expediente debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
+    if(!resolucion){
+      throw new HttpException('No se envió la resolución', HttpStatus.BAD_REQUEST);
     }
 
-    const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);
-
-    if(!establecimientoPenitenciario){
-      throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
-    }
 
     const expedienteJudicial = await this.dataService.expediente.get(registroDatosJudicialesDTO.expediente_id);
     if(!expedienteJudicial){
       throw new HttpException("No existe el expediente judicial", HttpStatus.BAD_REQUEST);
     }
     
+    if(!registroDatosJudicialesDTO.establecimiento_penitenciario){
+      throw new HttpException("Se debe enviar el expediente judicial", HttpStatus.BAD_REQUEST);
+    }
+    const establecimiento_penitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimiento_penitenciario);
+    
+    if(!establecimiento_penitenciario){
+      throw new HttpException("No se encuentra el establecimiento penitenciario enviado", HttpStatus.BAD_REQUEST);
+    }
+
     
 
     let situacionJudicial = new SituacionJudicial();
@@ -68,28 +74,23 @@ export class RegistroDatosJudicialesFactory{
     //Generar un registro de Situacion Judicial
     situacionJudicial.primera_vez_en_prision = registroDatosJudicialesDTO.primeraVezEnPrision ;
     situacionJudicial.cantidad_de_veces_que_ingreso = registroDatosJudicialesDTO.cantidadDeIngresos;
-    situacionJudicial.expediente_fecha_de_documento = registroDatosJudicialesDTO.expediente_fechaDeDocumento;
-    situacionJudicial.expediente_numero_de_documento = registroDatosJudicialesDTO.expediente_numeroDeDocumento;
-    situacionJudicial.caratula = registroDatosJudicialesDTO.caratula;
-    situacionJudicial.sentencia_definitiva = registroDatosJudicialesDTO.sentenciaDefinitiva;
+    
     
     
     
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento ? registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento : new Date();
-    //ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
+    ingresoAPrision.establecimiento_penitenciario = establecimiento_penitenciario;
+    ingresoAPrision.pabellon = registroDatosJudicialesDTO.pabellon;
+    ingresoAPrision.celda = registroDatosJudicialesDTO.celda;
     ingresoAPrision.expedienteJudicial = expedienteJudicial;
-    // if(ingresoAPrision.expedienteJudicial.condenado){
-    //   ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
-    // }else{
-    //   ingresoAPrision.fecha_de_salida = null
-    // }
+    
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = expedienteJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial[0],`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
     oficioJudicialAGuardar.tipo = "oficio judicial";
     
 
@@ -97,7 +98,7 @@ export class RegistroDatosJudicialesFactory{
     resolucionMJAGuardar.causa = expedienteJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.id_persona}`)
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion[0],`DGEP_${registroDatosJudicialesDTO.id_persona}`)
     resolucionMJAGuardar.tipo = "resolucion MJ";
     
 
@@ -112,7 +113,7 @@ export class RegistroDatosJudicialesFactory{
       oficioJudicialAGuardar:oficioJudicialAGuardar,
       resolucionMJAGuardar:resolucionMJAGuardar,
       persona:personaEncontrada,
-      establecimiento:establecimientoPenitenciario
+      establecimiento:establecimiento_penitenciario
 
     }
     
@@ -140,16 +141,21 @@ export class RegistroDatosJudicialesFactory{
       throw new HttpException('El oficio judicial debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
     }
 
+    if(!oficio_judicial){
+      throw new HttpException('No se envió el oficio judicial', HttpStatus.BAD_REQUEST);
+    }
+
     if(!registroDatosJudicialesDTO.resolucion_numeroDeDocumento || !registroDatosJudicialesDTO.resolucion_fechaDeDocumento){
       throw new HttpException('La resolución judicial debe tener un numero de documento y una fecha', HttpStatus.BAD_REQUEST);
     }
 
-    
-    if(!registroDatosJudicialesDTO.expediente_numeroDeDocumento || !registroDatosJudicialesDTO.expediente_fechaDeDocumento){
-      throw new HttpException('El expediente debe tener numero de documento y fecha', HttpStatus.BAD_REQUEST);
+    if(!resolucion){
+      throw new HttpException('No se envió la resolución', HttpStatus.BAD_REQUEST);
     }
 
-    const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimientoPenitenciario);
+    
+    
+    const establecimientoPenitenciario = await this.dataService.establecimientoPenitenciario.get(registroDatosJudicialesDTO.establecimiento_penitenciario);
 
     if(!establecimientoPenitenciario){
       throw new HttpException("No existe el establecimiento penitenciario", HttpStatus.BAD_REQUEST);
@@ -168,12 +174,10 @@ export class RegistroDatosJudicialesFactory{
     const ingresoAPrision = new IngresoAPrision();
     ingresoAPrision.fecha_ingreso = registroDatosJudicialesDTO.fecha_ingreso_a_establecimiento;
     ingresoAPrision.establecimiento_penitenciario = establecimientoPenitenciario;
+    ingresoAPrision.pabellon = registroDatosJudicialesDTO.pabellon;
+    ingresoAPrision.celda = registroDatosJudicialesDTO.celda;
     ingresoAPrision.expedienteJudicial = expedienteJudicial;
-    // if(ingresoAPrision.expedienteJudicial.condenado){
-    //   ingresoAPrision.fecha_de_salida = expedienteJudicial.fecha_de_compurgamiento_inicial;
-    // }else{
-    //   ingresoAPrision.fecha_de_salida = null
-    // }
+    
 
     const oficioJudicialAGuardar = new DocumentoOrdenPrision();
     oficioJudicialAGuardar.causa = expedienteJudicial;

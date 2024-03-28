@@ -1,6 +1,4 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-
-import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { DocumentoOrdenPrision } from "src/core/entities/documentos-ordenan-prision.entity";
 import { FileService } from "src/framework/lib/files.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";

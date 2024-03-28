@@ -5,22 +5,18 @@ import * as fs from "fs";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 
-const filePath = "/opt/identifacil/";
+
+const FILE_STORAGE="/public"
+const ASSETS_LOCATION="/archivos"
 
 @Injectable()
 export class FileService{
   async almacenar_archivo(archivo:Express.Multer.File, nombreDelArchivo:string):Promise<string>{
-    let fileName = "";
+    let fileName = nombreDelArchivo;
     try{
         
-        if(path){
-          fileName = `${nombreDelArchivo}_${path.extname(archivo.originalname)}`;
-        }else{
-          fileName = `${filePath}${nombreDelArchivo}.${archivo.mimetype}`;
-        }
-        
         console.log("Nombre final de archiivo:", fileName);
-        const dirPath = path.join(process.env.TEST_FILE_STORAGE,'upload');
+        const dirPath = path.join(process.cwd(),FILE_STORAGE);
         console.log("dirPath final:", dirPath);
         if(!fs.existsSync(dirPath)){
           fs.mkdirSync(dirPath, {recursive:true})
@@ -40,10 +36,36 @@ export class FileService{
           throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
       
-        return finalPath;
+        return path.join(ASSETS_LOCATION,fileName);
       }catch(error){
         throw new HttpException(`Error al guardar el archivo ${fileName}:${error}`,error);
       }
 
   }
+
+  async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
+    const fileName = `${numero_identificacion}_${numero_foto.toString()}.jpg`;
+    console.log('Nombre del archivo:', fileName);
+    const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    if(!fs.existsSync(dirPath)){
+      fs.mkdirSync(dirPath, {recursive:true})
+    }
+    const finalPath = path.join(dirPath, fileName);
+    console.log('finalPath:', finalPath);
+    // console.log('Buffer de la foto:', foto[0].buffer);
+    if(foto[0]){
+      try{
+        const writeStream = fs.createWriteStream(finalPath);
+        writeStream.write(foto[0].buffer);
+        writeStream.end();
+      }catch(error){
+        throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }else{
+      console.log('La foto no existe');
+      throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return path.join(ASSETS_LOCATION,fileName);
+}
 }

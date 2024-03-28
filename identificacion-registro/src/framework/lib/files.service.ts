@@ -12,7 +12,7 @@ const ASSETS_LOCATION="/archivos"
 @Injectable()
 export class FileService{
   async almacenar_archivo(archivo:Express.Multer.File, nombreDelArchivo:string):Promise<string>{
-    let fileName = nombreDelArchivo;
+    let fileName = nombreDelArchivo +"."+ archivo.originalname.split('.').pop();
     try{
         
         console.log("Nombre final de archiivo:", fileName);

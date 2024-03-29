@@ -68,9 +68,5 @@ export class PplController{
     }
   }
 
-  @Post('prueba_post')
-  async prueba(@Body() datos:any){
-    console.log('datos:',datos);
-    return "ok"
-  }
+  
 }

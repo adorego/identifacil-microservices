@@ -12,10 +12,10 @@ export class DatosPenalesController{
     ){}
 
     @Get('expedientes')
-    async getAll(){
+    async getExpedientesAll(){
         try{
         this.logger.log("Llamada a getAll Expedientes");
-        return this.datosPenalesUseCaseService.getExpedientes()
+        return this.datosPenalesUseCaseService.getExpedientesAll()
         }catch(error){
         this.logger.error(`Error al consultar los expedientes:${error}`);
         throw new HttpException(`Error al consultar los expedientes:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -4,6 +4,10 @@ import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
+interface RegistroFotoI{
+    nombre:string;
+    foto:string;
+}
 @Injectable()
 export class GestionPPLUseCase{
   private readonly logger:Logger = new Logger("GestionPPLUseCase");
@@ -18,14 +22,7 @@ export class GestionPPLUseCase{
       //console.log("Get all PPLs:", ppls);
       const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
-        const fotos_de_registro = ppl.registro_de_fotos.map(
-          foto =>{
-            return{
-              nombre:foto.nombre,
-              foto:foto.foto
-            }
-          }
-        )
+        
           return{
             id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
@@ -34,7 +31,7 @@ export class GestionPPLUseCase{
             apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
             genero:ppl.persona.genero ? ppl.persona.genero.id : null,
             foto:ppl.persona.registro.foto1,
-            registro_de_fotos:fotos_de_registro,
+            registro_de_fotos:this.obtener_registro_fotos(ppl),
             tipo_de_documento:ppl.persona.tipo_identificacion,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario.id,
@@ -68,14 +65,7 @@ export class GestionPPLUseCase{
     // console.log("PPls devueltos:", ppls);
     const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
-        const fotos_de_registro = ppl.registro_de_fotos.map(
-          foto =>{
-            return{
-              nombre:foto.nombre,
-              foto:foto.foto
-            }
-          }
-        )
+        
           return{
             id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
@@ -92,7 +82,7 @@ export class GestionPPLUseCase{
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             foto:ppl.persona.registro.foto1,
-            registro_de_fotos:fotos_de_registro,
+            registro_de_fotos:this.obtener_registro_fotos(ppl),
             datosDeSalud:ppl.persona.salud,
             datosDeSeguridad:ppl.persona.seguridad,
             datosFamiliares:ppl.persona.datosFamiliares,
@@ -114,14 +104,7 @@ export class GestionPPLUseCase{
     if(!ppl){
       return null
     }else{
-      const fotos_de_registro = ppl.registro_de_fotos.map(
-        foto =>{
-          return{
-            nombre:foto.nombre,
-            foto:foto.foto
-          }
-        }
-      )
+      
       return{
         
         id_persona:ppl.persona.id,
@@ -135,7 +118,7 @@ export class GestionPPLUseCase{
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
         foto:ppl.persona.registro.foto1,
-        registro_de_fotos:fotos_de_registro,
+        registro_de_fotos:this.obtener_registro_fotos(ppl),
         ingresos_a_prision:ppl.persona.situacionJudicial.ingresos_a_prision,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
@@ -157,14 +140,7 @@ export class GestionPPLUseCase{
     if(!ppl){
       return null
     }else{
-      const fotos_de_registro = ppl.registro_de_fotos.map(
-        foto =>{
-          return{
-            nombre:foto.nombre,
-            foto:foto.foto
-          }
-        }
-      )
+      
       return{
         id_persona:ppl.persona.id,
         nombre:ppl.persona.nombre,
@@ -174,7 +150,7 @@ export class GestionPPLUseCase{
         genero:ppl.persona.genero ? ppl.persona.genero.id : null,
         tipo_de_documento:ppl.persona.tipo_identificacion,
         foto:ppl.persona.registro.foto1,
-        registro_de_fotos:fotos_de_registro,
+        registro_de_fotos:this.obtener_registro_fotos(ppl),
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
@@ -191,6 +167,20 @@ export class GestionPPLUseCase{
   }
 
   
+  obtener_registro_fotos(ppl:Ppl){
+    let registro_fotos:Array<RegistroFotoI> = new Array<RegistroFotoI>();
+    if(ppl.registro_de_fotos && ppl.registro_de_fotos.length>0){
+      registro_fotos = ppl.registro_de_fotos.map(
+        (registro_foto)=>{
+          return{
+            nombre:registro_foto.nombre,
+            foto:registro_foto.foto
+          }
+        }
+      )
+    }
+    return registro_fotos;
+  }
   verificar_perfil(persona:Persona){
     return true;
   }

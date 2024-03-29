@@ -21,8 +21,12 @@ export class DatosPenalesUseCases{
   ){
 
   }
-  async getExpedientes():Promise<Array<ExpedienteJudicial>>{
-    return await this.dataService.expediente.getAll();
+  async getExpedientesAll():Promise<Array<ExpedienteJudicial>>{
+    
+    const expedientes = await this.dataService.expediente.getAll();
+    //const expedientes = new Array<ExpedienteJudicial>()
+    console.log("Expedientes:",expedientes);
+    return expedientes;
   }
 
   async getExpedienteById(id:number):Promise<ExpedienteJudicial>{

@@ -18,7 +18,7 @@ export class PplModel extends Ppl{
   @Column({type:"varchar", nullable:true})
   prontuario: string;
 
-  @ManyToOne(() => EstablecimientoPenitenciarioModel, {cascade:true,eager:true})
+  @ManyToOne(() => EstablecimientoPenitenciarioModel,{eager:true})
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 
   @OneToMany(()=>PplEnExpedienteModel, pplEnExpediente=>pplEnExpediente.ppl)

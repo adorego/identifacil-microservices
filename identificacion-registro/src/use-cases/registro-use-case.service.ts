@@ -13,7 +13,7 @@ import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { RegistroDatosFamiliaresDTO } from "src/core/dto/registro_familiar/registro-datos-familiares.dto";
 import { RegistroDatosFamiliaresFactory } from "./registro-datos-familiares/registro-datosFamiliares.factory";
-import { RegistroDatosJudicialesDTO } from "src/core/dto/registro_datos_judiciales/registro-datos-judiciales.dto";
+import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
 import { RegistroDatosJudicialesFactory } from "./registro-datos-judiciales/registro-datosJudiciales.factory";
 import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 import { RegistroDatosPersonalesFactory } from "./registro-datosPersonales-factory.service";

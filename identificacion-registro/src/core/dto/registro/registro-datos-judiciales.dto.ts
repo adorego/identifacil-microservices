@@ -28,8 +28,9 @@ export class RegistroDatosJudicialesDTO{
   expediente_id:number;
   oficioJudicial_numeroDeDocumento:string;
   oficioJudicial_fechaDeDocumento:Date;
+  //oficioJudicial_documento
   resolucion_numeroDeDocumento:string;
   resolucion_fechaDeDocumento:Date;
-  
+  //resolucion_documento
 
 }

@@ -11,11 +11,11 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @OneToOne(() => ExpedienteJudicialModel,{eager:true})
+  @OneToOne(() => ExpedienteJudicialModel)
   @JoinColumn()
   expedienteJudicial:ExpedienteJudicialModel;
 
-  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision,{eager:true})
+  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision)
   documentos_que_ordenan_prision:Array<DocumentosOrdenanPrisionModel>;
 
   @Column({type:"date"})

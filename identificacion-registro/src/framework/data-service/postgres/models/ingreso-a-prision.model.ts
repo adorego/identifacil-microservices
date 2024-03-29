@@ -24,7 +24,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @Column({type:"date", nullable:true})
   fecha_de_salida:Date;
 
-  @ManyToOne(() => EstablecimientoPenitenciarioModel, establecimientoPenitenciario =>establecimientoPenitenciario.ingresos_a_prision)
+  @ManyToOne(() => EstablecimientoPenitenciarioModel, establecimientoPenitenciario =>establecimientoPenitenciario.ingresos_a_prision,{eager:true})
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 
   @Column({type:"varchar"})

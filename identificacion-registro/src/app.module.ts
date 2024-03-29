@@ -13,7 +13,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 
-const DEVELOPMENT_PRODUCTION:number = 0; //0 Development, 1 Production
+const DEVELOPMENT_PRODUCTION:number = 1; //0 Development, 1 Production
 
 
 @Module({

@@ -9,6 +9,7 @@ import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "src/core/entities/tipo-identificacion.entity";
 import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
+import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 
 export class PplDTO{
   id_persona:number;

@@ -11,7 +11,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @OneToOne(() => ExpedienteJudicialModel)
+  @OneToOne(() => ExpedienteJudicialModel,{eager:true})
   @JoinColumn()
   expedienteJudicial:ExpedienteJudicialModel;
 

@@ -110,7 +110,7 @@ export class GestionPPLUseCase{
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     const ppl = await this.dataService.ppl.getPplByCedula(ci);
-    
+    console.log("Ppl recuperado:",ppl);
     if(!ppl){
       return null
     }else{

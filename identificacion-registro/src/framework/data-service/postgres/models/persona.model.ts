@@ -22,7 +22,7 @@ export class PersonaModel extends Persona{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @ManyToOne(() => TipoIdentificacionModel, (tipoDeIdentificacion) => tipoDeIdentificacion.personas,{eager:true})
+  @ManyToOne(() => TipoIdentificacionModel, (tipoDeIdentificacion) => tipoDeIdentificacion.personas, {eager:true} )
   @JoinColumn({name: 'id_tipo_identificacion'})
   tipo_identificacion:TipoIdentificacionModel
   
@@ -48,7 +48,7 @@ export class PersonaModel extends Persona{
   @Column({type:"varchar", length: 100, unique:false,nullable:false})
   apellido:string;
 
-  @ManyToOne(() => GeneroModel, (genero) => genero.personas,{eager:true})
+  @ManyToOne(() => GeneroModel, (genero) => genero.personas, {eager:true})
   @JoinColumn()
   genero:GeneroModel;
 
@@ -57,29 +57,29 @@ export class PersonaModel extends Persona{
   })
   fechaDeNacimiento:Date;
 
-  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona,{eager:true})
+  @OneToOne(() => RegistroPersonaModel, (registro) => registro.persona, {eager:true})
   @JoinColumn()
   registro:RegistroPersonaModel;
 
 
-  @OneToOne(() => SaludModel, saludModel => saludModel.persona,{eager:true})
+  @OneToOne(() => SaludModel, saludModel => saludModel.persona, {eager:true})
   @JoinColumn()
   salud:SaludModel;
 
   
-  @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona,{eager:true})
+  @OneToOne(() => EducacionFormacionModel, educacionFormacion => educacionFormacion.persona, {eager:true})
   @JoinColumn()
   educacionFormacion:EducacionFormacionModel
 
-  @OneToOne(() => SeguridadModel, seguridad => seguridad.persona,{eager:true})
+  @OneToOne(() => SeguridadModel, seguridad => seguridad.persona, {eager:true})
   @JoinColumn()
   seguridad:SeguridadModel;
 
-  @OneToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.persona,{eager:true})
+  @OneToOne(() => DatosFamiliaresModel, datosFamiliares => datosFamiliares.persona, {eager:true})
   @JoinColumn()
   datosFamiliares:DatosFamiliaresModel;
 
-  @OneToOne(() => SituacionJudicialModel, situacionJuridica => situacionJuridica.persona,{eager:true})
+  @OneToOne(() => SituacionJudicialModel, situacionJuridica => situacionJuridica.persona, {eager:true} )
   @JoinColumn()
   situacionJudicial:SituacionJudicialModel;
 

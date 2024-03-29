@@ -11,7 +11,7 @@ export class PplEnExpedienteModel extends PplEnExpediente{
     @PrimaryGeneratedColumn()
     id:number;
     
-    @ManyToOne(()=>PplModel,ppl=>ppl.pplEnExpedientes)
+    @ManyToOne(()=>PplModel,ppl=>ppl.pplEnExpedientes,{eager:true})
     ppl:PplModel;
 
     @Column({type:"boolean"})
@@ -21,13 +21,13 @@ export class PplEnExpedienteModel extends PplEnExpediente{
     @JoinColumn()
     condena:CondenaModel;
 
-    @ManyToOne(()=>DefensorModel, defensor=>defensor.pplsEnExpediente)
+    @ManyToOne(()=>DefensorModel, defensor=>defensor.pplsEnExpediente,{eager:true})
     defensor:DefensorModel;
 
     @ManyToOne(()=>ExpedienteJudicialModel, expediente=>expediente.ppls_en_expediente)
     expediente:ExpedienteJudicialModel;
 
-    @ManyToMany(()=>HechoPunibleCausaJudicialModel,hechoPunibleCausa=>hechoPunibleCausa.pplEnExpediente)
+    @ManyToMany(()=>HechoPunibleCausaJudicialModel,hechoPunibleCausa=>hechoPunibleCausa.pplEnExpediente,{eager:true})
     @JoinTable()
     hechosPuniblesCausas:Array<HechoPunibleCausaJudicialModel>;
    

@@ -4,9 +4,9 @@ import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
 
-interface RegistroFotoI{
-    nombre:string;
-    foto:string;
+interface RegistroFotosI{
+  nombre:string;
+  foto:string;
 }
 @Injectable()
 export class GestionPPLUseCase{
@@ -23,6 +23,7 @@ export class GestionPPLUseCase{
       const pplsDTOs:Array<PplDTO> = ppls.map(
       (ppl) =>{
         
+        
           return{
             id_persona:ppl.persona.id,
             nombre:ppl.persona.nombre,
@@ -31,12 +32,11 @@ export class GestionPPLUseCase{
             apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
             genero:ppl.persona.genero ? ppl.persona.genero.id : null,
             foto:ppl.persona.registro.foto1,
-            registro_de_fotos:this.obtener_registro_fotos(ppl),
+            registro_de_fotos:this.obtener_fotos_registro(ppl),
             tipo_de_documento:ppl.persona.tipo_identificacion,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario.id,
             establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-            ingresos_a_prision:ppl.persona.situacionJudicial.ingresos_a_prision,
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             datosDeSalud:ppl.persona.salud,
@@ -76,13 +76,12 @@ export class GestionPPLUseCase{
             tipo_de_documento:ppl.persona.tipo_identificacion,
             fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
             establecimiento:ppl.establecimiento_penitenciario?.id ?? null,
-            ingresos_a_prision:ppl.persona.situacionJudicial.ingresos_a_prision,
             establecimiento_nombre:ppl.establecimiento_penitenciario?.nombre,
             nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
             estado_perfil:this.verificar_perfil(ppl.persona),
             datosPersonales:ppl.persona.datosPersonales,
             foto:ppl.persona.registro.foto1,
-            registro_de_fotos:this.obtener_registro_fotos(ppl),
+            registro_de_fotos:this.obtener_fotos_registro(ppl),
             datosDeSalud:ppl.persona.salud,
             datosDeSeguridad:ppl.persona.seguridad,
             datosFamiliares:ppl.persona.datosFamiliares,
@@ -100,7 +99,7 @@ export class GestionPPLUseCase{
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     const ppl = await this.dataService.ppl.getPplByCedula(ci);
-    console.log("Ppl recuperado:",ppl);
+    
     if(!ppl){
       return null
     }else{
@@ -118,8 +117,8 @@ export class GestionPPLUseCase{
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
         foto:ppl.persona.registro.foto1,
-        registro_de_fotos:this.obtener_registro_fotos(ppl),
-        ingresos_a_prision:ppl.persona.situacionJudicial.ingresos_a_prision,
+        registro_de_fotos:this.obtener_fotos_registro(ppl),
+        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
         datosDeSalud:ppl.persona.salud,
@@ -150,11 +149,11 @@ export class GestionPPLUseCase{
         genero:ppl.persona.genero ? ppl.persona.genero.id : null,
         tipo_de_documento:ppl.persona.tipo_identificacion,
         foto:ppl.persona.registro.foto1,
-        registro_de_fotos:this.obtener_registro_fotos(ppl),
+        registro_de_fotos:this.obtener_fotos_registro(ppl),
         fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
         establecimiento:ppl.establecimiento_penitenciario.id,
         establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        ingresos_a_prision:ppl.persona.situacionJudicial.ingresos_a_prision,
+        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
         estado_perfil:this.verificar_perfil(ppl.persona),
         datosPersonales:ppl.persona.datosPersonales,
         datosDeSalud:ppl.persona.salud,
@@ -167,9 +166,13 @@ export class GestionPPLUseCase{
   }
 
   
-  obtener_registro_fotos(ppl:Ppl){
-    let registro_fotos:Array<RegistroFotoI> = new Array<RegistroFotoI>();
-    if(ppl.registro_de_fotos && ppl.registro_de_fotos.length>0){
+  verificar_perfil(persona:Persona){
+    return true;
+  }
+
+  obtener_fotos_registro(ppl:Ppl):Array<RegistroFotosI>{
+    let registro_fotos:Array<RegistroFotosI> = new Array<RegistroFotosI>();
+    if(ppl && ppl.registro_de_fotos && ppl.registro_de_fotos.length >0){
       registro_fotos = ppl.registro_de_fotos.map(
         (registro_foto)=>{
           return{
@@ -180,9 +183,6 @@ export class GestionPPLUseCase{
       )
     }
     return registro_fotos;
-  }
-  verificar_perfil(persona:Persona){
-    return true;
   }
 
 }

@@ -15,7 +15,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @JoinColumn()
   expedienteJudicial:ExpedienteJudicialModel;
 
-  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision)
+  @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision,{eager:true})
   documentos_que_ordenan_prision:Array<DocumentosOrdenanPrisionModel>;
 
   @Column({type:"date"})
@@ -27,10 +27,10 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @ManyToOne(() => EstablecimientoPenitenciarioModel, establecimientoPenitenciario =>establecimientoPenitenciario.ingresos_a_prision)
   establecimiento_penitenciario:EstablecimientoPenitenciarioModel;
 
-  @Column({type:"varchar",nullable:true})
+  @Column({type:"varchar"})
   pabellon:string;
 
-  @Column({type:"varchar",nullable:true})
+  @Column({type:"varchar"})
   celda:string;
 
   @ManyToOne(()=>SituacionJudicialModel, situacionJudicial=>situacionJudicial.ingresos_a_prision)

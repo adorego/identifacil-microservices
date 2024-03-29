@@ -3,7 +3,7 @@ import { DocumentoOrdenPrision } from "src/core/entities/documentos-ordenan-pris
 import { FileService } from "src/framework/lib/files.service";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
-import { RegistroDatosJudicialesDTO } from "src/core/dto/registro/registro-datos-judiciales.dto";
+import { RegistroDatosJudicialesDTO } from "src/core/dto/registro_datos_judiciales/registro-datos-judiciales.dto";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { RespuestaFactoryDatosJudiciales } from "src/core/dto/registro_datos_judiciales/respuesta-factory-datosJudiciales.dto";
 
@@ -181,7 +181,7 @@ export class RegistroDatosJudicialesFactory{
     oficioJudicialAGuardar.causa = expedienteJudicial;
     oficioJudicialAGuardar.fecha = new Date(registroDatosJudicialesDTO.oficioJudicial_fechaDeDocumento);
     oficioJudicialAGuardar.numero_documento = registroDatosJudicialesDTO.oficioJudicial_numeroDeDocumento;
-    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${registroDatosJudicialesDTO.id_persona}`)
+    oficioJudicialAGuardar.ruta = await this.fileService.almacenar_archivo(oficio_judicial,`oficioJudicial_${personaEncontrada.numero_identificacion}`)
     oficioJudicialAGuardar.tipo = "oficio judicial";
     
 
@@ -189,7 +189,7 @@ export class RegistroDatosJudicialesFactory{
     resolucionMJAGuardar.causa = expedienteJudicial;
     resolucionMJAGuardar.fecha = new Date(registroDatosJudicialesDTO.resolucion_fechaDeDocumento);
     resolucionMJAGuardar.numero_documento = registroDatosJudicialesDTO.resolucion_numeroDeDocumento;
-    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${registroDatosJudicialesDTO.id_persona}`)
+    resolucionMJAGuardar.ruta = await this.fileService.almacenar_archivo(resolucion,`DGEP_${personaEncontrada.numero_identificacion}`)
     resolucionMJAGuardar.tipo = "resolucion MJ";
     
 

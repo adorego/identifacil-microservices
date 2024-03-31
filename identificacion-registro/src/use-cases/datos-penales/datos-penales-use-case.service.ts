@@ -271,10 +271,20 @@ export class DatosPenalesUseCases{
     if(ppls.length > 0){
       await Promise.all(ppls.map(
         async (id_persona_ppl)=>{
-          const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(id_persona_ppl);
+          const pplEncontrado:Ppl = await this.dataService.ppl.getPPLByIdPersona(id_persona_ppl);
           
           if(!pplEncontrado){
             throw new HttpException(`No se encontró el PPL enviado,id_persona:${id_persona_ppl}`,HttpStatus.BAD_REQUEST);
+          }
+          //Verificar que no exista este PPL en la lista de PPLs de este expediente
+          const pplsCoinciden = pplsEnExpediente.filter(
+            (pplEnExpediente)=>{
+              return (pplEnExpediente.ppl.id === pplEncontrado.id)
+            }
+            
+          )
+          if(pplsCoinciden && pplsCoinciden.length > 0){
+            throw new HttpException(`Error, ya existe este PPL en la lista de PPLs de este expediente`,HttpStatus.BAD_REQUEST);
           }
           const pplAAgregar = new PplEnExpediente();
           pplAAgregar.ppl = pplEncontrado

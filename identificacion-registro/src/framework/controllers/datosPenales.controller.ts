@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Patch, Post, Put } from "@nestjs/common";
+import { ActualizarPplsEnExpedienteDTO } from "src/core/dto/datosPenales/actualizar-ppls-en-expediente.dto";
 import { ExpedienteJudicialDTO } from "src/core/dto/datosPenales/expediente.dto";
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
 import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-use-case.service";
@@ -52,6 +53,20 @@ export class DatosPenalesController{
             id:respuestaDatosPenalesUseCase.id
         }
     } 
+
+    @Patch('expedientes/:id/ppls')
+    async update_ppls_expediente(@Param() param:any, @Body() data:ActualizarPplsEnExpedienteDTO){
+
+      this.logger.log('PATCH expediente, datos recibidos:',data);
+      try{
+        const respuestaDatosPenalesUseCase = await this.datosPenalesUseCaseService.actualizar_ppls_en_expediente(param.id,data.ppls);
+        return respuestaDatosPenalesUseCase;
+      }catch(error){
+        this.logger.error(`Error al actualizar ppls en expediente:${error}`);
+        throw new HttpException(`Error al actualizar ppls en expediente:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      
+    }
 
     @Get("expedientesByIdPersona/:id")
     async getExpedientesByIdPersona(@Param() param){

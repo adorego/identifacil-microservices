@@ -14,7 +14,7 @@ export class PplEnExpedienteModel extends PplEnExpediente{
     @ManyToOne(()=>PplModel,ppl=>ppl.pplEnExpedientes,{eager:true})
     ppl:PplModel;
 
-    @Column({type:"boolean"})
+    @Column({type:"boolean",default:false})
     condenado:boolean;
 
     @OneToOne(()=>CondenaModel,{eager:true})

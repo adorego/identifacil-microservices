@@ -11,6 +11,8 @@ import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { RespuestGenericaActualizarCrearDTO } from "src/core/dto/respuesta-generica-actualizar-crear.dto";
+import { Ppl } from "src/core/entities/ppl.entity";
+import { RespuestaPPLsEnExpedienteDTO } from "src/core/dto/datosPenales/respuesta-ppls-en-expediente.dto";
 
 @Injectable()
 export class DatosPenalesUseCases{
@@ -252,6 +254,46 @@ export class DatosPenalesUseCases{
     }
   }
 
+  async actualizar_ppls_en_expediente(id:number,ppls:Array<number>):Promise<RespuestaPPLsEnExpedienteDTO>{
+    if(!id){
+      throw new HttpException(`Se debe enviar un id de expediente`,HttpStatus.BAD_REQUEST);
+    }
+    const expedienteEncontrado = await this.dataService.expediente.get(id);
+    if(!expedienteEncontrado){
+      throw new HttpException(`No se encontró el expediente enviado`,HttpStatus.BAD_REQUEST);
+    }
+
+    let pplsEnExpediente:Array<PplEnExpediente> = expedienteEncontrado.ppls_en_expediente;
+    if(!pplsEnExpediente){
+      pplsEnExpediente = new Array<PplEnExpediente>();
+    }
+    console.log("Antes de verificar ppls:",ppls.length);
+    if(ppls.length > 0){
+      await Promise.all(ppls.map(
+        async (id_ppl)=>{
+          const pplEncontrado = await this.dataService.ppl.get(id_ppl);
+          console.log("Ppl encontrado:",pplEncontrado);
+          if(!pplEncontrado){
+            throw new HttpException(`No se encontró el PPL enviado,id:${id_ppl}`,HttpStatus.BAD_REQUEST);
+          }
+          const pplAAgregar = new PplEnExpediente();
+          pplAAgregar.ppl = pplEncontrado
+          const pplGuardado = await this.dataService.pplEnExpediente.create(pplAAgregar);
+          pplsEnExpediente.push(pplGuardado);
+
+        }
+      ))
+      console.log("pplsEnExpediente:",pplsEnExpediente);
+      const expedienteActualizado = await this.dataService.expediente.update(expedienteEncontrado);
+      console.log("Expediente actualizado:",expedienteActualizado);
+      return {
+        success:true,
+        id:expedienteActualizado.id
+      }
+    }
+    return null;
+
+  }
 
   async getExpedientesByIdPersona(id:number):Promise<Array<ExpedienteJudicial>>{
     return this.dataService.expediente.getExpedientesByPersonaId(id);

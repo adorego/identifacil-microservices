@@ -54,7 +54,7 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @JoinTable()
   hechosPuniblesCausas: Array<HechoPunibleCausaJudicialModel>;
 
-  @ManyToOne(()=>IngresoAPrisionModel)
+  @OneToMany(()=>IngresoAPrisionModel,ingreso_a_prision=>ingreso_a_prision.expedienteJudicial)
   ingresos_a_prision:Array<IngresoAPrisionModel>
 
   @Column({type:"int", nullable:true})

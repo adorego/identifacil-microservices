@@ -14,7 +14,7 @@ export class IngresoAPrisionModel extends IngresoAPrision{
   @Column({type:"boolean",default:true})
   ultimo_ingreso: boolean;
 
-  @OneToMany(() => ExpedienteJudicialModel,expediente=>expediente.ingresos_a_prision)
+  @ManyToOne(() => ExpedienteJudicialModel,expediente=>expediente.ingresos_a_prision)
   expedienteJudicial:ExpedienteJudicialModel;
 
   @OneToMany(() => DocumentosOrdenanPrisionModel, documentoOrdenanPrision => documentoOrdenanPrision.ingreso_a_prision,{eager:true})

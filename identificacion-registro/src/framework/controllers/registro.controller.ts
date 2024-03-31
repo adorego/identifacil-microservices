@@ -144,41 +144,67 @@ export class RegistroController{
 
   @Get('grupos_sanguineos')
   async grupos_sanguineos():Promise<RespuestaGrupoSanguineoDTO>{
-    const grupos_sanguineos = await this.registroPersonaUseCase.grupos_sanguineos();
-    const respuesta = new RespuestaGrupoSanguineoDTO();
-    respuesta.grupos_sanguineos = grupos_sanguineos;
-    respuesta.success = true;
-    return respuesta;
+    try{
+      const grupos_sanguineos = await this.registroPersonaUseCase.grupos_sanguineos();
+      const respuesta = new RespuestaGrupoSanguineoDTO();
+      respuesta.grupos_sanguineos = grupos_sanguineos;
+      respuesta.success = true;
+      return respuesta;
+    }catch(error){
+      this.logger.error(`Error en la consulta de grupos_sanguineos de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de grupos_sanguineos de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
 
 
   }
   @Get('vacunas')
   async vacunas():Promise<RespuestaVacunasDTO>{
-    const vacunas = await this.registroPersonaUseCase.vacunas();
-    const respuesta = new RespuestaVacunasDTO();
-    respuesta.vacunas = vacunas;
-    respuesta.success = true;
-    return respuesta;
+    try{
+      const vacunas = await this.registroPersonaUseCase.vacunas();
+      const respuesta = new RespuestaVacunasDTO();
+      respuesta.vacunas = vacunas;
+      respuesta.success = true;
+      return respuesta;
+    }catch(error){
+      this.logger.error(`Error en la consulta de vacunas de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de vacunas de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
 
 
   }
 
   @Get('nacionalidades')
   async nacionalidades():Promise<RespuestaNacionalidadDTO>{
-    const nacionalidades = await this.registroPersonaUseCase.nacionalidades();
-    const repuesta = new RespuestaNacionalidadDTO();
-    repuesta.nacionalidades = nacionalidades;
-    repuesta.success = true;
-    return repuesta;
+    try{
+      const nacionalidades = await this.registroPersonaUseCase.nacionalidades();
+      console.log("Nacionalidades:",nacionalidades);
+      const repuesta = new RespuestaNacionalidadDTO();
+      repuesta.nacionalidades = nacionalidades;
+      repuesta.success = true;
+      return repuesta;
+    }catch(error){
+      this.logger.error(`Error en la consulta de nacionalidades de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de nacionalidades de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
   }
 
   @Get('estados_civiles')
   async estadosCiviles():Promise<RespuestaEstadoCivilDTO>{
-    const estados_civiles = await this.registroPersonaUseCase.estados_civiles();
-    const respuesta = new RespuestaEstadoCivilDTO();
-    respuesta.estadosCiviles = estados_civiles;
-    respuesta.success = true;
-    return respuesta;
+    try{
+      const estados_civiles = await this.registroPersonaUseCase.estados_civiles();
+      console.log("Estados Civiles:",estados_civiles);
+      const respuesta = new RespuestaEstadoCivilDTO();
+      respuesta.estadosCiviles = estados_civiles;
+      respuesta.success = true;
+      return respuesta;
+    }catch(error){
+      this.logger.error(`Error en la consulta de estadosCiviles de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de estadosCiviles de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
   }
 
   
@@ -187,38 +213,55 @@ export class RegistroController{
   
   @Get('oficios')
   async getOficios(){
+    try{
+      const oficios = await this.registroPersonaUseCase.oficios();
     
-    const oficios = await this.registroPersonaUseCase.oficios();
+      return(
+        {
+          oficios:oficios,
+          success:true
+        }
+      )
+    }catch(error){
+      this.logger.error(`Error en la consulta de getOficios de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de getOficios de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     
-    return(
-      {
-        oficios:oficios,
-        success:true
-      }
-    )
   }
 
   @Get('establecimientos')
   async getEstablecimientos(){
-    const establecimientos = await this.registroPersonaUseCase.establecimientos();
+    try{
+      const establecimientos = await this.registroPersonaUseCase.establecimientos();
 
-    return(
-      {
-        establecimientos:establecimientos,
-        success:true
-      }
-    )
+      return(
+        {
+          establecimientos:establecimientos,
+          success:true
+        }
+      )
+    }catch(error){
+      this.logger.error(`Error en la consulta de getEstablecimientos de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de getEstablecimientos de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
   }
 
   @Get('vinculos_familiares')
   async getVinculosFamiliares(){
-    const vinculos_familiares = await this.registroPersonaUseCase.vinculos_familiares();
-    return(
-      {
-        vinculos_familiares:vinculos_familiares,
-        success:true
-      }
-    )
+    try{
+      const vinculos_familiares = await this.registroPersonaUseCase.vinculos_familiares();
+      return(
+        {
+          vinculos_familiares:vinculos_familiares,
+          success:true
+        }
+      )
+    }catch(error){
+      this.logger.error(`Error en la consulta de getVinculosFamiliares de RegistroController:${error}`);
+      throw new HttpException(`Error en la consulta de getVinculosFamiliares de RegistroController:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+   
   }
 }
 

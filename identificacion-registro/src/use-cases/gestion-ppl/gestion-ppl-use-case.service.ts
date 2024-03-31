@@ -1,5 +1,5 @@
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { HttpException, Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
@@ -19,41 +19,24 @@ export class GestionPPLUseCase{
     try{
       //console.log("Antes de llamar a ppls");
       const ppls:Array<Ppl> = await this.dataService.ppl.getAll();
-      //console.log("Get all PPLs:", ppls);
-      const pplsDTOs:Array<PplDTO> = ppls.map(
-      (ppl) =>{
-        
-        
-          return{
-            id_persona:ppl.persona.id,
-            nombre:ppl.persona.nombre,
-            apellido:ppl.persona.apellido,
-            numero_de_identificacion:ppl.persona.numero_identificacion,
-            apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
-            genero:ppl.persona.genero ? ppl.persona.genero.id : null,
-            foto:ppl.persona.registro.foto1,
-            registro_de_fotos:this.obtener_fotos_registro(ppl),
-            tipo_de_documento:ppl.persona.tipo_identificacion,
-            fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
-            establecimiento:ppl.establecimiento_penitenciario.id,
-            establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-            estado_perfil:this.verificar_perfil(ppl.persona),
-            datosPersonales:ppl.persona.datosPersonales,
-            datosDeSalud:ppl.persona.salud,
-            datosDeSeguridad:ppl.persona.seguridad,
-            datosFamiliares:ppl.persona.datosFamiliares,
-            datosJudiciales:ppl.persona.situacionJudicial,
-            datosEducacion:ppl.persona.educacionFormacion,
-
-
-
+      let pplsDTO:Array<PplDTO> = new Array<PplDTO>();
+      if(ppls && ppls.length > 0){
+        pplsDTO = ppls.map(
+          (ppl) =>{
+            
+            return this.crear_dto_ppl(ppl)
           }
-        })
-        // console.log("Array de PPLs:",pplsDTOs);
-        return pplsDTOs;
+        )
+
+      }
+      return pplsDTO;
+      
+        
+          
+        
     }catch(error){
-      this.logger.error(`Error en la consulta de PPL por id:${error}`);
-      throw new HttpException(`Error en al consulta por id:${error}`, error);
+      this.logger.error(`Error en la consulta de getAllPpls de GestionPplUseCase:${error}`);
+      throw new HttpException(`Error en la consulta de getAllPpls de GestionPplUseCase:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 
@@ -61,108 +44,62 @@ export class GestionPPLUseCase{
 
   async getPPLsByEstablecimiento(establecimiento:number):Promise<Array<PplDTO>>{
     
-    const ppls:Array<Ppl> = await this.dataService.ppl.getAllPPLsByEstablecimiento(establecimiento);
-    // console.log("PPls devueltos:", ppls);
-    const pplsDTOs:Array<PplDTO> = ppls.map(
-      (ppl) =>{
+    try{
+      const ppls:Array<Ppl> = await this.dataService.ppl.getAllPPLsByEstablecimiento(establecimiento);
+      let pplsDTO:Array<PplDTO> = new Array<PplDTO>();
+      if(ppls && ppls.length > 0){
+        pplsDTO = ppls.map(
+            (ppl) =>{
+              
+              return this.crear_dto_ppl(ppl)
+            }
+          )
+
+        }
+        return pplsDTO;
+      
         
-          return{
-            id_persona:ppl.persona.id,
-            nombre:ppl.persona.nombre,
-            apellido:ppl.persona.apellido,
-            numero_de_identificacion:ppl.persona.numero_identificacion,
-            apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
-            genero:ppl.persona.genero ? ppl.persona.genero.id : null,
-            tipo_de_documento:ppl.persona.tipo_identificacion,
-            fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
-            establecimiento:ppl.establecimiento_penitenciario?.id ?? null,
-            establecimiento_nombre:ppl.establecimiento_penitenciario?.nombre,
-            nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
-            estado_perfil:this.verificar_perfil(ppl.persona),
-            datosPersonales:ppl.persona.datosPersonales,
-            foto:ppl.persona.registro.foto1,
-            registro_de_fotos:this.obtener_fotos_registro(ppl),
-            datosDeSalud:ppl.persona.salud,
-            datosDeSeguridad:ppl.persona.seguridad,
-            datosFamiliares:ppl.persona.datosFamiliares,
-            datosJudiciales:ppl.persona.situacionJudicial,
-            datosEducacion:ppl.persona.educacionFormacion,
-
-
-
-          }
-        })
-        console.log("Array de PPLs:",pplsDTOs);
-        return pplsDTOs;
+          
+        
+    }catch(error){
+      this.logger.error(`Error en la consulta de getPPLsByEstablecimiento de GestionPplUseCase:${error}`);
+      throw new HttpException(`Error en la consulta de getPPLsByEstablecimiento de GestionPplUseCase:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
   }
 
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
-    const ppl = await this.dataService.ppl.getPplByCedula(ci);
-    
-    if(!ppl){
-      return null
-    }else{
-      
-      return{
+    try{
+      const ppl = await this.dataService.ppl.getPplByCedula(ci);
+      if(!ppl){
+        return null
+      }else{
         
-        id_persona:ppl.persona.id,
-        nombre:ppl.persona.nombre,
-        apellido:ppl.persona.apellido,
-        numero_de_identificacion:ppl.persona.numero_identificacion,
-        apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
-        genero:ppl.persona.genero ? ppl.persona.genero.id : null,
-        tipo_de_documento:ppl.persona.tipo_identificacion,
-        fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
-        establecimiento:ppl.establecimiento_penitenciario.id,
-        establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        foto:ppl.persona.registro.foto1,
-        registro_de_fotos:this.obtener_fotos_registro(ppl),
-        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
-        estado_perfil:this.verificar_perfil(ppl.persona),
-        datosPersonales:ppl.persona.datosPersonales,
-        datosDeSalud:ppl.persona.salud,
-        datosDeSeguridad:ppl.persona.seguridad,
-        datosFamiliares:ppl.persona.datosFamiliares,
-        datosJudiciales:ppl.persona.situacionJudicial,
-        datosEducacion:ppl.persona.educacionFormacion,
-
-
-
+        return this.crear_dto_ppl(ppl)
       }
+    }catch(error){
+      this.logger.error(`Error en la consulta de getPPLByCedula de GestionPplUseCase:${error}`);
+      throw new HttpException(`Error en la consulta de getPPLByCedula de GestionPplUseCase:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
   }
 
   async getPpplById(id:number):Promise<PplDTO>|null{
-    const ppl = await this.dataService.ppl.getPplById(id);
+    try{
+      const ppl = await this.dataService.ppl.getPplById(id);
     
-    if(!ppl){
-      return null
-    }else{
-      
-      return{
-        id_persona:ppl.persona.id,
-        nombre:ppl.persona.nombre,
-        apellido:ppl.persona.apellido,
-        numero_de_identificacion:ppl.persona.numero_identificacion,
-        apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
-        genero:ppl.persona.genero ? ppl.persona.genero.id : null,
-        tipo_de_documento:ppl.persona.tipo_identificacion,
-        foto:ppl.persona.registro.foto1,
-        registro_de_fotos:this.obtener_fotos_registro(ppl),
-        fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
-        establecimiento:ppl.establecimiento_penitenciario.id,
-        establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
-        // nacionalidad:ppl.persona.datosPersonales?.nacionalidad?.id ? ppl.persona.datosPersonales.nacionalidad.id : null,
-        estado_perfil:this.verificar_perfil(ppl.persona),
-        datosPersonales:ppl.persona.datosPersonales,
-        datosDeSalud:ppl.persona.salud,
-        datosDeSeguridad:ppl.persona.seguridad,
-        datosFamiliares:ppl.persona.datosFamiliares,
-        datosJudiciales:ppl.persona.situacionJudicial,
-        datosEducacion:ppl.persona.educacionFormacion,
+      if(!ppl){
+        return null
+      }else{
+        
+        return this.crear_dto_ppl(ppl)
       }
+    }catch(error){
+      this.logger.error(`Error en la consulta de getPpplById de GestionPplUseCase:${error}`);
+      throw new HttpException(`Error en la consulta de getPpplById de GestionPplUseCase:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
+       
   }
 
   
@@ -183,6 +120,31 @@ export class GestionPPLUseCase{
       )
     }
     return registro_fotos;
+  }
+
+  crear_dto_ppl(ppl:Ppl):PplDTO{
+    return{
+      id_persona:ppl.persona.id,
+      nombre:ppl.persona.nombre,
+      apellido:ppl.persona.apellido,
+      numero_de_identificacion:ppl.persona.numero_identificacion,
+      apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
+      genero:ppl.persona.genero ? ppl.persona.genero.id : null,
+      foto:ppl.persona.registro.foto1,
+      registro_de_fotos:this.obtener_fotos_registro(ppl),
+      tipo_de_documento:ppl.persona.tipo_identificacion,
+      fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
+      establecimiento:ppl.establecimiento_penitenciario.id,
+      establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
+      estado_perfil:this.verificar_perfil(ppl.persona),
+      datosPersonales:ppl.persona.datosPersonales,
+      datosDeSalud:ppl.persona.salud,
+      datosDeSeguridad:ppl.persona.seguridad,
+      datosFamiliares:ppl.persona.datosFamiliares,
+      datosJudiciales:ppl.persona.situacionJudicial,
+      datosEducacion:ppl.persona.educacionFormacion,
+
+    }
   }
 
 }

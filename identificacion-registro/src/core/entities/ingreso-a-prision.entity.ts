@@ -5,6 +5,7 @@ import { SituacionJudicial } from "./situacion-judicial.entity";
 
 export class IngresoAPrision{
   id:number;
+  ultimo_ingreso:boolean;
   expedienteJudicial:ExpedienteJudicial;
   documentos_que_ordenan_prision:Array<DocumentoOrdenPrision>;
   fecha_ingreso:Date;

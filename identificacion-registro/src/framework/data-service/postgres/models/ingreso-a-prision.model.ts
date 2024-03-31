@@ -10,6 +10,9 @@ import { ExpedienteJudicialModel } from "./expediente-judicial.model";
 export class IngresoAPrisionModel extends IngresoAPrision{
   @PrimaryGeneratedColumn()
   id:number;
+  
+  @Column({type:"boolean",default:true})
+  ultimo_ingreso: boolean;
 
   @OneToOne(() => ExpedienteJudicialModel)
   @JoinColumn()

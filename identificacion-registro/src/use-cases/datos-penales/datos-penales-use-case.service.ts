@@ -267,14 +267,14 @@ export class DatosPenalesUseCases{
     if(!pplsEnExpediente){
       pplsEnExpediente = new Array<PplEnExpediente>();
     }
-    console.log("Antes de verificar ppls:",ppls.length);
+    
     if(ppls.length > 0){
       await Promise.all(ppls.map(
-        async (id_ppl)=>{
-          const pplEncontrado = await this.dataService.ppl.get(id_ppl);
-          console.log("Ppl encontrado:",pplEncontrado);
+        async (id_persona_ppl)=>{
+          const pplEncontrado = await this.dataService.ppl.getPPLByIdPersona(id_persona_ppl);
+          
           if(!pplEncontrado){
-            throw new HttpException(`No se encontró el PPL enviado,id:${id_ppl}`,HttpStatus.BAD_REQUEST);
+            throw new HttpException(`No se encontró el PPL enviado,id_persona:${id_persona_ppl}`,HttpStatus.BAD_REQUEST);
           }
           const pplAAgregar = new PplEnExpediente();
           pplAAgregar.ppl = pplEncontrado
@@ -283,9 +283,9 @@ export class DatosPenalesUseCases{
 
         }
       ))
-      console.log("pplsEnExpediente:",pplsEnExpediente);
+      
       const expedienteActualizado = await this.dataService.expediente.update(expedienteEncontrado);
-      console.log("Expediente actualizado:",expedienteActualizado);
+      
       return {
         success:true,
         id:expedienteActualizado.id

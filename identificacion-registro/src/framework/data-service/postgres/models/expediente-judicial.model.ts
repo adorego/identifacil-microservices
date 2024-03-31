@@ -14,6 +14,7 @@ import { Condena } from "src/core/entities/condena.entity";
 import { CondenaModel } from "./condena.model";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { PplEnExpedienteModel } from "./ppl-en-expediente.model";
+import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
 
 @Entity({name:'expediente_judicial'})
 export class ExpedienteJudicialModel extends ExpedienteJudicial{
@@ -53,7 +54,8 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @JoinTable()
   hechosPuniblesCausas: Array<HechoPunibleCausaJudicialModel>;
 
-
+  @ManyToOne(()=>IngresoAPrisionModel)
+  ingresos_a_prision:Array<IngresoAPrisionModel>
 
   @Column({type:"int", nullable:true})
   anho:number;

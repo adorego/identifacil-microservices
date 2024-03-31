@@ -6,6 +6,7 @@ import { DespachoJudicial } from "./despacho-judicial.entity";
 import { HechoPunibleCausaJudicial } from "./hecho-punible-causa-judicial.entity";
 import { HechoPunible } from "./hecho_punible.entity";
 import { HistorialDeCompurgamientoRecalculada } from "./historial-compurgamiento-recalculo.entity";
+import { IngresoAPrision } from "./ingreso-a-prision.entity";
 import { Ppl } from "./ppl.entity";
 import { PplEnExpediente } from "./pplEnExpediente.entity";
 import { SituacionJudicial } from "./situacion-judicial.entity";
@@ -30,6 +31,7 @@ export class ExpedienteJudicial
   sentencia_definitiva:string;
   fecha_sentencia_definitiva:Date;
   fecha_del_hecho:Date;
+  ingresos_a_prision:Array<IngresoAPrision>
   
   
   

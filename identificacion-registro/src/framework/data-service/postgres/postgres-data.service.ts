@@ -57,6 +57,7 @@ import { ChoferModel } from "./models/chofer.model";
 import { RegistroFoto } from "src/core/entities/registro_foto.entity";
 import { RegistroFotoModel } from "./models/registro-foto.model";
 
+
 @Injectable()
 export class PostgresDataService implements IDataService, OnApplicationBootstrap{
   persona: PostgresGenericRepository<PersonaModel>;

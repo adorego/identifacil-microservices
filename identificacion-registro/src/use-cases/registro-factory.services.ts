@@ -16,7 +16,7 @@ import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 import { RegistroFoto } from "src/core/entities/registro_foto.entity";
 import { RespuestaGenerarRegistroDeFotos } from "src/core/dto/registro/respuesta-generar-registro-de-fotos.dto";
 
-const FILE_STORAGE="/mnt/identifacil/archivos"
+const FILE_STORAGE="/public"
 const ASSETS_LOCATION="/archivos"
 
 @Injectable()
@@ -223,8 +223,8 @@ export class  RegistroFactory{
     
       const fileName = `${numero_identificacion}_${numero_foto.toString()}.${foto[0].originalname.split('.').pop()}`;
       console.log('Nombre del archivo:', fileName);
-      //const dirPath = path.join(process.cwd(),FILE_STORAGE);
-      const dirPath = FILE_STORAGE
+      const dirPath = path.join(process.cwd(),FILE_STORAGE);
+      //const dirPath = FILE_STORAGE
       if(!fs.existsSync(dirPath)){
         fs.mkdirSync(dirPath, {recursive:true})
       }
@@ -250,8 +250,8 @@ export class  RegistroFactory{
   async almacenar_foto_registro(foto:Array<Express.Multer.File>, nombre_foto:string):Promise<string>{
     const fileName = `${nombre_foto}.${foto[0].originalname.split('.').pop()}`;
     console.log('Nombre del archivo:', fileName);
-    //const dirPath = path.join(process.cwd(),FILE_STORAGE);
-    const dirPath = FILE_STORAGE;
+    const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    //const dirPath = FILE_STORAGE;
     if(!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath, {recursive:true})
     }

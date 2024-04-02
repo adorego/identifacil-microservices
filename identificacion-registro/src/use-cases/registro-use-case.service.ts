@@ -168,7 +168,7 @@ export class RegistroUseCase{
       const saludFisicaGuardado = await this.dataService.saludFisica.create(registrosGeneradosPorFactory.registro_salud_fisica);
       const limitacionIdiomaticaGuardada = await this.dataService.limitacionesIdiomaticas.create(registrosGeneradosPorFactory.registro_limitacionesIdiomaticas);
       const registroSaludACrear = registrosGeneradosPorFactory.registro_salud;
-      console.log("Registro salud a crear:", registroSaludACrear);
+      //console.log("Registro salud a crear:", registroSaludACrear);
       registroSaludACrear.saludMental = saludMentalGuardado;
       registroSaludACrear.saludFisica = saludFisicaGuardado;
       registroSaludACrear.limitacionesIdiomaticas = limitacionIdiomaticaGuardada;
@@ -216,7 +216,7 @@ export class RegistroUseCase{
         datosPersonalesACrear.estadoCivil = respuestaFactoryDatosPersonales.estado_civil;
         datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
         datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
-        console.log("Datos personales:", datosPersonalesACrear);
+        //console.log("Datos personales:", datosPersonalesACrear);
         const datosPersonalesCreados = await this.dataService.datosPersonales.create(datosPersonalesACrear);
         return{
           id:datosPersonalesCreados.id,

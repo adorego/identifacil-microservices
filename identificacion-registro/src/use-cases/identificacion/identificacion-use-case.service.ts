@@ -37,7 +37,7 @@ export class IdentificacionUseCase{
     )
     await this.cargar_modelos();
     // console.log("labeledDescriptors:", labeledDescriptors);
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.4);
+    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5);
     const resultado = faceMatcher.findBestMatch(this.transformar_objeto_a_array(descriptorFacial));
     // console.log('El resultado es:', resultado);
     

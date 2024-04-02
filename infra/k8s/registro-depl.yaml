@@ -16,7 +16,7 @@ spec:
         - name:  registro
           image: adorego/registro
           volumeMounts: 
-              - mountPath: /app/public
+              - mountPath: /mnt/identifacil/archivos
                 name: archivos-volume
       volumes: 
         - name: archivos-volume

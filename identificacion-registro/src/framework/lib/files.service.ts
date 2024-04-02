@@ -6,7 +6,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 
 
-const FILE_STORAGE="/public"
+const FILE_STORAGE="/mnt/identifacil/archivos"
 const ASSETS_LOCATION="/archivos"
 
 @Injectable()
@@ -15,8 +15,9 @@ export class FileService{
     let fileName = nombreDelArchivo +"."+ archivo.originalname.split('.').pop();
     try{
         
-        console.log("Nombre final de archiivo:", fileName);
-        const dirPath = path.join(process.cwd(),FILE_STORAGE);
+        console.log("Nombre final de archivo:", fileName);
+        //const dirPath = path.join(process.cwd(),FILE_STORAGE);
+        const dirPath = FILE_STORAGE;
         console.log("dirPath final:", dirPath);
         if(!fs.existsSync(dirPath)){
           fs.mkdirSync(dirPath, {recursive:true})
@@ -44,9 +45,10 @@ export class FileService{
   }
 
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
-    const fileName = `${numero_identificacion}_${numero_foto.toString()}.jpg`;
+    const fileName = `${numero_identificacion}_${numero_foto.toString()}.${foto[0].originalname.split('.').pop()}`;
     console.log('Nombre del archivo:', fileName);
-    const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    //const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    const dirPath = FILE_STORAGE;
     if(!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath, {recursive:true})
     }

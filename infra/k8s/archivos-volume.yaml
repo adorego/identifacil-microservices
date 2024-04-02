@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/app/public"
+    path: "/mnt/identifacil/archivos"
 
 ---
 

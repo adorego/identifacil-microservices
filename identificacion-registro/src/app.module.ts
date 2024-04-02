@@ -40,8 +40,7 @@ const DEVELOPMENT_PRODUCTION:number = 0; //0 Development, 1 Production
       autoLoadEntities:true,
     }),
     ServeStaticModule.forRoot({
-      //rootPath: join(__dirname,'..','public'),
-      rootPath:'/mnt/identifacil/archivos',
+      rootPath: join(__dirname,'..','public'),
       serveRoot:"/archivos"
     }),
     

@@ -168,6 +168,11 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   getPPLByIdPersona(id: number):Promise<T> {
     return this._repository.createQueryBuilder("ppl")
           .leftJoinAndSelect("ppl.persona","persona")
+          .leftJoinAndSelect("persona.situacionJudicial", "situacionJudicial")
+          .leftJoinAndSelect("situacionJudicial.ingresos_a_prision", "ingresos_a_prision")
+          .leftJoinAndSelect("ingresos_a_prision.establecimiento_penitenciario", "establecimiento_penitenciario")
+          .leftJoinAndSelect("ingresos_a_prision.documentos_que_ordenan_prision", "documentos_que_ordenan_prision")
+          .leftJoinAndSelect("ingresos_a_prision.expedienteJudicial","expediente_judicial")
           .leftJoinAndSelect("ppl.registro_de_fotos","registro_de_fotos")
           .where("persona.id = :id",{id})
           .getOne()

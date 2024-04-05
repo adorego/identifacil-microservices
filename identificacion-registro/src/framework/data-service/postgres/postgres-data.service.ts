@@ -29,7 +29,6 @@ import { IngresoAPrisionModel } from "./models/ingreso-a-prision.model";
 import { SituacionJudicialModel } from "./models/situacion-judicial.model";
 import { OficioModel } from "./models/oficio.model";
 import { SeguridadModel } from "./models/seguridad.model";
-import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
 import { PplModel } from "./models/ppl.model";
 import { VinculoFamiliarModel } from "./models/vinculo-familiar.model";
 import { DespachoJudicialModel } from "./models/despachos-judiciales.model";
@@ -54,8 +53,10 @@ import { VehiculoModel } from "./models/vehiculo.model";
 import { CustodioModel } from "./models/custodio.model";
 import { FuncionarioModel } from "./models/funcionario.model";
 import { ChoferModel } from "./models/chofer.model";
-import { RegistroFoto } from "src/core/entities/registro_foto.entity";
 import { RegistroFotoModel } from "./models/registro-foto.model";
+import { IngresoPPLModel } from "./models/ingreso-ppl.model";
+import { IngresoVisitanteModel } from "./models/ingreso-visitante.model";
+import { SalidaVisitanteModel } from "./models/salida-visitante.model";
 
 
 @Injectable()
@@ -108,6 +109,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   funcionario: PostgresGenericRepository<FuncionarioModel>;
   chofer: PostgresGenericRepository<ChoferModel>;
   registro_foto: PostgresGenericRepository<RegistroFotoModel>;
+
+  //Entrada y Salida PPLs
+  ingreso_ppl:PostgresGenericRepository<IngresoPPLModel>;
+
+  //Entrada y Salida Visitante
+  ingreso_visitante:PostgresGenericRepository<IngresoVisitanteModel>;
+  salida_visitante: PostgresGenericRepository<SalidaVisitanteModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -206,6 +214,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private chofer_repository:Repository<ChoferModel>,
     @InjectRepository(RegistroFotoModel)
     private registro_foto_repository:Repository<RegistroFotoModel>,
+    @InjectRepository(IngresoPPLModel)
+    private ingreso_ppl_repository:Repository<IngresoPPLModel>,
+    @InjectRepository(IngresoVisitanteModel)
+    private ingreso_visitante_repository:Repository<IngresoVisitanteModel>,
+    @InjectRepository(SalidaVisitanteModel)
+    private salida_visitante_repository:Repository<SalidaVisitanteModel>,
+
     
 
 
@@ -264,6 +279,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.funcionario = new PostgresGenericRepository<FuncionarioModel>(this.funcionario_repository)
     this.chofer = new PostgresGenericRepository<ChoferModel>(this.chofer_repository)
     this.registro_foto = new PostgresGenericRepository<RegistroFotoModel>(this.registro_foto_repository)
+    this.ingreso_ppl = new PostgresGenericRepository<IngresoPPLModel>(this.ingreso_ppl_repository)
+    this.ingreso_visitante = new PostgresGenericRepository<IngresoVisitanteModel>(this.ingreso_visitante_repository)
+    this.salida_visitante = new PostgresGenericRepository<SalidaVisitanteModel>(this.salida_visitante_repository)
   
   }
   

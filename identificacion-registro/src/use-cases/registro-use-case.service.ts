@@ -1,7 +1,4 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-
-import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
-import { EducacionFormacion } from "src/core/entities/educacion-formacion.entity";
 import { EstablecimientoPenitenciario } from "src/core/entities/establecimiento-penitenciario.entity";
 import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 import { Familiar } from "src/core/entities/familiar.entity";
@@ -30,14 +27,11 @@ import { RespuestaRegistrarEducacionFormacionUseCaseDTO } from "src/core/dto/reg
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { RespuestaRegistroDatosSeguridadDTO } from "src/core/dto/registro_seguridad/respuesta-registro-seguridad.dto";
 import { RespuestaRegistroSaludDTO } from "src/core/dto/registro/respuesta-registro-salud.dto";
-import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { Vacuna } from "src/core/entities/vacuna.entity";
 import { VinculoFamiliar } from "src/core/entities/vinculo-familiar.entity";
 import { RespuestActualizarDatosEducacionDTO } from "src/core/dto/registro_datos_educacion/respuesta-actualizar-datos-educacion.dto";
 import { RespuestaRegistroDatosDTO } from "src/core/dto/respuesta-registro-datos.dto";
 import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judiciales/respuesta-registro-datosJudiciales.dto";
-import { DocumentosOrdenanPrisionModel } from "src/framework/data-service/postgres/models/documentos-ordenan-prision.model";
-import { IngresoAPrision } from "src/core/entities/ingreso-a-prision.entity";
 import { RegistroDeFotosDTO } from "src/core/dto/registro/registro-de-fotos.dto";
 import { RegistroFactory } from "./registro-factory.services";
 import { RegistroFoto } from "src/core/entities/registro_foto.entity";

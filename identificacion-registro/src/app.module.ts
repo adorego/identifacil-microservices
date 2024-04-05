@@ -12,8 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
-
-const DEVELOPMENT_PRODUCTION:number = 0; //0 Development, 1 Production
+import { EntradaSalidaPPLModule } from './use-cases/entrada-salida/entrada-salida.module';
 
 
 
@@ -29,18 +28,18 @@ const DEVELOPMENT_PRODUCTION:number = 0; //0 Development, 1 Production
     }),
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:DEVELOPMENT_PRODUCTION===0 ? process.env.TEST_DB_HOST : "registro-postgres-srv",
+      host:Number(process.env.PRODUCTION)===0 ? process.env.TEST_DB_HOST : "registro-postgres-srv",
       port: 5432,
       username:'identifacil',
       password:'clave',
       logging:true,
-      database:DEVELOPMENT_PRODUCTION===0 ? 'identifacil_registro' : 'identifacil-registro',
+      database:Number(process.env.PRODUCTION)===0 ? 'identifacil_registro' : 'identifacil-registro',
       migrations: ["src/migrations/*{.ts,.js}"],
       synchronize: true,
       autoLoadEntities:true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname,'..','public'),
+      rootPath: Number(process.env.PRODUCTION)===1 ? process.env.FILE_STORAGE_PROD : join(__dirname,'..','public'),
       serveRoot:"/archivos"
     }),
     
@@ -51,7 +50,8 @@ const DEVELOPMENT_PRODUCTION:number = 0; //0 Development, 1 Production
     LibModule,
     GestionPPLModule,
     DatosPenalesModule,
-    MovimientosModule
+    MovimientosModule,
+    EntradaSalidaPPLModule
   
   ],
   controllers: [],

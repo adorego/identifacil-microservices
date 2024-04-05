@@ -46,6 +46,12 @@ import { Funcionario } from "../entities/funcionario.entity";
 import { Custodio } from "../entities/custodio.entity";
 import { Chofer } from "../entities/chofer.entity";
 import { RegistroFoto } from "../entities/registro_foto.entity";
+import { IngresoPPL } from "../entities/ingreso-ppl.entity";
+import { IngresoVisitante } from "../entities/ingreso-visitante.entity";
+import { SalidaVisitante } from "../entities/salida-visitante.entity";
+import { MedidaDeFuerza } from "../entities/medida-de-fuerza.entity";
+import { Sancion } from "../entities/sancion.entity";
+import { Falta } from "../entities/falta.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -95,4 +101,10 @@ export abstract class IDataService{
   abstract vehiculo:IGenericRepository<Vehiculo>
   abstract funcionario:IGenericRepository<Funcionario>
   abstract registro_foto:IGenericRepository<RegistroFoto>
+  abstract ingreso_ppl:IGenericRepository<IngresoPPL>
+  abstract ingreso_visitante:IGenericRepository<IngresoVisitante>
+  abstract salida_visitante:IGenericRepository<SalidaVisitante>
+  // abstract medidas_de_fuerza:IGenericRepository<MedidaDeFuerza>
+  // abstract sancion:IGenericRepository<Sancion>
+  // abstract falta:IGenericRepository<Falta>
 }

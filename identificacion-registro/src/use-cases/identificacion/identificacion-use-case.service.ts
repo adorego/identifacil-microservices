@@ -57,6 +57,7 @@ export class IdentificacionUseCase{
     }
     return {
       identificado:true,
+      id_persona:persona_identificada.id,
       nombres:persona_identificada.nombre,
       apellidos:persona_identificada.apellido,
       numeroDeIdentificacion:persona_identificada.numero_identificacion,

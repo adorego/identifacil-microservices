@@ -51,6 +51,13 @@ import { ChoferModel } from "./models/chofer.model";
 import { VehiculoModel } from "./models/vehiculo.model";
 import { FuncionarioModel } from "./models/funcionario.model";
 import { RegistroFotoModel } from "./models/registro-foto.model";
+import { IngresoPPLModel } from "./models/ingreso-ppl.model";
+import { IngresoVisitanteModel } from "./models/ingreso-visitante.model";
+import { SalidaVisitanteModel } from "./models/salida-visitante.model";
+import { MedidaDeFuerzaModel } from "./models/medida-de-fuerza.model";
+import { FaltaModel } from "./models/falta.model";
+import { SancionModel } from "./models/sancion.model";
+import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
 
 @Module({
   imports:[
@@ -108,6 +115,13 @@ import { RegistroFotoModel } from "./models/registro-foto.model";
       VehiculoModel,
       FuncionarioModel,
       RegistroFotoModel,
+      IngresoPPLModel,
+      IngresoVisitanteModel,
+      SalidaVisitanteModel,
+      MedidaDeFuerzaModel,
+      FaltaModel,
+      SancionModel,
+      TipoDeFaltaModel,
       
       
     

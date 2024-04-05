@@ -6,8 +6,6 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 
 
-const FILE_STORAGE="/public"
-const ASSETS_LOCATION="/archivos"
 
 @Injectable()
 export class FileService{
@@ -16,7 +14,7 @@ export class FileService{
     try{
         
         console.log("Nombre final de archivo:", fileName);
-        const dirPath = path.join(process.cwd(),FILE_STORAGE);
+        const dirPath =Number(process.env.PRODUCTION)==1 ? process.env.FILE_STORAGE_PROD : path.join(process.cwd(),process.env.FILE_STORAGE_DEV);
         //const dirPath = FILE_STORAGE;
         console.log("dirPath final:", dirPath);
         if(!fs.existsSync(dirPath)){
@@ -37,7 +35,7 @@ export class FileService{
           throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
       
-        return path.join(ASSETS_LOCATION,fileName);
+        return path.join(process.env.ASSETS_LOCATION,fileName);
       }catch(error){
         throw new HttpException(`Error al guardar el archivo ${fileName}:${error}`,error);
       }
@@ -47,7 +45,7 @@ export class FileService{
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
     const fileName = `${numero_identificacion}_${numero_foto.toString()}.${foto[0].originalname.split('.').pop()}`;
     console.log('Nombre del archivo:', fileName);
-    const dirPath = path.join(process.cwd(),FILE_STORAGE);
+    const dirPath =Number(process.env.PRODUCTION)==1 ? process.env.FILE_STORAGE_PROD : path.join(process.cwd(),process.env.FILE_STORAGE_DEV);
     //const dirPath = FILE_STORAGE;
     if(!fs.existsSync(dirPath)){
       fs.mkdirSync(dirPath, {recursive:true})
@@ -68,6 +66,6 @@ export class FileService{
       throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    return path.join(ASSETS_LOCATION,fileName);
+    return path.join(process.env.ASSETS_LOCATION,fileName);
 }
 }

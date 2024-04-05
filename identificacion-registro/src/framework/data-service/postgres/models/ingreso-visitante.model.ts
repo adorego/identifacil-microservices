@@ -9,13 +9,13 @@ export class IngresoVisitanteModel extends IngresoVisitante{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>PersonaModel)
+    @ManyToOne(()=>PersonaModel,{eager:true})
     visitante:PersonaModel;
 
-    @ManyToOne(()=>PplModel)
+    @ManyToOne(()=>PplModel,{eager:true})
     ppl_a_visitar:PplModel;
 
-    @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+    @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
     establecimiento:EstablecimientoPenitenciarioModel;
 
     @Column({type:"varchar"})

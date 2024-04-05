@@ -39,7 +39,7 @@ export class IdentificacionUseCase{
     // console.log("labeledDescriptors:", labeledDescriptors);
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5);
     const resultado = faceMatcher.findBestMatch(this.transformar_objeto_a_array(descriptorFacial));
-    // console.log('El resultado es:', resultado);
+    console.log('El resultado es:', resultado);
     
     const persona_identificada = personas.find(
       (persona) =>{

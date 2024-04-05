@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Get, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { EntradaPplDTO } from "src/core/dto/entradaSalida/entrada-ppl.dto";
 import { EntradaVisitanteDTO } from "src/core/dto/entradaSalida/entrada-visitante.dto";
@@ -181,6 +181,18 @@ export class EntradaSalidaUseCase{
         success:true,
         id:salidaVisitanteAgregado.id
        }
+    }
+
+    @Get()
+    async entradas_visitantes():Promise<Array<IngresoVisitante>>{
+        const ingresos_visitantes = await this.dataService.ingreso_visitante.getAll();
+        return ingresos_visitantes;
+    }
+
+    @Get()
+    async salidas_visitantes():Promise<Array<SalidaVisitante>>{
+        const salidas_visitantes = await this.dataService.salida_visitante.getAll();
+        return salidas_visitantes;
     }
 
 

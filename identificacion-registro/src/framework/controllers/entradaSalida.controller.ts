@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Logger, Post } from "@nestjs/common";
 import { EntradaPplDTO } from "src/core/dto/entradaSalida/entrada-ppl.dto";
 import { EntradaVisitanteDTO } from "src/core/dto/entradaSalida/entrada-visitante.dto";
 import { SalidaVisitanteDTO } from "src/core/dto/entradaSalida/salida-visitante.dto";
@@ -51,6 +51,26 @@ export class EntradaSalidaController{
         }
         
         
+    }
+
+    @Get('visitantes/ingresos')
+    async obtener_ingresos_visitantes(){
+        try{
+            return this.entradaSalidaUseCase.entradas_visitantes();
+        }catch(error){
+            this.logger.error(`Error en la obtencion de los ingresos de Visitantes:${error}`);
+            throw new HttpException(`Error en la obtencion de los ingresos de Visitantes:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get('visitantes/salidas')
+    async obtener_salidas_visitantes(){
+        try{
+            return this.entradaSalidaUseCase.salidas_visitantes();
+        }catch(error){
+            this.logger.error(`Error en la obtencion de las salidas de Visitantes:${error}`);
+            throw new HttpException(`Error en la obtencion de los salidas de Visitantes:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

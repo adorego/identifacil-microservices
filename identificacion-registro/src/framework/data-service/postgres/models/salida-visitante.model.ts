@@ -11,10 +11,10 @@ export class SalidaVisitanteModel extends SalidaVisitante{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>PersonaModel)
+    @ManyToOne(()=>PersonaModel,{eager:true})
     visitante:PersonaModel;
 
-    @ManyToOne(()=>PplModel)
+    @ManyToOne(()=>PplModel,{eager:true})
     ppl_que_visito:PplModel;
 
     @Column({type:"varchar"})
@@ -27,7 +27,7 @@ export class SalidaVisitanteModel extends SalidaVisitante{
     @JoinColumn()
     entrada_asociada:IngresoVisitanteModel;
 
-    @ManyToOne(()=>EstablecimientoPenitenciarioModel)
+    @ManyToOne(()=>EstablecimientoPenitenciarioModel,{eager:true})
     establecimiento: EstablecimientoPenitenciarioModel;
 
     @Column({type:"varchar"})

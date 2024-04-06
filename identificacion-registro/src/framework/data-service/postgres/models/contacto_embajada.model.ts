@@ -11,6 +11,6 @@ export class ContactoDeEmbajadaModel extends ContactoEnEmbajada{
     nombre:string;
     @Column({type:"varchar"})
     numero:string;
-    @ManyToOne(()=>PaisModel)
+    @ManyToOne(()=>PaisModel,{eager:true})
     pais: PaisModel;
 }

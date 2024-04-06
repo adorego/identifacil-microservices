@@ -19,7 +19,8 @@ export class PplDTO{
   establecimiento:number;
   establecimiento_nombre:string;
   foto:string;
-  registro_de_fotos:Array<{nombre:string,foto:string}>
+  registro_de_fotos:Array<{nombre:string,foto:string}>;
+  tiene_contacto_en_embajada:boolean;
   // nacionalidad:number;
   es_extranjero:boolean;
   apodo:string;

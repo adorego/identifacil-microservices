@@ -136,6 +136,7 @@ export class GestionPPLUseCase{
       fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
       es_extranjero:ppl.persona.es_extranjero,
       contactoDeEmbajada:ppl.persona.contactoDeEmbajadaoConsulado,
+      tiene_contacto_en_embajada:ppl.persona.tiene_contacto_en_embajada,
       establecimiento:ppl.establecimiento_penitenciario.id,
       establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
       estado_perfil:this.verificar_perfil(ppl.persona),

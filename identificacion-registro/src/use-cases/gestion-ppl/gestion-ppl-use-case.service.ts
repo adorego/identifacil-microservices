@@ -134,6 +134,8 @@ export class GestionPPLUseCase{
       registro_de_fotos:this.obtener_fotos_registro(ppl),
       tipo_de_documento:ppl.persona.tipo_identificacion,
       fechaDeNacimiento:ppl.persona.fechaDeNacimiento,
+      es_extranjero:ppl.persona.es_extranjero,
+      contactoDeEmbajada:ppl.persona.contactoDeEmbajadaoConsulado,
       establecimiento:ppl.establecimiento_penitenciario.id,
       establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
       estado_perfil:this.verificar_perfil(ppl.persona),

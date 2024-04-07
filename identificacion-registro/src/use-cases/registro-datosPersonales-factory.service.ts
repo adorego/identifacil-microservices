@@ -159,7 +159,10 @@ export class RegistroDatosPersonalesFactory{
           
           datosPersonales.persona = datosPersonales.persona;
 
-          const contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
+          let contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
+          if(!contactoEnEmbajada){
+            contactoEnEmbajada = new ContactoEnEmbajada();
+          }
           contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
           contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
           const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);

@@ -32,7 +32,6 @@ export class RegistroDatosPersonalesDTO{
   perteneceAComunidadLGTBI_modificado:boolean;
   grupoLgbti: string;
   grupoLgbti_modificado:boolean;
-  es_extranjero:boolean;
   tiene_contacto_en_embajada:boolean;
   nombre_contacto_en_embajada:string;
   telefono_contacto_en_embajada:string;

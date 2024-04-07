@@ -79,7 +79,7 @@ export class RegistroDatosPersonalesFactory{
      }
      contactoEnEmbajada.pais = pais_de_embajada;
      personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
-     personaEncontrada.es_extranjero = datosPersonalesDTO.es_extranjero;
+    
 
      
      
@@ -168,7 +168,7 @@ export class RegistroDatosPersonalesFactory{
           }
           contactoEnEmbajada.pais = pais_de_embajada;
           personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
-          personaEncontrada.es_extranjero = datosPersonalesDTO.es_extranjero;
+         
 
           
      return{

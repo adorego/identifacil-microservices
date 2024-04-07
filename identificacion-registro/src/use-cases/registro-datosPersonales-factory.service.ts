@@ -7,6 +7,7 @@ import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos
 import { RespuestaDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-factory-registro-datos-personales.dto";
 import { RespuestaFactoryActualizarDatosPersonales } from "src/core/dto/registro_datos_personales/respuesta-factory-actualizar-datos-personales.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
+import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 
 @Injectable()
 export class RegistroDatosPersonalesFactory{
@@ -68,13 +69,26 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
      datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
      datosPersonales.persona = personaEncontrada
+
+     const contactoEnEmbajada = new ContactoEnEmbajada();
+     contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
+     contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
+     const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
+     if(!pais_de_embajada){
+      throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
+     }
+     contactoEnEmbajada.pais = pais_de_embajada;
+     personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+     personaEncontrada.es_extranjero = datosPersonalesDTO.es_extranjero;
+
      
      
      return{
       datosPersonales:datosPersonales,
       nacionalidad:nacionalidad,
       estado_civil:estadoCivil,
-      persona:personaEncontrada
+      persona:personaEncontrada,
+      contactoEnEmbajada:contactoEnEmbajada
      }
   
   }
@@ -102,6 +116,15 @@ export class RegistroDatosPersonalesFactory{
      const nacionalidad:Nacionalidad = await this.dataService.nacionalidad.get(datosPersonalesDTO.nacionalidad);
      if(!nacionalidad){
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
+     }
+
+     if(datosPersonalesDTO.id_persona){
+      throw new HttpException('Se debe enviar el id de Persona', HttpStatus.BAD_REQUEST);
+     }
+
+     const personaEncontrada = await this.dataService.persona.get(datosPersonalesDTO.id_persona);
+     if(!personaEncontrada){
+      throw new HttpException('No existe la persona enviada', HttpStatus.NOT_FOUND);
      }
 
     //  id_persona:number|null;
@@ -135,11 +158,24 @@ export class RegistroDatosPersonalesFactory{
           datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
           
           datosPersonales.persona = datosPersonales.persona;
+
+          const contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
+          contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
+          contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
+          const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
+          if(!pais_de_embajada){
+            throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
+          }
+          contactoEnEmbajada.pais = pais_de_embajada;
+          personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+          personaEncontrada.es_extranjero = datosPersonalesDTO.es_extranjero;
+
           
      return{
         datosPersonales:datosPersonales,
         nacionalidad:nacionalidad,
         estado_civil:estadoCivil,
+        contactoEnEmbajada:contactoEnEmbajada
         
      }
 

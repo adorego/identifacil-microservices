@@ -66,6 +66,7 @@ export class EntradaSalidaUseCase{
 
     async ingreso_visitante(entradaVisitanteDTO:EntradaVisitanteDTO):Promise<ResultadoIngresoVisitanteDTO>{
          //Validaciones
+         console.log("Id de Visitante:",entradaVisitanteDTO.visitante);
          if(!entradaVisitanteDTO.visitante){
              throw new HttpException(`Se debe enviar un id de persona:${entradaVisitanteDTO.visitante}`,HttpStatus.BAD_REQUEST);
          }
@@ -85,7 +86,7 @@ export class EntradaSalidaUseCase{
         }
 
         const fechaReg = /^\d{4}([./-])\d{1,2}\1\d{1,2}$/;
-        const horaReg = /^\d{1,2}([./-:])\d{1,2}([./-:])\d{1,4}\d$/;
+        const horaReg = /^\d{1,2}([:])\d{1,2}([:])\d{1,4}\d$/;
 
         const resultadoValidacionFecha = fechaReg.test(entradaVisitanteDTO.fecha_ingreso);
         if(!resultadoValidacionFecha){
@@ -97,7 +98,7 @@ export class EntradaSalidaUseCase{
              throw new HttpException(`Se debe enviar una hora valida:${entradaVisitanteDTO.hora_ingreso}`,HttpStatus.BAD_REQUEST);
          }
 
-        const pplAVisitar = await this.dataService.ppl.get(entradaVisitanteDTO.ppl_a_visitar);
+        const pplAVisitar = await this.dataService.ppl.getPPLByIdPersona(entradaVisitanteDTO.ppl_a_visitar);
         if(!pplAVisitar){
                 throw new HttpException(`No se encuentra el PPL a visitar:${entradaVisitanteDTO.ppl_a_visitar}`,HttpStatus.BAD_REQUEST);
         }
@@ -145,7 +146,7 @@ export class EntradaSalidaUseCase{
        }
 
        const fechaReg = /^\d{4}([./-])\d{1,2}\1\d{1,2}$/;
-       const horaReg = /^\d{1,2}([./-:])\d{1,2}([./-:])\d{1,4}\d$/;
+       const horaReg = /^\d{1,2}([:])\d{1,2}([:])\d{1,4}\d$/;
 
        const resultadoValidacionFecha = fechaReg.test(salidaVisitanteDTO.fecha_salida);
        if(!resultadoValidacionFecha){
@@ -157,7 +158,7 @@ export class EntradaSalidaUseCase{
             throw new HttpException(`Se debe enviar una hora valida:${salidaVisitanteDTO.fecha_salida}`,HttpStatus.BAD_REQUEST);
         }
 
-       const pplQueVisito = await this.dataService.ppl.get(salidaVisitanteDTO.ppl_que_visito);
+       const pplQueVisito = await this.dataService.ppl.getPPLByIdPersona(salidaVisitanteDTO.ppl_que_visito);
        if(!pplQueVisito){
             throw new HttpException(`No se encuentra el PPL que visitó:${salidaVisitanteDTO.ppl_que_visito}`,HttpStatus.BAD_REQUEST);
        }

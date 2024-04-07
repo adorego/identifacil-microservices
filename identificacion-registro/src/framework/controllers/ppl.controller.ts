@@ -45,7 +45,14 @@ export class PplController{
   @Get('ppls/cedula/:cedula')
   async ppls_por_cedula(@Param() param:any):Promise<PplDTO>{
     try{
-      return await this.gestionPPLUseCase.getPPLByCedula(param.cedula);
+      const resultado = await this.gestionPPLUseCase.getPPLByCedula(param.cedula);
+      console.log("El resultado es:", resultado);
+      if(!resultado){
+        return {} as PplDTO
+      }else{
+        return resultado;
+      }
+      
     }catch(error){
       this.logger.error(`Error en la consulta de PPL por id:${error}`);
       throw new HttpException(`Error en al consulta por id:${error}`, error);

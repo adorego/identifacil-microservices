@@ -210,6 +210,13 @@ export class RegistroUseCase{
         datosPersonalesACrear.estadoCivil = respuestaFactoryDatosPersonales.estado_civil;
         datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
         datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
+        const contactoEnEmbajadaACrear = respuestaFactoryDatosPersonales.contactoEnEmbajada;
+        const contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajadaACrear);
+        const personaAActualizar = datosPersonalesACrear.persona;
+        personaAActualizar.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
+
+        const personActualizada = await this.dataService.persona.update(personaAActualizar);
+
         //console.log("Datos personales:", datosPersonalesACrear);
         const datosPersonalesCreados = await this.dataService.datosPersonales.create(datosPersonalesACrear);
         return{
@@ -230,7 +237,15 @@ export class RegistroUseCase{
       const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
       datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
       datosPersonales.estadoCivil = respuestaFactoryActualizarDatosPersonales.estado_civil;
-      console.log("Datos personales:", datosPersonales);
+      const contactoEnEmbajadaACrear = respuestaFactoryActualizarDatosPersonales.contactoEnEmbajada;
+      const contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajadaACrear);
+      const personaAActualizar = datosPersonales.persona;
+      personaAActualizar.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
+
+      const personActualizada = await this.dataService.persona.update(personaAActualizar);
+
+
+
       const datosPersonalesActualizados = await this.dataService.datosPersonales.update(datosPersonales);
       
       

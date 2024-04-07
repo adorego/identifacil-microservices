@@ -118,7 +118,7 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
-     if(datosPersonalesDTO.id_persona){
+     if(!datosPersonalesDTO.id_persona){
       throw new HttpException('Se debe enviar el id de Persona', HttpStatus.BAD_REQUEST);
      }
 

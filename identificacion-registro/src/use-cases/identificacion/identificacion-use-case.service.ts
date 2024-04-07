@@ -27,7 +27,12 @@ export class IdentificacionUseCase{
     // console.log('descriptor generado:', descriptorFacial);
     const labeledDescriptors = personas.map(
       (persona) =>{
-        return new faceapi.LabeledFaceDescriptors(persona.numero_identificacion,[
+        let identificacion = persona.numero_identificacion;
+        if(!identificacion){
+            identificacion = persona.id.toString() + persona.nombre + persona.apellido;
+          
+        }
+        return new faceapi.LabeledFaceDescriptors(identificacion,[
           this.transformar_array_a_descriptor(persona.registro.descriptorFacial1.split(',')),
           this.transformar_array_a_descriptor(persona.registro.descriptorFacial2.split(',')),
           this.transformar_array_a_descriptor(persona.registro.descriptorFacial3.split(','))

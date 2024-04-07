@@ -16,11 +16,11 @@ export class Salud{
   grupo_sanguineo_modificado:boolean;
   vacunas_recibidas:Array<Vacuna>;
   vacunas_recibidas_modificado:boolean;
-  presion_arterial:number;
+  presion_arterial:string;
   presion_arterial_modificado:boolean;
-  frecuencia_cardiaca:number;
+  frecuencia_cardiaca:string;
   frecuencia_cardiaca_modificado:boolean;
-  frecuencia_respiratoria:number;
+  frecuencia_respiratoria:string;
   frecuencia_respiratoria_modificado:boolean;
   temperatura:number;
   temperatura_modificado:boolean;

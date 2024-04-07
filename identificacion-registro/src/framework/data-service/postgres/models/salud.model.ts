@@ -40,20 +40,20 @@ export class SaludModel extends Salud{
   @Column({type:'boolean', nullable:false})
   vacunas_recibidas_modificado:boolean;
 
-  @Column({type:'decimal', nullable:true})
-  presion_arterial:number;
+  @Column({type:'varchar', nullable:true})
+  presion_arterial:string;
 
   @Column({type:'boolean', nullable:false})
   presion_arterial_modificado:boolean;
 
-  @Column({type:'decimal', nullable:true})
-  frecuencia_cardiaca:number;
+  @Column({type:'varchar', nullable:true})
+  frecuencia_cardiaca:string;
 
   @Column({type:'boolean', nullable:false})
   frecuencia_cardiaca_modificado:boolean;
 
-  @Column({type:'decimal', nullable:true})
-  frecuencia_respiratoria:number;
+  @Column({type:'varchar', nullable:true})
+  frecuencia_respiratoria:string;
 
   @Column({type:'boolean', nullable:false})
   frecuencia_respiratoria_modificado:boolean;

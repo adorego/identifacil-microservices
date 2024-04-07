@@ -9,6 +9,7 @@ import { Seguridad } from "src/core/entities/seguridad.entity";
 import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "src/core/entities/tipo-identificacion.entity";
 import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
+import { Pais } from "src/core/entities/pais.entity";
 
 export class PplDTO{
   id_persona:number;
@@ -19,10 +20,11 @@ export class PplDTO{
   establecimiento:number;
   establecimiento_nombre:string;
   foto:string;
-  registro_de_fotos:Array<{nombre:string,foto:string}>;
-  tiene_contacto_en_embajada:boolean;
+  registro_de_fotos:Array<{nombre:string,foto:string}>
+  es_extranjero:boolean
+  contacto_embajada:ContactoEnEmbajada;
+  
   // nacionalidad:number;
-  es_extranjero:boolean;
   apodo:string;
   genero:number;
   fechaDeNacimiento:Date;
@@ -33,6 +35,5 @@ export class PplDTO{
   datosFamiliares:DatosFamiliares;
   datosJudiciales:SituacionJudicial;
   datosEducacion:EducacionFormacion;
-  contactoDeEmbajada:ContactoEnEmbajada;
 
 }

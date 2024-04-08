@@ -33,8 +33,8 @@ export class PplDTO{
   fechaDeNacimiento:Date;
   estado_perfil:boolean;
   datosPersonales:DatosPersonales;
-  // ciudad:Ciudad;
-  // departamento:Departamento;
+  ciudad:Ciudad;
+  departamento:Departamento;
   datosDeSalud:Salud;
   datosDeSeguridad:Seguridad;
   datosFamiliares:DatosFamiliares;

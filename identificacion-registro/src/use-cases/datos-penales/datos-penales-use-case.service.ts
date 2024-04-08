@@ -33,7 +33,7 @@ export class DatosPenalesUseCases{
     return expediente_encontrado;
   }
   async crearExpedienteJudicial(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{
-      try{
+      
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.creacionDeExpedienteJudicialGenerar(expedienteDTO);
         let hechosPuniblesCausasCreadas = null;
         //console.log("Datos recibidos en use case:", respuestaGeneracionExpedienteJudicialFactory);
@@ -45,7 +45,7 @@ export class DatosPenalesUseCases{
               let hechoPuniblesCausaCreado:HechoPunibleCausaJudicial=null;
               //console.log("HechoPunibleCausa es:", hechoPunibleCausa);
               if(hechoPunibleCausa && !hechoPunibleCausa.id){
-                console.log("Entro en null:", hechoPunibleCausa);
+               
                 hechoPuniblesCausaCreado = await this.dataService.hechoPunibleCausaJudicial.create(hechoPunibleCausa);
               }else{
                 hechoPuniblesCausaCreado = hechoPunibleCausa
@@ -57,10 +57,10 @@ export class DatosPenalesUseCases{
           ))
           
         }
-        console.log("Lista de HechosPuniblesCausas:", hechosPuniblesCausasCreadas);
+        
         
         if(!hechosPuniblesCausasCreadas){
-          throw new HttpException(`Los hechos punibles son invalidos`,HttpStatus.INTERNAL_SERVER_ERROR);
+          throw new HttpException(`Los hechos punibles son invalidos`,525);
         }
 
         //Crear el objeto PPLEnExpediente
@@ -140,10 +140,7 @@ export class DatosPenalesUseCases{
           success:true,
           id:expedienteJudicialCreado.id
         }
-      }catch(error){
-          this.logger.error(`Error en la creación del expediente judicial`);
-          throw new HttpException(`Error al crear el expediente judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-      }
+      
   }
 
   async actualizarExpedienteJudicial(id:number, expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestGenericaActualizarCrearDTO>{

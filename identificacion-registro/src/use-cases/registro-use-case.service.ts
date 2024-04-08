@@ -210,12 +210,18 @@ export class RegistroUseCase{
         datosPersonalesACrear.estadoCivil = respuestaFactoryDatosPersonales.estado_civil;
         datosPersonalesACrear.nacionalidad = respuestaFactoryDatosPersonales.nacionalidad;
         datosPersonalesACrear.persona = respuestaFactoryDatosPersonales.persona
-        const contactoEnEmbajadaACrear = respuestaFactoryDatosPersonales.contactoEnEmbajada;
-        const contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajadaACrear);
-        const personaAActualizar = datosPersonalesACrear.persona;
-        personaAActualizar.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
+        if(respuestaFactoryDatosPersonales.persona.es_extranjero && respuestaFactoryDatosPersonales.contactoEnEmbajada){
 
-        const personActualizada = await this.dataService.persona.update(personaAActualizar);
+          const contactoEnEmbajadaACrear = respuestaFactoryDatosPersonales.contactoEnEmbajada;
+          const contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajadaACrear);
+          const personaAActualizar = datosPersonalesACrear.persona;
+          
+          personaAActualizar.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
+          const personActualizada = await this.dataService.persona.update(personaAActualizar);
+        }
+        
+
+        
 
         //console.log("Datos personales:", datosPersonalesACrear);
         const datosPersonalesCreados = await this.dataService.datosPersonales.create(datosPersonalesACrear);

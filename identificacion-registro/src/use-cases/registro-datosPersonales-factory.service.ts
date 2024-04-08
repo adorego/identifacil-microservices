@@ -18,6 +18,7 @@ export class RegistroDatosPersonalesFactory{
   async registrarDatosPersonales(datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<RespuestaDatosPersonalesDTO> {
      //Validacion de que existe la persona
     //  this.logger.log("Identificacion:"+datosPersonalesDTO.numeroDeIdentificacion);
+    console.log("Datos que llegan a registrarDatosPersonales:",datosPersonalesDTO);
      if(!datosPersonalesDTO.id_persona){
       throw new HttpException('No se envió el id de persona', HttpStatus.BAD_REQUEST);
      }
@@ -26,10 +27,7 @@ export class RegistroDatosPersonalesFactory{
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
      } 
 
-     if(!datosPersonalesDTO.estadoCivil){
-      throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
-     }
-
+     
      let estadoCivil=null;
      if(datosPersonalesDTO.estadoCivil){
         estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
@@ -55,7 +53,7 @@ export class RegistroDatosPersonalesFactory{
     }
 
      
-     let datosPersonales = new DatosPersonales();
+     const datosPersonales = new DatosPersonales();
      datosPersonales.apodo =   datosPersonalesDTO.apodo;
      
      datosPersonales.estadoCivil = estadoCivil;
@@ -65,17 +63,19 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.lugarDeNacimiento = datosPersonalesDTO.lugarDeNacimiento;
     
      datosPersonales.direccion = datosPersonalesDTO.direccion;
-     datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
      datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
     
      datosPersonales.ciudad = ciudad;
-     datosPersonales = departamento;
-     datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
+     datosPersonales.departamento = departamento;
     
-     datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
+     datosPersonales.numeroDeContacto = datosPersonalesDTO.numeroDeContacto;
+     
+     
     
-     datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
+    datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
+    
+    datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
      
      datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
     
@@ -85,16 +85,22 @@ export class RegistroDatosPersonalesFactory{
     
      datosPersonales.persona = personaEncontrada
 
-     const contactoEnEmbajada = new ContactoEnEmbajada();
-     contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
-     contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
-     const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
-     if(!pais_de_embajada){
-      throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
+     let contactoEnEmbajada = null;
+     if(personaEncontrada.es_extranjero){
+        if(datosPersonalesDTO.tiene_contacto_en_embajada){
+          contactoEnEmbajada = new ContactoEnEmbajada();
+          contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
+          contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
+          const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
+          if(!pais_de_embajada){
+          throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
+          }
+          contactoEnEmbajada.pais = pais_de_embajada;
+          personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+        }
+        
      }
-     contactoEnEmbajada.pais = pais_de_embajada;
-     personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
-     
+    
     
      //Actualizar datos de persona
     
@@ -111,6 +117,8 @@ export class RegistroDatosPersonalesFactory{
   }
 
   async generarDatosPersonalesAActualizar(id:number, datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<RespuestaFactoryActualizarDatosPersonales>{
+    
+    console.log("Entró en generarDatosPersonalesAActualizar");
     //Validar que exista el Objeto
     if(!id){
       throw new HttpException('El identificador del registro debe ser valido', HttpStatus.BAD_REQUEST);
@@ -127,12 +135,12 @@ export class RegistroDatosPersonalesFactory{
         throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
     } 
 
-    if(!datosPersonalesDTO.estadoCivil){
-      throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
-     }
-     const estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
-     if(!estadoCivil){
-      throw new HttpException('No existe este estado civil', HttpStatus.NOT_FOUND)
+    let estadoCivil=null;
+    if(datosPersonalesDTO.estadoCivil){
+        estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
+        if(!estadoCivil){
+          throw new HttpException('No existe este estado civil enviado', HttpStatus.NOT_FOUND)
+        }
      }
 
      if(!datosPersonalesDTO.nacionalidad){

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 
 import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity";
-import { ExpedienteJudicialDTO } from "src/core/dto/datosPenales/expediente.dto";
+import { ExpedienteJudicialDTO, hechoPunibleCausa } from "src/core/dto/datosPenales/expediente.dto";
 import { HechoPunible } from "src/core/entities/hecho_punible.entity";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { RespuestaFactoryExpedienteJudicialDTO } from "src/core/dto/datosPenales/respuesta-factory-expedienteJudicial.dto";
@@ -16,6 +16,8 @@ import { Condena } from "src/core/entities/condena.entity";
 import { TiempoDeCondena } from "src/core/entities/tiempo_de_condena.entity";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { ErrorExpedienteDuplicado } from "src/framework/errors/error-expediente-duplicado";
+import { ErrorHechosPuniblesDuplicado } from "src/framework/errors/error-hechos-punibles-duplicados";
+
 
 @Injectable()
 export class DatosPenalesFactory{
@@ -27,8 +29,6 @@ export class DatosPenalesFactory{
   async creacionDeExpedienteJudicialGenerar(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaFactoryExpedienteJudicialDTO>{
    
     
-    try{
-
         //Verificacion de numero de expediente
         if(!expedienteDTO.numeroDeExpediente){
           throw new HttpException(`Debe enviarse el número de expediente`,HttpStatus.BAD_REQUEST)
@@ -36,7 +36,8 @@ export class DatosPenalesFactory{
 
         const buscarExpediente = await this.dataService.expediente.getExpedienteByNumeroDeExpediente(expedienteDTO.numeroDeExpediente);
         if(buscarExpediente){
-          throw new ErrorExpedienteDuplicado(`Error, expediente duplicado, ya existe un expediente con este código`);
+          throw new ErrorExpedienteDuplicado(`Ya existe un documento con este mismo número de expediente`);
+          
         }
 
        
@@ -56,13 +57,16 @@ export class DatosPenalesFactory{
           throw new HttpException(`Debe enviarse el/los hechos punibles del expediente`,HttpStatus.BAD_REQUEST)
         }
 
+        //Controlar dos HechosPuniblesCausas iguales
+        this.controlar_hechosPuniblesCausasIguales(expedienteDTO.hechosPuniblesCausas);
+
         let hechosPuniblesCausasDeExpediente:Array<HechoPunibleCausaJudicial> = [];
         hechosPuniblesCausasDeExpediente = await Promise.all(expedienteDTO.hechosPuniblesCausas.map(
           async (hechoPunibleCausa) =>{
             if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
               throw new HttpException(`Los hechos punibles deben enviarse en formato [HechoPunible][Causa-Judicial]`, HttpStatus.BAD_REQUEST);
             }
-            try{
+            
               const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
               if(!hechoPunible){
                 throw new HttpException(`No se encuentra el hecho punible enviado:${hechoPunibleCausa[0]}`, HttpStatus.BAD_REQUEST);
@@ -86,10 +90,7 @@ export class DatosPenalesFactory{
               //console.log("HechoPunibleCausaJudicial:", hechoPunibleCausaJudicial);
 
               return hechoPunibleCausaJudicial
-            }catch(error){
-              this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
-              throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            
             
           }
         ))
@@ -102,7 +103,7 @@ export class DatosPenalesFactory{
               const pplEncontrado = await   await this.dataService.ppl.getPPLByIdPersona(ppl.id_persona);
               //console.log("PPLEncontrado:",pplEncontrado);
               if(!pplEncontrado){
-                throw new HttpException(`No se encontró el PPL enviado con id_persona:id:${ppl.id_persona}`,HttpStatus.BAD_REQUEST);
+                throw new HttpException(`No se encontró el PPL enviado con id_persona:id:${ppl.id_persona}`,523);
               }
               const pplEnExpediente:PplEnExpediente = new PplEnExpediente();
               pplEnExpediente.ppl = pplEncontrado;
@@ -139,7 +140,7 @@ export class DatosPenalesFactory{
                       return hechoPunibleCausaJudicial
                     }catch(error){
                       this.logger.error(`Ocurrió un error al obtener los hechos punibles:${error}`);
-                      throw new HttpException(`Error al obtener el hecho punible:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+                      throw new HttpException(`Error al obtener el hecho punible:${error}`,523);
                     }
                   }
                 ))
@@ -249,16 +250,12 @@ export class DatosPenalesFactory{
             despachoJudicial:despachoJudicial,
            
       }
-    }catch(error){
-      this.logger.error(`Ocurrió un error en la generación de datos del Expediente:${error}`)
-      throw new HttpException(`Ocurrió un error en la generación de datos del Expediente:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+   
 
   }
 
   async actualizacionDeExpedienteJudicialGenerar(id:number,expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaFactoryExpedienteJudicialDTO>{
-    try{
-
+    
       if(!id){
         throw new HttpException(`Debe enviarse un id de expediente válido`,HttpStatus.BAD_REQUEST)
       }
@@ -302,6 +299,10 @@ export class DatosPenalesFactory{
       if(expedienteDTO.hechosPuniblesCausas.length == 0){
         throw new HttpException(`Debe enviarse el/los hechos punibles del expediente`,HttpStatus.BAD_REQUEST)
       }
+
+       //Controlar dos HechosPuniblesCausas iguales
+       this.controlar_hechosPuniblesCausasIguales(expedienteDTO.hechosPuniblesCausas);
+
 
       let hechosPuniblesCausasDeExpediente:Array<HechoPunibleCausaJudicial> = [];
       hechosPuniblesCausasDeExpediente = await Promise.all(expedienteDTO.hechosPuniblesCausas.map(
@@ -494,10 +495,25 @@ export class DatosPenalesFactory{
             despachoJudicial:despachoJudicial,
           
       }
-    }catch(error){
-      this.logger.error(`Ocurrió un error en la generación de datos del Expediente:${error}`)
-      throw new HttpException(`Ocurrió un error en la generación de datos del Expediente:${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    
+
+  }
+
+  
+  
+  controlar_hechosPuniblesCausasIguales(listaDeHechosPuniblesCausas:Array<hechoPunibleCausa>){
+    
+    listaDeHechosPuniblesCausas.map(
+      (parHechoPunibleCausa,index)=>{
+        for(let i=index+1;i<listaDeHechosPuniblesCausas.length;i++){
+          console.log(parHechoPunibleCausa[0],listaDeHechosPuniblesCausas[i][0],parHechoPunibleCausa[1],listaDeHechosPuniblesCausas[i][1]);
+          if((parHechoPunibleCausa[0] == listaDeHechosPuniblesCausas[i][0]) && (parHechoPunibleCausa[1] == listaDeHechosPuniblesCausas[i][1])){
+            throw new ErrorHechosPuniblesDuplicado(`Se enviaron dos hechos punibles duplicados`);
+          }
+        }
+        
+      }
+    )
 
   }
 

@@ -3,6 +3,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { Persona } from "src/core/entities/persona.entity";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplDTO } from "src/core/dto/ppl/ppl.dto";
+import { Ciudad } from "src/core/entities/ciudad.entity";
+import { Departamento } from "src/core/entities/departamento.entity";
 
 interface RegistroFotosI{
   nombre:string;
@@ -19,6 +21,7 @@ export class GestionPPLUseCase{
     try{
       //console.log("Antes de llamar a ppls");
       const ppls:Array<Ppl> = await this.dataService.ppl.getAll();
+      console.log("Ppls:",ppls);
       let pplsDTO:Array<PplDTO> = new Array<PplDTO>();
       if(ppls && ppls.length > 0){
         pplsDTO = ppls.map(
@@ -141,13 +144,37 @@ export class GestionPPLUseCase{
       establecimiento_nombre:ppl.establecimiento_penitenciario.nombre,
       estado_perfil:this.verificar_perfil(ppl.persona),
       datosPersonales:ppl.persona.datosPersonales,
-      // ciudad:ppl.persona.datosPersonales.ciudad,
-      // departamento:ppl.persona.datosPersonales.departamento,
+      ciudad:this.obtener_ciudad(ppl.persona),
+      departamento:this.obtener_departamento(ppl.persona),
       datosDeSalud:ppl.persona.salud,
       datosDeSeguridad:ppl.persona.seguridad,
       datosFamiliares:ppl.persona.datosFamiliares,
       datosJudiciales:ppl.persona.situacionJudicial,
       datosEducacion:ppl.persona.educacionFormacion,
+
+    }
+  }
+
+  obtener_ciudad(persona:Persona):Ciudad|null{
+    if(!persona.datosPersonales){
+      return null
+    }else{
+      if(persona.datosPersonales){
+        return persona.datosPersonales.ciudad
+      }
+      return null
+
+    }
+  }
+
+  obtener_departamento(persona:Persona):Departamento|null{
+    if(!persona.datosPersonales){
+      return null
+    }else{
+      if(persona.datosPersonales){
+        return persona.datosPersonales.departamento
+      }
+      return null
 
     }
   }

@@ -10,6 +10,8 @@ import { SituacionJudicial } from "src/core/entities/situacion-judicial.entity";
 import { TipoIdentificacion } from "src/core/entities/tipo-identificacion.entity";
 import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 import { Pais } from "src/core/entities/pais.entity";
+import { Departamento } from "src/core/entities/departamento.entity";
+import { Ciudad } from "src/core/entities/ciudad.entity";
 
 export class PplDTO{
   id_persona:number;
@@ -31,6 +33,8 @@ export class PplDTO{
   fechaDeNacimiento:Date;
   estado_perfil:boolean;
   datosPersonales:DatosPersonales;
+  ciudad:Ciudad;
+  departamento:Departamento;
   datosDeSalud:Salud;
   datosDeSeguridad:Seguridad;
   datosFamiliares:DatosFamiliares;

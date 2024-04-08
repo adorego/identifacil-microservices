@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Ciudad } from "src/core/entities/ciudad.entity";
 import { PaisModel } from "./pais.model";
+import { DepartamentoModel } from "./departamento.model";
 
 @Entity({name:"ciudad"})
 export class CiudadModel extends Ciudad{
@@ -13,4 +14,7 @@ export class CiudadModel extends Ciudad{
 
   @ManyToOne(() => PaisModel)
   pais:PaisModel;
+
+  @ManyToOne(()=>DepartamentoModel)
+  departamento:DepartamentoModel;
 }

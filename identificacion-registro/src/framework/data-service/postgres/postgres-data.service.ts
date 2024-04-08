@@ -57,6 +57,9 @@ import { RegistroFotoModel } from "./models/registro-foto.model";
 import { IngresoPPLModel } from "./models/ingreso-ppl.model";
 import { IngresoVisitanteModel } from "./models/ingreso-visitante.model";
 import { SalidaVisitanteModel } from "./models/salida-visitante.model";
+import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
+import { Departamento } from "src/core/entities/departamento.entity";
+import { DepartamentoModel } from "./models/departamento.model";
 
 
 @Injectable()
@@ -109,6 +112,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   funcionario: PostgresGenericRepository<FuncionarioModel>;
   chofer: PostgresGenericRepository<ChoferModel>;
   registro_foto: PostgresGenericRepository<RegistroFotoModel>;
+  departamento: PostgresGenericRepository<DepartamentoModel>;
 
   //Entrada y Salida PPLs
   ingreso_ppl:PostgresGenericRepository<IngresoPPLModel>;
@@ -220,6 +224,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private ingreso_visitante_repository:Repository<IngresoVisitanteModel>,
     @InjectRepository(SalidaVisitanteModel)
     private salida_visitante_repository:Repository<SalidaVisitanteModel>,
+    @InjectRepository(DepartamentoModel)
+    private departamento_repository:Repository<DepartamentoModel>,
 
     
 
@@ -282,7 +288,7 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.ingreso_ppl = new PostgresGenericRepository<IngresoPPLModel>(this.ingreso_ppl_repository)
     this.ingreso_visitante = new PostgresGenericRepository<IngresoVisitanteModel>(this.ingreso_visitante_repository)
     this.salida_visitante = new PostgresGenericRepository<SalidaVisitanteModel>(this.salida_visitante_repository)
-  
+    this.departamento = new PostgresGenericRepository<DepartamentoModel>(this.departamento_repository)
   }
   
   

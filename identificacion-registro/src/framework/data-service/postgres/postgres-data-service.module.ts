@@ -58,6 +58,7 @@ import { MedidaDeFuerzaModel } from "./models/medida-de-fuerza.model";
 import { FaltaModel } from "./models/falta.model";
 import { SancionModel } from "./models/sancion.model";
 import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
+import { DepartamentoModel } from "./models/departamento.model";
 
 @Module({
   imports:[
@@ -122,6 +123,7 @@ import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
       FaltaModel,
       SancionModel,
       TipoDeFaltaModel,
+      DepartamentoModel
       
       
     

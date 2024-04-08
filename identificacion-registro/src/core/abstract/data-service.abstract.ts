@@ -52,6 +52,7 @@ import { SalidaVisitante } from "../entities/salida-visitante.entity";
 import { MedidaDeFuerza } from "../entities/medida-de-fuerza.entity";
 import { Sancion } from "../entities/sancion.entity";
 import { Falta } from "../entities/falta.entity";
+import { Departamento } from "../entities/departamento.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -104,6 +105,7 @@ export abstract class IDataService{
   abstract ingreso_ppl:IGenericRepository<IngresoPPL>
   abstract ingreso_visitante:IGenericRepository<IngresoVisitante>
   abstract salida_visitante:IGenericRepository<SalidaVisitante>
+  abstract departamento:IGenericRepository<Departamento>
   // abstract medidas_de_fuerza:IGenericRepository<MedidaDeFuerza>
   // abstract sancion:IGenericRepository<Sancion>
   // abstract falta:IGenericRepository<Falta>

@@ -88,15 +88,15 @@ export class EntradaSalidaUseCase{
         const fechaReg = /^\d{4}([./-])\d{1,2}\1\d{1,2}$/;
         const horaReg = /^\d{1,2}([:])\d{1,2}([:])\d{1,4}\d$/;
 
-        const resultadoValidacionFecha = fechaReg.test(entradaVisitanteDTO.fecha_ingreso);
-        if(!resultadoValidacionFecha){
-             throw new HttpException(`Se debe enviar una fecha valida:${entradaVisitanteDTO.fecha_ingreso}`,HttpStatus.BAD_REQUEST);
-         }
+        // const resultadoValidacionFecha = fechaReg.test(entradaVisitanteDTO.fecha_ingreso);
+        // if(!resultadoValidacionFecha){
+        //      throw new HttpException(`Se debe enviar una fecha valida:${entradaVisitanteDTO.fecha_ingreso}`,HttpStatus.BAD_REQUEST);
+        //  }
         
-        const resultadoValidacionHora = horaReg.test(entradaVisitanteDTO.hora_ingreso);
-        if(!resultadoValidacionHora){
-             throw new HttpException(`Se debe enviar una hora valida:${entradaVisitanteDTO.hora_ingreso}`,HttpStatus.BAD_REQUEST);
-         }
+        // const resultadoValidacionHora = horaReg.test(entradaVisitanteDTO.hora_ingreso);
+        // if(!resultadoValidacionHora){
+        //      throw new HttpException(`Se debe enviar una hora valida:${entradaVisitanteDTO.hora_ingreso}`,HttpStatus.BAD_REQUEST);
+        //  }
 
         const pplAVisitar = await this.dataService.ppl.getPPLByIdPersona(entradaVisitanteDTO.ppl_a_visitar);
         if(!pplAVisitar){
@@ -148,15 +148,15 @@ export class EntradaSalidaUseCase{
        const fechaReg = /^\d{4}([./-])\d{1,2}\1\d{1,2}$/;
        const horaReg = /^\d{1,2}([:])\d{1,2}([:])\d{1,4}\d$/;
 
-       const resultadoValidacionFecha = fechaReg.test(salidaVisitanteDTO.fecha_salida);
-       if(!resultadoValidacionFecha){
-            throw new HttpException(`Se debe enviar una fecha valida:${salidaVisitanteDTO.fecha_salida}`,HttpStatus.BAD_REQUEST);
-        }
+    //    const resultadoValidacionFecha = fechaReg.test(salidaVisitanteDTO.fecha_salida);
+    //    if(!resultadoValidacionFecha){
+    //         throw new HttpException(`Se debe enviar una fecha valida:${salidaVisitanteDTO.fecha_salida}`,HttpStatus.BAD_REQUEST);
+    //     }
        
-       const resultadoValidacionHora = horaReg.test(salidaVisitanteDTO.hora_salida);
-       if(!resultadoValidacionHora){
-            throw new HttpException(`Se debe enviar una hora valida:${salidaVisitanteDTO.fecha_salida}`,HttpStatus.BAD_REQUEST);
-        }
+    //    const resultadoValidacionHora = horaReg.test(salidaVisitanteDTO.hora_salida);
+    //    if(!resultadoValidacionHora){
+    //         throw new HttpException(`Se debe enviar una hora valida:${salidaVisitanteDTO.hora_salida}`,HttpStatus.BAD_REQUEST);
+    //     }
 
        const pplQueVisito = await this.dataService.ppl.getPPLByIdPersona(salidaVisitanteDTO.ppl_que_visito);
        if(!pplQueVisito){

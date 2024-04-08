@@ -40,36 +40,46 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
-    
+    let departamento=null;
+    if(datosPersonalesDTO.departamento){
+      departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
+    }
+
+    let ciudad=null;
+    if(datosPersonalesDTO.ciudad){
+      ciudad = await this.dataService.ciudad.get(datosPersonalesDTO.ciudad);
+    }
 
      
      let datosPersonales = new DatosPersonales();
      datosPersonales.apodo =   datosPersonalesDTO.apodo;
-     datosPersonales.apodo_modificado = datosPersonalesDTO.apodo_modificado;
+     
      datosPersonales.estadoCivil = estadoCivil;
-     datosPersonales.estadoCivil_modificado = datosPersonalesDTO.estadoCivil_modificado;
+     
      datosPersonales.nacionalidad = nacionalidad;
-     datosPersonales.nacionalidad_modificado = datosPersonalesDTO.nacionalidad_modificado;
+    
      datosPersonales.lugarDeNacimiento = datosPersonalesDTO.lugarDeNacimiento;
-     datosPersonales.lugarDeNacimiento_modificado = datosPersonalesDTO.lugarDeNacimiento_modificado;
+    
      datosPersonales.direccion = datosPersonalesDTO.direccion;
      datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
      datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
      datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
-     datosPersonales.barrioCompania_modificado = datosPersonalesDTO.barrioCompania_modificado;
+    
+     datosPersonales.ciudad = ciudad;
+     datosPersonales = departamento;
      datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
-     datosPersonales.numeroDeContacto_modificado = datosPersonalesDTO.numeroDeContacto_modificado;
+    
      datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
-     datosPersonales.contactoDeEmergencia1_modificado = datosPersonalesDTO.contactoDeEmergencia1_modificado;
+    
      datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
-     datosPersonales.contactoDeEmergencia2_modificado = datosPersonalesDTO.contactoDeEmergencia2_modificado;
+     
      datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
-     datosPersonales.pueblosIndigenas_modificado = datosPersonalesDTO.pueblosIndigenas_modificado;
+    
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
      datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
      datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
-     datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
+    
      datosPersonales.persona = personaEncontrada
 
      const contactoEnEmbajada = new ContactoEnEmbajada();
@@ -130,36 +140,50 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
+     let departamento=null;
+    if(datosPersonalesDTO.departamento){
+      departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
+    }
+    console.log("Departamento:",departamento);
+
+    let ciudad=null;
+    if(datosPersonalesDTO.ciudad){
+      ciudad = await this.dataService.ciudad.get(datosPersonalesDTO.ciudad);
+    }
+    console.log("Ciudad:",ciudad);
+
 
     //  id_persona:number|null;
     //   numeroDeIdentificacion:string;
           datosPersonales.id = datosPersonales.id;
           datosPersonales.apodo = datosPersonalesDTO.apodo;
-          datosPersonales.apodo_modificado = datosPersonalesDTO.apodo_modificado;
+          
           datosPersonales.estadoCivil = estadoCivil;
-          datosPersonales.estadoCivil_modificado = datosPersonalesDTO.estadoCivil_modificado;
+         
           datosPersonales.nacionalidad = nacionalidad;
-          datosPersonales.nacionalidad_modificado = datosPersonalesDTO.nacionalidad_modificado
+          
           datosPersonales.lugarDeNacimiento = datosPersonalesDTO.lugarDeNacimiento;
-          datosPersonales.lugarDeNacimiento_modificado = datosPersonalesDTO.lugarDeNacimiento_modificado;
+         
           datosPersonales.direccion = datosPersonalesDTO.direccion;
-          datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
+          
           datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
-          datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
+         
           datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
-          datosPersonales.barrioCompania_modificado = datosPersonalesDTO.barrioCompania_modificado;
+          
+          datosPersonales.ciudad = ciudad;
+          datosPersonales = departamento;
           datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
-          datosPersonales.numeroDeContacto_modificado = datosPersonalesDTO.numeroDeContacto_modificado;
+         
           datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
-          datosPersonales.contactoDeEmergencia1_modificado = datosPersonalesDTO.contactoDeEmergencia1_modificado;
+         
           datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
-          datosPersonales.contactoDeEmergencia2_modificado = datosPersonalesDTO.contactoDeEmergencia2_modificado;
+          
           datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
-          datosPersonales.pueblosIndigenas_modificado = datosPersonalesDTO.pueblosIndigenas_modificado;
+         
           datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
-          datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
+          
           datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
-          datosPersonales.perteneceAComunidadLGTBI_modificado = datosPersonalesDTO.perteneceAComunidadLGTBI_modificado;
+         
           
           datosPersonales.persona = datosPersonales.persona;
 

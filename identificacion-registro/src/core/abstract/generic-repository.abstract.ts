@@ -34,4 +34,6 @@ export abstract class IGenericRepository<T>{
   abstract getContactoDeEmbajadaByDatos(nombre:string,numero:string,pais:Pais):Promise<T>;
 
   abstract getFuncionariosPorEstablecimiento(id_establecimiento:number):Promise<Array<T>>;
+
+  abstract getExpedienteByNumeroDeExpediente(numeroDeExpediente:string):Promise<T>;
 }

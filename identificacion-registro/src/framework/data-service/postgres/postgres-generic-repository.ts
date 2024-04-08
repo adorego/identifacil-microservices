@@ -158,6 +158,12 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
             .getOne()
   }
 
+  getExpedienteByNumeroDeExpediente(numeroDeExpediente:string):Promise<T>{
+    return this._repository.createQueryBuilder("expediente")
+           .where("expediente.numeroDeExpediente = :numeroDeExpediente",{numeroDeExpediente:numeroDeExpediente})
+           .getOne()
+  }
+
   getExpedientesByPersonaId(id:number):Promise<Array<T>>{
     return this._repository.createQueryBuilder("ExpedienteJudicial")
             .leftJoinAndSelect("ExpedienteJudicial.pplsEnExpediente","pplsEnExpediente")

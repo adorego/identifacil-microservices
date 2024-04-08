@@ -130,6 +130,7 @@ export class GestionPPLUseCase{
       numero_de_identificacion:ppl.persona.numero_identificacion,
       apodo:ppl.persona.datosPersonales ? ppl.persona.datosPersonales.apodo : null,
       es_extranjero:ppl.persona.es_extranjero,
+      tiene_contacto_en_embajada:ppl.persona.tiene_contacto_en_embajada,
       contacto_embajada:ppl.persona.contactoDeEmbajadaoConsulado,
       genero:ppl.persona.genero ? ppl.persona.genero.id : null,
       foto:ppl.persona.registro.foto1,

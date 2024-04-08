@@ -15,6 +15,7 @@ import { Ciudad } from "src/core/entities/ciudad.entity";
 import { Condena } from "src/core/entities/condena.entity";
 import { TiempoDeCondena } from "src/core/entities/tiempo_de_condena.entity";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
+import { ErrorExpedienteDuplicado } from "src/framework/errors/error-expediente-duplicado";
 
 @Injectable()
 export class DatosPenalesFactory{
@@ -31,6 +32,11 @@ export class DatosPenalesFactory{
         //Verificacion de numero de expediente
         if(!expedienteDTO.numeroDeExpediente){
           throw new HttpException(`Debe enviarse el número de expediente`,HttpStatus.BAD_REQUEST)
+        }
+
+        const buscarExpediente = await this.dataService.expediente.getExpedienteByNumeroDeExpediente(expedienteDTO.numeroDeExpediente);
+        if(buscarExpediente){
+          throw new ErrorExpedienteDuplicado(`Error, expediente duplicado, ya existe un expediente con este código`);
         }
 
        

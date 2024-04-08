@@ -28,7 +28,9 @@ export class DatosPenalesUseCases{
   }
 
   async getExpedienteById(id:number):Promise<ExpedienteJudicial>{
-    return await this.dataService.expediente.get(id);
+    const expediente_encontrado = await this.dataService.expediente.get(id);
+    console.log("Expediente encontrado:", expediente_encontrado);
+    return expediente_encontrado;
   }
   async crearExpedienteJudicial(expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestaCrearExpedienteJudicialDTO>{
       try{
@@ -41,20 +43,22 @@ export class DatosPenalesUseCases{
           hechosPuniblesCausasCreadas = await Promise.all(respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales.map(
             async (hechoPunibleCausa) =>{
               let hechoPuniblesCausaCreado:HechoPunibleCausaJudicial=null;
-              //console.log("Hecho Punible es:", hechoPunibleCausa);
-              if(!hechoPunibleCausa){
-                //console.log("Entro en null:", hechoPunibleCausa);
+              //console.log("HechoPunibleCausa es:", hechoPunibleCausa);
+              if(hechoPunibleCausa && !hechoPunibleCausa.id){
+                console.log("Entro en null:", hechoPunibleCausa);
                 hechoPuniblesCausaCreado = await this.dataService.hechoPunibleCausaJudicial.create(hechoPunibleCausa);
               }else{
                 hechoPuniblesCausaCreado = hechoPunibleCausa
               }
+              //console.log("HechoPunibleCreado:",hechoPuniblesCausaCreado);
               return hechoPuniblesCausaCreado;
               
             }
           ))
           
         }
-        //console.log("La lista de hechos punibles es:", hechosPuniblesCausasCreadas);
+        console.log("Lista de HechosPuniblesCausas:", hechosPuniblesCausasCreadas);
+        
         if(!hechosPuniblesCausasCreadas){
           throw new HttpException(`Los hechos punibles son invalidos`,HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -131,7 +135,7 @@ export class DatosPenalesUseCases{
         expedienteACrear.hechosPuniblesCausas = hechosPuniblesCausasCreadas;
         //console.log("Antes de crear:", expedienteACrear);
         const expedienteJudicialCreado = await this.dataService.expediente.create(expedienteACrear);
-        
+        //console.log("Expediente creado:", expedienteJudicialCreado);
         return {
           success:true,
           id:expedienteJudicialCreado.id

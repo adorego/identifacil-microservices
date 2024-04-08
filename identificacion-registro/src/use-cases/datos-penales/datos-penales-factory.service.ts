@@ -59,14 +59,14 @@ export class DatosPenalesFactory{
             try{
               const hechoPunible = await this.dataService.hechoPunible.get(hechoPunibleCausa[0]);
               if(!hechoPunible){
-                throw new HttpException(`No se encuentra el hecho punible enviado`, HttpStatus.BAD_REQUEST);
+                throw new HttpException(`No se encuentra el hecho punible enviado:${hechoPunibleCausa[0]}`, HttpStatus.BAD_REQUEST);
               }
               //console.log("Hecho Punible:", hechoPunible);
               const causaJudicial = hechoPunible.causas.filter(
                 (causa) => causa.id === hechoPunibleCausa[1]
               )
               if(!causaJudicial){
-                throw new HttpException(`No se encuentra la causa judicial enviada`, HttpStatus.BAD_REQUEST);
+                throw new HttpException(`No se encuentra la causa judicial enviada:${causaJudicial}`, HttpStatus.BAD_REQUEST);
               }
               //console.log("Causa Judicial:", causaJudicial);
               let hechoPunibleCausaJudicial:HechoPunibleCausaJudicial = await this.dataService.hechoPunibleCausaJudicial.getHechoPunibleCausaByIds(hechoPunible.id, causaJudicial[0].id);

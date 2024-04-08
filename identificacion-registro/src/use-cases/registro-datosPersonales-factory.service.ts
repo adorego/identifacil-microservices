@@ -118,14 +118,6 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
-     if(!datosPersonalesDTO.id_persona){
-      throw new HttpException('Se debe enviar el id de Persona', HttpStatus.BAD_REQUEST);
-     }
-
-     const personaEncontrada = await this.dataService.persona.get(datosPersonalesDTO.id_persona);
-     if(!personaEncontrada){
-      throw new HttpException('No existe la persona enviada', HttpStatus.NOT_FOUND);
-     }
 
     //  id_persona:number|null;
     //   numeroDeIdentificacion:string;
@@ -159,6 +151,7 @@ export class RegistroDatosPersonalesFactory{
           
           datosPersonales.persona = datosPersonales.persona;
 
+          const personaEncontrada = datosPersonales.persona;
           let contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
           if(!contactoEnEmbajada){
             contactoEnEmbajada = new ContactoEnEmbajada();

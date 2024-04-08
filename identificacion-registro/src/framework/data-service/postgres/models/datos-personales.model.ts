@@ -20,12 +20,12 @@ export class DatosPersonalesModel extends DatosPersonales{
   @OneToOne(() => PersonaModel, (persona) => persona.datosPersonales)
   persona:PersonaModel;
 
-  @ManyToOne(()=>EstadoCivilModel)
+  @ManyToOne(()=>EstadoCivilModel,{nullable:true,eager:true})
   estadoCivil:EstadoCivilModel;
 
   
   
-  @ManyToOne(()=>NacionalidadModel,{eager:true})
+  @ManyToOne(()=>NacionalidadModel,{eager:true,nullable:true})
   nacionalidad:NacionalidadModel;
 
   
@@ -41,10 +41,10 @@ export class DatosPersonalesModel extends DatosPersonales{
   @Column({type:"varchar",nullable:true})
   barrioCompania:string;
 
-  @ManyToOne(()=>CiudadModel,{eager:true})
+  @ManyToOne(()=>CiudadModel,{eager:true,nullable:true})
   ciudad: CiudadModel
 
-  @ManyToOne(()=>DepartamentoModel,{eager:true})
+  @ManyToOne(()=>DepartamentoModel,{eager:true,nullable:true})
   departamento: DepartamentoModel
 
   

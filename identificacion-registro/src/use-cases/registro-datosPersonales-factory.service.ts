@@ -6,7 +6,6 @@ import { Nacionalidad } from "src/core/entities/nacionalidad";
 import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 import { RespuestaDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-factory-registro-datos-personales.dto";
 import { RespuestaFactoryActualizarDatosPersonales } from "src/core/dto/registro_datos_personales/respuesta-factory-actualizar-datos-personales.dto";
-import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { ContactoEnEmbajada } from "src/core/entities/contacto_embajada.entity";
 
 @Injectable()
@@ -30,10 +29,15 @@ export class RegistroDatosPersonalesFactory{
      if(!datosPersonalesDTO.estadoCivil){
       throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
      }
-     const estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
-     if(!estadoCivil){
-      throw new HttpException('No existe este estado civil', HttpStatus.NOT_FOUND)
+
+     let estadoCivil=null;
+     if(datosPersonalesDTO.estadoCivil){
+        estadoCivil = await this.dataService.estadoCivil.get(datosPersonalesDTO.estadoCivil)
+        if(!estadoCivil){
+          throw new HttpException('No existe este estado civil enviado', HttpStatus.NOT_FOUND)
+        }
      }
+     
 
      const nacionalidad:Nacionalidad = await this.dataService.nacionalidad.get(datosPersonalesDTO.nacionalidad);
      if(!nacionalidad){
@@ -63,7 +67,6 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.direccion = datosPersonalesDTO.direccion;
      datosPersonales.direccion_modificado = datosPersonalesDTO.direccion_modificado;
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
-     datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
      datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
     
      datosPersonales.ciudad = ciudad;
@@ -77,7 +80,7 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
     
      datosPersonales.nombreEtnia = datosPersonalesDTO.nombreEtnia;
-     datosPersonales.nombreEtnia_modificado = datosPersonalesDTO.nombreEtnia_modificado;
+     
      datosPersonales.perteneceAComunidadLGTBI = datosPersonalesDTO.perteneceAComunidadLGTBI;
     
      datosPersonales.persona = personaEncontrada

@@ -171,7 +171,8 @@ export class RegistroDatosPersonalesFactory{
           datosPersonales.barrioCompania = datosPersonalesDTO.barrioCompania;
           
           datosPersonales.ciudad = ciudad;
-          datosPersonales = departamento;
+          datosPersonales.departamento = departamento;
+          
           datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
          
           datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;

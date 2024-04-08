@@ -41,10 +41,10 @@ export class DatosPersonalesModel extends DatosPersonales{
   @Column({type:"varchar",nullable:true})
   barrioCompania:string;
 
-  @ManyToOne(()=>CiudadModel)
+  @ManyToOne(()=>CiudadModel,{eager:true})
   ciudad: CiudadModel
 
-  @ManyToOne(()=>DepartamentoModel)
+  @ManyToOne(()=>DepartamentoModel,{eager:true})
   departamento: DepartamentoModel
 
   

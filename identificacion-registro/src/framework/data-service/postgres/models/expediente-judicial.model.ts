@@ -4,15 +4,7 @@ import { ExpedienteJudicial } from "src/core/entities/expediente-judicial.entity
 import { CircunscripcionJudicialModel } from "./circunscripcion-judicial.model";
 import { CiudadModel } from "./ciudad.model";
 import { DespachoJudicialModel } from "./despachos-judiciales.model";
-import { HechoPunibleModel } from "./hecho-punible.model";
-import { DefensorModel } from "./defensor.model";
 import { HechoPunibleCausaJudicialModel } from "./hecho-punible-causa-judicial.model";
-import { HistorialCompurgamientoRecalculadaModel } from "./historial-compurgamiento-recalculada.model";
-import { Ppl } from "src/core/entities/ppl.entity";
-import { PplModel } from "./ppl.model";
-import { Condena } from "src/core/entities/condena.entity";
-import { CondenaModel } from "./condena.model";
-import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { PplEnExpedienteModel } from "./ppl-en-expediente.model";
 import { IngresoAPrisionModel } from "./ingreso-a-prision.model";
 

@@ -150,6 +150,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .getOne()
   }
 
+  
   getTiempoDeCondenaByCombination(anhos:number,meses:number):Promise<T>{
     return this._repository.createQueryBuilder("TiempoDeCondena")
             .where("TiempoDeCondena.anhos = :anhos",{anhos:anhos})

@@ -234,12 +234,14 @@ export class RegistroUseCase{
   async actualizar_datosPersonales(id:number,registroDatosPersonaleDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
     try{
       const respuestaFactoryActualizarDatosPersonales = await this.registro_datosPersonales_factory.generarDatosPersonalesAActualizar(id,registroDatosPersonaleDTO);
+      console.log("Respuesta de factory:",respuestaFactoryActualizarDatosPersonales);
       const datosPersonales = respuestaFactoryActualizarDatosPersonales.datosPersonales;
       datosPersonales.nacionalidad = respuestaFactoryActualizarDatosPersonales.nacionalidad;
       datosPersonales.estadoCivil = respuestaFactoryActualizarDatosPersonales.estado_civil;
       const contactoEnEmbajadaACrear = respuestaFactoryActualizarDatosPersonales.contactoEnEmbajada;
       const contactoEnEmbajadaCreado = await this.dataService.contactoDeEmbajada.create(contactoEnEmbajadaACrear);
-      const personaAActualizar = datosPersonales.persona;
+      console.log("ContactoDeEmbajadaCreado:",contactoEnEmbajadaCreado);
+      const personaAActualizar = respuestaFactoryActualizarDatosPersonales.persona;
       personaAActualizar.contactoDeEmbajadaoConsulado = contactoEnEmbajadaCreado;
 
       const personActualizada = await this.dataService.persona.update(personaAActualizar);

@@ -40,6 +40,8 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
+    
+
      
      let datosPersonales = new DatosPersonales();
      datosPersonales.apodo =   datosPersonalesDTO.apodo;
@@ -79,8 +81,10 @@ export class RegistroDatosPersonalesFactory{
      }
      contactoEnEmbajada.pais = pais_de_embajada;
      personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+     
     
-
+     //Actualizar datos de persona
+    
      
      
      return{
@@ -102,6 +106,14 @@ export class RegistroDatosPersonalesFactory{
     if(!datosPersonales){
       throw new HttpException('No se encontro el registro de Datos Personales', HttpStatus.BAD_REQUEST);
     }
+    if(!datosPersonalesDTO.id_persona){
+      throw new HttpException('No se envió el id de persona', HttpStatus.BAD_REQUEST);
+     }
+     const personaEncontrada = await this.dataService.persona.get(datosPersonalesDTO.id_persona);
+    if(!personaEncontrada){
+        throw new HttpException('Esta persona no está registrada', HttpStatus.NOT_FOUND);
+    } 
+
     if(!datosPersonalesDTO.estadoCivil){
       throw new HttpException('Se debe enviar un estado civil', HttpStatus.BAD_REQUEST);
      }
@@ -151,8 +163,9 @@ export class RegistroDatosPersonalesFactory{
           
           datosPersonales.persona = datosPersonales.persona;
 
-          const personaEncontrada = datosPersonales.persona;
+          
           let contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
+          //console.log("Contacto de embajada:",contactoEnEmbajada);
           if(!contactoEnEmbajada){
             contactoEnEmbajada = new ContactoEnEmbajada();
           }
@@ -171,7 +184,8 @@ export class RegistroDatosPersonalesFactory{
         datosPersonales:datosPersonales,
         nacionalidad:nacionalidad,
         estado_civil:estadoCivil,
-        contactoEnEmbajada:contactoEnEmbajada
+        contactoEnEmbajada:contactoEnEmbajada,
+        persona:personaEncontrada
         
      }
 

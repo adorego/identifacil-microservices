@@ -12,8 +12,6 @@ export class RegistroDatosPersonalesDTO{
   nacionalidad_modificado:boolean;
   lugarDeNacimiento: string;
   lugarDeNacimiento_modificado:boolean;
-  tipoDeDocumento: string;
-  tipoDeDocumento_modificado:boolean;
   direccion: string;
   direccion_modificado:boolean;
   barrioCompania: string;

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from "@nestjs/common";
 
 import { ErrorPersonaEncontrada } from "src/framework/errors/error-persona-encontrada";
 import { Float32ConveterService } from "src/framework/lib/float32-converter.service";
@@ -19,6 +19,7 @@ import { RespuestaGenerarRegistroDeFotos } from "src/core/dto/registro/respuesta
 
 @Injectable()
 export class  RegistroFactory{
+  readonly logger = new Logger("RegistroFactory");
   constructor(private dataService:IDataService,
     private identificarUseCase:IdentificacionUseCase,
     private float32ConverterService:Float32ConveterService
@@ -219,7 +220,9 @@ export class  RegistroFactory{
   }
   async almacenar_foto(foto:Array<Express.Multer.File>, numero_foto:number, numero_identificacion:string):Promise<string>{
     
-      const fileName = `${numero_identificacion}_${numero_foto.toString()}.${foto[0].originalname.split('.').pop()}`;
+    console.log("Extension del archivo:",foto[0].originalname.split('.').pop());  
+    const fileName = `${numero_identificacion}_${numero_foto.toString()}.${foto[0].originalname.split('.').pop()}`;
+      
       console.log('Nombre del archivo:', fileName);
       const dirPath =Number(process.env.PRODUCTION)==1 ? process.env.FILE_STORAGE_PROD : path.join(process.cwd(),process.env.FILE_STORAGE_DEV);
       

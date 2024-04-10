@@ -263,5 +263,8 @@ export class RegistroController{
     }
    
   }
+
+  // @Get('registro_visitante')
+  // async 
 }
 

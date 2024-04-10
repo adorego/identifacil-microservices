@@ -73,5 +73,7 @@ export class EntradaSalidaController{
         }
     }
 
+    
+
 
 }

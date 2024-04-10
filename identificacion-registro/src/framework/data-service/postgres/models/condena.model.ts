@@ -16,13 +16,13 @@ export class CondenaModel extends Condena{
     @ManyToOne(()=>TiempoDeCondenaModel,tiempoDeCondena=>tiempoDeCondena.condenas_principales,{eager:true})
     tiempo_de_condena:TiempoDeCondenaModel;
        
-    @Column({type:"boolean"})
+    @Column({type:"boolean",default:false})
     tiene_anhos_extra_por_medida_de_seguridad:boolean;
 
     @ManyToOne(()=>TiempoDeCondenaModel,tiempoDeCondena=>tiempoDeCondena.condenas_secundarias,{eager:true})
     anhos_extra_por_medida_de_seguridad:TiempoDeCondenaModel;
 
-    @Column({type:"date"})
+    @Column({type:"date",nullable:true})
     fecha_de_compurgamiento_inicial:Date;
     
     @Column({type:"date",nullable:true})

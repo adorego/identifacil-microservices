@@ -37,6 +37,7 @@ export class DatosPenalesUseCases{
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.creacionDeExpedienteJudicialGenerar(expedienteDTO);
         let hechosPuniblesCausasCreadas = null;
         //console.log("Datos recibidos en use case:", respuestaGeneracionExpedienteJudicialFactory);
+        
         if(respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales 
           && respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales.length > 0){
           
@@ -144,10 +145,10 @@ export class DatosPenalesUseCases{
   }
 
   async actualizarExpedienteJudicial(id:number, expedienteDTO:ExpedienteJudicialDTO):Promise<RespuestGenericaActualizarCrearDTO>{
-    try{
+    
         const respuestaGeneracionExpedienteJudicialFactory = await this.datosPenalesFactory.actualizacionDeExpedienteJudicialGenerar(id,expedienteDTO);
         let hechosPuniblesCausasCreadas = null;
-        //console.log("Datos recibidos en actualizar use case:", respuestaGeneracionExpedienteJudicialFactory);
+        console.log("Datos recibidos en actualizar use case:", respuestaGeneracionExpedienteJudicialFactory);
        
         if(respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales 
           && respuestaGeneracionExpedienteJudicialFactory.hechosPuniblesCausasJudiciales.length > 0){
@@ -156,7 +157,7 @@ export class DatosPenalesUseCases{
             async (hechoPunibleCausa) =>{
               let hechoPuniblesCausaCreado:HechoPunibleCausaJudicial=null;
               //console.log("Hecho Punible es:", hechoPunibleCausa);
-              if(!hechoPunibleCausa){
+              if(hechoPunibleCausa && !hechoPunibleCausa.id){
                 //console.log("Entro en null:", hechoPunibleCausa);
                 hechoPuniblesCausaCreado = await this.dataService.hechoPunibleCausaJudicial.create(hechoPunibleCausa);
               }else{
@@ -169,9 +170,9 @@ export class DatosPenalesUseCases{
           
         }
         //console.log("La lista de hechos punibles es:", hechosPuniblesCausasCreadas);
-        if(!hechosPuniblesCausasCreadas){
-          throw new HttpException(`Los hechos punibles son invalidos`,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // if(!hechosPuniblesCausasCreadas){
+        //   throw new HttpException(`Los hechos punibles son invalidos`,HttpStatus.INTERNAL_SERVER_ERROR);
+        // }
 
         //Crear el objeto PPLEnExpediente
         //console.log("Antes de crear los ppls por expediente");
@@ -181,15 +182,14 @@ export class DatosPenalesUseCases{
           const pplsEnExpedienteACrear = respuestaGeneracionExpedienteJudicialFactory.pplsEnExpediente;
           pplsEnExpedienteCreados = await Promise.all(pplsEnExpedienteACrear.map(
             async (pplEnExpediente)=>{
-              console.log("Condena del PPL:", pplEnExpediente.condena);
-              //console.log("Ppl para expediente:", pplEnExpediente);
+              
               //Crear hechos puniblesCausas de este PPL
               let hechosPuniblesCausasPorPpl:Array<HechoPunibleCausaJudicial> = [];
               if(pplEnExpediente.hechosPuniblesCausas && pplEnExpediente.hechosPuniblesCausas.length > 0){
                 hechosPuniblesCausasPorPpl = await Promise.all(pplEnExpediente.hechosPuniblesCausas.map(
                   async (hechoPunibleCausa)=>{
                     
-                    if(!hechoPunibleCausa?.id){
+                    if(hechoPunibleCausa && !hechoPunibleCausa.id){
                       return await this.dataService.hechoPunibleCausaJudicial.create(hechoPunibleCausa);
                     }else{
                       return hechoPunibleCausa
@@ -207,7 +207,7 @@ export class DatosPenalesUseCases{
                 if(!tiempoDeCondena){
                   tiempoDeCondena = await this.dataService.tiempoDeCondena.create(pplEnExpediente.condena.tiempo_de_condena);
                 }
-                console.log("Tiempo de condena:", tiempoDeCondena);
+               
                 let tiempoExtraCondena =null;
                 if(pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad){
                   tiempoExtraCondena = await this.dataService.tiempoDeCondena.getTiempoDeCondenaByCombination(pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.anhos, pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.meses);
@@ -215,21 +215,21 @@ export class DatosPenalesUseCases{
                 if(!tiempoExtraCondena && pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad && pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad.anhos !== 0){
                   tiempoExtraCondena = await this.dataService.tiempoDeCondena.create(pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad);
                 }
-                console.log("Tiempo de condena:",tiempoDeCondena,"Tiempo extra de condena:", tiempoExtraCondena);
+               
                 pplEnExpediente.condena.tiempo_de_condena = tiempoDeCondena;
                 pplEnExpediente.condena.anhos_extra_por_medida_de_seguridad = tiempoExtraCondena;
                 pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad = pplEnExpediente.condena.tiene_anhos_extra_por_medida_de_seguridad;
-                console.log("Antes de crear la condena",pplEnExpediente.condena);
+                
                 const condenaCreada = await this.dataService.condena.create(pplEnExpediente.condena);
                 //console.log("Despues de crear la condena");
                 pplEnExpediente.condena = condenaCreada;
               }
               const pplEnExpedienteCreado = await this.dataService.pplEnExpediente.create(pplEnExpediente);
-              console.log("PplEnExpediente guardado:", pplEnExpedienteCreado);
+              
               return pplEnExpedienteCreado;
             }
           ))
-          console.log("La lista de PPL en expediente es:", pplsEnExpedienteCreados);
+          
         }
         //console.log("PplEnExpediente creados:", pplsEnExpedienteCreados);
         const expedienteACrear = respuestaGeneracionExpedienteJudicialFactory.expedienteJudicial;
@@ -249,10 +249,7 @@ export class DatosPenalesUseCases{
         success:true,
         id:expedienteJudicialActualizado.id
       }
-    }catch(error){
-        this.logger.error(`Error en la creación del expediente judicial`);
-        throw new HttpException(`Error al crear el expediente judicial:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    
   }
 
   async actualizar_ppls_en_expediente(id:number,ppls:Array<number>):Promise<RespuestaPPLsEnExpedienteDTO>{

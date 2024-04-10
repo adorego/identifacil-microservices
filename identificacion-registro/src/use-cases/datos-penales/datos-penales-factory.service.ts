@@ -111,6 +111,7 @@ export class DatosPenalesFactory{
               //Hechos punibles de PPL
               let hechosPuniblesCausasPPL:Array<HechoPunibleCausaJudicial> = [];
               if(ppl.hechosPuniblesCausas && ppl.hechosPuniblesCausas.length > 0){
+                this.controlar_hechosPuniblesCausasIguales(ppl.hechosPuniblesCausas);
                 hechosPuniblesCausasPPL = await Promise.all(ppl.hechosPuniblesCausas.map(
                   async (hechoPunibleCausa)=>{
                     if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){
@@ -259,25 +260,31 @@ export class DatosPenalesFactory{
       if(!id){
         throw new HttpException(`Debe enviarse un id de expediente válido`,HttpStatus.BAD_REQUEST)
       }
+      
       const expedienteAActualizar = await this.dataService.expediente.get(id);
+
+      if(!expedienteAActualizar){
+        throw new HttpException(`No se encuentra el Expediente con el ID enviado`,HttpStatus.BAD_REQUEST)
+      }
       //Borrar PPLsEnExpediente
       if(expedienteAActualizar.ppls_en_expediente && expedienteAActualizar.ppls_en_expediente.length > 0){
         expedienteAActualizar.ppls_en_expediente.map(
           async (pplEnExpediente) =>{
             const condena_a_eliminar = pplEnExpediente.condena;
-            const resultado_pplEnExpediente = await this.dataService.pplEnExpediente.delete(pplEnExpediente);
-            const resultado_eliminar_condena = await this.dataService.condena.delete(condena_a_eliminar);
+            if(condena_a_eliminar && condena_a_eliminar.id){
+              const resultado_pplEnExpediente = await this.dataService.pplEnExpediente.delete(pplEnExpediente);
+              const resultado_eliminar_condena = await this.dataService.condena.delete(condena_a_eliminar);
             
-            if(!resultado_eliminar_condena || !resultado_pplEnExpediente){
-              throw new HttpException(`No se pude eliminar el registro de PPLEnExpediente`,HttpStatus.INTERNAL_SERVER_ERROR);
-            } 
+            
+              if(!resultado_eliminar_condena || !resultado_pplEnExpediente){
+                throw new HttpException(`No se pude eliminar el registro de PPLEnExpediente`,HttpStatus.INTERNAL_SERVER_ERROR);
+              } 
+            }
           }
         )
       }
 
-      if(!expedienteAActualizar){
-        throw new HttpException(`No se encuentra el Expediente con el ID enviado`,HttpStatus.BAD_REQUEST)
-      }
+      
       //Verificacion de numero de expediente
       if(!expedienteDTO.numeroDeExpediente){
         throw new HttpException(`Debe enviarse el número de expediente`,HttpStatus.BAD_REQUEST)
@@ -358,6 +365,7 @@ export class DatosPenalesFactory{
               //Hechos punibles de PPL
               let hechosPuniblesCausasPPL:Array<HechoPunibleCausaJudicial> = [];
               if(ppl.hechosPuniblesCausas && ppl.hechosPuniblesCausas.length > 0){
+                this.controlar_hechosPuniblesCausasIguales(ppl.hechosPuniblesCausas);
                 hechosPuniblesCausasPPL = await Promise.all(ppl.hechosPuniblesCausas.map(
                   async (hechoPunibleCausa)=>{
                     if(!hechoPunibleCausa[0] || !hechoPunibleCausa[1] || !(typeof(hechoPunibleCausa[0]) == "number") || !(typeof(hechoPunibleCausa[1]) == "number")){

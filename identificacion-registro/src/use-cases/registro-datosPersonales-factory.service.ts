@@ -91,11 +91,13 @@ export class RegistroDatosPersonalesFactory{
           contactoEnEmbajada = new ContactoEnEmbajada();
           contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
           contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
-          const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
-          if(!pais_de_embajada){
-          throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
+          
+          if(datosPersonalesDTO.pais_embajada){
+            const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
+            contactoEnEmbajada.pais = pais_de_embajada;
+            
           }
-          contactoEnEmbajada.pais = pais_de_embajada;
+          
           personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
         }
         
@@ -151,7 +153,7 @@ export class RegistroDatosPersonalesFactory{
       throw new HttpException('No existe la nacionalidad', HttpStatus.NOT_FOUND);
      }
 
-     let departamento=null;
+    let departamento=null;
     if(datosPersonalesDTO.departamento){
       departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
     }
@@ -202,17 +204,21 @@ export class RegistroDatosPersonalesFactory{
           
           let contactoEnEmbajada =  personaEncontrada.contactoDeEmbajadaoConsulado;
           //console.log("Contacto de embajada:",contactoEnEmbajada);
-          if(!contactoEnEmbajada){
-            contactoEnEmbajada = new ContactoEnEmbajada();
+          if(personaEncontrada.es_extranjero && datosPersonalesDTO.tiene_contacto_en_embajada){
+            if(!contactoEnEmbajada){
+              contactoEnEmbajada = new ContactoEnEmbajada();
+            }
+            contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
+            contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
+            if(datosPersonalesDTO.pais_embajada){
+              const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
+              contactoEnEmbajada.pais = pais_de_embajada;
+            }
+           
+            personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+
           }
-          contactoEnEmbajada.nombre = datosPersonalesDTO.nombre_contacto_en_embajada;
-          contactoEnEmbajada.numero = datosPersonalesDTO.telefono_contacto_en_embajada;
-          const pais_de_embajada = await this.dataService.pais.get(datosPersonalesDTO.pais_embajada);
-          if(!pais_de_embajada){
-            throw new HttpException(`No se encuentra el pais de embajada`,HttpStatus.BAD_REQUEST);
-          }
-          contactoEnEmbajada.pais = pais_de_embajada;
-          personaEncontrada.tiene_contacto_en_embajada = datosPersonalesDTO.tiene_contacto_en_embajada;
+          
          
 
           

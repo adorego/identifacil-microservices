@@ -309,7 +309,7 @@ export class RegistroUseCase{
     try{  
       const datosFamiliaresACrear = await this.registro_datosFamiliares_factory.generar_datos_familiares(datosFamiliaresDTO);
       const concubino = datosFamiliaresACrear.concubino;
-      console.log("Concubino:", concubino);
+      console.log("Llego hasta aca");
       let concubinoGuardado = null;
       if(concubino){
         console.log("Se va a guardar el concubino:",concubino);
@@ -324,7 +324,7 @@ export class RegistroUseCase{
           }
         ))
        }
-      console.log("Concubino guardado:",concubinoGuardado);
+      
       const registroFamiliarAGuardar = datosFamiliaresACrear.datosFamiliares;
       registroFamiliarAGuardar.familiares = familiaresGuardados;
       registroFamiliarAGuardar.concubino = concubinoGuardado;

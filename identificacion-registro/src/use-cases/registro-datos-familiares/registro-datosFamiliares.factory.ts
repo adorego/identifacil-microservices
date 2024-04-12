@@ -36,7 +36,7 @@ export class RegistroDatosFamiliaresFactory{
      let datosFamiliaresGuardados:DatosFamiliares = null;
      try{
       let familiaresACrear:Array<Familiar> = null; 
-      if(datosFamiliaresDTO.familiares_modificado && datosFamiliaresDTO.tieneCirculoFamiliar){
+      if(datosFamiliaresDTO.tieneCirculoFamiliar && datosFamiliaresDTO.familiares){
         familiaresACrear = await Promise.all(datosFamiliaresDTO.familiares.map(
             async (familiar) =>{
               const crearFamiliar = async (familiar:FamiliarDTO) =>{
@@ -66,7 +66,7 @@ export class RegistroDatosFamiliaresFactory{
       }
       console.log("Familiares Guardados",familiaresACrear);
       let concubinoACrear:Concubino = null;
-      if(datosFamiliaresDTO.concubino_modificado && datosFamiliaresDTO.tieneConcubino){
+      if(datosFamiliaresDTO.tieneConcubino){
         if(datosFamiliaresDTO.concubino){
           concubinoACrear = new Concubino();
           concubinoACrear.nombres = datosFamiliaresDTO.concubino.nombres;
@@ -109,7 +109,7 @@ export class RegistroDatosFamiliaresFactory{
     }
     let datosFamiliares = await this.dataService.datosFamiliares.get(id);
     if(!datosFamiliares){
-      throw new HttpException('No se encontró el registro famiiliar enviado', HttpStatus.BAD_REQUEST);
+      throw new HttpException('No se encontró el registro familiar enviado', HttpStatus.BAD_REQUEST);
     }
     if(!datosFamiliaresDTO.id_persona){
       throw new HttpException('No se envió el id de la persona', HttpStatus.BAD_REQUEST);

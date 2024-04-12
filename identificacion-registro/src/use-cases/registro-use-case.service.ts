@@ -35,6 +35,7 @@ import { RespuestaRegistroJudicialDTO } from "src/core/dto/registro_datos_judici
 import { RegistroDeFotosDTO } from "src/core/dto/registro/registro-de-fotos.dto";
 import { RegistroFactory } from "./registro-factory.services";
 import { RegistroFoto } from "src/core/entities/registro_foto.entity";
+import { Departamento } from "src/core/entities/departamento.entity";
 
 interface fotosDePPL{
   foto1:Array<Express.Multer.File>;
@@ -562,5 +563,9 @@ export class RegistroUseCase{
     }catch(error){
       this.logger.error(`Error al consultar los vicnulos familiares:${error}`)
     }
+  }
+
+  async obtener_departamentos():Promise<Array<Departamento>>{
+    return await this.dataService.departamento.getAll();
   }
 }

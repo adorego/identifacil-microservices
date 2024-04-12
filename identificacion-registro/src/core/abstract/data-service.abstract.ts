@@ -53,6 +53,7 @@ import { MedidaDeFuerza } from "../entities/medida-de-fuerza.entity";
 import { Sancion } from "../entities/sancion.entity";
 import { Falta } from "../entities/falta.entity";
 import { Departamento } from "../entities/departamento.entity";
+import { PuebloIndigena } from "../entities/pueblo-indigena.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -106,6 +107,7 @@ export abstract class IDataService{
   abstract ingreso_visitante:IGenericRepository<IngresoVisitante>
   abstract salida_visitante:IGenericRepository<SalidaVisitante>
   abstract departamento:IGenericRepository<Departamento>
+  abstract pueblo_indigena:IGenericRepository<PuebloIndigena>
   // abstract medidas_de_fuerza:IGenericRepository<MedidaDeFuerza>
   // abstract sancion:IGenericRepository<Sancion>
   // abstract falta:IGenericRepository<Falta>

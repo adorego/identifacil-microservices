@@ -3,8 +3,14 @@ import { EntradaTransitoriaDTO } from "src/core/dto/salidasTransitorias/entrada-
 import { SalidaTransitoriaPplDTO } from "src/core/dto/salidasTransitorias/salida-transitoria.dto";
 
 
-@Controller()
+@Controller('salidas_transitorias')
 export class SalidasTransitoriasPpl{
+
+    @Post()
+    permiso(@Body() permisoSalidaTransitoriaDTO:SalidaTransitoriaPplDTO){
+
+    }
+
 
     @Post()
     salida_ppl(@Body() salidaTransitoriaDTO:SalidaTransitoriaPplDTO){

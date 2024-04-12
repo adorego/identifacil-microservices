@@ -264,6 +264,17 @@ export class RegistroController{
    
   }
 
+  @Get('departamentos')
+  async getDepartamentos(){
+    try{
+      const departamentos = await this.registroPersonaUseCase.obtener_departamentos();
+      return departamentos;
+    }catch(error){
+      throw new HttpException(`Error al obtener los deepartamentos:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
   // @Get('registro_visitante')
   // async 
 }

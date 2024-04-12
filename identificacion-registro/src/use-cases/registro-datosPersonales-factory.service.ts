@@ -46,7 +46,7 @@ export class RegistroDatosPersonalesFactory{
     if(datosPersonalesDTO.departamento){
       departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
     }
-
+    console.log("Departamento obtenido:",departamento);
     let ciudad=null;
     if(datosPersonalesDTO.ciudad){
       ciudad = await this.dataService.ciudad.get(datosPersonalesDTO.ciudad);
@@ -120,7 +120,7 @@ export class RegistroDatosPersonalesFactory{
 
   async generarDatosPersonalesAActualizar(id:number, datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<RespuestaFactoryActualizarDatosPersonales>{
     
-    console.log("Entró en generarDatosPersonalesAActualizar");
+    console.log("Entró en generarDatosPersonalesAActualizar, departamentoId:",datosPersonalesDTO.departamento);
     //Validar que exista el Objeto
     if(!id){
       throw new HttpException('El identificador del registro debe ser valido', HttpStatus.BAD_REQUEST);
@@ -155,7 +155,9 @@ export class RegistroDatosPersonalesFactory{
 
     let departamento=null;
     if(datosPersonalesDTO.departamento){
+      
       departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
+      console.log("Entró en buscar departamento:", departamento);
     }
     console.log("Departamento:",departamento);
 

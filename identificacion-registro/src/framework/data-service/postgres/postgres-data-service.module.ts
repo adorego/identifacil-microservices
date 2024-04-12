@@ -59,6 +59,7 @@ import { FaltaModel } from "./models/falta.model";
 import { SancionModel } from "./models/sancion.model";
 import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
 import { DepartamentoModel } from "./models/departamento.model";
+import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
 
 @Module({
   imports:[
@@ -123,7 +124,8 @@ import { DepartamentoModel } from "./models/departamento.model";
       FaltaModel,
       SancionModel,
       TipoDeFaltaModel,
-      DepartamentoModel
+      DepartamentoModel,
+      PuebloIndigenaModel
       
       
     

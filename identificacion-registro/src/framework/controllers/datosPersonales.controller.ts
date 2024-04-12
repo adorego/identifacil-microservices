@@ -28,7 +28,7 @@ export class DatosPersonalesController{
 
   @Put(':id')
   async update(@Param() param:any, @Body() datosPersonalesDTO:RegistroDatosPersonalesDTO):Promise<RespuestaActualizacionDatosPersonalesDTO>{
-    this.logger.log('Datos recibidos:',`id:${param.id}` ,`datos personales:${datosPersonalesDTO}`);
+    this.logger.log('Datos recibidos:',`id:${param.id}` ,`datos personales:${{...datosPersonalesDTO}}`);
     const resultadoActualizacionDatosPersonales = await this.registroPersonaUseCase.actualizar_datosPersonales(param.id, datosPersonalesDTO);
     return{
       id:resultadoActualizacionDatosPersonales.id,

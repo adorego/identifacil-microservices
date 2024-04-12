@@ -9,4 +9,7 @@ export class PaisModel extends Pais{
 
   @Column({type:"varchar"})
   nombre:string;
+
+  @Column({type:"varchar"})
+  codigo: string;
 }

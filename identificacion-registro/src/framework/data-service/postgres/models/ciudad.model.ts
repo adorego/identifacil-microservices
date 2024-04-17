@@ -12,9 +12,12 @@ export class CiudadModel extends Ciudad{
   @Column({type:"varchar"})
   nombre:string;
 
+  @Column({type:"varchar"})
+  codigo: string;
+
   @ManyToOne(() => PaisModel)
   pais:PaisModel;
 
-  @ManyToOne(()=>DepartamentoModel)
+  @ManyToOne(()=>DepartamentoModel,{eager:true})
   departamento:DepartamentoModel;
 }

@@ -74,6 +74,7 @@ export class GestionPPLUseCase{
   async getPPLByCedula(ci:string):Promise<PplDTO> | null{
     try{
       const ppl = await this.dataService.ppl.getPplByCedula(ci);
+      
       if(!ppl){
         return null
       }else{

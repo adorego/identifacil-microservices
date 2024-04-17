@@ -4,6 +4,7 @@ import { Pais } from "./pais.entity";
 export class Ciudad{
   id:number;
   nombre:string;
+  codigo:string;
   departamento:Departamento;
   pais:Pais;
 }

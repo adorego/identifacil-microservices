@@ -13,6 +13,7 @@ import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { RespuestGenericaActualizarCrearDTO } from "src/core/dto/respuesta-generica-actualizar-crear.dto";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { RespuestaPPLsEnExpedienteDTO } from "src/core/dto/datosPenales/respuesta-ppls-en-expediente.dto";
+import { ProcesadosYCondenadosDTO } from "src/core/dto/datosPenales/procesados-codenados.dto";
 
 @Injectable()
 export class DatosPenalesUseCases{
@@ -384,5 +385,23 @@ export class DatosPenalesUseCases{
 
   async getCiudades(){
     return this.dataService.ciudad.getAll();
+  }
+
+  async getNumeroDeCondenadosYProcesados():Promise<ProcesadosYCondenadosDTO>{
+    const ppls = await this.dataService.ppl.getAll();
+    const procesados_condenados ={
+      condenados:0,
+      procesados:0
+    }
+    ppls.map(
+      (ppl)=>{
+        if(ppl.condenas && ppl.condenas.length > 0){
+          procesados_condenados.condenados++
+        }else{
+          procesados_condenados.procesados++
+        }
+      }
+    )
+    return procesados_condenados;
   }
 }

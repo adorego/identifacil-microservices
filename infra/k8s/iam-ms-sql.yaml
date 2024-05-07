@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: iam-mssql-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iam-mssql
+  template:
+    metadata:
+      labels:
+        app: iam-mssql
+    spec:
+      containers:
+        - name: iam-mssql
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1435
+          envFrom:
+            - configMapRef: 
+                name: iam-secret-credentials
+          volumeMounts: 
+              - mountPath: /var/lib/postgresql/data
+                name: registro-data-volume
+      volumes: 
+        - name: registro-data-volume
+          persistentVolumeClaim:
+            claimName: registro-data-claim
+
+          
+
+
+          
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registro-postgres-srv
+spec:
+  selector:
+    app: registro-postgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

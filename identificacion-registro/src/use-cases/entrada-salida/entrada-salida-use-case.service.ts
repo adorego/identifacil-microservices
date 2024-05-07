@@ -1,7 +1,8 @@
-import { Get, HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { EntradaPplDTO } from "src/core/dto/entradaSalida/entrada-ppl.dto";
 import { EntradaVisitanteDTO } from "src/core/dto/entradaSalida/entrada-visitante.dto";
+import { RegistroVisitaDTO } from "src/core/dto/entradaSalida/registro-visita.dto";
 import { ResultadoIngresoPplDTO } from "src/core/dto/entradaSalida/resultado-entrada-salida.dto";
 import { ResultadoIngresoVisitanteDTO } from "src/core/dto/entradaSalida/resultado-ingreso-visitante.dto";
 import { ResultadoSalidaVisitanteDTO } from "src/core/dto/entradaSalida/resultado-salida-visitante.dto";
@@ -184,16 +185,45 @@ export class EntradaSalidaUseCase{
        }
     }
 
-    @Get()
+ 
     async entradas_visitantes():Promise<Array<IngresoVisitante>>{
         const ingresos_visitantes = await this.dataService.ingreso_visitante.getAll();
         return ingresos_visitantes;
     }
 
-    @Get()
+
     async salidas_visitantes():Promise<Array<SalidaVisitante>>{
         const salidas_visitantes = await this.dataService.salida_visitante.getAll();
         return salidas_visitantes;
+    }
+
+ 
+    async entradasSalidas_visitantes():Promise<Array<RegistroVisitaDTO>>{
+        let entradas_salidas:Array<RegistroVisitaDTO> = new Array<RegistroVisitaDTO>;
+        const ingresos_visitantes = await this.dataService.ingreso_visitante.getAll();
+        entradas_salidas = ingresos_visitantes.map(
+            (ingreso)=>{
+                return{
+                    id:ingreso.id,
+                    tipo:0,
+                    fecha:new Date(ingreso.fecha_ingreso),
+                    ppl:ingreso.ppl_a_visitar.id
+                }
+            }
+        )
+        const salidas_visitantes = await this.dataService.salida_visitante.getAll();
+        salidas_visitantes.map(
+            (salida)=>{
+                entradas_salidas.push({
+                    id:salida.id,
+                    tipo:1,
+                    fecha:new Date(salida.fecha_salida),
+                    ppl:salida.ppl_que_visito.id
+                })
+            }
+        )
+        return entradas_salidas;
+       
     }
 
 

@@ -73,6 +73,11 @@ export class EntradaSalidaController{
         }
     }
 
+    @Get('visitantes/entrada_salida')
+    async obtener_entradas_salidas(){
+        return this.entradaSalidaUseCase.entradasSalidas_visitantes();
+    }
+
     
 
 

@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, Logger, Param, Patch,
 import { ActualizarPplsEnExpedienteDTO } from "src/core/dto/datosPenales/actualizar-ppls-en-expediente.dto";
 import { ExpedienteJudicialDTO } from "src/core/dto/datosPenales/expediente.dto";
 import { HechoPunibleDTO } from "src/core/dto/datosPenales/hecho-punible.dto";
+import { ProcesadosYCondenadosDTO } from "src/core/dto/datosPenales/procesados-codenados.dto";
 import { DatosPenalesUseCases } from "src/use-cases/datos-penales/datos-penales-use-case.service";
 
 
@@ -198,6 +199,17 @@ export class DatosPenalesController{
       throw new HttpException("Ocurrio un error durante la consulta de Ciudades:", error);
     }
     
+  }
+
+  @Get("condenados_procesados")
+  async getNumeroDeCondenadosYProcesados(){
+    this.logger.log("Get número de condenados y procesados");
+    const procesados_condenados:ProcesadosYCondenadosDTO = await this.datosPenalesUseCaseService.getNumeroDeCondenadosYProcesados();
+    return{
+      condenados:procesados_condenados.condenados,
+      procesados:procesados_condenados.procesados,
+      success:true
+    }
   }
 }
 

@@ -1,0 +1,120 @@
+# encoding: utf-8 
+# https://docs.docker.com/reference/cli/docker/image/push/ Para meter la imagen al registro. 
+# https://stackoverflow.com/questions/28349392/how-to-push-a-docker-image-to-a-private-repository
+# https://www.youtube.com/watch?v=UkTfMZBFZ5g&list=PLRHPC9shBXl2OMXs1kQsx6TIMA6L_UjEL&index=12 Comandos
+# docker save iamapp > iamapp110.tar para exportar el archivo de imagen.
+# docker load < mynginx1.tar para importar el archivo de imagen.
+
+
+
+# Para etiquetar una imagen en el registro
+# 1. Primero iniciar sesión para docker hub
+#   docker login --username <username> [ENTER]
+#   Se te pedirá la contraseña de docker hub, luego de eso 
+# 2. docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+# 2.1. Ejemplo: docker tag 7e36a2c98672f2162b693653b1fc4111f81b0d03e01ac9f3753ab9e17f75e1e9 optasc.com/docker/iamapp110
+
+# 3. Para publicarlo
+# 3.1. Ejemplo: docker push NAME[:TAG]
+
+# Para quitar el tag
+# 4. docker rmi optasc.com/docker/iamapp110
+
+version: '3.8'
+services:
+  sqlserver:
+      image: mcr.microsoft.com/mssql/server:2022-latest #El lugar donde está el archivo de imagen.
+      container_name: sqlserver #El nombre del contenedor
+      restart: always #Si se apaga el equipo, reinicia, se presenta alguna falla, se inicia de forma automática
+      environment: #Las variables de entorno de SQL Server
+        ACCEPT_EULA: Y
+        #MSSQL_DATA_DIR: /var/opt/sqlserver/data
+        #MSSQL_LOG_DIR: /var/opt/sqlserver/log
+        #MSSQL_BACKUP_DIR: /var/opt/sqlserver/backup
+        MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+        MSSQL_PID: Express
+      ports: #El puerto del equipo:el puerto interno del contenedor
+        - 1435:1433
+      volumes:
+        - ./imports/authdb.bak:/var/backups/authdb.bak
+      networks:
+        pti_auth_network:
+            aliases: 
+                - sqlserver_host
+  restore:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: restore
+    command: /bin/bash -c "/opt/mssql-tools/bin/sqlcmd -S sqlserver_host -U sa -P ${MSSQL_SA_PASSWORD} -i /scripts/restore_script.sql"
+    restart: on-failure:5
+    depends_on:
+      - sqlserver
+    volumes:      
+      - ./restore_script.sql:/scripts/restore_script.sql     
+    networks:
+        pti_auth_network:
+            aliases: 
+                - tools_host
+
+  backend:
+    #image: gustavoarriola/pti:v1
+    image: iam-back
+    build:
+      dockerfile: Dockerfile-back
+    container_name: backend
+    restart: always
+    environment:
+        ENV_DBHOST: sqlserver_host
+        ENV_DBUSER: "sa"
+        ENV_DBPASS: ${MSSQL_SA_PASSWORD}
+        ENV_DBNAME: "authdb"
+        ASPNETCORE_HTTP_PORTS: "80"
+    ports:
+        - 5000:80
+        - 5001:443
+    networks:
+        pti_auth_network:
+            aliases:
+                - auth_host 
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    ports:
+        - 8080:8080
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin 
+      KEYCLOAK_ADMIN_PASSWORD: admin 
+      KC_METRICS_ENABLED: true
+    command: ["start-dev", "--import-realm"]
+    restart: always
+    volumes:
+      - ./imports:/opt/keycloak/data/import
+      - ./imports/ui:/opt/keycloak/themes
+    networks:
+        pti_auth_network:
+            aliases:
+                - keycloak_host 
+
+  frontend:
+    container_name: frontend
+    image: iam-front
+    build:
+      context: ./Web/ClientApp-IAM
+      dockerfile: Dockerfile-front
+    ports:
+        - 3005:80
+    networks:
+        pti_auth_network:
+            aliases:
+                - front_host 
+    
+
+
+networks:
+  pti_auth_network: # Nombre del proyecto
+    name: pti_auth_net # Nombre de la red.
+    driver: bridge # Para comunicación entre contenedores.
+    ipam: #Configuración del IP Address Manager
+        driver: default #Docker administrará o gestionar las direcciones IP. Le asigna las direcciones IP y asocia el alias a dicha dirección IP.
+        # docker network prune elimina las redes que no están siendo usadas.
+        # docker exec -it <ID_Container> /bin/sh

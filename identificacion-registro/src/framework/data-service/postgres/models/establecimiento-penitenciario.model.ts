@@ -17,6 +17,6 @@ export class EstablecimientoPenitenciarioModel extends EstablecimientoPenitencia
   @OneToMany(()=>IngresoAPrisionModel, ingresosAPrision =>ingresosAPrision.establecimiento_penitenciario)
   ingresos_a_prision:Array<IngresoAPrisionModel>;
 
-  @Column({type:"int"})
+  @Column({type:"int",nullable:true})
   capacidad: number;
 }

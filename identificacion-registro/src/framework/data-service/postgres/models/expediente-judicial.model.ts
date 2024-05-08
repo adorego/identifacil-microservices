@@ -16,7 +16,7 @@ export class ExpedienteJudicialModel extends ExpedienteJudicial{
   @Column({type:"varchar", nullable:false,unique:true})
   numeroDeExpediente:string;
 
-  @Column({type:"boolean",nullable:true})
+  @Column({type:"boolean",default:false})
   condenado:boolean
   
   @Column({type:'varchar', nullable:true})

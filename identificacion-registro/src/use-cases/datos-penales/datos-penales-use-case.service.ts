@@ -389,16 +389,32 @@ export class DatosPenalesUseCases{
 
   async getNumeroDeCondenadosYProcesados():Promise<ProcesadosYCondenadosDTO>{
     const ppls = await this.dataService.ppl.getAll();
+    //console.log("ppls:",ppls);
+    const ppls_en_expediente = await this.dataService.pplEnExpediente.getAll();
+    //console.log("ppls_en_expediente:",ppls_en_expediente);
     const procesados_condenados ={
       condenados:0,
       procesados:0
     }
     ppls.map(
       (ppl)=>{
-        if(ppl.condenas && ppl.condenas.length > 0){
-          procesados_condenados.condenados++
-        }else{
-          procesados_condenados.procesados++
+        const expedientes_del_ppl:Array<PplEnExpediente> = ppls_en_expediente.filter(
+          (ppl_en_expediente)=>{
+            return ppl_en_expediente.ppl.id == ppl.id
+          }
+        )
+        
+        let esta_condenado=false;
+        expedientes_del_ppl.map(
+          (ppl_en_expediente)=>{
+            if(ppl_en_expediente.condenado && !esta_condenado){
+              procesados_condenados.condenados++;
+              esta_condenado = true;
+            }
+          }
+        );
+        if(!esta_condenado){
+          procesados_condenados.procesados++;
         }
       }
     )

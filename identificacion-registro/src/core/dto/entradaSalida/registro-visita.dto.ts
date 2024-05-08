@@ -4,4 +4,8 @@ export class RegistroVisitaDTO{
     tipo:number;
     fecha:Date;
     ppl:number;
+    nombre_ppl:string;
+    apellido_ppl:string;
+    nombre_visita:string;
+    apellido_visita:string;
 }

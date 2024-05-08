@@ -207,7 +207,11 @@ export class EntradaSalidaUseCase{
                     id:ingreso.id,
                     tipo:0,
                     fecha:new Date(ingreso.fecha_ingreso),
-                    ppl:ingreso.ppl_a_visitar.id
+                    ppl:ingreso.ppl_a_visitar.id,
+                    nombre_ppl:ingreso.ppl_a_visitar.persona.nombre,
+                    apellido_ppl:ingreso.ppl_a_visitar.persona.apellido,
+                    nombre_visita:ingreso.visitante.nombre,
+                    apellido_visita:ingreso.visitante.apellido
                 }
             }
         )
@@ -218,7 +222,11 @@ export class EntradaSalidaUseCase{
                     id:salida.id,
                     tipo:1,
                     fecha:new Date(salida.fecha_salida),
-                    ppl:salida.ppl_que_visito.id
+                    ppl:salida.ppl_que_visito.id,
+                    nombre_ppl:salida.ppl_que_visito.persona.nombre,
+                    apellido_ppl:salida.ppl_que_visito.persona.apellido,
+                    nombre_visita:salida.visitante.nombre,
+                    apellido_visita:salida.visitante.apellido
                 })
             }
         )

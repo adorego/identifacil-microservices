@@ -12,6 +12,5 @@ export class TipoIdentificacionModel extends TipoIdentificacion{
   @Column({type:'varchar'})
   tipo:string;
 
-  @OneToMany(() => PersonaModel, (persona) => persona.tipo_identificacion)
-  personas:PersonaModel[];
+  
 }

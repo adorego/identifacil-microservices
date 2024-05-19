@@ -4,6 +4,7 @@ import { ConcubinoModel } from "./concubino.model";
 import { DatosFamiliares } from "src/core/entities/datos-familiares.entity";
 import { FamiliarModel } from "./familiar.model";
 import { PersonaModel } from "./persona.model";
+import { Concubino } from "src/core/entities/concubino.entity";
 
 @Entity({name:'datos_familiares'})
 export class DatosFamiliaresModel extends DatosFamiliares{
@@ -38,10 +39,14 @@ export class DatosFamiliaresModel extends DatosFamiliares{
   @Column({type:'boolean', nullable:true})
   tieneConcubino_modificado:boolean;
   
-  @OneToOne(() => ConcubinoModel, {eager:true,onDelete:'CASCADE'})
+  @OneToOne(() => ConcubinoModel, {eager:true})
   @JoinColumn()
   concubino:ConcubinoModel;
   
   @Column({type:'boolean', nullable:true})
   concubino_modificado:boolean;
+
+ 
+  @OneToMany(()=>ConcubinoModel,concubino=>concubino.datosFamiliares,{eager:true})
+  concubinos_anteriores:Array<ConcubinoModel>;
 }

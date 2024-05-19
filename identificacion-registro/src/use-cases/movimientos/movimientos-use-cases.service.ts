@@ -13,6 +13,7 @@ import { ChoferDTO } from "src/core/dto/movimientos/chofer.dto";
 import { Chofer } from "src/core/entities/chofer.entity";
 import { VehiculoDTO } from "src/core/dto/movimientos/vehiculo.dto";
 import { Vehiculo } from "src/core/entities/vehiculo.entity";
+import { Movimiento } from "src/core/entities/movimiento.entity";
 
 @Injectable()
 export class MovimientosUseCases{
@@ -163,6 +164,11 @@ export class MovimientosUseCases{
         vehiculoAActualizar.marca = vehiculoDTO.marca
         
         return await this.dataService.vehiculo.update(vehiculoAActualizar);
+    }
+
+    async get_informe_traslados(){
+        const trasladosActuales:Array<Movimiento> = await this.dataService.movimiento.getAll();
+        
     }
 
 }

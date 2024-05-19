@@ -22,7 +22,7 @@ export class PersonaModel extends Persona{
   @PrimaryGeneratedColumn()
   id:number;
 
-  @ManyToOne(() => TipoIdentificacionModel, (tipoDeIdentificacion) => tipoDeIdentificacion.personas, {eager:true} )
+  @ManyToOne(() => TipoIdentificacionModel, {eager:true} )
   @JoinColumn({name: 'id_tipo_identificacion'})
   tipo_identificacion:TipoIdentificacionModel
   

@@ -211,7 +211,8 @@ export class EntradaSalidaUseCase{
                     nombre_ppl:ingreso.ppl_a_visitar.persona.nombre,
                     apellido_ppl:ingreso.ppl_a_visitar.persona.apellido,
                     nombre_visita:ingreso.visitante.nombre,
-                    apellido_visita:ingreso.visitante.apellido
+                    apellido_visita:ingreso.visitante.apellido,
+                    observacion:ingreso.observacion
                 }
             }
         )
@@ -226,7 +227,8 @@ export class EntradaSalidaUseCase{
                     nombre_ppl:salida.ppl_que_visito.persona.nombre,
                     apellido_ppl:salida.ppl_que_visito.persona.apellido,
                     nombre_visita:salida.visitante.nombre,
-                    apellido_visita:salida.visitante.apellido
+                    apellido_visita:salida.visitante.apellido,
+                    observacion:salida.observacion
                 })
             }
         )

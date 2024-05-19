@@ -13,6 +13,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 import { EntradaSalidaPPLModule } from './use-cases/entrada-salida/entrada-salida.module';
+import { ConyugeModule } from './use-cases/conyuge/conyuge.module';
 
 
 
@@ -51,7 +52,8 @@ import { EntradaSalidaPPLModule } from './use-cases/entrada-salida/entrada-salid
     GestionPPLModule,
     DatosPenalesModule,
     MovimientosModule,
-    EntradaSalidaPPLModule
+    EntradaSalidaPPLModule,
+    ConyugeModule
   
   ],
   controllers: [],

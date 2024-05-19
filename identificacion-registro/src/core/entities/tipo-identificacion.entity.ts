@@ -5,5 +5,5 @@ export class TipoIdentificacion{
 
   tipo:string;
 
-  personas:Array<Persona>
+  
 }

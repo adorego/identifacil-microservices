@@ -276,6 +276,14 @@ export class MovimientosController{
         }
     }
 
+    @Get('informe_traslados')
+    async get_informe_traslados(){
+        //Cantidad de traslados por mes
+        const trasladosActuales = await this.movimientoUseCase
+        //Cantidad de traslados por PPL
+
+    }
+
     
 
 }

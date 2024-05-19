@@ -16,7 +16,7 @@ export class DatosFamiliares{
   tieneConcubino_modificado:boolean;
   concubino:Concubino;
   concubino_modificado:boolean;
-  
+  concubinos_anteriores:Array<Concubino>;
   
   
 }

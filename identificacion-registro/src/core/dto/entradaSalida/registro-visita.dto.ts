@@ -8,4 +8,5 @@ export class RegistroVisitaDTO{
     apellido_ppl:string;
     nombre_visita:string;
     apellido_visita:string;
+    observacion:string;
 }

@@ -18,21 +18,27 @@ export class ConyugeController{
 
    @Post()
    async crearConyuge(@Body() conyugeDTO:ConyugeDTO){
+     this.logger.log("Llamada a crear conyuge");
      const resultado = await this.conyugeUseCases.crearConyuge(conyugeDTO);
      return resultado;
    }
 
    @Put()
    async actualizarConyuge(@Body() conyugeDTO:ConyugeDTO){
+     this.logger.log("Llamada a actualizar conyuge");
      const resultado = await this.conyugeUseCases.actualizarConyuge(conyugeDTO);
      return resultado;
    }
 
    @Get('historial_conyuges/:id')
    async getHistorial(@Param() param){
-    console.log("Llamada a historial conyuges");
     this.logger.log("Llamada a historial_conyuges con id:", param.id)
      return this.conyugeUseCases.getHistorialConyuge(param.id);
    }
 
+   @Get(':id')
+   async getConyugeActual(@Param() param){
+    this.logger.log("Llamada a get conyuge actual");
+    return this.conyugeUseCases.getConyugeActual(param.id);
+   }
 }

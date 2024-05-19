@@ -56,4 +56,15 @@ export class ConyugeUseCases{
         return historial_conyuges;
     }
 
+    async getConyugeActual(id_persona:number){
+        const persona_encontrada = await this.dataService.persona.get(id_persona);
+        
+        if(!persona_encontrada){
+            throw new HttpException("No existe la persona con ese id",HttpStatus.BAD_REQUEST);
+        }
+
+        const conyuge_actual = persona_encontrada.datosFamiliares.concubino;
+        return conyuge_actual;
+    }
+
 }

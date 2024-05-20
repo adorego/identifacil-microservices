@@ -60,6 +60,7 @@ import { SancionModel } from "./models/sancion.model";
 import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
 import { DepartamentoModel } from "./models/departamento.model";
 import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
+import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
 
 @Module({
   imports:[
@@ -125,8 +126,10 @@ import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
       SancionModel,
       TipoDeFaltaModel,
       DepartamentoModel,
-      PuebloIndigenaModel
-      
+      PuebloIndigenaModel,
+      TipoDeMedidaDeFuerzaModel,
+      FaltaModel,
+      SancionModel,
       
     
     

@@ -57,11 +57,12 @@ import { RegistroFotoModel } from "./models/registro-foto.model";
 import { IngresoPPLModel } from "./models/ingreso-ppl.model";
 import { IngresoVisitanteModel } from "./models/ingreso-visitante.model";
 import { SalidaVisitanteModel } from "./models/salida-visitante.model";
-import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
-import { Departamento } from "src/core/entities/departamento.entity";
 import { DepartamentoModel } from "./models/departamento.model";
-import { PuebloIndigena } from "src/core/entities/pueblo-indigena.entity";
 import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
+import { MedidaDeFuerzaModel } from "./models/medida-de-fuerza.model";
+import { FaltaModel } from "./models/falta.model";
+import { SancionModel } from "./models/sancion.model";
+import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
 
 
 @Injectable()
@@ -123,6 +124,14 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   //Entrada y Salida Visitante
   ingreso_visitante:PostgresGenericRepository<IngresoVisitanteModel>;
   salida_visitante: PostgresGenericRepository<SalidaVisitanteModel>;
+
+  //Medidas de fuerza
+  medidas_de_fuerza: PostgresGenericRepository<MedidaDeFuerzaModel>;
+  tipo_de_medida_de_fuerza:PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>
+
+  //Faltas y sanciones
+  falta: PostgresGenericRepository<FaltaModel>;
+  sancion: PostgresGenericRepository<SancionModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -232,6 +241,17 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
 
     @InjectRepository(PuebloIndigenaModel)
     private pueblo_indigena_repository:Repository<PuebloIndigenaModel>,
+
+    @InjectRepository(MedidaDeFuerzaModel)
+    private medidas_de_fuerza_repository:Repository<MedidaDeFuerzaModel>,
+    @InjectRepository(TipoDeMedidaDeFuerzaModel)
+    private tipo_de_medida_de_fuerza_repository:Repository<TipoDeMedidaDeFuerzaModel>,
+
+    @InjectRepository(FaltaModel)
+    private falta_repository:Repository<FaltaModel>,
+
+    @InjectRepository(SancionModel)
+    private sancion_repository:Repository<SancionModel>
     
 
 
@@ -295,6 +315,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.salida_visitante = new PostgresGenericRepository<SalidaVisitanteModel>(this.salida_visitante_repository)
     this.departamento = new PostgresGenericRepository<DepartamentoModel>(this.departamento_repository)
     this.pueblo_indigena = new PostgresGenericRepository<PuebloIndigenaModel>(this.pueblo_indigena_repository)
+    this.medidas_de_fuerza =  new PostgresGenericRepository<MedidaDeFuerzaModel>(this.medidas_de_fuerza_repository)
+    this.tipo_de_medida_de_fuerza = new PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>(this.tipo_de_medida_de_fuerza_repository)
+    this.falta = new PostgresGenericRepository<FaltaModel>(this.falta_repository)
+    this.sancion = new PostgresGenericRepository<SancionModel>(this.sancion_repository)
   }
   
   

@@ -14,6 +14,7 @@ import { join } from 'path';
 import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 import { EntradaSalidaPPLModule } from './use-cases/entrada-salida/entrada-salida.module';
 import { ConyugeModule } from './use-cases/conyuge/conyuge.module';
+import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-fuerza.module';
 
 
 
@@ -53,7 +54,8 @@ import { ConyugeModule } from './use-cases/conyuge/conyuge.module';
     DatosPenalesModule,
     MovimientosModule,
     EntradaSalidaPPLModule,
-    ConyugeModule
+    ConyugeModule,
+    MedidaDeFuerzaModule
   
   ],
   controllers: [],

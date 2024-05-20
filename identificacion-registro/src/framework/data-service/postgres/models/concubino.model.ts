@@ -22,7 +22,7 @@ export class ConcubinoModel extends Concubino{
   apellidos:string;
 
   
-  @ManyToOne(()=>TipoIdentificacionModel)
+  @ManyToOne(()=>TipoIdentificacionModel,{eager:true})
   tipo_de_identificacion:TipoIdentificacionModel;
 
   @Column({type:"boolean", nullable:true})

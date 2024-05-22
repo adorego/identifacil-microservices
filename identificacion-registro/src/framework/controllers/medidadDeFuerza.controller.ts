@@ -38,7 +38,9 @@ export class MedidasDeFuerzaController{
     @Post('registro_medico/:id')
     @UseInterceptors(FileInterceptor('documento_registro_medico'))
     async generar_registro_medico(@UploadedFile() documento_registro_medico:Express.Multer.File,@Param() param:any ,@Body() registroMedicoDTO:RegistroMedicoDTO){
+        console.log("Documento recibido:",documento_registro_medico);
         const resultado_creacion_registro_medico = await this.medidasDeFuerzaUseCase.crear_registro_medico(param.id, documento_registro_medico,registroMedicoDTO);
+        console.log("Resultado:",resultado_creacion_registro_medico);
         return{
             id:resultado_creacion_registro_medico.id,
             sucess:true

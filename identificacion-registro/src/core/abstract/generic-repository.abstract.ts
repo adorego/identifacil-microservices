@@ -39,5 +39,5 @@ export abstract class IGenericRepository<T>{
 
   abstract getMedidasDeFuerzaConPpl():Promise<Array<T>>;
 
-  abstract getMedidaDeFuerzaById(id:number):Promise<Array<T>>;
+  abstract getMedidaDeFuerzaById(id:number):Promise<T>;
 }

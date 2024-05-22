@@ -10,9 +10,12 @@ export class RegistroMedicoModel extends RegistroMedico{
     @Column({type:"varchar"})
     diagnostico:string;
 
+    @Column({type:"date"})
+    fecha: Date;
+
     @ManyToOne(()=>MedidaDeFuerzaModel)
     medida_de_fuerza:MedidaDeFuerzaModel
 
-    @Column({type:"varchar"})
+    @Column({type:"varchar",nullable:true})
     archivo_registro_medico:string;
 }

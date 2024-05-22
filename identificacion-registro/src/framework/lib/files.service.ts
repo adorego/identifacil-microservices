@@ -27,11 +27,12 @@ export class FileService{
             const writeStream = fs.createWriteStream(finalPath);
             writeStream.write(archivo.buffer);
             writeStream.end();
+            
           }catch(error){
             throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
           }
         }else{
-          console.log('No existe el archivo a guardar');
+          
           throw new HttpException(`Error al guardar el archivo:${fileName}`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
       

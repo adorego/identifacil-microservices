@@ -38,7 +38,7 @@ export class MedidasDeFuerzaController{
     @Post('registro_medico/:id')
     @UseInterceptors(FileInterceptor('documento_registro_medico'))
     async generar_registro_medico(@UploadedFile() documento_registro_medico:Express.Multer.File,@Param() param:any ,@Body() registroMedicoDTO:RegistroMedicoDTO){
-        console.log("Documento recibido:",documento_registro_medico);
+        //console.log("Documento recibido:",documento_registro_medico);
         const resultado_creacion_registro_medico = await this.medidasDeFuerzaUseCase.crear_registro_medico(param.id, documento_registro_medico,registroMedicoDTO);
         console.log("Resultado:",resultado_creacion_registro_medico);
         return{
@@ -56,6 +56,11 @@ export class MedidasDeFuerzaController{
     @Get('tipo_de_medida_de_fuerza')
     async get_medidad_de_fuerza(){
         return await this.medidasDeFuerzaUseCase.getTiposMedidaDeFuerza()
+    }
+
+    @Get('tipo_de_medida_de_fuerza/:id')
+    async get_medida_de_fuerza_by_id(@Param() param){
+        return this.medidasDeFuerzaUseCase.getMedidaDeFuerzaById(param.id)
     }
 
     @Post('tipo_de_medida_de_fuerza')
@@ -82,6 +87,11 @@ export class MedidasDeFuerzaController{
     async get_motivo_de_medida_fuerza(){
         this.logger.log("Llamado a getMotivosDeFuerza");
         return await this.medidasDeFuerzaUseCase.getMotivosMedidaDeFuerza()
+    }
+
+    @Get('motivo_de_medida_de_fuerza/:id')
+    async get_motivos_de_fuerza_by_id(@Param() param){
+        return this.medidasDeFuerzaUseCase.getMotivosDeMedidaFuerzaById(param.id)
     }
 
     @Post('motivo_de_medida_de_fuerza')

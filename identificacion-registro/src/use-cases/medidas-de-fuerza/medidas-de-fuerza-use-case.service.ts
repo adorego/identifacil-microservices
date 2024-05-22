@@ -74,11 +74,11 @@ export class MedidasDeFuerzaUseCase{
         nuevoRegistroMedico.fecha = fecha;
         nuevoRegistroMedico.diagnostico = registroMedicoDTO.diagnostico;
         nuevoRegistroMedico.medida_de_fuerza = medida_de_fuerza_con_ppl;
-        // if(archivo){
-        //     nuevoRegistroMedico.archivo_registro_medico = await this.fileService.almacenar_archivo(archivo,`registro_medico_${fecha.toISOString()}_${ci}`);
-        
-        // }
+        if(archivo){
+            nuevoRegistroMedico.archivo_registro_medico = await this.fileService.almacenar_archivo(archivo,`registro_medico_${fecha.getDate()}_${fecha.getMonth()}_${fecha.getFullYear()}_${ci}`);
+        }
         const registroMedicoCreado = await this.dataService.registro_medico.create(nuevoRegistroMedico);
+        
         medida_de_fuerza_con_ppl.registros_medicos.push(registroMedicoCreado);
         const medidaDeFuerzaActualizada = await this.dataService.medidas_de_fuerza.update(medida_de_fuerza_con_ppl);
         return{
@@ -136,6 +136,10 @@ export class MedidasDeFuerzaUseCase{
         return await this.dataService.tipo_de_medida_de_fuerza.getAll();
     }
 
+    async getMedidaDeFuerzaById(id:number){
+        return await this.dataService.tipo_de_medida_de_fuerza.get(id);
+    }
+
     async crear_motivo_de_medida_de_fuerza(motivoMedidaDeFuerzaDTO:MotivoMedidaDeFuerzaDTO){
         if(!motivoMedidaDeFuerzaDTO.nombre){
             throw new HttpException("El nombre del tipo de medida de fuerza no puede ser nulo",HttpStatus.BAD_REQUEST);
@@ -177,6 +181,10 @@ export class MedidasDeFuerzaUseCase{
 
     async getMotivosMedidaDeFuerza(){
         return await this.dataService.motivo_medida_de_fuerza.getAll();
+    }
+
+    async getMotivosDeMedidaFuerzaById(id:number){
+        return await this.dataService.motivo_medida_de_fuerza.get(id);
     }
 
 }

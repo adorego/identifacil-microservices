@@ -3,11 +3,13 @@ import { PostgresDataServiceModule } from "src/framework/data-service/postgres/p
 import { MedidasDeFuerzaUseCase } from "./medidas-de-fuerza-use-case.service";
 import { MedidasDeFuerzaFactory } from "./medidas-de-fuerza-factory.service";
 import { MedidasDeFuerzaController } from "src/framework/controllers/medidadDeFuerza.controller";
+import { LibModule } from "src/framework/lib/lib.modules";
 
 @Module(
     {
       imports:[
-        PostgresDataServiceModule
+        PostgresDataServiceModule,
+        LibModule
       ],
       providers:[
         MedidasDeFuerzaUseCase,

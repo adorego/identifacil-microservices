@@ -63,6 +63,8 @@ import { MedidaDeFuerzaModel } from "./models/medida-de-fuerza.model";
 import { FaltaModel } from "./models/falta.model";
 import { SancionModel } from "./models/sancion.model";
 import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
+import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza.model";
+import { RegistroMedicoModel } from "./models/registro-medico.model";
 
 
 @Injectable()
@@ -127,7 +129,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
 
   //Medidas de fuerza
   medidas_de_fuerza: PostgresGenericRepository<MedidaDeFuerzaModel>;
-  tipo_de_medida_de_fuerza:PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>
+  tipo_de_medida_de_fuerza:PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>;
+  motivo_medida_de_fuerza: PostgresGenericRepository<MotivoDeMedidaDeFuerzaModel>;
+  registro_medico: PostgresGenericRepository<RegistroMedicoModel>;
 
   //Faltas y sanciones
   falta: PostgresGenericRepository<FaltaModel>;
@@ -246,6 +250,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private medidas_de_fuerza_repository:Repository<MedidaDeFuerzaModel>,
     @InjectRepository(TipoDeMedidaDeFuerzaModel)
     private tipo_de_medida_de_fuerza_repository:Repository<TipoDeMedidaDeFuerzaModel>,
+    @InjectRepository(MotivoDeMedidaDeFuerzaModel)
+    private motivo_de_medida_de_fuerza_repository:Repository<MotivoDeMedidaDeFuerzaModel>,
+
+    @InjectRepository(RegistroMedicoModel)
+    private registro_medico_repository:Repository<RegistroMedicoModel>,
 
     @InjectRepository(FaltaModel)
     private falta_repository:Repository<FaltaModel>,
@@ -317,6 +326,8 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.pueblo_indigena = new PostgresGenericRepository<PuebloIndigenaModel>(this.pueblo_indigena_repository)
     this.medidas_de_fuerza =  new PostgresGenericRepository<MedidaDeFuerzaModel>(this.medidas_de_fuerza_repository)
     this.tipo_de_medida_de_fuerza = new PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>(this.tipo_de_medida_de_fuerza_repository)
+    this.motivo_medida_de_fuerza = new PostgresGenericRepository<MotivoDeMedidaDeFuerzaModel>(this.motivo_de_medida_de_fuerza_repository)
+    this.registro_medico = new PostgresGenericRepository<RegistroMedicoModel>(this.registro_medico_repository)
     this.falta = new PostgresGenericRepository<FaltaModel>(this.falta_repository)
     this.sancion = new PostgresGenericRepository<SancionModel>(this.sancion_repository)
   }

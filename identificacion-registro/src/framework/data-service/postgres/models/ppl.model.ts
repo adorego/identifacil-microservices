@@ -29,7 +29,7 @@ export class PplModel extends Ppl{
   @OneToMany(()=>RegistroFotoModel, registro_foto=>registro_foto.ppl,{eager:true})
   registro_de_fotos:Array<RegistroFotoModel>;
 
-  @OneToMany(()=>MedidaDeFuerzaModel,medida_de_fuerza=>medida_de_fuerza.ppl_adheridos)
+  @OneToMany(()=>MedidaDeFuerzaModel,medida_de_fuerza=>medida_de_fuerza.ppl,{eager:true})
   medidas_de_fuerza:Array<MedidaDeFuerzaModel>;
 
   @OneToMany(()=>FaltaModel, falta=>falta.ppls_con_faltas)

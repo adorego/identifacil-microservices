@@ -204,5 +204,24 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
             .where("establecimiento.id = :id",{id:id_establecimiento})
             .getMany()
   }
+
+  getMedidasDeFuerzaConPpl():Promise<Array<T>>{
+    return this._repository.createQueryBuilder("medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.ppl","ppl")
+           .leftJoinAndSelect("medida_de_fuerza.tipo_de_medida_de_fuerza","tipo_de_medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.motivo","motivo_de_medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.registros_medicos","registros_medicos")
+           .getMany()
+  }
+
+  getMedidaDeFuerzaById(id:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.ppl","ppl")
+           .leftJoinAndSelect("medida_de_fuerza.tipo_de_medida_de_fuerza","tipo_de_medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.motivo","motivo_de_medida_de_fuerza")
+           .leftJoinAndSelect("medida_de_fuerza.registros_medicos","registros_medicos")
+           .where("medida_de_fuerza.id = :id",{id:id})
+           .getMany()
+  }
 }
   

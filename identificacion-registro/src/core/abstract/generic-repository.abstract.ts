@@ -36,4 +36,8 @@ export abstract class IGenericRepository<T>{
   abstract getFuncionariosPorEstablecimiento(id_establecimiento:number):Promise<Array<T>>;
 
   abstract getExpedienteByNumeroDeExpediente(numeroDeExpediente:string):Promise<T>;
+
+  abstract getMedidasDeFuerzaConPpl():Promise<Array<T>>;
+
+  abstract getMedidaDeFuerzaById(id:number):Promise<Array<T>>;
 }

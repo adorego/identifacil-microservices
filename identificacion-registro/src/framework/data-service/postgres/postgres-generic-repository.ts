@@ -208,6 +208,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   getMedidasDeFuerzaConPpl():Promise<Array<T>>{
     return this._repository.createQueryBuilder("medida_de_fuerza")
            .leftJoinAndSelect("medida_de_fuerza.ppl","ppl")
+           .leftJoinAndSelect("ppl.persona","persona")
            .leftJoinAndSelect("medida_de_fuerza.tipo_de_medida_de_fuerza","tipo_de_medida_de_fuerza")
            .leftJoinAndSelect("medida_de_fuerza.motivo","motivo_de_medida_de_fuerza")
            .leftJoinAndSelect("medida_de_fuerza.registros_medicos","registros_medicos")

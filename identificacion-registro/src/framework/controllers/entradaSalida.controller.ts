@@ -53,25 +53,7 @@ export class EntradaSalidaController{
         
     }
 
-    @Get('visitantes/ingresos')
-    async obtener_ingresos_visitantes(){
-        try{
-            return this.entradaSalidaUseCase.entradas_visitantes();
-        }catch(error){
-            this.logger.error(`Error en la obtencion de los ingresos de Visitantes:${error}`);
-            throw new HttpException(`Error en la obtencion de los ingresos de Visitantes:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Get('visitantes/salidas')
-    async obtener_salidas_visitantes(){
-        try{
-            return this.entradaSalidaUseCase.salidas_visitantes();
-        }catch(error){
-            this.logger.error(`Error en la obtencion de las salidas de Visitantes:${error}`);
-            throw new HttpException(`Error en la obtencion de los salidas de Visitantes:${error}`,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+   
 
     @Get('visitantes/entrada_salida')
     async obtener_entradas_salidas(){

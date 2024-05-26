@@ -57,6 +57,8 @@ import { PuebloIndigena } from "../entities/pueblo-indigena.entity";
 import { TipoDeMedidaDeFuerza } from "../entities/tipo-medida-de-fuerza.entity";
 import { MotivoDeMedidaDeFuerza } from "../entities/motivo-de-medida-de-fuerza.entity";
 import { RegistroMedico } from "../entities/registro-medico.entity";
+import { IngresoConyuge } from "../entities/ingreso-coyuge.entity";
+import { SalidaConyuge } from "../entities/salida-conyuge.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -75,6 +77,8 @@ export abstract class IDataService{
   abstract educacionFormacion:IGenericRepository<EducacionFormacion>
   abstract familiar:IGenericRepository<Familiar>
   abstract concubino:IGenericRepository<Concubino>
+  abstract ingreso_conyuge:IGenericRepository<IngresoConyuge>
+  abstract salida_conyuge:IGenericRepository<SalidaConyuge>
   abstract datosFamiliares:IGenericRepository<DatosFamiliares>
   abstract establecimientoPenitenciario:IGenericRepository<EstablecimientoPenitenciario>
   abstract causaJudicial:IGenericRepository<CausaJudicial>

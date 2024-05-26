@@ -63,6 +63,8 @@ import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
 import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
 import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza.model";
 import { RegistroMedicoModel } from "./models/registro-medico.model";
+import { IngresoConyugeModel } from "./models/ingreso-conyuge.model";
+import { SalidaConyugeModel } from "./models/salida-conyuge.model";
 
 @Module({
   imports:[
@@ -72,6 +74,8 @@ import { RegistroMedicoModel } from "./models/registro-medico.model";
       GeneroModel, 
       TipoIdentificacionModel,
       ConcubinoModel,
+      IngresoConyugeModel,
+      SalidaConyugeModel,
       DatosFamiliaresModel,
       DocumentosOrdenanPrisionModel,
       EducacionFormacionModel,

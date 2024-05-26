@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post, Put } from "@nestjs/common";
 import { ConyugeDTO } from "src/core/dto/conyuge/conyuge.dto";
+import { IngresoConyugeDTO } from "src/core/dto/conyuge/ingreso-coyuge.dto";
+import { SalidaConyugeDTO } from "src/core/dto/conyuge/salida-conyuge.dto";
 import { ConyugeUseCases } from "src/use-cases/conyuge/conyuge-use-case.service";
 
 @Controller(
@@ -40,5 +42,25 @@ export class ConyugeController{
    async getConyugeActual(@Param() param){
     this.logger.log("Llamada a get conyuge actual");
     return this.conyugeUseCases.getConyugeActual(param.id);
+   }
+
+   @Post('ingreso_conyuge')
+   async ingreso_coyuge(@Body() ingresoConyugeDTO:IngresoConyugeDTO){
+    this.logger.log("Llamada a ingreso_conyuge:", ingresoConyugeDTO);
+     const resultado_registro = await this.conyugeUseCases.registro_ingreso_conyuge(ingresoConyugeDTO);
+     return{
+      id:resultado_registro.id,
+      success:true
+     }
+   }
+   
+
+   @Post('salida_conyuge')
+   async salida_coyuge(@Body() salidaConyugeDTO:SalidaConyugeDTO){
+     const resultado_registro = await this.conyugeUseCases.registro_salida_conyuge(salidaConyugeDTO);
+     return{
+      id:resultado_registro.id,
+      success:true
+     }
    }
 }

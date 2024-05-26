@@ -42,7 +42,8 @@ export class  RegistroFactory{
       
     }
     //Validar que este rostro ya no este en la base de datos
-    const personaQueCoincide = await this.identificarUseCase.identificar(this.float32ConverterService.transformar_array_a_descriptor(crearRegistroPersonaDTO.descriptorFacial1.split(",")));
+    console.log("Descriptor facial 1:",crearRegistroPersonaDTO.descriptorFacial1);
+    const personaQueCoincide = await this.identificarUseCase.identificar(this.float32ConverterService.transformar_array_a_descriptor(crearRegistroPersonaDTO?.descriptorFacial1?.split(",")));
     if(personaQueCoincide.identificado){
       throw new ErrorPersonaEncontrada('Ya existe una persona con este rostro');
     }

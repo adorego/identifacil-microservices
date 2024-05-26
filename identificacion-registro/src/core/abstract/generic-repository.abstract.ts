@@ -40,4 +40,8 @@ export abstract class IGenericRepository<T>{
   abstract getMedidasDeFuerzaConPpl():Promise<Array<T>>;
 
   abstract getMedidaDeFuerzaById(id:number):Promise<T>;
+
+  abstract getIngresosConyugeByCedula(ci:string):Promise<Array<T>>;
+
+  abstract getPersonaByCedula(ci:string):Promise<T>;
 }

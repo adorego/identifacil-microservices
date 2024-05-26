@@ -33,9 +33,9 @@ export class IdentificacionUseCase{
           
         }
         return new faceapi.LabeledFaceDescriptors(identificacion,[
-          this.transformar_array_a_descriptor(persona.registro.descriptorFacial1.split(',')),
-          this.transformar_array_a_descriptor(persona.registro.descriptorFacial2.split(',')),
-          this.transformar_array_a_descriptor(persona.registro.descriptorFacial3.split(','))
+          this.transformar_array_a_descriptor(persona.registro?.descriptorFacial1?.split(',')),
+          this.transformar_array_a_descriptor(persona.registro?.descriptorFacial2?.split(',')),
+          this.transformar_array_a_descriptor(persona.registro?.descriptorFacial3?.split(','))
         ])
         // console.log(this.transformar_array_a_descriptor(persona.registro.descriptorFacial1.split(',')))
       }
@@ -72,7 +72,7 @@ export class IdentificacionUseCase{
 
   transformar_array_a_descriptor(dato:Array<string>):Float32Array{
     const descriptor:Float32Array = new Float32Array(128);
-    dato.map(
+    dato?.map(
       (valor,index) =>
       descriptor[index] = parseFloat(valor)
     )

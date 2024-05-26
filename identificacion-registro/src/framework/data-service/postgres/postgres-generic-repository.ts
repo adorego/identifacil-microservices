@@ -225,5 +225,19 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .where("medida_de_fuerza.id = :id",{id:id})
            .getOne()
   }
+
+  getIngresosConyugeByCedula(ci:string):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("ingreso_conyuge")
+           .leftJoinAndSelect("ingreso_conyuge.conyuge","conyuge")
+           .leftJoinAndSelect("ingreso_conyuge.ppl_a_visitar","ppl")
+           .where("conyuge.numeroDeIdentificacion = :ci",{ci:ci})
+           .getMany()
+  }
+
+  getPersonaByCedula(ci:string):Promise<T>{
+    return this._repository.createQueryBuilder("persona")
+           .where("persona.numero_identificacion = :ci",{ci:ci})
+           .getOne()
+  }
 }
   

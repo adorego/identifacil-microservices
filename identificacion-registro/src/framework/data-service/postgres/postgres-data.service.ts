@@ -65,6 +65,8 @@ import { SancionModel } from "./models/sancion.model";
 import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
 import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza.model";
 import { RegistroMedicoModel } from "./models/registro-medico.model";
+import { IngresoConyugeModel } from "./models/ingreso-conyuge.model";
+import { SalidaConyugeModel } from "./models/salida-conyuge.model";
 
 
 @Injectable()
@@ -84,7 +86,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   estadoCivil:PostgresGenericRepository<EstadoCivilModel>;
   educacionFormacion:PostgresGenericRepository<EducacionFormacionModel>;
   familiar: PostgresGenericRepository<Familiar>;
+  //Modulo Conyuge
   concubino: PostgresGenericRepository<Concubino>;
+  ingreso_conyuge:PostgresGenericRepository<IngresoConyugeModel>
+  salida_conyuge:PostgresGenericRepository<SalidaConyugeModel>
+
   causaJudicial: PostgresGenericRepository<CausaJudicialModel>;
   expediente: PostgresGenericRepository<ExpedienteJudicial>;
   datosFamiliares: PostgresGenericRepository<DatosFamiliares>;
@@ -170,6 +176,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private familiar_repository:Repository<FamiliarModel>,
     @InjectRepository(ConcubinoModel)
     private concubino_repository:Repository<ConcubinoModel>,
+    @InjectRepository(IngresoConyugeModel)
+    private ingreso_conyuge_repository:Repository<IngresoConyugeModel>,
+    @InjectRepository(SalidaConyugeModel)
+    private salida_conyuge_repository:Repository<SalidaConyugeModel>,
+
     @InjectRepository(DatosFamiliaresModel)
     private datosFamiliares_repository:Repository<DatosFamiliaresModel>,
     @InjectRepository(EstablecimientoPenitenciarioModel)
@@ -287,7 +298,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.estadoCivil = new PostgresGenericRepository<EstadoCivilModel>(this.estadoCivil_repository);
     this.educacionFormacion = new PostgresGenericRepository<EducacionFormacionModel>(this.educacionFormacion_repository);
     this.familiar = new PostgresGenericRepository<FamiliarModel>(this.familiar_repository);
+    //Modulo Conyuge
     this.concubino = new PostgresGenericRepository<ConcubinoModel>(this.concubino_repository);
+    this.ingreso_conyuge = new PostgresGenericRepository<IngresoConyugeModel>(this.ingreso_conyuge_repository);
+    this.salida_conyuge = new PostgresGenericRepository<SalidaConyugeModel>(this.salida_conyuge_repository);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     this.datosFamiliares = new PostgresGenericRepository<DatosFamiliaresModel>(this.datosFamiliares_repository);
     this.establecimientoPenitenciario = new PostgresGenericRepository<EstablecimientoPenitenciarioModel>(this.establecimientosPenitenciarios_repository);
     this.expediente = new PostgresGenericRepository<ExpedienteJudicial>(this.expediente_repository)

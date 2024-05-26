@@ -2,11 +2,13 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { EntradaPplDTO } from "src/core/dto/entradaSalida/entrada-ppl.dto";
 import { EntradaVisitanteDTO } from "src/core/dto/entradaSalida/entrada-visitante.dto";
+import { IngresoDTO } from "src/core/dto/entradaSalida/ingreso.dto";
 import { RegistroVisitaDTO } from "src/core/dto/entradaSalida/registro-visita.dto";
 import { ResultadoIngresoPplDTO } from "src/core/dto/entradaSalida/resultado-entrada-salida.dto";
 import { ResultadoIngresoVisitanteDTO } from "src/core/dto/entradaSalida/resultado-ingreso-visitante.dto";
 import { ResultadoSalidaVisitanteDTO } from "src/core/dto/entradaSalida/resultado-salida-visitante.dto";
 import { SalidaVisitanteDTO } from "src/core/dto/entradaSalida/salida-visitante.dto";
+import { IngresoConyuge } from "src/core/entities/ingreso-coyuge.entity";
 import { IngresoPPL } from "src/core/entities/ingreso-ppl.entity";
 import { IngresoVisitante } from "src/core/entities/ingreso-visitante.entity";
 import { SalidaVisitante } from "src/core/entities/salida-visitante.entity";
@@ -186,52 +188,92 @@ export class EntradaSalidaUseCase{
     }
 
  
-    async entradas_visitantes():Promise<Array<IngresoVisitante>>{
-        const ingresos_visitantes = await this.dataService.ingreso_visitante.getAll();
-        return ingresos_visitantes;
-    }
-
-
-    async salidas_visitantes():Promise<Array<SalidaVisitante>>{
-        const salidas_visitantes = await this.dataService.salida_visitante.getAll();
-        return salidas_visitantes;
-    }
-
+    
  
     async entradasSalidas_visitantes():Promise<Array<RegistroVisitaDTO>>{
         let entradas_salidas:Array<RegistroVisitaDTO> = new Array<RegistroVisitaDTO>;
         const ingresos_visitantes = await this.dataService.ingreso_visitante.getAll();
-        entradas_salidas = ingresos_visitantes.map(
+        const ingresos_visitantes_for_report = ingresos_visitantes.map(
             (ingreso)=>{
                 return{
                     id:ingreso.id,
                     tipo:0,
                     fecha:new Date(ingreso.fecha_ingreso),
                     ppl:ingreso.ppl_a_visitar.id,
-                    nombre_ppl:ingreso.ppl_a_visitar.persona.nombre,
-                    apellido_ppl:ingreso.ppl_a_visitar.persona.apellido,
+                    nombre_ppl:ingreso.ppl_a_visitar.persona?.nombre,
+                    apellido_ppl:ingreso.ppl_a_visitar.persona?.apellido,
                     nombre_visita:ingreso.visitante.nombre,
                     apellido_visita:ingreso.visitante.apellido,
-                    observacion:ingreso.observacion
+                    observacion:ingreso.observacion,
+                    visita_privada:false
                 }
             }
         )
+        entradas_salidas.push(...ingresos_visitantes_for_report);
+
+        const ingresos_conyuges:Array<IngresoConyuge> = await this.dataService.ingreso_conyuge.getAll();
+       
+        const ingresos_conyuges_for_report = ingresos_conyuges.map(
+            (ingreso)=>{
+                return{
+                    id:ingreso.id,
+                    tipo:0,
+                    fecha:new Date(ingreso.fecha_ingreso),
+                    ppl:ingreso.ppl_a_visitar?.id,
+                    nombre_ppl:ingreso.ppl_a_visitar?.persona?.nombre,
+                    apellido_ppl:ingreso.ppl_a_visitar?.persona?.apellido,
+                    nombre_visita:ingreso.conyuge?.nombres,
+                    apellido_visita:ingreso.conyuge?.apellidos,
+                    observacion:ingreso.observacion,
+                    visita_privada:true
+                }
+            }
+        )
+        entradas_salidas.push(...ingresos_conyuges_for_report)
+
         const salidas_visitantes = await this.dataService.salida_visitante.getAll();
-        salidas_visitantes.map(
+       
+        const salidas_visitantes_for_report = salidas_visitantes.map(
             (salida)=>{
-                entradas_salidas.push({
+                return{
                     id:salida.id,
                     tipo:1,
                     fecha:new Date(salida.fecha_salida),
-                    ppl:salida.ppl_que_visito.id,
-                    nombre_ppl:salida.ppl_que_visito.persona.nombre,
-                    apellido_ppl:salida.ppl_que_visito.persona.apellido,
+                    ppl:salida.ppl_que_visito?.id,
+                    nombre_ppl:salida.ppl_que_visito?.persona.nombre,
+                    apellido_ppl:salida.ppl_que_visito?.persona.apellido,
                     nombre_visita:salida.visitante.nombre,
                     apellido_visita:salida.visitante.apellido,
-                    observacion:salida.observacion
-                })
+                    observacion:salida.observacion,
+                    visita_privada:false
+                }
             }
         )
+        entradas_salidas.push(...salidas_visitantes_for_report)
+
+        
+        
+        const salidas_conyuges = await this.dataService.salida_conyuge.getAll();
+        
+        const salidas_conyuges_for_report = salidas_conyuges.map(
+            (salida)=>{
+                return{
+                    id:salida.id,
+                    tipo:1,
+                    fecha:new Date(salida.fecha_salida),
+                    ppl:salida.ppl_que_visito?.id,
+                    nombre_ppl:salida.ppl_que_visito?.persona.nombre,
+                    apellido_ppl:salida.ppl_que_visito?.persona.apellido,
+                    nombre_visita:salida.conyuge?.nombres,
+                    apellido_visita:salida.conyuge?.apellidos,
+                    observacion:salida.observacion,
+                    visita_privada:true
+                }
+            }
+        )
+        entradas_salidas.push(...salidas_conyuges_for_report)
+        
+        console.log("entradas y salidas:", entradas_salidas);
         return entradas_salidas;
        
     }

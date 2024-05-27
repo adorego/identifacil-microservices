@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { homedir } from "os";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { EntradaPplDTO } from "src/core/dto/entradaSalida/entrada-ppl.dto";
 import { EntradaVisitanteDTO } from "src/core/dto/entradaSalida/entrada-visitante.dto";
@@ -199,6 +200,7 @@ export class EntradaSalidaUseCase{
                     id:ingreso.id,
                     tipo:0,
                     fecha:new Date(ingreso.fecha_ingreso),
+                    hora:ingreso.hora_ingreso,
                     ppl:ingreso.ppl_a_visitar.id,
                     nombre_ppl:ingreso.ppl_a_visitar.persona?.nombre,
                     apellido_ppl:ingreso.ppl_a_visitar.persona?.apellido,
@@ -219,6 +221,7 @@ export class EntradaSalidaUseCase{
                     id:ingreso.id,
                     tipo:0,
                     fecha:new Date(ingreso.fecha_ingreso),
+                    hora:ingreso.hora_ingreso,
                     ppl:ingreso.ppl_a_visitar?.id,
                     nombre_ppl:ingreso.ppl_a_visitar?.persona?.nombre,
                     apellido_ppl:ingreso.ppl_a_visitar?.persona?.apellido,
@@ -239,6 +242,7 @@ export class EntradaSalidaUseCase{
                     id:salida.id,
                     tipo:1,
                     fecha:new Date(salida.fecha_salida),
+                    hora:salida.hora_salida,
                     ppl:salida.ppl_que_visito?.id,
                     nombre_ppl:salida.ppl_que_visito?.persona.nombre,
                     apellido_ppl:salida.ppl_que_visito?.persona.apellido,
@@ -261,6 +265,7 @@ export class EntradaSalidaUseCase{
                     id:salida.id,
                     tipo:1,
                     fecha:new Date(salida.fecha_salida),
+                    hora:salida.hora_salida,
                     ppl:salida.ppl_que_visito?.id,
                     nombre_ppl:salida.ppl_que_visito?.persona.nombre,
                     apellido_ppl:salida.ppl_que_visito?.persona.apellido,

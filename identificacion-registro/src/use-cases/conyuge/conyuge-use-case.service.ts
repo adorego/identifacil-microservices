@@ -109,11 +109,8 @@ export class ConyugeUseCases{
 
         //Control de dias de la semana
         const dias_de_visita = conyugeActual.dias_de_visita;
-        console.log("Dias de visita:",dias_de_visita);
         const hoy = new Date().getDay() + 1; //retorna el dia normalizado, mas 1 porque getDay retorna del 0 al 6 
-        console.log("Hoy es:", hoy);
         const esta_habilitado = dias_de_visita.includes(hoy);
-        console.log("Esta habilitado:", esta_habilitado);
         if(!esta_habilitado){
             throw new HttpException("El día de hoy no es fecha de visita intima para este conyuge",HttpStatus.UNAUTHORIZED);
         }

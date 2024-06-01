@@ -10,7 +10,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:"localhost",
+      host:Number(process.env.PRODUCTION)===0 ? process.env.TEST_DB_HOST : "auth-postgres-srv",
       port: 5432,
       username:'identifacil',
       password:'clave',

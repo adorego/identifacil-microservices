@@ -5,6 +5,8 @@ import { EstadoCivil } from "src/core/entities/estado-civil.entity";
 @Entity("estado_civil")
 export class EstadoCivilModel extends EstadoCivil{
 
+  
+
   @PrimaryGeneratedColumn()
   id:number;
 

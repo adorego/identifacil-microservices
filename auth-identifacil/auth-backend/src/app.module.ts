@@ -1,14 +1,16 @@
-import { AuthController } from './controllers/auth.controller';
-import { CriptoEncriptationServiceModule } from './frameworks/encriptation/encriptation-service.module';
 import { Module } from '@nestjs/common';
 import { PostgresDataServiceModule } from './frameworks/data-services/postgres/postgres-data-service.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './use-cases/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type:'postgres',
-      host:Number(process.env.PRODUCTION)===0 ? process.env.TEST_DB_HOST : "auth-postgres-srv",
+      host:"localhost",
       port: 5432,
       username:'identifacil',
       password:'clave',
@@ -18,13 +20,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       autoLoadEntities:true,
     }),
+    JwtModule.register({
+      global:true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {expiresIn:'3600s'}
+    }),
     PostgresDataServiceModule,
+    AuthModule,
+    
 
     
   ],
-  controllers: [
-    AuthController
+  providers: [
+    
   ],
-  providers: [],
 })
 export class AppModule {}

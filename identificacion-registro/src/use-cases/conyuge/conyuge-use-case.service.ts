@@ -114,6 +114,19 @@ export class ConyugeUseCases{
         if(!esta_habilitado){
             throw new HttpException("El día de hoy no es fecha de visita intima para este conyuge",HttpStatus.UNAUTHORIZED);
         }
+
+        //Control de salida pendiente
+        const ingresos_conyuge = await this.dataService.ingreso_conyuge.getIngresosConyugeByCedula(conyugeActual.numeroDeIdentificacion);
+        const ingresos_sin_salida = ingresos_conyuge.filter(
+            (ingreso)=>{
+                return ingreso.volvio_a_salir === false
+            }
+        )
+
+        if(ingresos_sin_salida.length > 0){
+            throw new HttpException("Este conyuge tiene una salida pendiente",HttpStatus.UNAUTHORIZED);
+        }
+
          const ingreso = new IngresoConyuge();
          ingreso.ppl_a_visitar = await this.dataService.ppl.getPplByCedula(ppl.numero_identificacion);
          ingreso.conyuge = ppl.datosFamiliares.concubino;
@@ -121,6 +134,8 @@ export class ConyugeUseCases{
          ingreso.hora_ingreso = ingresoConyugeDTO.hora;
          ingreso.establecimiento = establecimiento;
          ingreso.observacion = "Ingreso a la zona privada como conyuge";
+         ingreso.volvio_a_salir = false;
+         ingreso.ingreso_privada = false;
 
          const resultado_registro = await this.dataService.ingreso_conyuge.create(ingreso);
          return{
@@ -192,6 +207,7 @@ export class ConyugeUseCases{
         salidaConyuge.hora_salida = salidaConyugeDTO.hora_salida;
         salidaConyuge.establecimiento = establecimiento;
         salidaConyuge.entrada_asociada = ingreso_asociado
+        
 
         
 

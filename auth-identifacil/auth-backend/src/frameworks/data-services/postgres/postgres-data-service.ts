@@ -20,9 +20,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     constructor(
         @InjectRepository(UsuarioModel)
         private usuario_repository:Repository<UsuarioModel>,
-        @InjectRepository(UsuarioModel)
+        @InjectRepository(RolModel)
         private rol_repository:Repository<RolModel>,
-        @InjectRepository(UsuarioModel)
+        @InjectRepository(PermisoModel)
         private permiso_repository:Repository<PermisoModel>
     ){}
 

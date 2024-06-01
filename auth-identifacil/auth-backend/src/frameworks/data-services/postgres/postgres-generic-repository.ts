@@ -1,6 +1,7 @@
 import {FindOptionsWhere, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
+import { Usuario } from "src/core/entities/usuario.entity";
 
 @Injectable()
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
@@ -17,7 +18,7 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   getAll(): Promise<T[]> {
    return this._repository.find();
   }
-  get(id: string): Promise<T> {
+  get(id: number): Promise<T> {
     return this._repository.findOneBy({
       id:id
     } as FindOptionsWhere<unknown>)
@@ -25,8 +26,14 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
   create(item: T): Promise<T> {
     return this._repository.save(item);
   }
-  update(id: string, item: T) {
+  update(item: T) {
     return this._repository.save(item);
+  }
+
+  findUsuario(ci:string):Promise<T>{
+    return this._repository.findOneBy({
+      ci:ci
+    } as FindOptionsWhere<unknown>)
   }
 
   

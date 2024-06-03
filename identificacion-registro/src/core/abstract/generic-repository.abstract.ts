@@ -44,4 +44,6 @@ export abstract class IGenericRepository<T>{
   abstract getIngresosConyugeByCedula(ci:string):Promise<Array<T>>;
 
   abstract getPersonaByCedula(ci:string):Promise<T>;
+
+  abstract findUsuario(ci:string):Promise<T>; 
 }

@@ -67,6 +67,9 @@ import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza
 import { RegistroMedicoModel } from "./models/registro-medico.model";
 import { IngresoConyugeModel } from "./models/ingreso-conyuge.model";
 import { SalidaConyugeModel } from "./models/salida-conyuge.model";
+import { UsuarioModel } from "./models/security/usuario.model";
+import { RolModel } from "./models/security/rol.model";
+import { PermisoModel } from "./models/security/permiso.model";
 
 
 @Injectable()
@@ -142,6 +145,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   //Faltas y sanciones
   falta: PostgresGenericRepository<FaltaModel>;
   sancion: PostgresGenericRepository<SancionModel>;
+
+  //Seguridad
+  usuario: PostgresGenericRepository<UsuarioModel>;
+  rol: PostgresGenericRepository<RolModel>;
+  permiso: PostgresGenericRepository<PermisoModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -271,7 +279,14 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     private falta_repository:Repository<FaltaModel>,
 
     @InjectRepository(SancionModel)
-    private sancion_repository:Repository<SancionModel>
+    private sancion_repository:Repository<SancionModel>,
+
+    @InjectRepository(UsuarioModel)
+    private usuario_repository:Repository<UsuarioModel>,
+    @InjectRepository(RolModel)
+    private rol_repository:Repository<RolModel>,
+    @InjectRepository(PermisoModel)
+    private permiso_repository:Repository<PermisoModel>
     
 
 
@@ -345,6 +360,11 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.registro_medico = new PostgresGenericRepository<RegistroMedicoModel>(this.registro_medico_repository)
     this.falta = new PostgresGenericRepository<FaltaModel>(this.falta_repository)
     this.sancion = new PostgresGenericRepository<SancionModel>(this.sancion_repository)
+
+    //Security
+    this.usuario = new PostgresGenericRepository<UsuarioModel>(this.usuario_repository);
+    this.rol = new PostgresGenericRepository<RolModel>(this.rol_repository);
+    this.permiso = new PostgresGenericRepository<PermisoModel>(this.permiso_repository);
   }
   
   

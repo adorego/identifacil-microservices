@@ -239,5 +239,11 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .where("persona.numero_identificacion = :ci",{ci:ci})
            .getOne()
   }
+
+  findUsuario(ci:string):Promise<T>{
+    return this._repository.findOneBy({
+      ci:ci
+    } as FindOptionsWhere<unknown>)
+  }
 }
   

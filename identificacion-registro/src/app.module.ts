@@ -15,6 +15,8 @@ import { MovimientosModule } from './use-cases/movimientos/movimientos.module';
 import { EntradaSalidaPPLModule } from './use-cases/entrada-salida/entrada-salida.module';
 import { ConyugeModule } from './use-cases/conyuge/conyuge.module';
 import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-fuerza.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './use-cases/security/auth.module';
 
 
 
@@ -44,6 +46,11 @@ import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-f
       rootPath: Number(process.env.PRODUCTION)===1 ? process.env.FILE_STORAGE_PROD : join(__dirname,'..','public'),
       serveRoot:"/archivos"
     }),
+    JwtModule.register({
+      global:true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {expiresIn:'3600s'}
+    }),
     
     RegistroIdentificacionModule,
     PostgresDataServiceModule,
@@ -55,7 +62,8 @@ import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-f
     MovimientosModule,
     EntradaSalidaPPLModule,
     ConyugeModule,
-    MedidaDeFuerzaModule
+    MedidaDeFuerzaModule,
+    AuthModule
   
   ],
   controllers: [],

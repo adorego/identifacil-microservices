@@ -168,6 +168,13 @@ export class MovimientosUseCases{
 
     async get_informe_traslados(){
         const trasladosActuales:Array<Movimiento> = await this.dataService.movimiento.getAll();
+        const cantidad_de_translados = trasladosActuales.length;
+
+        trasladosActuales.map(
+            (traslado)=>{
+                
+            }
+        )
         
     }
 

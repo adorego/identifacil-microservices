@@ -65,6 +65,9 @@ import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza
 import { RegistroMedicoModel } from "./models/registro-medico.model";
 import { IngresoConyugeModel } from "./models/ingreso-conyuge.model";
 import { SalidaConyugeModel } from "./models/salida-conyuge.model";
+import { UsuarioModel } from "./models/security/usuario.model";
+import { RolModel } from "./models/security/rol.model";
+import { PermisoModel } from "./models/security/permiso.model";
 
 @Module({
   imports:[
@@ -138,6 +141,9 @@ import { SalidaConyugeModel } from "./models/salida-conyuge.model";
       RegistroMedicoModel,
       FaltaModel,
       SancionModel,
+      UsuarioModel, 
+      RolModel, 
+      PermisoModel
       
     
     

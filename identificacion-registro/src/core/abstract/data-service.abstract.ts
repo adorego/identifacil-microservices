@@ -59,6 +59,9 @@ import { MotivoDeMedidaDeFuerza } from "../entities/motivo-de-medida-de-fuerza.e
 import { RegistroMedico } from "../entities/registro-medico.entity";
 import { IngresoConyuge } from "../entities/ingreso-coyuge.entity";
 import { SalidaConyuge } from "../entities/salida-conyuge.entity";
+import { Usuario } from "../entities/security/usuario.entity";
+import { Rol } from "../entities/security/rol.entity";
+import { Permiso } from "../entities/security/permiso.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -121,4 +124,8 @@ export abstract class IDataService{
   abstract registro_medico:IGenericRepository<RegistroMedico>
   abstract sancion:IGenericRepository<Sancion>
   abstract falta:IGenericRepository<Falta>
+  //Security
+  abstract usuario:IGenericRepository<Usuario>;
+  abstract rol:IGenericRepository<Rol>;
+  abstract permiso:IGenericRepository<Permiso>;
 }

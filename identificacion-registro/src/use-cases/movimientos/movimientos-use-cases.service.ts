@@ -169,22 +169,62 @@ export class MovimientosUseCases{
 
     async get_informe_traslados(){
         const trasladosActuales:Array<Movimiento> = await this.dataService.movimiento.getAll();
+        console.log("Traslados:",trasladosActuales);
         const cantidad_de_translados = trasladosActuales.length;
         const ppl_traslados_set = new Map<number,ppl_con_traslado>();
+        const motivo_cantidad_set = new Map<number,{nombre:string,cantidad:number}>();
+        const destinos_cantidad_set = new Map<number,{destino:string,cantidad:number}>();
+        const medidas_seguridad_cantidad_set = new Map<number,{medida:string,cantidad:number}>()
         trasladosActuales.map(
             (traslado)=>{
                 traslado.ppls.map(
                     (ppl)=>{
+                        console.log("ppl:",ppl);
                         const pplEncontrado = ppl_traslados_set.has(ppl.id);
                         if(!pplEncontrado){
                             ppl_traslados_set.set(ppl.id,{nombre:ppl.persona.nombre,apellido:ppl.persona.apellido,cantidad_de_traslado:1})
                         }else{
-                            const pplTrasladoAActualizar = ppl_traslados_set
+                            const pplTrasladoAActualizar = ppl_traslados_set.get(ppl.id);
+                            pplTrasladoAActualizar.cantidad_de_traslado++ 
+                        }
+                    }
+                )
+                const tiene_motivo = motivo_cantidad_set.has(traslado.motivo_de_traslado.id);
+                if(!tiene_motivo){
+                    motivo_cantidad_set.set(traslado.motivo_de_traslado.id,{nombre:traslado.motivo_de_traslado.nombre,cantidad:1})
+                }else{
+                    const registro_motivo = motivo_cantidad_set.get(traslado.motivo_de_traslado.id);
+                    registro_motivo.cantidad++
+                }
+
+                const existe_destino = destinos_cantidad_set.has(traslado.destinoTraslado.id);
+                if(!existe_destino){
+                    destinos_cantidad_set.set(traslado.destinoTraslado.id,{destino:traslado.destinoTraslado.nombre,cantidad:1});
+                }else{
+                    const registro_destino = destinos_cantidad_set.get(traslado.destinoTraslado.id);
+                    registro_destino.cantidad++
+                }
+
+                traslado.medidas_de_seguridad.map(
+                    (medida)=>{
+                        const existe_medida = medidas_seguridad_cantidad_set.has(medida.id);
+                        if(!existe_medida){
+                            medidas_seguridad_cantidad_set.set(medida.id,{medida:medida.nombre,cantidad:1});
+                        }else{
+                            const registro_medida = medidas_seguridad_cantidad_set.get(medida.id);
+                            registro_medida.cantidad++
                         }
                     }
                 )
             }
         )
+        return{
+            cantidad_traslados:cantidad_de_translados,
+            ppl_con_mas_traslados:Array.from(ppl_traslados_set),
+            motivos_con_cantidad:Array.from(motivo_cantidad_set),
+            destinos_con_cantidad:Array.from(destinos_cantidad_set),
+            medidas_de_seguridad_con_cantidad:Array.from(medidas_seguridad_cantidad_set)
+        }
         
     }
 

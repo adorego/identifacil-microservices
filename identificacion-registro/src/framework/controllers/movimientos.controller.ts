@@ -279,8 +279,8 @@ export class MovimientosController{
     @Get('informe_traslados')
     async get_informe_traslados(){
         //Cantidad de traslados por mes
-        const trasladosActuales = await this.movimientoUseCase
-        //Cantidad de traslados por PPL
+        const informe_traslados = await this.movimientoUseCase.get_informe_traslados();
+        return informe_traslados;
 
     }
 

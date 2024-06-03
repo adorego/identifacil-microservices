@@ -14,6 +14,7 @@ import { Chofer } from "src/core/entities/chofer.entity";
 import { VehiculoDTO } from "src/core/dto/movimientos/vehiculo.dto";
 import { Vehiculo } from "src/core/entities/vehiculo.entity";
 import { Movimiento } from "src/core/entities/movimiento.entity";
+import { ppl_con_traslado } from "src/core/dto/movimientos/informe-traslado.dto";
 
 @Injectable()
 export class MovimientosUseCases{
@@ -169,10 +170,19 @@ export class MovimientosUseCases{
     async get_informe_traslados(){
         const trasladosActuales:Array<Movimiento> = await this.dataService.movimiento.getAll();
         const cantidad_de_translados = trasladosActuales.length;
-
+        const ppl_traslados_set = new Map<number,ppl_con_traslado>();
         trasladosActuales.map(
             (traslado)=>{
-                
+                traslado.ppls.map(
+                    (ppl)=>{
+                        const pplEncontrado = ppl_traslados_set.has(ppl.id);
+                        if(!pplEncontrado){
+                            ppl_traslados_set.set(ppl.id,{nombre:ppl.persona.nombre,apellido:ppl.persona.apellido,cantidad_de_traslado:1})
+                        }else{
+                            const pplTrasladoAActualizar = ppl_traslados_set
+                        }
+                    }
+                )
             }
         )
         

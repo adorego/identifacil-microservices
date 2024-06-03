@@ -43,7 +43,7 @@ export class AuthController{
 @Post('rol')
 async crearRol(@Body() rolDTO:RolDTO){
   const resultado  = await this.authUseCasesService.createRol(rolDTO);
-  this.client.emit('rol_created', resultado.id)
+  //this.client.emit('rol_created', resultado.id)
   return{
     success:true,
     id:resultado.id
@@ -72,7 +72,7 @@ async crearPermiso(@Body() permisosDTO:Array<PermisoDTO>){
 @Post('login')
 async login(@Body() credencialesDTO:CredencialesDTO){
   const respuestaLogin = await this.authUseCasesService.login(credencialesDTO.ci, credencialesDTO.clave);
-  this.client.emit('user_authenticated', {id:respuestaLogin.id_usuario})
+  //this.client.emit('user_authenticated', {id:respuestaLogin.id_usuario})
   return{
     access_token:respuestaLogin.access_token
   }

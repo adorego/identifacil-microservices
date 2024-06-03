@@ -6,14 +6,24 @@ import { UsuarioDTO } from "src/core/dtos/usario.dto";
 import { RolDTO } from "src/core/dtos/rol.dto";
 import { PermisoDTO } from "src/core/dtos/permiso.dto";
 import { CredencialesDTO } from "src/core/dtos/credenciales.dto";
+import { ClientProxy, ClientProxyFactory, Transport } from "@nestjs/microservices";
 
 
 @Controller('api/auth')
 export class AuthController{
   private readonly logger = new Logger("AuthController");
+  private client:ClientProxy;
+
   constructor(
       private authUseCasesService:AuthUseCases
-    ){}
+    ){
+      this.client = ClientProxyFactory.create({
+        transport: Transport.NATS,
+        options:{
+          url: 'nats://localhost:4222',
+        }
+      })
+    }
 
   
   @Post('registro')
@@ -34,6 +44,7 @@ export class AuthController{
 @Post('rol')
 async crearRol(@Body() rolDTO:RolDTO){
   const resultado  = await this.authUseCasesService.createRol(rolDTO);
+  this.client.emit('rol_created', resultado.id)
   return{
     success:true,
     id:resultado.id
@@ -62,9 +73,15 @@ async crearPermiso(@Body() permisosDTO:Array<PermisoDTO>){
 @Post('login')
 async login(@Body() credencialesDTO:CredencialesDTO){
   const respuestaLogin = await this.authUseCasesService.login(credencialesDTO.ci, credencialesDTO.clave);
+  this.client.emit('user_authenticated', {id:respuestaLogin.id_usuario})
   return{
     access_token:respuestaLogin.access_token
   }
+}
+
+@Post('logout')
+async logout(){
+  return "ok"
 }
 
   

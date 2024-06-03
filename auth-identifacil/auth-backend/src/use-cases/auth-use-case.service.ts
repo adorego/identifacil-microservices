@@ -36,6 +36,7 @@ export class AuthUseCases{
         const payload = {sub:usuariosEncontrado.id, ci:usuariosEncontrado.ci, nombre:usuariosEncontrado.nombre, apellido:usuariosEncontrado.apellido}
         return{
             access_token: await this.jwtService.signAsync(payload),
+            id_usuario:usuariosEncontrado.id
         }
     }
 

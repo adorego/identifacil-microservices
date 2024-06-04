@@ -25,7 +25,7 @@ export class UsuarioModel extends Usuario{
   @Column({type:"varchar", length:200, nullable:false})
   salt:string;
 
-  @ManyToMany(()=>RolModel)
+  @ManyToMany(()=>RolModel, {eager:true})
   @JoinTable()
   roles:Array<RolModel>
   

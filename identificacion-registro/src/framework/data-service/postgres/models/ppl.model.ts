@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 import { EstablecimientoPenitenciarioModel } from "./establecimiento-penitenciario.model";
 import { PersonaModel } from "./persona.model";
@@ -17,7 +17,7 @@ export class PplModel extends Ppl{
   @JoinColumn()
   persona:PersonaModel;
 
-  @Column({type:"varchar", nullable:true})
+  @Column({type:"varchar", nullable:true, unique:true})
   prontuario: string;
 
   @ManyToOne(() => EstablecimientoPenitenciarioModel, {eager:true})

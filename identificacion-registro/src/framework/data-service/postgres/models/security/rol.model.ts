@@ -10,7 +10,7 @@ export class RolModel extends Rol{
     @Column({type:"varchar"})
     nombre:string;
 
-    @ManyToMany(()=>PermisoModel)
+    @ManyToMany(()=>PermisoModel,{eager:true})
     @JoinTable()
     permisos:Array<PermisoModel>;
 }

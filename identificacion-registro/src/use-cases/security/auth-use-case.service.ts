@@ -33,6 +33,7 @@ export class AuthUseCases{
         if(!passwordCompare){
             throw new HttpException("Credenciales incorrectas",HttpStatus.UNAUTHORIZED);
         }
+        console.log("Roles:", usuariosEncontrado.roles);
         const payload = {sub:usuariosEncontrado.id, ci:usuariosEncontrado.ci, nombre:usuariosEncontrado.nombre, apellido:usuariosEncontrado.apellido, roles:usuariosEncontrado.roles}
         return{
             access_token: await this.jwtService.signAsync(payload),

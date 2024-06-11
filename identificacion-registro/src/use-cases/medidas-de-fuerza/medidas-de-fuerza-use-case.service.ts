@@ -9,6 +9,9 @@ import { FileService } from "src/framework/lib/files.service";
 import { TipoDeMedidaDeFuerzaDTO } from "src/core/dto/medidas-de-fuerza/tipo-de-medida-de-fuerza.dto";
 import { MotivoMedidaDeFuerzaDTO } from "src/core/dto/medidas-de-fuerza/motivo-de-medida-de-fuerza.dto";
 import { MotivoDeMedidaDeFuerza } from "src/core/entities/motivo-de-medida-de-fuerza.entity";
+import { TipoDeMedidaDeFuerzaDuplicado } from "src/framework/errors/error-tipo-medida-de-fuerza-duplicado";
+import { MotivoDeMedidaDeFuerzaModel } from "src/framework/data-service/postgres/models/motivo-de-medida-de-fuerza.model";
+import { ErrorMotivoDeMedidaDeFuerzaDuplicado } from "src/framework/errors/error-motivo-de-medida-de-fuerza-duplicado";
 
 @Injectable()
 export class MedidasDeFuerzaUseCase{
@@ -112,7 +115,7 @@ export class MedidasDeFuerzaUseCase{
         tipoDeMedidasDeFuerzaActuales.map(
             (tipo_de_medida_de_fuerza)=>{
                 if(tipo_de_medida_de_fuerza.nombre.toLowerCase() === tipoDeMedidaDeFuerzaDTO.nombre.toLowerCase()){
-                    throw new HttpException("Este tipo de medida de fuerza ya existe", HttpStatus.BAD_REQUEST);
+                    throw new TipoDeMedidaDeFuerzaDuplicado("Este tipo de medida de fuerza ya existe");
                 }
             }
         )
@@ -156,7 +159,7 @@ export class MedidasDeFuerzaUseCase{
         motivosDeMedidaDeFuerzaActuales.map(
             (motivo)=>{
                 if(motivo.nombre.toLowerCase() == motivoMedidaDeFuerzaDTO.nombre.toLowerCase()){
-                    throw new HttpException("El nombre de este motivo de medida de fuerza ya existe", HttpStatus.BAD_REQUEST);
+                    throw new ErrorMotivoDeMedidaDeFuerzaDuplicado("El nombre de este motivo de medida de fuerza ya existe");
                 }
             }
         )

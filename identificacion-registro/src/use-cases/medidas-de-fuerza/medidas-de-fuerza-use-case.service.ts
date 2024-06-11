@@ -111,7 +111,7 @@ export class MedidasDeFuerzaUseCase{
         const tipoDeMedidasDeFuerzaActuales = await this.dataService.tipo_de_medida_de_fuerza.getAll();
         tipoDeMedidasDeFuerzaActuales.map(
             (tipo_de_medida_de_fuerza)=>{
-                if(tipo_de_medida_de_fuerza.nombre === tipoDeMedidaDeFuerzaDTO.nombre){
+                if(tipo_de_medida_de_fuerza.nombre.toLowerCase() === tipoDeMedidaDeFuerzaDTO.nombre.toLowerCase()){
                     throw new HttpException("Este tipo de medida de fuerza ya existe", HttpStatus.BAD_REQUEST);
                 }
             }
@@ -152,6 +152,14 @@ export class MedidasDeFuerzaUseCase{
         if(!motivoMedidaDeFuerzaDTO.nombre){
             throw new HttpException("El nombre del tipo de medida de fuerza no puede ser nulo",HttpStatus.BAD_REQUEST);
         }
+        const motivosDeMedidaDeFuerzaActuales = await this.dataService.motivo_medida_de_fuerza.getAll();
+        motivosDeMedidaDeFuerzaActuales.map(
+            (motivo)=>{
+                if(motivo.nombre.toLowerCase() == motivoMedidaDeFuerzaDTO.nombre.toLowerCase()){
+                    throw new HttpException("El nombre de este motivo de medida de fuerza ya existe", HttpStatus.BAD_REQUEST);
+                }
+            }
+        )
         if(!motivoMedidaDeFuerzaDTO.descripcion){
             throw new HttpException("La descripción del tipo de medida de fuerza no puede ser nulo",HttpStatus.BAD_REQUEST);
         }

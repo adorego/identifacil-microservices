@@ -15,6 +15,7 @@ import { VehiculoDTO } from "src/core/dto/movimientos/vehiculo.dto";
 import { Vehiculo } from "src/core/entities/vehiculo.entity";
 import { Movimiento } from "src/core/entities/movimiento.entity";
 import { ppl_con_traslado } from "src/core/dto/movimientos/informe-traslado.dto";
+import { ErrorObjetoeDuplicado } from "src/framework/errors/error-objeto-duplicado";
 
 @Injectable()
 export class MovimientosUseCases{
@@ -70,6 +71,14 @@ export class MovimientosUseCases{
     }
 
     async crear_motivos_de_traslados(motivoDeTrasladoDTO:MotivoDeTrasladoDTO){
+        const motivosDeTrasladosActuales = await this.dataService.motivoDeTraslado.getAll();
+        motivosDeTrasladosActuales.map(
+            (motivoTraslado)=>{
+                if(motivoTraslado.nombre.toLowerCase() === motivoDeTrasladoDTO.nombre.toLowerCase()){
+                    throw new ErrorObjetoeDuplicado("Ya existe un motivo de traslado con ese nombre");
+                }
+            }
+        )
         const nuevoMotivoDeTraslado = new MotivoDeTraslado();
         nuevoMotivoDeTraslado.nombre = motivoDeTrasladoDTO.nombre;
         return await this.dataService.motivoDeTraslado.create(nuevoMotivoDeTraslado);
@@ -90,6 +99,14 @@ export class MovimientosUseCases{
     }
 
     async crear_medida_de_seguridad(medidaDeSeguridadDTO:MedidaDeSeguridadDTO){
+        const medidasDeSeguridadActuales = await this.dataService.medidaDeSeguridad.getAll();
+        medidasDeSeguridadActuales.map(
+            (medidaDeSeguridad)=>{
+                if(medidaDeSeguridad.nombre.toLowerCase()=== medidaDeSeguridadDTO.nombre.toLowerCase()){
+                    throw new ErrorObjetoeDuplicado("Ya existe una medida de seguridad con ese nombre");
+                }
+            }
+        )
         const nuevaMedidaDeSeguridad = new MedidaDeSeguridad();
         nuevaMedidaDeSeguridad.nombre = medidaDeSeguridadDTO.nombre;
         return await this.dataService.medidaDeSeguridad.create(nuevaMedidaDeSeguridad);

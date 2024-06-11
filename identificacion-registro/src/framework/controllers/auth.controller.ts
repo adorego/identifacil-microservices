@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Put } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { CredencialesDTO } from "src/core/dto/security/credenciales.dto";
 import { PermisoDTO } from "src/core/dto/security/permiso.dto";
@@ -24,6 +24,17 @@ export class AuthController{
     //   })
     }
 
+@Get('usuario')
+async getUsuarios(){
+  const resultado = await this.authUseCasesService.getUsuarios();
+  return resultado;
+}  
+
+@Get('usuario/:id')
+async getOneUsuario(@Param() param:any){
+  const resultado = await this.authUseCasesService.getOneUsuario(param.id);
+  return resultado;
+}  
   
   @Post('registro')
   async registrar(@Body() registroDTO:RegistroUsuarioDTO){
@@ -39,6 +50,18 @@ export class AuthController{
       success:true
     }
   }
+
+@Get('rol')
+async getRoles(){
+  const resultado = await this.authUseCasesService.getRoles();
+  return resultado;
+}  
+
+@Get('rol/:id')
+async getOneRol(@Param() param:any){
+  const resultado = await this.authUseCasesService.getOneRol(param.id);
+  return resultado;
+}  
 
 @Post('rol')
 async crearRol(@Body() rolDTO:RolDTO){
@@ -58,6 +81,18 @@ async updateRol(@Param() param:any, @Body() rolDTO:RolDTO){
     id:resultado.id
   }
 }
+
+@Get('permiso')
+async getPermisos(){
+  const resultado = await this.authUseCasesService.getPermisos();
+  return resultado;
+}  
+
+@Get('permiso/:id')
+async getOnePermiso(@Param() param:any){
+  const resultado = await this.authUseCasesService.getOnepermiso(param.id);
+  return resultado;
+}  
 
 @Post('permiso')
 async crearPermiso(@Body() permisosDTO:Array<PermisoDTO>){

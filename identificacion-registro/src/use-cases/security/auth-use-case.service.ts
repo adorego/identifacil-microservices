@@ -94,6 +94,59 @@ export class AuthUseCases{
         return rolesEncontrados
     }
 
+    async getRoles(){
+        return await this.dataService.rol.getAll();
+    }
+
+    async getOneRol(id:number){
+        const resultado = await this.dataService.rol.get(id);
+        if(!resultado){
+            throw new HttpException("No se encuentra el Rol solicitado", HttpStatus.BAD_REQUEST);
+        }
+        return resultado;
+    }
+
+    async getUsuarios(){
+        const resultado:Array<Usuario> = await this.dataService.usuario.getAll();
+        const usuariosAResponder = resultado.map(
+            (usuario)=>{
+                return {
+                    id:usuario.id,
+                    nombre:usuario.nombre,
+                    apellido:usuario.apellido,
+                    ci:usuario.ci,
+                    roles:usuario.roles
+                }
+            }
+        )
+        return usuariosAResponder;
+    }
+
+    async getOneUsuario(id:number){
+        const resultado:Usuario = await this.dataService.usuario.get(id);
+        if(!resultado){
+            throw new HttpException("No se encuentra el usuario solicitado", HttpStatus.BAD_REQUEST);
+        }
+        return{
+            id:resultado.id,
+            nombre:resultado.nombre,
+            apellido:resultado.apellido,
+            ci:resultado.ci,
+            roles:resultado.roles
+        }
+    }
+
+    async getPermisos(){
+        return await this.dataService.permiso.getAll();
+    }
+
+    async getOnepermiso(id:number){
+        const resultado = await this.dataService.permiso.get(id);
+        if(!resultado){
+            throw new HttpException("No se encuentra el permiso solicitado", HttpStatus.BAD_REQUEST);
+        }
+        return resultado;
+    }
     async createRol(rolDTO:RolDTO){
         this.validarRol(rolDTO);
         const permisosObtenidos:Array<Permiso> = await this.obtener_permisos(rolDTO.permisos);

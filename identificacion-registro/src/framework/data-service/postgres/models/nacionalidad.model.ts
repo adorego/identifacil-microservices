@@ -11,7 +11,7 @@ export class NacionalidadModel extends Nacionalidad{
   @Column({type:'varchar', nullable:false})
   nombre:string;
 
-  @Column({type:'varchar', nullable:false})
+  @Column({type:'varchar',nullable:true})
   pais:PaisModel;
 
 

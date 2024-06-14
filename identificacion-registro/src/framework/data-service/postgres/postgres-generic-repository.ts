@@ -245,5 +245,12 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
       ci:ci
     } as FindOptionsWhere<unknown>)
   }
+
+  getRolConPermisos(id: number): Promise<T> {
+    return this._repository.createQueryBuilder("rol")
+           .leftJoinAndSelect("rol.permisos","permisos")
+           .where("rol.id = :id",{id:id})
+           .getOne()
+  }
 }
   

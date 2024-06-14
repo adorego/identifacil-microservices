@@ -122,6 +122,15 @@ export class AuthUseCases{
         return usuariosAResponder;
     }
 
+    async getPermisosPorRol(id:number){
+        console.log("Id recibido:", id);
+        const resultado:Rol = await this.dataService.rol.getRolConPermisos(id);
+        console.log("Resultado:", resultado);
+        if(!resultado){
+            throw new HttpException("No existe un rol con este id", HttpStatus.BAD_REQUEST);
+        }
+        return resultado.permisos
+    }
     async getOneUsuario(id:number){
         const resultado:Usuario = await this.dataService.usuario.get(id);
         if(!resultado){

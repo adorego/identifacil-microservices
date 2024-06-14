@@ -88,6 +88,14 @@ async getPermisos(){
   return resultado;
 }  
 
+@Get('rol/:id/permiso')
+async getPermisosPorRol(@Param() param ){
+  const resultado = await this.authUseCasesService.getPermisosPorRol(param.id);
+  return resultado;
+}
+
+
+
 @Get('permiso/:id')
 async getOnePermiso(@Param() param:any){
   const resultado = await this.authUseCasesService.getOnepermiso(param.id);

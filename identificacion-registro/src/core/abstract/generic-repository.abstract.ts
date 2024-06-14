@@ -46,4 +46,6 @@ export abstract class IGenericRepository<T>{
   abstract getPersonaByCedula(ci:string):Promise<T>;
 
   abstract findUsuario(ci:string):Promise<T>; 
+
+  abstract getRolConPermisos(id:number):Promise<T>;
 }

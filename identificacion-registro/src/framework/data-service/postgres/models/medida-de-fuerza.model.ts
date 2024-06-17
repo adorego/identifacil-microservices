@@ -3,7 +3,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGen
 import { PplModel } from "./ppl.model";
 import { FuncionarioModel } from "./funcionario.model";
 import { TipoDeMedidaDeFuerza } from "src/core/entities/tipo-medida-de-fuerza.entity";
-import { TipoDeMedidaDeFuerzaModel } from "./tipo-mrdida-de-fuerza.model";
+import { TipoDeMedidaDeFuerzaModel } from "./tipo-medida-de-fuerza.model";
 import { MotivoDeMedidaDeFuerzaModel } from "./motivo-de-medida-de-fuerza.model";
 import { RegistroMedico } from "src/core/entities/registro-medico.entity";
 import { RegistroMedicoModel } from "./registro-medico.model";

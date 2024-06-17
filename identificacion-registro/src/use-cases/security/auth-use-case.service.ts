@@ -95,11 +95,17 @@ export class AuthUseCases{
     }
 
     async getRoles(){
-        return await this.dataService.rol.getAll();
+        const roles = await this.dataService.rol.getAll();
+        const rolesConPermisos = await Promise.all(roles.map(
+            async (rol)=>{
+                return await this.dataService.rol.getRolConPermisos(rol.id);
+            }
+        ))
+        return rolesConPermisos;
     }
 
     async getOneRol(id:number){
-        const resultado = await this.dataService.rol.get(id);
+        const resultado = await this.dataService.rol.getRolConPermisos(id);
         if(!resultado){
             throw new HttpException("No se encuentra el Rol solicitado", HttpStatus.BAD_REQUEST);
         }
@@ -123,9 +129,9 @@ export class AuthUseCases{
     }
 
     async getPermisosPorRol(id:number){
-        console.log("Id recibido:", id);
+        //console.log("Id recibido:", id);
         const resultado:Rol = await this.dataService.rol.getRolConPermisos(id);
-        console.log("Resultado:", resultado);
+        //console.log("Resultado:", resultado);
         if(!resultado){
             throw new HttpException("No existe un rol con este id", HttpStatus.BAD_REQUEST);
         }

@@ -62,7 +62,7 @@ import { PuebloIndigenaModel } from "./models/pueblo-indigena.model";
 import { MedidaDeFuerzaModel } from "./models/medida-de-fuerza.model";
 import { FaltaModel } from "./models/falta.model";
 import { SancionModel } from "./models/sancion.model";
-import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-mrdida-de-fuerza.model";
+import { TipoDeMedidaDeFuerzaModel } from "./models/tipo-medida-de-fuerza.model";
 import { MotivoDeMedidaDeFuerzaModel } from "./models/motivo-de-medida-de-fuerza.model";
 import { RegistroMedicoModel } from "./models/registro-medico.model";
 import { IngresoConyugeModel } from "./models/ingreso-conyuge.model";

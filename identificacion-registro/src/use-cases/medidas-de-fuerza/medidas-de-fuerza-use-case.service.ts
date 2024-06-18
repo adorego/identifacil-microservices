@@ -74,12 +74,13 @@ export class MedidasDeFuerzaUseCase{
         const ci = medida_de_fuerza_con_ppl.ppl.persona.numero_identificacion;
         const fecha = new Date(registroMedicoDTO.fecha); 
         const nuevoRegistroMedico = new RegistroMedico();
-        nuevoRegistroMedico.fecha = fecha;
+        nuevoRegistroMedico.fecha = new Date(fecha);
         nuevoRegistroMedico.diagnostico = registroMedicoDTO.diagnostico;
         nuevoRegistroMedico.medida_de_fuerza = medida_de_fuerza_con_ppl;
         if(archivo){
             nuevoRegistroMedico.archivo_registro_medico = await this.fileService.almacenar_archivo(archivo,`registro_medico_${fecha.getDate()}_${fecha.getMonth()}_${fecha.getFullYear()}_${ci}`);
         }
+        console.log("Antes de crear el registro m´dico:",nuevoRegistroMedico);
         const registroMedicoCreado = await this.dataService.registro_medico.create(nuevoRegistroMedico);
         
         medida_de_fuerza_con_ppl.registros_medicos.push(registroMedicoCreado);
@@ -91,6 +92,10 @@ export class MedidasDeFuerzaUseCase{
     
     async getRegistrosMedicos(){
         return await this.dataService.registro_medico.getAll();
+    }
+
+    async getRegistroMedico(id:number){
+        return await this.dataService.registro_medico.get(id);
     }
     async actualizar_registro_medico(id:number, archivo_registro_medico:Express.Multer.File ,registroMedicoDTO:RegistroMedicoDTO){
         if(!id){

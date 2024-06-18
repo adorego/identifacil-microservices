@@ -49,8 +49,8 @@ export class MedidasDeFuerzaController{
     }
 
     @Get('registro_medico/:id')
-    async listar_registros_medicos(){
-        return this.medidasDeFuerzaUseCase.getRegistrosMedicos()
+    async listar_registros_medicos(@Param() param:any){
+        return this.medidasDeFuerzaUseCase.getRegistroMedico(param.id)
     }
 
     @Get('tipo_de_medida_de_fuerza')

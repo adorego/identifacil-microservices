@@ -94,8 +94,8 @@ export class MedidasDeFuerzaUseCase{
         return await this.dataService.registro_medico.getAll();
     }
 
-    async getRegistroMedico(id:number){
-        return await this.dataService.registro_medico.get(id);
+    async getRegistrosMedicosOfMedidaDeFuerza(id:number){
+        return (await this.dataService.medidas_de_fuerza.get(id)).registros_medicos;
     }
     async actualizar_registro_medico(id:number, archivo_registro_medico:Express.Multer.File ,registroMedicoDTO:RegistroMedicoDTO){
         if(!id){

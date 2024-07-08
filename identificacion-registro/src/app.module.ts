@@ -17,6 +17,7 @@ import { ConyugeModule } from './use-cases/conyuge/conyuge.module';
 import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-fuerza.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './use-cases/security/auth.module';
+import { FaltasSancionesModule } from './use-cases/faltas-y-sanciones/faltas-y-sanciones.module';
 
 
 
@@ -63,13 +64,14 @@ import { AuthModule } from './use-cases/security/auth.module';
     EntradaSalidaPPLModule,
     ConyugeModule,
     MedidaDeFuerzaModule,
-    AuthModule
+    AuthModule,
+    FaltasSancionesModule,
   
   ],
   controllers: [],
   providers: [],
   exports:[
-    PostgresDataServiceModule
+    //PostgresDataServiceModule
   ]
 })
 export class AppModule {}

@@ -10,6 +10,7 @@ import { RolDTO } from "src/core/dto/security/rol.dto";
 import { Permiso } from "src/core/entities/security/permiso.entity";
 import { Rol } from "src/core/entities/security/rol.entity";
 import { PermisoDTO } from "src/core/dto/security/permiso.dto";
+import { ModifyPasswordDTO } from "src/core/dto/security/modify-password.dto";
 
 const SALTROUNDS = 10;
 @Injectable()
@@ -58,6 +59,33 @@ export class AuthUseCases{
         return{
             success:true,
             id:result.id
+        }
+
+    }
+
+    async createHashAndSalt(clave:string){
+        const salt = await genSalt(SALTROUNDS);
+        const hashCreated = await hash(clave,salt);
+        return{
+            hashCreated:hashCreated,
+            saltCreated:salt
+        }
+    }
+
+    async modify_password(modificarClaveDTO:ModifyPasswordDTO){
+        if(!modificarClaveDTO.usuario_id){
+            throw new HttpException("Se debe enviar persona valida",HttpStatus.BAD_REQUEST);
+        }
+        const usuarioEncontrado = await this.dataService.usuario.get(modificarClaveDTO.usuario_id);
+        const resultado = await this.createHashAndSalt(modificarClaveDTO.clave);
+        usuarioEncontrado.hash = resultado.hashCreated;
+        usuarioEncontrado.salt = resultado.saltCreated;
+        const usuarioGuardado = await this.dataService.usuario.update(usuarioEncontrado);
+        if(!usuarioGuardado){
+            throw new HttpException("Ocurrió un error al guardar el cambio",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return{
+            id:usuarioGuardado.id
         }
 
     }

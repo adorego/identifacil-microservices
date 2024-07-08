@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Logger, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Patch, Post, Put } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { CredencialesDTO } from "src/core/dto/security/credenciales.dto";
+import { ModifyPasswordDTO } from "src/core/dto/security/modify-password.dto";
 import { PermisoDTO } from "src/core/dto/security/permiso.dto";
 import { RegistroUsuarioDTO } from "src/core/dto/security/register-user.dto";
 import { RolDTO } from "src/core/dto/security/rol.dto";
@@ -36,8 +37,8 @@ async getOneUsuario(@Param() param:any){
   return resultado;
 }  
   
-  @Post('registro')
-  async registrar(@Body() registroDTO:RegistroUsuarioDTO){
+@Post('registro')
+async registrar(@Body() registroDTO:RegistroUsuarioDTO){
     const usuarioDTO = new UsuarioDTO();
     usuarioDTO.nombres = registroDTO.nombres;
     usuarioDTO.apellidos = registroDTO.apellidos;
@@ -49,7 +50,16 @@ async getOneUsuario(@Param() param:any){
       id:respuestaCrearUsuario.id,
       success:true
     }
+}
+
+@Patch()
+async modificar_clave(@Body() modificarClaveDTO:ModifyPasswordDTO){
+  const resultado = await this.authUseCasesService.modify_password(modificarClaveDTO);
+  return{
+    id:resultado.id,
+    success:true
   }
+}
 
 @Get('rol')
 async getRoles(){

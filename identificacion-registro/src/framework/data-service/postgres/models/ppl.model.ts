@@ -32,6 +32,5 @@ export class PplModel extends Ppl{
   @OneToMany(()=>MedidaDeFuerzaModel,medida_de_fuerza=>medida_de_fuerza.ppl,{eager:true})
   medidas_de_fuerza:Array<MedidaDeFuerzaModel>;
 
-  @OneToMany(()=>FaltaModel, falta=>falta.ppls_con_faltas)
-  faltas:Array<FaltaModel>
+  
 } 

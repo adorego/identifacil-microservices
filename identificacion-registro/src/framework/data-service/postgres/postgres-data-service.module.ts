@@ -68,6 +68,10 @@ import { SalidaConyugeModel } from "./models/salida-conyuge.model";
 import { UsuarioModel } from "./models/security/usuario.model";
 import { RolModel } from "./models/security/rol.model";
 import { PermisoModel } from "./models/security/permiso.model";
+import { TipoDeSancion } from "src/core/entities/tipo-sancion.entity";
+import { TipoDeSancionModel } from "./models/tipo-sancion.model";
+import { GradoDeFaltaModel } from "./models/grado-de-falta.model";
+import { TipoDeVictimaModel } from "./models/tipo-victima.model";
 
 @Module({
   imports:[
@@ -140,7 +144,11 @@ import { PermisoModel } from "./models/security/permiso.model";
       MotivoDeMedidaDeFuerzaModel,
       RegistroMedicoModel,
       FaltaModel,
+      GradoDeFaltaModel,
+      TipoDeFaltaModel,
+      TipoDeVictimaModel,
       SancionModel,
+      TipoDeSancionModel,
       UsuarioModel, 
       RolModel, 
       PermisoModel

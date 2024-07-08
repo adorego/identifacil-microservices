@@ -3,7 +3,7 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { MedidasDeFuerzaDTO } from "src/core/dto/medidas-de-fuerza/medidas-de-fuerza.dto";
 import { ResultadoMedidaDeFuerzaFactoryDTO } from "src/core/dto/medidas-de-fuerza/resultado-medida-de-fuerza-factory.dto";
 import { ResultadoMedidaDeFuerzaValidarDTO } from "src/core/dto/medidas-de-fuerza/resultado-medida-de-fuerza-validar-factory.dto";
-import { MedidaDeFuerza } from "src/core/entities/medida-de-fuerza.entity";
+import { ESTADOS_MEDIDA_DE_FUERZA, MedidaDeFuerza } from "src/core/entities/medida-de-fuerza.entity";
 
 @Injectable()
 export class MedidasDeFuerzaFactory{
@@ -17,7 +17,10 @@ export class MedidasDeFuerzaFactory{
 
         const nuevaMedidaDeFuerza = new MedidaDeFuerza();
         nuevaMedidaDeFuerza.fecha_inicio = medidaDeFuerzaDTO.fecha_de_inicio;
+        nuevaMedidaDeFuerza.hora_inicio = medidaDeFuerzaDTO.hora_inicio;
         nuevaMedidaDeFuerza.fecha_fin = medidaDeFuerzaDTO.fecha_de_fin;
+        nuevaMedidaDeFuerza.hora_fin = medidaDeFuerzaDTO.hora_fin;
+        nuevaMedidaDeFuerza.estado = medidaDeFuerzaDTO.estado;
         nuevaMedidaDeFuerza.exigencias = medidaDeFuerzaDTO.exigencias;
         
 
@@ -60,7 +63,25 @@ export class MedidasDeFuerzaFactory{
         const tipoMedidaDeFuerza = await this.dataService.tipo_de_medida_de_fuerza.get(medidaDeFuerzaDTO.tipo_de_medida_de_fuerza);
 
         if(!tipoMedidaDeFuerza){
-            throw new HttpException("No se encuentra en Tipo de Medida de Fuerza enviado",HttpStatus.BAD_REQUEST);
+            throw new HttpException("No se encuentra el Tipo de Medida de Fuerza enviado",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!medidaDeFuerzaDTO.estado){
+            throw new HttpException("El estado de la medida de fuerza no puede ser nulo",HttpStatus.BAD_REQUEST);
+        }
+
+        const estado_correcto = ESTADOS_MEDIDA_DE_FUERZA.find(
+            (estado)=>{
+                
+                return estado === medidaDeFuerzaDTO.estado
+            }
+        )
+        
+        if(!estado_correcto){
+            throw new HttpException("El estado enviado, no es un Estado de Medida de Fuerza válido",HttpStatus.BAD_REQUEST)
+        }
+        if(!medidaDeFuerzaDTO.hora_inicio){
+            throw new HttpException("La hora de inicio de la medida de fuerza no puede nulo",HttpStatus.BAD_REQUEST);
         }
 
         
@@ -109,12 +130,23 @@ export class MedidasDeFuerzaFactory{
         const tipo_de_medida_de_fuerza = await this.dataService.tipo_de_medida_de_fuerza.get(medidaDeFuerzaDTO.tipo_de_medida_de_fuerza);
 
         if(!tipo_de_medida_de_fuerza){
-            throw new HttpException("No se existe el tipo de medidad de fuerza enviada",HttpStatus.BAD_REQUEST);
+            throw new HttpException("No existe el tipo de medidad de fuerza enviada",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!medidaDeFuerzaDTO.estado){
+            throw new HttpException("El estado de la medida dde fuerza no puede ser nulo",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!medidaDeFuerzaDTO.hora_inicio){
+            throw new HttpException("La hora de inicio de la medida de fuerza no puede nulo",HttpStatus.BAD_REQUEST);
         }
 
         medida_de_fuerza.id = medida_de_fuerza.id;
         medida_de_fuerza.fecha_inicio = medidaDeFuerzaDTO.fecha_de_inicio;
+        medida_de_fuerza.estado = medidaDeFuerzaDTO.estado;
+        medida_de_fuerza.hora_inicio = medidaDeFuerzaDTO.hora_inicio;
         medida_de_fuerza.fecha_fin = medidaDeFuerzaDTO.fecha_de_fin;
+        medida_de_fuerza.hora_fin = medidaDeFuerzaDTO.hora_fin;
         medida_de_fuerza.exigencias = medidaDeFuerzaDTO.exigencias;
         
 

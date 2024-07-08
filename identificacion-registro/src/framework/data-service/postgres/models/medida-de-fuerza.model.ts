@@ -1,4 +1,4 @@
-import { MedidaDeFuerza } from "src/core/entities/medida-de-fuerza.entity";
+import {MedidaDeFuerza } from "src/core/entities/medida-de-fuerza.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PplModel } from "./ppl.model";
 import { FuncionarioModel } from "./funcionario.model";
@@ -16,8 +16,17 @@ export class MedidaDeFuerzaModel extends MedidaDeFuerza{
     @Column({type:"date"})
     fecha_inicio:Date;
 
+    @Column({type:"time"})
+    hora_inicio: Date;
+
     @Column({type:"date",nullable:true})
     fecha_fin:Date;
+
+    @Column({type:"date",nullable:true})
+    hora_fin: Date;
+
+    @Column({type:"varchar"})
+    estado: string;
 
     @ManyToOne(()=>TipoDeMedidaDeFuerzaModel,{eager:true})
     tipo_de_medida_de_fuerza: TipoDeMedidaDeFuerzaModel;
@@ -37,4 +46,7 @@ export class MedidaDeFuerzaModel extends MedidaDeFuerza{
 
     @ManyToMany(()=>FuncionarioModel,funcionario=>funcionario.medidas_de_fuerza)
     negociadores:Array<FuncionarioModel>;
+
+    @Column({type:"bool",default:false})
+    registro_eliminado: boolean;
 }

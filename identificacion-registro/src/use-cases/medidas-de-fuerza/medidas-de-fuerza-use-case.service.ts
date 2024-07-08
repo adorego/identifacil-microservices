@@ -50,6 +50,21 @@ export class MedidasDeFuerzaUseCase{
         }
     }
 
+    async eliminarMedidaDeFuerza(id:number){
+        if(!id){
+            throw new HttpException("El id de la medida de fuerza a eliminar no puede ser nulo",HttpStatus.BAD_REQUEST);
+        }
+        const medidaDeFuerzaEncontrada = await this.dataService.medidas_de_fuerza.get(id);
+        if(!medidaDeFuerzaEncontrada){
+            throw new HttpException(`No se encontró la medida de fuerza enviada:${id}`,HttpStatus.BAD_REQUEST)
+        }
+        medidaDeFuerzaEncontrada.registro_eliminado = true;
+        const medidaDeFuerzaActualizada = await this.dataService.medidas_de_fuerza.update(medidaDeFuerzaEncontrada)
+        return{
+            id:medidaDeFuerzaActualizada.id
+        }
+    }
+
     async getMedidasDeFuerza(){
         return await this.dataService.medidas_de_fuerza.getMedidasDeFuerzaConPpl()
     }

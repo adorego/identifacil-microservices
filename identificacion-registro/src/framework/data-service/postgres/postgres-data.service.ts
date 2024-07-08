@@ -70,6 +70,10 @@ import { SalidaConyugeModel } from "./models/salida-conyuge.model";
 import { UsuarioModel } from "./models/security/usuario.model";
 import { RolModel } from "./models/security/rol.model";
 import { PermisoModel } from "./models/security/permiso.model";
+import { GradoDeFaltaModel } from "./models/grado-de-falta.model";
+import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
+import { TipoDeSancionModel } from "./models/tipo-sancion.model";
+import { TipoDeVictimaModel } from "./models/tipo-victima.model";
 
 
 @Injectable()
@@ -143,8 +147,12 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   registro_medico: PostgresGenericRepository<RegistroMedicoModel>;
 
   //Faltas y sanciones
-  falta: PostgresGenericRepository<FaltaModel>;
-  sancion: PostgresGenericRepository<SancionModel>;
+  grado_de_falta:PostgresGenericRepository<GradoDeFaltaModel>;
+  falta:PostgresGenericRepository<FaltaModel>;
+  sancion:PostgresGenericRepository<SancionModel>;
+  tipo_sancion:PostgresGenericRepository<TipoDeSancionModel>;
+  tipo_de_falta:PostgresGenericRepository<TipoDeFaltaModel>;
+  tipo_de_victima:PostgresGenericRepository<TipoDeVictimaModel>;
 
   //Seguridad
   usuario: PostgresGenericRepository<UsuarioModel>;
@@ -275,12 +283,27 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectRepository(RegistroMedicoModel)
     private registro_medico_repository:Repository<RegistroMedicoModel>,
 
+    //Faltas y Sanciones
+
+    @InjectRepository(GradoDeFaltaModel)
+    private grado_de_falta_repository:Repository<GradoDeFaltaModel>,
+
     @InjectRepository(FaltaModel)
     private falta_repository:Repository<FaltaModel>,
+
+    @InjectRepository(TipoDeFaltaModel)
+    private tipo_de_falta_repository:Repository<TipoDeFaltaModel>,
 
     @InjectRepository(SancionModel)
     private sancion_repository:Repository<SancionModel>,
 
+    @InjectRepository(TipoDeSancionModel)
+    private tipo_de_sancion_repository:Repository<TipoDeSancionModel>,
+
+    @InjectRepository(TipoDeVictimaModel)
+    private tipo_de_victima_repository:Repository<TipoDeVictimaModel>,
+
+    //////////
     @InjectRepository(UsuarioModel)
     private usuario_repository:Repository<UsuarioModel>,
     @InjectRepository(RolModel)
@@ -358,8 +381,13 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.tipo_de_medida_de_fuerza = new PostgresGenericRepository<TipoDeMedidaDeFuerzaModel>(this.tipo_de_medida_de_fuerza_repository)
     this.motivo_medida_de_fuerza = new PostgresGenericRepository<MotivoDeMedidaDeFuerzaModel>(this.motivo_de_medida_de_fuerza_repository)
     this.registro_medico = new PostgresGenericRepository<RegistroMedicoModel>(this.registro_medico_repository)
+    //Modulo Faltas y Sanciones
+    this.grado_de_falta = new PostgresGenericRepository<GradoDeFaltaModel>(this.grado_de_falta_repository)
     this.falta = new PostgresGenericRepository<FaltaModel>(this.falta_repository)
     this.sancion = new PostgresGenericRepository<SancionModel>(this.sancion_repository)
+    this.tipo_sancion = new PostgresGenericRepository<TipoDeSancionModel>(this.tipo_de_sancion_repository)
+    this.tipo_de_falta = new PostgresGenericRepository<TipoDeFaltaModel>(this.tipo_de_falta_repository)
+    this.tipo_de_victima = new PostgresGenericRepository<TipoDeVictimaModel>(this.tipo_de_victima_repository)
 
     //Security
     this.usuario = new PostgresGenericRepository<UsuarioModel>(this.usuario_repository);

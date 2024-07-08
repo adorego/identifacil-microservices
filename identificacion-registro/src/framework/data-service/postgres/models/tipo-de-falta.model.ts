@@ -6,9 +6,9 @@ import { FaltaModel } from "./falta.model";
 export class TipoDeFaltaModel extends TipoDeFalta{
     @PrimaryGeneratedColumn()
     id:number;
+    
     @Column({type:"varchar"})
     nombre:string;
 
-    @ManyToOne(()=>FaltaModel)
-    faltas:Array<FaltaModel>
+    
 }

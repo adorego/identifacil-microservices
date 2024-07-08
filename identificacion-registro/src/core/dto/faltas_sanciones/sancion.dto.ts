@@ -1,7 +1,9 @@
 
 
 export class SancionDTO{
-    id:number;
-    nombre:string;
-    nivel_de_gravedad:string;
+    tipoDeSancion:number;
+    fechaInicio:Date;
+    fechaFin:Date;
+    falta:number;
+   
 }

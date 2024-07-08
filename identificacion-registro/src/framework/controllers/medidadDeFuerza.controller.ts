@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import {FileInterceptor } from "@nestjs/platform-express";
 import { MedidasDeFuerzaDTO } from "src/core/dto/medidas-de-fuerza/medidas-de-fuerza.dto";
 import { RegistroMedicoDTO } from "src/core/dto/medidas-de-fuerza/registro-medico.dto";
@@ -33,6 +33,15 @@ export class MedidasDeFuerzaController{
     @Get('medida_de_fuerza/:id')
     async get_medida_de_fuerza(@Param() param:any){
         return await this.medidasDeFuerzaUseCase.getMedidaDeFuerza(param.id);
+    }
+
+    @Delete('medida_de_fuerza/:id')
+    async eliminar_medida_de_fuerza(@Param() param:any){
+        const resultado = await this.medidasDeFuerzaUseCase.eliminarMedidaDeFuerza(param.id);
+        return{
+            success:true,
+            id:resultado.id
+        }
     }
 
     @Post('registro_medico/:id')

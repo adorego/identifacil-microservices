@@ -1,24 +1,47 @@
 import { Falta } from "src/core/entities/falta.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TipoDeFaltaModel } from "./tipo-de-falta.model";
-import { SancionModel } from "./sancion.model";
+import { GradoDeFaltaModel } from "./grado-de-falta.model";
 import { PplModel } from "./ppl.model";
+import { SancionModel } from "./sancion.model";
+import { TipoDeVictimaModel } from "./tipo-victima.model";
 
 @Entity({name:"falta"})
 export class FaltaModel extends Falta{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @OneToMany(()=>TipoDeFaltaModel,tipo_de_falta=>tipo_de_falta.faltas)
+    @ManyToOne(()=>TipoDeFaltaModel)
     tipo_de_falta:TipoDeFaltaModel;
 
     @Column({type:"date"})
-    fecha_de_inicio_de_la_falta:Date;
+    fecha_y_hora_de_la_falta:Date;
+
+    @Column({type:"varchar"})
+    numero_de_resolucion:string;
 
     @Column({type:"date"})
-    fecha_de_fin_de_la_falta:Date;
+    fecha_de_la_resolucion:Date;
 
+    @Column({type:"varchar"})
+    archivo_de_resolucion:string;
+
+    @Column({type:"varchar"})
+    descripcion_de_la_falta:string;
+
+    @ManyToOne(()=>GradoDeFaltaModel)
+    grado_de_falta:GradoDeFaltaModel;
+
+    @Column({type:"varchar"})
+    victima_de_la_falta:string;
+
+    @Column({type:"varchar"})
+    tipo_victima:TipoDeVictimaModel;
+
+    @ManyToOne(()=>PplModel)
+    ppl:PplModel;
+
+    @ManyToMany(()=>SancionModel)
+    @JoinTable()
     sanciones_aplicadas:Array<SancionModel>
-
-    ppls_con_faltas:Array<PplModel>
 }

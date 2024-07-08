@@ -62,6 +62,10 @@ import { SalidaConyuge } from "../entities/salida-conyuge.entity";
 import { Usuario } from "../entities/security/usuario.entity";
 import { Rol } from "../entities/security/rol.entity";
 import { Permiso } from "../entities/security/permiso.entity";
+import { GradoDeFalta } from "../entities/grado-de-falta.entity";
+import { TipoDeFalta } from "../entities/tipo_de_falta.entity";
+import { TipoDeSancion } from "../entities/tipo-sancion.entity";
+import { TipoDeVictima } from "../entities/tipo-victima.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -122,8 +126,13 @@ export abstract class IDataService{
   abstract tipo_de_medida_de_fuerza:IGenericRepository<TipoDeMedidaDeFuerza>
   abstract motivo_medida_de_fuerza:IGenericRepository<MotivoDeMedidaDeFuerza>
   abstract registro_medico:IGenericRepository<RegistroMedico>
+  //Faltas y Sanciones
   abstract sancion:IGenericRepository<Sancion>
+  abstract tipo_sancion:IGenericRepository<TipoDeSancion>
+  abstract grado_de_falta:IGenericRepository<GradoDeFalta>
   abstract falta:IGenericRepository<Falta>
+  abstract tipo_de_falta:IGenericRepository<TipoDeFalta>
+  abstract tipo_de_victima:IGenericRepository<TipoDeVictima>
   //Security
   abstract usuario:IGenericRepository<Usuario>;
   abstract rol:IGenericRepository<Rol>;

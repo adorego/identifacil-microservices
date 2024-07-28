@@ -4,6 +4,8 @@ import { FaltaDTO } from "src/core/dto/faltas_sanciones/falta.dto";
 import { ResultadoCrearFaltaFactoryDTO } from "src/core/dto/faltas_sanciones/resultado-crear-falta-factory.dto";
 import { IDataService } from "src/core/abstract/data-service.abstract";
 import { SancionDTO } from "src/core/dto/faltas_sanciones/sancion.dto";
+import { TipoDeSancionDTO } from "src/core/dto/faltas_sanciones/tipoDeSancion.dto";
+import { TipoDeSancion } from "src/core/entities/tipo-sancion.entity";
 
 
 @Injectable()
@@ -16,9 +18,8 @@ export class FaltasSancionesUseCases{
 
     async crear_falta(faltaDTO:FaltaDTO,resolucion_falta:Express.Multer.File){
         const resultado:ResultadoCrearFaltaFactoryDTO = await this.faltasSancionesFactory.generar_falta(faltaDTO, resolucion_falta);
-        resultado.nueva_falta.tipo_de_falta = resultado.tipo_de_falta;
         resultado.nueva_falta.grado_de_falta = resultado.grado_de_falta;
-        resultado.nueva_falta.tipo_victima = resultado.tipo_de_victima;
+        resultado.nueva_falta.tipos_de_victimas = resultado.tipos_de_victimas;
         resultado.nueva_falta.ppl = resultado.ppl;
         resultado.nueva_falta.sanciones_aplicadas = resultado.sanciones_aplicadas;
 
@@ -30,16 +31,16 @@ export class FaltasSancionesUseCases{
     }
 
     async update_falta(id:number,faltaDTO:FaltaDTO,resolucion_falta:Express.Multer.File){
-        const resultado = await this.faltasSancionesFactory.crearUpdateFalta(id,faltaDTO,resolucion_falta);
-        resultado.faltaAActualizar.tipo_de_falta = resultado.tipo_de_falta;
-        resultado.faltaAActualizar.grado_de_falta = resultado.grado_de_falta;
-        resultado.faltaAActualizar.tipo_victima = resultado.tipo_de_victima;
-        resultado.faltaAActualizar.ppl = resultado.ppl;
-        resultado.faltaAActualizar.sanciones_aplicadas = resultado.sanciones_aplicadas;
+        const resultado = await this.faltasSancionesFactory.actualizar_falta(id,faltaDTO,resolucion_falta);
+        resultado.falta_a_actualizar.grado_de_falta = resultado.grado_de_falta;
+        resultado.falta_a_actualizar.tipos_de_victimas = resultado.tipos_de_victimas;
+        resultado.falta_a_actualizar.ppl = resultado.ppl;
+        resultado.falta_a_actualizar.sanciones_aplicadas = resultado.sanciones_aplicadas;
 
-        const faltaActualizada = await this.dataService.falta.update(resultado.faltaAActualizar);
+        const faltaActualizada = await this.dataService.falta.update(resultado.falta_a_actualizar);
         return{
             id:faltaActualizada.id,
+            success:true
 
         }
     }
@@ -93,6 +94,31 @@ export class FaltasSancionesUseCases{
 
     async getSancion(id:number){
         return await this.dataService.sancion.get(id);
+    }
+
+    async create_tipo_de_sancion(tipoDeSancionDTO:TipoDeSancionDTO){
+        const nuevo_tipo_de_sancion = new TipoDeSancion();
+        nuevo_tipo_de_sancion.nombre = tipoDeSancionDTO.nombre;
+        nuevo_tipo_de_sancion.maximo_dias_de_sancion = tipoDeSancionDTO.maximo_dias_de_sancion;
+        const tipo_de_sancion_creada = await this.dataService.tipo_sancion.create(nuevo_tipo_de_sancion);
+        return{
+            id:tipo_de_sancion_creada.id
+        }
+
+    }
+
+    async actualizar_tipo_de_sancion(id:number, tipoDeSancionDTO:TipoDeSancionDTO){
+        if(!id){
+            throw new HttpException('El id del tipo de sancion no puede ser nulo',HttpStatus.BAD_REQUEST);
+        } 
+        const tipoDeSancionEncontrada = await this.dataService.tipo_sancion.get(id);
+        tipoDeSancionEncontrada.nombre = tipoDeSancionDTO.nombre;
+        tipoDeSancionEncontrada.maximo_dias_de_sancion = tipoDeSancionDTO.maximo_dias_de_sancion;
+        const tipo_de_sancion_actualizada = await this.dataService.tipo_sancion.update(tipoDeSancionEncontrada);
+        return{
+            id:tipo_de_sancion_actualizada.id
+        }
+
     }
 
 }

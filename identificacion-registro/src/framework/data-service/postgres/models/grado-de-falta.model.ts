@@ -9,9 +9,6 @@ export class GradoDeFaltaModel extends GradoDeFalta{
     id:number;
 
     @Column({type:'varchar', nullable:false})
-    nombre_de_la_falta:string;
-    
-    @Column({type:'varchar', nullable:false})
     grado_de_gravedad:string;
 
 }

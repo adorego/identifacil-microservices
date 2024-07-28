@@ -14,7 +14,7 @@ export class Falta{
 
     tipo_de_falta:TipoDeFalta;
 
-    fecha_y_hora_de_la_falta:Date;
+    fecha_y_hora_de_la_falta:string;
 
     numero_de_resolucion:string;
 
@@ -26,9 +26,9 @@ export class Falta{
 
     grado_de_falta:GradoDeFalta;
 
-    victima_de_la_falta:string;
+    victimas_de_la_falta:Array<string>;
 
-    tipo_victima:TipoDeVictima;
+    tipos_de_victimas:Array<TipoDeVictima>;
 
     ppl:Ppl;
 

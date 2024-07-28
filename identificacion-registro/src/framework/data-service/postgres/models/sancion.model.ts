@@ -5,13 +5,10 @@ import { FaltaModel } from "./falta.model";
 import { Ppl } from "src/core/entities/ppl.entity";
 import { PplModel } from "./ppl.model";
 
-@Entity()
+@Entity({name:"sancion"})
 export class SancionModel extends Sancion{
     @PrimaryGeneratedColumn()
     id:number;
-
-    @Column()
-    nombre:string;
 
     @ManyToOne(()=>TipoDeSancionModel)
     tipo:TipoDeSancionModel;

@@ -14,8 +14,8 @@ export class FaltaModel extends Falta{
     @ManyToOne(()=>TipoDeFaltaModel)
     tipo_de_falta:TipoDeFaltaModel;
 
-    @Column({type:"date"})
-    fecha_y_hora_de_la_falta:Date;
+    @Column({type:"varchar"})
+    fecha_y_hora_de_la_falta:string;
 
     @Column({type:"varchar"})
     numero_de_resolucion:string;
@@ -32,11 +32,9 @@ export class FaltaModel extends Falta{
     @ManyToOne(()=>GradoDeFaltaModel)
     grado_de_falta:GradoDeFaltaModel;
 
-    @Column({type:"varchar"})
-    victima_de_la_falta:string;
-
-    @Column({type:"varchar"})
-    tipo_victima:TipoDeVictimaModel;
+    @ManyToMany(()=>TipoDeVictimaModel)
+    @JoinTable()
+    tipos_de_victimas:Array<TipoDeVictimaModel>;
 
     @ManyToOne(()=>PplModel)
     ppl:PplModel;

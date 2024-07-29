@@ -36,6 +36,9 @@ export class FaltaModel extends Falta{
     @JoinTable()
     tipos_de_victimas:Array<TipoDeVictimaModel>;
 
+    @Column({type:"varchar",array:true})
+    victimas_de_la_falta:Array<string>
+
     @ManyToOne(()=>PplModel,{eager:true})
     ppl:PplModel;
 

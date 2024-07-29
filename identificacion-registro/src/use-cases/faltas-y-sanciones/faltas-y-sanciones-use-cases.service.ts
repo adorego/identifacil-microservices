@@ -6,6 +6,7 @@ import { IDataService } from "src/core/abstract/data-service.abstract";
 import { SancionDTO } from "src/core/dto/faltas_sanciones/sancion.dto";
 import { TipoDeSancionDTO } from "src/core/dto/faltas_sanciones/tipoDeSancion.dto";
 import { TipoDeSancion } from "src/core/entities/tipo-sancion.entity";
+import { Sancion } from "src/core/entities/sancion.entity";
 
 
 @Injectable()
@@ -31,6 +32,7 @@ export class FaltasSancionesUseCases{
     }
 
     async update_falta(id:number,faltaDTO:FaltaDTO,resolucion_falta:Express.Multer.File){
+        console.log("Falta DTO:",faltaDTO);
         const resultado = await this.faltasSancionesFactory.actualizar_falta(id,faltaDTO,resolucion_falta);
         resultado.falta_a_actualizar.grado_de_falta = resultado.grado_de_falta;
         resultado.falta_a_actualizar.tipos_de_victimas = resultado.tipos_de_victimas;
@@ -53,12 +55,17 @@ export class FaltasSancionesUseCases{
         if(!pplEncontrado){
             throw new HttpException('No se encuentra el PPL enviado',HttpStatus.BAD_REQUEST);
         }
+        
         const faltas = await this.dataService.falta.getAll();
+       
         const faltasDelPpl = await Promise.all(faltas.map(
             async (falta)=>{
-                return falta.ppl.id === pplEncontrado.id
+                if(falta?.ppl.id === pplEncontrado.id){
+                    return falta
+                }
             }
         ))
+        
         return faltasDelPpl;
     }
 
@@ -73,6 +80,9 @@ export class FaltasSancionesUseCases{
         resultado.sancion.tipo = resultado.tipo_de_sancion;
         resultado.sancion.ppl = resultado.falta.ppl;
         const sancionCreada = await this.dataService.sancion.create(resultado.sancion);
+        if(!resultado.sancion.falta.sanciones_aplicadas){
+            resultado.sancion.falta.sanciones_aplicadas = new Array<Sancion>
+        }
         resultado.sancion.falta.sanciones_aplicadas.push(sancionCreada);
         const faltaActualizada = await this.dataService.falta.update(resultado.sancion.falta);
 

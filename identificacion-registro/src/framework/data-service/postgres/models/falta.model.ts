@@ -36,10 +36,9 @@ export class FaltaModel extends Falta{
     @JoinTable()
     tipos_de_victimas:Array<TipoDeVictimaModel>;
 
-    @ManyToOne(()=>PplModel)
+    @ManyToOne(()=>PplModel,{eager:true})
     ppl:PplModel;
 
-    @ManyToMany(()=>SancionModel)
-    @JoinTable()
+    @OneToMany(()=>SancionModel,sancion=>sancion.falta,{eager:true})
     sanciones_aplicadas:Array<SancionModel>
 }

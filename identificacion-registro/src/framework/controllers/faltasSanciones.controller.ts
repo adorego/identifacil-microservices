@@ -3,6 +3,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { FaltaDTO } from "src/core/dto/faltas_sanciones/falta.dto";
 import { GradoDeFaltaDTO } from "src/core/dto/faltas_sanciones/grado-de-falta.dto";
 import { SancionDTO } from "src/core/dto/faltas_sanciones/sancion.dto";
+import { TipoDeSancionDTO } from "src/core/dto/faltas_sanciones/tipoDeSancion.dto";
 import { FaltasSancionesUseCases } from "src/use-cases/faltas-y-sanciones/faltas-y-sanciones-use-cases.service";
 
 
@@ -29,7 +30,8 @@ export class FaltasSancionesController{
 
     @Put('faltas/:id')
     @UseInterceptors(FileInterceptor('resolucion_falta'))
-    async updateFalta(@UploadedFile() resolucion_falta:Express.Multer.File, @Param() param ,@Body() faltaDTO:FaltaDTO){
+    async updateFalta(@UploadedFile() resolucion_falta:Express.Multer.File, @Param() param:any ,@Body() faltaDTO:FaltaDTO){
+        console.log("Llamada a update Falta");
         const resultado = await this.faltasSancionesUseCasesService.update_falta(param.id,faltaDTO,resolucion_falta);
         return{
             id:resultado.id,
@@ -37,7 +39,7 @@ export class FaltasSancionesController{
         }
     }
 
-    @Get('faltas/:id/ppl')
+    @Get('faltas/ppl/:id')
     async getFaltasPpl(@Param() param:any){
         const resultado = await this.faltasSancionesUseCasesService.getFaltasPpl(param.id);
         return resultado;
@@ -74,6 +76,23 @@ export class FaltasSancionesController{
         return this.faltasSancionesUseCasesService.getSancion(param.id)
     }
 
+    @Post('sanciones/tipo_de_sanciones')
+    async crearTipoDeSancion(@Body() tipoDeSancionDTO:TipoDeSancionDTO){
+        const resultado = await this.faltasSancionesUseCasesService.create_tipo_de_sancion(tipoDeSancionDTO);
+        return{
+            id:resultado.id,
+            success:true
+        }
+    }
+
+    @Put('sanciones/tipo_de_sanciones/:id')
+    async actualizarTipoDeSancion(@Param() param:any, @Body() tipoDeSancionDTO:TipoDeSancionDTO){
+        const resultado = await this.faltasSancionesUseCasesService.actualizar_tipo_de_sancion(param.id, tipoDeSancionDTO)
+        return{
+            id:resultado.id,
+            success:true
+        }
+    }
     
 
     

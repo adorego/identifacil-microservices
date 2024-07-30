@@ -14,6 +14,15 @@ export class FaltasSancionesController{
         private faltasSancionesUseCasesService:FaltasSancionesUseCases
     ){}
 
+    @Get('faltas')
+    async getFaltas(){
+        const resultado = await this.faltasSancionesUseCasesService.getFaltas();
+        return{
+            faltas:resultado,
+            success:true
+        }
+    }
+
     @Post('faltas')
     @UseInterceptors(FileInterceptor('resolucion_falta'))
     async createFalta(@UploadedFile() resolucion_falta:Express.Multer.File, @Body() faltaDTO:FaltaDTO){
@@ -38,6 +47,8 @@ export class FaltasSancionesController{
             success:true
         }
     }
+
+   
 
     @Get('faltas/ppl/:id')
     async getFaltasPpl(@Param() param:any){
@@ -90,6 +101,15 @@ export class FaltasSancionesController{
         const resultado = await this.faltasSancionesUseCasesService.actualizar_tipo_de_sancion(param.id, tipoDeSancionDTO)
         return{
             id:resultado.id,
+            success:true
+        }
+    }
+
+    @Get('tipos_de_sanciones')
+    async getTiposDeSanciones(){
+        const resultado = await this.faltasSancionesUseCasesService.tipos_de_sanciones();
+        return{
+            tipos_de_sanciones:resultado,
             success:true
         }
     }

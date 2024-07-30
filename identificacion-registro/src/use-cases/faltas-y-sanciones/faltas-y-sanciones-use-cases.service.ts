@@ -102,6 +102,10 @@ export class FaltasSancionesUseCases{
         }
     }
 
+    async getFaltas(){
+        return await this.dataService.falta.getAll()
+    }
+
     async getSancion(id:number){
         return await this.dataService.sancion.get(id);
     }
@@ -129,6 +133,10 @@ export class FaltasSancionesUseCases{
             id:tipo_de_sancion_actualizada.id
         }
 
+    }
+
+    async tipos_de_sanciones(){
+        return this.dataService.tipo_sancion.getAll();
     }
 
 }

@@ -237,6 +237,7 @@ export class FaltasSancionesFactory{
         const nuevaSancion = new Sancion();
         nuevaSancion.fecha_inicio = new Date(sancionDTO.fechaInicio);
         nuevaSancion.fecha_fin = new Date(sancionDTO.fechaFin);
+        nuevaSancion.resolucion = await this.fileService.almacenar_archivo(resolucion_sancion,`resolucion-${faltaEncontrada.ppl.persona.numero_identificacion}-${faltaEncontrada.fecha_de_la_resolucion.toLocaleDateString().replaceAll("/","-")}`)
         
 
         return{

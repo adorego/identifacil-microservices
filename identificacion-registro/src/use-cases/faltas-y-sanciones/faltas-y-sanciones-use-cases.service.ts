@@ -139,4 +139,20 @@ export class FaltasSancionesUseCases{
         return this.dataService.tipo_sancion.getAll();
     }
 
+    async getTipoDeSancionesById(id:number){
+        return this.dataService.tipo_sancion.get(id);
+    }
+
+    async deleteSancion(id:number){
+        const sancionEncontrada = await this.dataService.sancion.get(id);
+        if(!sancionEncontrada){
+            throw new HttpException('No se encontró la sanción enviada',HttpStatus.BAD_REQUEST);
+        }
+        const resultado = await this.dataService.sancion.delete(sancionEncontrada);
+        if(!resultado){
+            throw new HttpException('No se pudo eliminar la sanción encontrada',HttpStatus.BAD_REQUEST);
+        }
+        return resultado;
+    }
+
 }

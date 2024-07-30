@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { FaltaDTO } from "src/core/dto/faltas_sanciones/falta.dto";
 import { GradoDeFaltaDTO } from "src/core/dto/faltas_sanciones/grado-de-falta.dto";
@@ -87,6 +87,14 @@ export class FaltasSancionesController{
         return this.faltasSancionesUseCasesService.getSancion(param.id)
     }
 
+    @Delete('sanciones/:id')
+    async deleteSancion(@Param() param:any){
+        const resultado = await this.faltasSancionesUseCasesService.deleteSancion(param.id);
+        return{
+            success:resultado
+        }
+    }
+
     @Post('sanciones/tipo_de_sanciones')
     async crearTipoDeSancion(@Body() tipoDeSancionDTO:TipoDeSancionDTO){
         const resultado = await this.faltasSancionesUseCasesService.create_tipo_de_sancion(tipoDeSancionDTO);
@@ -110,6 +118,15 @@ export class FaltasSancionesController{
         const resultado = await this.faltasSancionesUseCasesService.tipos_de_sanciones();
         return{
             tipos_de_sanciones:resultado,
+            success:true
+        }
+    }
+
+    @Get('tipos_de_sanciones/:id')
+    async getTipoDeSancionById(@Param() param:any){
+        const resultado = await this.faltasSancionesUseCasesService.getTipoDeSancionesById(param.id);
+        return{
+            tipo_de_sancion:resultado,
             success:true
         }
     }

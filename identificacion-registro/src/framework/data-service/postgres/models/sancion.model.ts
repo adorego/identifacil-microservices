@@ -25,4 +25,7 @@ export class SancionModel extends Sancion{
 
     @ManyToOne(()=>PplModel)
     ppl:PplModel;
+
+    @Column({type:"varchar"})
+    resolucion: string;
 }

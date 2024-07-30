@@ -9,5 +9,6 @@ export class Sancion{
     fecha_fin:Date;
     falta:Falta;
     ppl:Ppl;
+    resolucion:string;
     
 }

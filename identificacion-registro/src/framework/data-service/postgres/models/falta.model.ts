@@ -11,7 +11,7 @@ export class FaltaModel extends Falta{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>TipoDeFaltaModel)
+    @ManyToOne(()=>TipoDeFaltaModel,{eager:true})
     tipo_de_falta:TipoDeFaltaModel;
 
     @Column({type:"varchar"})
@@ -29,7 +29,7 @@ export class FaltaModel extends Falta{
     @Column({type:"varchar"})
     descripcion_de_la_falta:string;
 
-    @ManyToOne(()=>GradoDeFaltaModel)
+    @ManyToOne(()=>GradoDeFaltaModel,{eager:true})
     grado_de_falta:GradoDeFaltaModel;
 
     @ManyToMany(()=>TipoDeVictimaModel)

@@ -92,7 +92,7 @@ export class FaltasSancionesUseCases{
     }
 
     async update_sancion(id:number,sancionDTO:SancionDTO,resolucion_sancion:Express.Multer.File){
-        const resultado = await this.faltasSancionesFactory.crearUpdateSancion(id,sancionDTO,resolucion_sancion);
+        const resultado = await this.faltasSancionesFactory.update_sancion(id,sancionDTO,resolucion_sancion);
         resultado.sancion.falta = resultado.falta;
         resultado.sancion.tipo = resultado.tipo_de_sancion;
         resultado.sancion.ppl = resultado.falta.ppl;

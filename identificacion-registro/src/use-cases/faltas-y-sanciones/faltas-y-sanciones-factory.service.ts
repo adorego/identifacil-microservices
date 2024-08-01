@@ -250,7 +250,7 @@ export class FaltasSancionesFactory{
 
     }
 
-    async crearUpdateSancion(id:number,sancionDTO:SancionDTO,resolucion_falta:Express.Multer.File){
+    async update_sancion(id:number,sancionDTO:SancionDTO,resolucion_falta:Express.Multer.File){
         if(!id){
             throw new HttpException("El id de la Sancion no puede ser nulo",HttpStatus.BAD_REQUEST);
         }

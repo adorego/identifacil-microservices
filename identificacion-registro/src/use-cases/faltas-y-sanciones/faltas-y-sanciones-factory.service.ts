@@ -225,6 +225,7 @@ export class FaltasSancionesFactory{
         if(!faltaEncontrada){
             throw new HttpException("No se encuentra la falta enviada",HttpStatus.BAD_REQUEST);
         }
+        console.log("fecha de la resolución encontrada:",faltaEncontrada.fecha_de_la_resolucion);
 
         
         if(!sancionDTO.fechaInicio){
@@ -233,11 +234,14 @@ export class FaltasSancionesFactory{
         if(!sancionDTO.fechaFin){
             throw new HttpException("Se debe enviar una fecha fin de la sanción",HttpStatus.BAD_REQUEST);
         }
+        if(!resolucion_sancion){
+            throw new HttpException("Se debe enviar el archivo de la resolución",HttpStatus.BAD_REQUEST);
+        }
 
         const nuevaSancion = new Sancion();
         nuevaSancion.fecha_inicio = new Date(sancionDTO.fechaInicio);
         nuevaSancion.fecha_fin = new Date(sancionDTO.fechaFin);
-        nuevaSancion.resolucion = await this.fileService.almacenar_archivo(resolucion_sancion,`resolucion-${faltaEncontrada.ppl.persona.numero_identificacion}-${faltaEncontrada.fecha_de_la_resolucion.toLocaleDateString().replaceAll("/","-")}`)
+        nuevaSancion.resolucion = await this.fileService.almacenar_archivo(resolucion_sancion,`resolucion-${faltaEncontrada.ppl.persona.numero_identificacion}-${new Date(faltaEncontrada.fecha_de_la_resolucion).toLocaleDateString().replaceAll("/","-")}`)
         
 
         return{
@@ -250,7 +254,7 @@ export class FaltasSancionesFactory{
 
     }
 
-    async update_sancion(id:number,sancionDTO:SancionDTO,resolucion_falta:Express.Multer.File){
+    async update_sancion(id:number,sancionDTO:SancionDTO,resolucion_sancion:Express.Multer.File){
         if(!id){
             throw new HttpException("El id de la Sancion no puede ser nulo",HttpStatus.BAD_REQUEST);
         }
@@ -276,6 +280,9 @@ export class FaltasSancionesFactory{
             throw new HttpException("No se encuentra la falta enviada",HttpStatus.BAD_REQUEST);
         }
 
+        if(!resolucion_sancion){
+            throw new HttpException("Se debe enviar el archivo de la resolución",HttpStatus.BAD_REQUEST);
+        }
         
         if(!sancionDTO.fechaInicio){
             throw new HttpException("Se debe enviar una fecha de inicio de la sanción",HttpStatus.BAD_REQUEST);
@@ -287,6 +294,8 @@ export class FaltasSancionesFactory{
         
         sancionEncontrada.fecha_inicio = new Date(sancionDTO.fechaInicio);
         sancionEncontrada.fecha_fin = new Date(sancionDTO.fechaFin);
+        sancionEncontrada.resolucion = await this.fileService.almacenar_archivo(resolucion_sancion,`resolucion-${faltaEncontrada.ppl.persona.numero_identificacion}-${new Date(faltaEncontrada.fecha_de_la_resolucion).toLocaleDateString().replaceAll("/","-")}`)
+      
         
 
         return{

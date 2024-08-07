@@ -7,6 +7,8 @@ import { SancionDTO } from "src/core/dto/faltas_sanciones/sancion.dto";
 import { TipoDeSancionDTO } from "src/core/dto/faltas_sanciones/tipoDeSancion.dto";
 import { TipoDeSancion } from "src/core/entities/tipo-sancion.entity";
 import { Sancion } from "src/core/entities/sancion.entity";
+import { TipoDeFaltaDTO } from "src/core/dto/faltas_sanciones/tipo-de-falta.dto";
+import { TipoDeFalta } from "src/core/entities/tipo_de_falta.entity";
 
 
 @Injectable()
@@ -73,6 +75,47 @@ export class FaltasSancionesUseCases{
         return await this.dataService.falta.get(id_falta);
     }
 
+    async crear_tipo_de_falta(tipoDeFaltaDTO:TipoDeFaltaDTO){
+        if(!tipoDeFaltaDTO.nombre){
+            throw new HttpException('El nombre del tipo de falta no puede ser nulo',HttpStatus.BAD_REQUEST);
+        }
+        const tipoDeFalta = new TipoDeFalta();
+        tipoDeFalta.nombre = tipoDeFaltaDTO.nombre;
+        const resultado = await this.dataService.tipo_de_falta.create(tipoDeFalta);
+        return resultado;
+    }
+
+    async actualizar_tipo_de_falta(id:number,tipoDeFaltaDTO:TipoDeFaltaDTO){
+        if(!tipoDeFaltaDTO.nombre){
+            throw new HttpException('El nombre del tipo de falta no puede ser nulo',HttpStatus.BAD_REQUEST);
+        }
+        if(!id){
+            throw new HttpException('El id del tipo de falta no puede ser nulo',HttpStatus.BAD_REQUEST);
+        }
+        const tipoDeFaltaEncontrado = await this.dataService.tipo_de_falta.get(id);
+        if(!tipoDeFaltaEncontrado){
+            throw new HttpException('No se encuentra el Tipo de Falta en la BD',HttpStatus.BAD_REQUEST);
+        }
+        tipoDeFaltaEncontrado.nombre = tipoDeFaltaDTO.nombre;
+        const resultado = await this.dataService.tipo_de_falta.update(tipoDeFaltaEncontrado);
+        return resultado
+    }
+
+    async get_tipos_de_falta(){
+        return await this.dataService.tipo_de_falta.getAll();
+    }
+
+    async getTipoDeFaltaById(id:number){
+        if(!id){
+            throw new HttpException('El id del tipo de falta no puede ser nulo',HttpStatus.BAD_REQUEST);
+        }
+        const tipoDeFaltaEncontrado = await this.dataService.tipo_de_falta.get(id);
+        if(!tipoDeFaltaEncontrado){
+            throw new HttpException('No se encuentra el Tipo de Falta en la BD',HttpStatus.BAD_REQUEST);
+        }
+        return tipoDeFaltaEncontrado;
+
+    }
 
     async crear_sancion(sancionDTO:SancionDTO, resolucion_sancion:Express.Multer.File){
         const resultado = await this.faltasSancionesFactory.generar_sancion(sancionDTO,resolucion_sancion);
@@ -97,7 +140,6 @@ export class FaltasSancionesUseCases{
         sancionAActualizar.falta = resultado.falta;
         sancionAActualizar.tipo = resultado.tipo_de_sancion;
         sancionAActualizar.ppl = resultado.falta.ppl;
-        console.log("Sancion a actualizar:",sancionAActualizar);
         const sancionActualizada = await this.dataService.sancion.update(sancionAActualizar);
         return{
             id:sancionActualizada.id

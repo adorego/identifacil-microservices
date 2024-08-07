@@ -3,6 +3,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { FaltaDTO } from "src/core/dto/faltas_sanciones/falta.dto";
 import { GradoDeFaltaDTO } from "src/core/dto/faltas_sanciones/grado-de-falta.dto";
 import { SancionDTO } from "src/core/dto/faltas_sanciones/sancion.dto";
+import { TipoDeFaltaDTO } from "src/core/dto/faltas_sanciones/tipo-de-falta.dto";
 import { TipoDeSancionDTO } from "src/core/dto/faltas_sanciones/tipoDeSancion.dto";
 import { FaltasSancionesUseCases } from "src/use-cases/faltas-y-sanciones/faltas-y-sanciones-use-cases.service";
 
@@ -60,6 +61,29 @@ export class FaltasSancionesController{
     async getFalta(@Param() param:any){
         const resultado = await this.faltasSancionesUseCasesService.getFaltaById(param.id);
         return resultado;
+    }
+    @Get('tipos_de_faltas')
+    async getTipoDeFaltas(){
+        const resultado = await this.faltasSancionesUseCasesService.get_tipos_de_falta();
+        return resultado
+    }
+
+    @Get('tipos_de_faltas/:id')
+    async getTipoDeFaltaById(@Param() param:any){
+        const resultado = await this.faltasSancionesUseCasesService.getTipoDeFaltaById(param.id)
+        return resultado
+    }
+
+    @Post('tipos_de_faltas')
+    async crearTipoDeFalta(@Body() tipoDeFaltaDTO:TipoDeFaltaDTO){
+        const resultado = await this.faltasSancionesUseCasesService.crear_tipo_de_falta(tipoDeFaltaDTO)
+        return resultado
+    }
+
+    @Put('tipos_de_faltas/:id')
+    async updateTipoDeFalta(@Param() param:any, @Body() tipoDeFaltaDTO:TipoDeFaltaDTO){
+        const resultado = await this.faltasSancionesUseCasesService.actualizar_tipo_de_falta(param.id, tipoDeFaltaDTO)
+        return resultado
     }
 
     @Post('sanciones')

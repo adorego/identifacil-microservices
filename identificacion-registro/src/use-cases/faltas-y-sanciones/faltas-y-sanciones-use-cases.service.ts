@@ -81,6 +81,8 @@ export class FaltasSancionesUseCases{
         }
         const tipoDeFalta = new TipoDeFalta();
         tipoDeFalta.nombre = tipoDeFaltaDTO.nombre;
+        tipoDeFalta.descripcion = tipoDeFaltaDTO.descripcion;
+        tipoDeFalta.eliminado = tipoDeFaltaDTO?.eliminado ? tipoDeFaltaDTO.eliminado : false;
         const resultado = await this.dataService.tipo_de_falta.create(tipoDeFalta);
         return resultado;
     }
@@ -97,6 +99,8 @@ export class FaltasSancionesUseCases{
             throw new HttpException('No se encuentra el Tipo de Falta en la BD',HttpStatus.BAD_REQUEST);
         }
         tipoDeFaltaEncontrado.nombre = tipoDeFaltaDTO.nombre;
+        tipoDeFaltaEncontrado.descripcion = tipoDeFaltaDTO.descripcion;
+        tipoDeFaltaEncontrado.eliminado = tipoDeFaltaDTO?.eliminado ? tipoDeFaltaDTO.eliminado : false;
         const resultado = await this.dataService.tipo_de_falta.update(tipoDeFaltaEncontrado);
         return resultado
     }
@@ -114,6 +118,20 @@ export class FaltasSancionesUseCases{
             throw new HttpException('No se encuentra el Tipo de Falta en la BD',HttpStatus.BAD_REQUEST);
         }
         return tipoDeFaltaEncontrado;
+
+    }
+
+    async eliminarTipoDeFalta(id:number){
+        if(!id){
+            throw new HttpException('El id del tipo de falta no puede ser nulo',HttpStatus.BAD_REQUEST);
+        }
+        const tipoDeFaltaEncontrado = await this.dataService.tipo_de_falta.get(id);
+        if(!tipoDeFaltaEncontrado){
+            throw new HttpException('No se encuentra el Tipo de Falta en la BD',HttpStatus.BAD_REQUEST);
+        }
+        tipoDeFaltaEncontrado.eliminado = true;
+        const resultado = await this.dataService.tipo_de_falta.update(tipoDeFaltaEncontrado);
+        return resultado
 
     }
 

@@ -10,5 +10,11 @@ export class TipoDeFaltaModel extends TipoDeFalta{
     @Column({type:"varchar"})
     nombre:string;
 
+    @Column({type:"varchar"})
+    descripcion:string;
+
+    @Column({type:"boolean",default:false})
+    eliminado: boolean;
+
     
 }

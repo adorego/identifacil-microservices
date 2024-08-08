@@ -86,6 +86,11 @@ export class FaltasSancionesController{
         return resultado
     }
 
+    @Delete('tipos_de_faltas/:id')
+    async deleteTipoDeFalta(@Param() param:any){
+        const resultado = await this.faltasSancionesUseCasesService.eliminarTipoDeFalta(param.id);
+        return resultado;
+    }
     @Post('sanciones')
     @UseInterceptors(FileInterceptor('resolucion_sancion'))
     async createSancion(@UploadedFile() resolucion_sancion:Express.Multer.File, @Body() sancionDTO:SancionDTO){

@@ -12,4 +12,5 @@ export class ResultadoCrearFaltaFactoryDTO{
     ppl:Ppl;
     sanciones_aplicadas:Array<Sancion>;
     tipos_de_victimas:Array<TipoDeVictima>;
+    tipo_de_falta:TipoDeFalta;
 }

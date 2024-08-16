@@ -53,14 +53,24 @@ export class DatosPersonalesModel extends DatosPersonales{
   @Column({type:"varchar",nullable:true})
   numeroDeContacto:string;
 
+  
+  @Column({type:"varchar",nullable:true})
+  nombreDeContacto:string;
+
  
   @Column({type:"varchar",nullable:true})
   contactoDeEmergencia1:string;
+
+  @Column({type:"varchar",nullable:true})
+  nombreDeContactoDeEmergencia1:string;
 
   
 
   @Column({type:"varchar",nullable:true})
   contactoDeEmergencia2:string;
+
+  @Column({type:"varchar",nullable:true})
+  nombreDeContactoDeEmergencia2:string;
 
   
   @Column({type:"boolean", nullable:true})

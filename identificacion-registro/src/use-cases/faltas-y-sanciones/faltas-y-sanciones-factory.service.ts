@@ -86,6 +86,14 @@ export class FaltasSancionesFactory{
             throw new HttpException("Se debe enviar la fecha de la resolución",HttpStatus.BAD_REQUEST);
         }
 
+        if(!faltaDTO.tipo_de_falta){
+            throw new HttpException("Se debe enviar el tipo de falta",HttpStatus.BAD_REQUEST);
+        }
+
+        const tipoDeFalta = await this.dataService.tipo_de_falta.get(faltaDTO.tipo_de_falta);
+        if(!tipoDeFalta){
+            throw new HttpException("No se encuentra el tipo de falta enviado",HttpStatus.BAD_REQUEST);
+        }
         
 
         const fecha_resolucion = new Date(faltaDTO.fecha_de_resolucion);
@@ -104,7 +112,8 @@ export class FaltasSancionesFactory{
             nueva_falta:nuevaFalta,
             ppl:pplEncontrado,
             sanciones_aplicadas:sancionesAplicadas,
-            tipos_de_victimas:tipos_de_victimas
+            tipos_de_victimas:tipos_de_victimas,
+            tipo_de_falta:tipoDeFalta
         }
 
     }
@@ -185,6 +194,15 @@ export class FaltasSancionesFactory{
             throw new HttpException("Se debe enviar la fecha de la resolución",HttpStatus.BAD_REQUEST);
         }
 
+        if(!faltaDTO.tipo_de_falta){
+            throw new HttpException("Se debe enviar el tipo de falta",HttpStatus.BAD_REQUEST);
+        }
+
+        const tipoDeFalta = await this.dataService.tipo_de_falta.get(faltaDTO.tipo_de_falta);
+        if(!tipoDeFalta){
+            throw new HttpException("No se encuentra el tipo de falta enviado",HttpStatus.BAD_REQUEST);
+        }
+
         
 
         const fecha_resolucion = new Date(faltaDTO.fecha_de_resolucion);
@@ -202,7 +220,8 @@ export class FaltasSancionesFactory{
             falta_a_actualizar:faltaEncontrada,
             ppl:pplEncontrado,
             sanciones_aplicadas:sancionesAplicadas,
-            tipos_de_victimas:tipos_de_victimas
+            tipos_de_victimas:tipos_de_victimas,
+            tipo_de_falta:tipoDeFalta
         }
 
     }

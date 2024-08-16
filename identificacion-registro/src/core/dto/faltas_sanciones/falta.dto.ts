@@ -23,5 +23,7 @@ export class FaltaDTO{
 
     tipos_de_victimas:Array<number>;
 
-    sanciones_aplicadas:Array<number>
+    sanciones_aplicadas:Array<number>;
+
+    tipo_de_falta:number;
 }

@@ -70,12 +70,14 @@ export class RegistroDatosPersonalesFactory{
      datosPersonales.departamento = departamento;
     
      datosPersonales.numeroDeContacto = datosPersonalesDTO.numeroDeContacto;
-     
+     datosPersonales.nombreDeContacto = datosPersonalesDTO.nombreDeContacto;
      
     
     datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
+    datosPersonales.nombreDeContactoDeEmergencia1 = datosPersonalesDTO.nombreDeContactoDeEmergencia1;
     
     datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
+    datosPersonales.nombreDeContactoDeEmergencia2 = datosPersonalesDTO.nombreDeContactoDeEmergencia2;
      
      datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
     
@@ -189,10 +191,13 @@ export class RegistroDatosPersonalesFactory{
           datosPersonales.departamento = departamento;
           
           datosPersonales.numeroDeContacto= datosPersonalesDTO.numeroDeContacto;
+          datosPersonales.nombreDeContacto = datosPersonalesDTO.nombreDeContacto;
          
           datosPersonales.contactoDeEmergencia1 = datosPersonalesDTO.contactoDeEmergencia1;
+          datosPersonales.nombreDeContactoDeEmergencia1 = datosPersonalesDTO.nombreDeContactoDeEmergencia1;
          
           datosPersonales.contactoDeEmergencia2 = datosPersonalesDTO.contactoDeEmergencia2;
+          datosPersonales.nombreDeContactoDeEmergencia2 = datosPersonalesDTO.nombreDeContactoDeEmergencia2;
           
           datosPersonales.pueblosIndigenas = datosPersonalesDTO.pueblosIndigenas;
          

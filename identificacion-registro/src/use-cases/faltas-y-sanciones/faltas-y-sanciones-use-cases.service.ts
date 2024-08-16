@@ -25,6 +25,7 @@ export class FaltasSancionesUseCases{
         resultado.nueva_falta.tipos_de_victimas = resultado.tipos_de_victimas;
         resultado.nueva_falta.ppl = resultado.ppl;
         resultado.nueva_falta.sanciones_aplicadas = resultado.sanciones_aplicadas;
+        resultado.nueva_falta.tipo_de_falta = resultado.tipo_de_falta;
 
         const faltaCreada = await this.dataService.falta.create(resultado.nueva_falta);
         return{
@@ -40,6 +41,7 @@ export class FaltasSancionesUseCases{
         resultado.falta_a_actualizar.tipos_de_victimas = resultado.tipos_de_victimas;
         resultado.falta_a_actualizar.ppl = resultado.ppl;
         resultado.falta_a_actualizar.sanciones_aplicadas = resultado.sanciones_aplicadas;
+        resultado.falta_a_actualizar.tipo_de_falta = resultado.tipo_de_falta;
 
         const faltaActualizada = await this.dataService.falta.update(resultado.falta_a_actualizar);
         return{

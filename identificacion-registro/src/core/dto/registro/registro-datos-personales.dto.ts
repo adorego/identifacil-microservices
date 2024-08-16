@@ -11,8 +11,11 @@ export class RegistroDatosPersonalesDTO{
   direccion: string;
   barrioCompania: string;
   numeroDeContacto: string;
+  nombreDeContacto:string;
   contactoDeEmergencia1: string;
+  nombreDeContactoDeEmergencia1:string;
   contactoDeEmergencia2: string;
+  nombreDeContactoDeEmergencia2:string;
   pueblosIndigenas: boolean;
   nombreEtnia: string;
   perteneceAComunidadLGTBI:boolean;

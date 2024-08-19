@@ -45,6 +45,7 @@ export class RegistroDatosFamiliaresFactory{
                 const familiarACrear = new Familiar();
                 familiarACrear.nombre = familiar.nombre;
                 familiarACrear.apellido = familiar.apellido;
+                familiarACrear.cedulaDeIdentidad = familiar.cedulaDeIdentidad
                 familiarACrear.vinculo = vinculo;
                 familiarACrear.establecimiento = establecimiento;
                 familiarACrear.edad = familiar.edad;
@@ -146,6 +147,7 @@ export class RegistroDatosFamiliaresFactory{
                 const familiarACrear = new Familiar();
                 familiarACrear.nombre = familiar.nombre;
                 familiarACrear.apellido = familiar.apellido;
+                familiarACrear.cedulaDeIdentidad = familiar.cedulaDeIdentidad;
                 familiarACrear.edad = familiar.edad;
                 familiarACrear.vinculo = vinculo;
                 familiarACrear.establecimiento = establecimiento;

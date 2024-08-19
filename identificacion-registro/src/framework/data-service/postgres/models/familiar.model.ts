@@ -18,6 +18,9 @@ export class FamiliarModel extends Familiar{
   @Column({type:'varchar', nullable:false})
   apellido:string;
 
+  @Column({type:'varchar', nullable:true})
+  cedulaDeIdentidad:string;
+
   @ManyToOne(()=>VinculoFamiliarModel,{eager:true})
   vinculo:VinculoFamiliarModel;
 

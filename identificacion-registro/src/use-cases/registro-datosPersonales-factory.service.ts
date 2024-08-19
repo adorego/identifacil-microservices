@@ -46,7 +46,7 @@ export class RegistroDatosPersonalesFactory{
     if(datosPersonalesDTO.departamento){
       departamento = await this.dataService.departamento.get(datosPersonalesDTO.departamento);
     }
-    console.log("Departamento obtenido:",departamento);
+   
     let ciudad=null;
     if(datosPersonalesDTO.ciudad){
       ciudad = await this.dataService.ciudad.get(datosPersonalesDTO.ciudad);

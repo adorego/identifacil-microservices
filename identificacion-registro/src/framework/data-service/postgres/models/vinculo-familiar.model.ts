@@ -10,4 +10,6 @@ export class VinculoFamiliarModel extends VinculoFamiliar{
 
   @Column({type:"varchar"})
   nombre:string;
+
+ 
 }

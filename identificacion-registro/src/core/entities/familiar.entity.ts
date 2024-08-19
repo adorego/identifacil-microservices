@@ -6,6 +6,7 @@ export class Familiar{
   id:number;
   nombre:string;
   apellido:string;
+  cedulaDeIdentidad:string;
   vinculo:VinculoFamiliar;
   establecimiento:EstablecimientoPenitenciario;
   datosFamiliares:DatosFamiliares;

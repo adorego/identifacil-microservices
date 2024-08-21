@@ -10,7 +10,7 @@ export class SancionModel extends Sancion{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>TipoDeSancionModel)
+    @ManyToOne(()=>TipoDeSancionModel, {eager:true})
     tipo:TipoDeSancionModel;
 
     @Column({type:"date"})

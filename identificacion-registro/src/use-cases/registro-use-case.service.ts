@@ -36,6 +36,7 @@ import { RegistroDeFotosDTO } from "src/core/dto/registro/registro-de-fotos.dto"
 import { RegistroFactory } from "./registro-factory.services";
 import { RegistroFoto } from "src/core/entities/registro_foto.entity";
 import { Departamento } from "src/core/entities/departamento.entity";
+import { Pais } from "src/core/entities/pais.entity";
 
 interface fotosDePPL{
   foto1:Array<Express.Multer.File>;
@@ -526,6 +527,10 @@ export class RegistroUseCase{
       this.logger.error(`Error al consultar las nacionaliidades:${error}`);
       throw new HttpException('Error al consultar las nacionaliidades', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async paises():Promise<Array<Pais>>{
+    return await this.dataService.pais.getAll();
   }
 
   async estados_civiles():Promise<Array<EstadoCivil>>{

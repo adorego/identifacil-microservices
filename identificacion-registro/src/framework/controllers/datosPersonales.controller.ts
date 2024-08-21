@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Put } from "@nestjs/common";
 import { RegistroDatosPersonalesDTO } from "src/core/dto/registro/registro-datos-personales.dto";
 import { RespuestaRegistroDatosPersonalesDTO } from "src/core/dto/registro/respuesta-registro-datos-personales.dto";
 import { RespuestaActualizacionDatosPersonalesDTO } from "src/core/dto/registro_datos_personales/respuesta-actualizacion-datos-personales.dto";
@@ -35,4 +35,6 @@ export class DatosPersonalesController{
       success:true
     }
   }
+
+ 
 }

@@ -1,6 +1,7 @@
 import { ExpedienteJudicial } from "./expediente-judicial.entity";
 import { PplEnExpediente } from "./pplEnExpediente.entity";
 
+
 export class Defensor{
     id:number;
     tipo:"publico" | "privado";

@@ -191,6 +191,15 @@ export class RegistroController{
     
   }
 
+  @Get('paises')
+  async getPaises(){
+    const resultado = await this.registroPersonaUseCase.paises();
+    return{
+      paises:resultado,
+      success:true
+    }
+  }
+
   @Get('estados_civiles')
   async estadosCiviles():Promise<RespuestaEstadoCivilDTO>{
     try{

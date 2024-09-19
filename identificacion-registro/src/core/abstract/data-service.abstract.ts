@@ -66,6 +66,8 @@ import { GradoDeFalta } from "../entities/grado-de-falta.entity";
 import { TipoDeFalta } from "../entities/tipo_de_falta.entity";
 import { TipoDeSancion } from "../entities/tipo-sancion.entity";
 import { TipoDeVictima } from "../entities/tipo-victima.entity";
+import { IntervencionDefensor } from "../entities/intervencion.entity";
+import { EntrevistaDefensor } from "../entities/entrevista-defensor.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -137,4 +139,7 @@ export abstract class IDataService{
   abstract usuario:IGenericRepository<Usuario>;
   abstract rol:IGenericRepository<Rol>;
   abstract permiso:IGenericRepository<Permiso>;
+  //Defensores
+  abstract intervecion_defensores:IGenericRepository<IntervencionDefensor>;
+  abstract entrevista_defensor:IGenericRepository<EntrevistaDefensor>;
 }

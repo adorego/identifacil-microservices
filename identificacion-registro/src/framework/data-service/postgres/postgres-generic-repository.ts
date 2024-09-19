@@ -252,5 +252,12 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .where("rol.id = :id",{id:id})
            .getOne()
   }
+
+  getIntervencionesDefensoresPorCircunscripcion(id:number):Promise<Array<T>>{
+    return this._repository.createQueryBuilder("intervenciones")
+           .leftJoinAndSelect("intervenciones.circunscripcion","circunscripcion")
+           .where("circunscripcion.id = :id",{id:id})
+           .getMany()
+  }
 }
   

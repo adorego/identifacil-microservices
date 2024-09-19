@@ -48,4 +48,6 @@ export abstract class IGenericRepository<T>{
   abstract findUsuario(ci:string):Promise<T>; 
 
   abstract getRolConPermisos(id:number):Promise<T>;
+
+  abstract getIntervencionesDefensoresPorCircunscripcion(id:number):Promise<Array<T>>;
 }

@@ -3,6 +3,8 @@ import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { ExpedienteJudicialModel } from "./expediente-judicial.model";
 import { PplEnExpediente } from "src/core/entities/pplEnExpediente.entity";
 import { PplEnExpedienteModel } from "./ppl-en-expediente.model";
+import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judicial.entity";
+import { CircunscripcionJudicialModel } from "./circunscripcion-judicial.model";
 
 @Entity({name:"defensor"})
 export class DefensorModel extends Defensor{
@@ -25,4 +27,10 @@ export class DefensorModel extends Defensor{
     
     @OneToMany(()=>PplEnExpedienteModel,pplEnExpediente=>pplEnExpediente.defensor)
     pplsEnExpediente: PplEnExpedienteModel[];
+
+    @ManyToOne(()=>CircunscripcionJudicialModel)
+    circunscripcion: CircunscripcionJudicialModel;
+
+    @Column({type:"boolean",default:false})
+    supervisor:boolean
 }

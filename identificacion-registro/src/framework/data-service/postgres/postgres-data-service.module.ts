@@ -68,10 +68,11 @@ import { SalidaConyugeModel } from "./models/salida-conyuge.model";
 import { UsuarioModel } from "./models/security/usuario.model";
 import { RolModel } from "./models/security/rol.model";
 import { PermisoModel } from "./models/security/permiso.model";
-import { TipoDeSancion } from "src/core/entities/tipo-sancion.entity";
 import { TipoDeSancionModel } from "./models/tipo-sancion.model";
 import { GradoDeFaltaModel } from "./models/grado-de-falta.model";
 import { TipoDeVictimaModel } from "./models/tipo-victima.model";
+import { IntervencionDefensorModel } from "./models/intervencion-defensor.model";
+import { EntrevistaDefensorModel } from "./models/entrevista-defensor.model";
 
 @Module({
   imports:[
@@ -151,7 +152,9 @@ import { TipoDeVictimaModel } from "./models/tipo-victima.model";
       TipoDeSancionModel,
       UsuarioModel, 
       RolModel, 
-      PermisoModel
+      PermisoModel,
+      IntervencionDefensorModel,
+      EntrevistaDefensorModel
       
     
     

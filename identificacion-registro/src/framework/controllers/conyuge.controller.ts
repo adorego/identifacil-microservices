@@ -13,10 +13,7 @@ export class ConyugeController{
     private conyugeUseCases:ConyugeUseCases
   ){}
 
-  @Get('saludar')
-  async saludar(){
-    return 'hola';
-  }
+ 
 
    @Post()
    async crearConyuge(@Body() conyugeDTO:ConyugeDTO){

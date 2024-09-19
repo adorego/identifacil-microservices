@@ -18,6 +18,7 @@ import { MedidaDeFuerzaModule } from './use-cases/medidas-de-fuerza/medidas-de-f
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './use-cases/security/auth.module';
 import { FaltasSancionesModule } from './use-cases/faltas-y-sanciones/faltas-y-sanciones.module';
+import { DefensoresModule } from './use-cases/defensores/defensores.module';
 
 
 
@@ -66,6 +67,7 @@ import { FaltasSancionesModule } from './use-cases/faltas-y-sanciones/faltas-y-s
     MedidaDeFuerzaModule,
     AuthModule,
     FaltasSancionesModule,
+    DefensoresModule,
   
   ],
   controllers: [],

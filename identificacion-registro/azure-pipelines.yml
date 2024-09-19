@@ -12,7 +12,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'crticplayground'
+  dockerRegistryServiceConnection: 'crticplayground2'
   imageRepository: 'identificacionyregistrop'
   containerRegistry: 'crticplayground.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'

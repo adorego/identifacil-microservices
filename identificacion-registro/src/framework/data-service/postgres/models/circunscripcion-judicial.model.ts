@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { CircunscripcionJudicial } from "src/core/entities/circunscripcion-judicial.entity";
+import { IntervencionDefensorModel } from "./intervencion-defensor.model";
 
 @Entity({name:"circunscripcion_judicial"})
 export class CircunscripcionJudicialModel extends CircunscripcionJudicial{
@@ -10,4 +11,6 @@ export class CircunscripcionJudicialModel extends CircunscripcionJudicial{
 
   @Column({type:"varchar"})
   nombre:string;
+
+  
 }

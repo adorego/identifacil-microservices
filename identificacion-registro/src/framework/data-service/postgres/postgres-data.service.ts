@@ -74,6 +74,8 @@ import { GradoDeFaltaModel } from "./models/grado-de-falta.model";
 import { TipoDeFaltaModel } from "./models/tipo-de-falta.model";
 import { TipoDeSancionModel } from "./models/tipo-sancion.model";
 import { TipoDeVictimaModel } from "./models/tipo-victima.model";
+import { IntervencionDefensorModel } from "./models/intervencion-defensor.model";
+import { EntrevistaDefensorModel } from "./models/entrevista-defensor.model";
 
 
 @Injectable()
@@ -158,6 +160,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   usuario: PostgresGenericRepository<UsuarioModel>;
   rol: PostgresGenericRepository<RolModel>;
   permiso: PostgresGenericRepository<PermisoModel>;
+
+  //Defensores
+  intervecion_defensores:PostgresGenericRepository<IntervencionDefensorModel>;
+  entrevista_defensor: PostgresGenericRepository<EntrevistaDefensorModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -303,13 +309,18 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectRepository(TipoDeVictimaModel)
     private tipo_de_victima_repository:Repository<TipoDeVictimaModel>,
 
-    //////////
+    //////////Seguridad
     @InjectRepository(UsuarioModel)
     private usuario_repository:Repository<UsuarioModel>,
     @InjectRepository(RolModel)
     private rol_repository:Repository<RolModel>,
     @InjectRepository(PermisoModel)
-    private permiso_repository:Repository<PermisoModel>
+    private permiso_repository:Repository<PermisoModel>,
+    //Defensores
+    @InjectRepository(IntervencionDefensorModel)
+    private intervencion_defensores_repository:Repository<IntervencionDefensorModel>,
+    @InjectRepository(EntrevistaDefensorModel)
+    private entrevista_defensores_repository:Repository<EntrevistaDefensorModel>,
     
 
 
@@ -393,6 +404,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     this.usuario = new PostgresGenericRepository<UsuarioModel>(this.usuario_repository);
     this.rol = new PostgresGenericRepository<RolModel>(this.rol_repository);
     this.permiso = new PostgresGenericRepository<PermisoModel>(this.permiso_repository);
+
+    //Defensores
+    this.intervecion_defensores = new PostgresGenericRepository<IntervencionDefensorModel>(this.intervencion_defensores_repository);
+    this.entrevista_defensor = new PostgresGenericRepository<EntrevistaDefensorModel>(this.entrevista_defensores_repository);
   }
   
   

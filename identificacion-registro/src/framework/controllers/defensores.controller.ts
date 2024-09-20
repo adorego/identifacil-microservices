@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Logger, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
+import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
 import { IntervencionDefensorDTO } from "src/core/dto/defensores/intervencion-defensor.dto";
 import { DefensoresUseCases } from "src/use-cases/defensores/defensores-use-cases.services";
 
@@ -20,7 +21,7 @@ export class DefensoresController{
     @Post('intervenciones')
     @UseInterceptors(FileInterceptor('oficio_judicial_alta_intervencion'))
     async createIntervencion(@UploadedFile() oficio_judicial_alta_intervencion:Express.Multer.File, @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
-        const resultado = this.defensoresUseCases.createIntervencion(intervencionDefensorDTO, oficio_judicial_alta_intervencion);
+        const resultado = await this.defensoresUseCases.createIntervencion(intervencionDefensorDTO, oficio_judicial_alta_intervencion);
         return{
             success:true,
             id:resultado
@@ -29,7 +30,25 @@ export class DefensoresController{
 
     @Get('intervenciones/:id_circunscripcion')
     async getIntervencionesPorCircunscripcion(@Param() param:any){
-        const resultado = this.defensoresUseCases.getIntervenciones(param.id_circunscripcion)
+        const resultado = await this.defensoresUseCases.getIntervenciones(param.id_circunscripcion)
+    }
+
+    @Post('intervenciones/:id_intervencion/entrevistas')
+    async createEntrevista(@Param() param:any, entrevistaDTO:EntrevistaDefensorDTO){
+        const resultado = await this.defensoresUseCases.createEntrevista(param.id_intervencion,entrevistaDTO);
+        return{
+            success:true,
+            id:resultado
+        }
+    }
+
+    @Get('intervenciones/:id_intervencion/entrevistas')
+    async getEntrevista(@Param() param:any){
+        const resultado = await this.defensoresUseCases.getEntrevistas(param.id_intervencion);
+        return{
+            success:true,
+            entrevistas:resultado
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
 import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
 import { IntervencionDefensorDTO } from "src/core/dto/defensores/intervencion-defensor.dto";
 import { Defensor } from "src/core/entities/defensor";
+import { EntrevistaDefensor } from "src/core/entities/entrevista-defensor.entity";
 import { IntervencionDefensor } from "src/core/entities/intervencion.entity";
 import { FileService } from "src/framework/lib/files.service";
 
@@ -88,12 +89,52 @@ export class DefensoresUseCases{
         return resultado;
     }
 
-    async createEntrevista(entrevistaDefensorDTO:EntrevistaDefensorDTO){
+    async createEntrevista(idIntervencion:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
+        if(!idIntervencion){
+            throw new HttpException("Se debe enviar el id de la intervenación",HttpStatus.BAD_REQUEST);
+        }
+        const intervencion = await this.dataService.intervecion_defensores.get(idIntervencion);
+        
+        if(!intervencion){
+            throw new HttpException("No se encuentra la intervención enviada",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!entrevistaDefensorDTO.fechaEntrevista){
+            throw new HttpException("Se debe enviar una fecha de entrevista",HttpStatus.BAD_REQUEST);
+        }
+        if(!entrevistaDefensorDTO.seRealizoEntrevista){
+            throw new HttpException("Se debe enviar seRealizoEntrevista",HttpStatus.BAD_GATEWAY);
+        }
+        if(!entrevistaDefensorDTO.entrevistaPresencial){
+            throw new HttpException("Se debe enviar entrevistaPresencial",HttpStatus.BAD_GATEWAY);
+        }
+        if(!entrevistaDefensorDTO.relatoDeEntrevista){
+            throw new HttpException("Se debe enviar relatoDeEntrevista",HttpStatus.BAD_GATEWAY);
+        }
+
+        const entrevista = new EntrevistaDefensor();
+        entrevista.defensor = intervencion.defensor;
+        entrevista.ppl = intervencion.ppl;
+        entrevista.se_realizo_la_entrevista = entrevistaDefensorDTO.seRealizoEntrevista;
+        entrevista.virtual = !entrevistaDefensorDTO.entrevistaPresencial;
+        entrevista.fecha = entrevistaDefensorDTO.fechaEntrevista;
+        entrevista.intervencion = intervencion;
+        entrevista.relato = entrevistaDefensorDTO.relatoDeEntrevista;
+        
+        const resultado:EntrevistaDefensor = await this.dataService.entrevista_defensor.create(entrevista);
+        return resultado.id;
 
     }
 
-    async getEntrevistas(idDefensor:number){
-
+    async getEntrevistas(idIntervencion:number){
+        if(!idIntervencion){
+            throw new HttpException("Se debe enviar el id de la intervención",HttpStatus.BAD_GATEWAY);
+        }
+        const intervencion = await this.dataService.intervecion_defensores.get(idIntervencion);
+        if(!intervencion){
+            throw new HttpException("No se encontró la intervencion enviada",HttpStatus.BAD_GATEWAY);
+        }
+        return intervencion.entrevistas
     }
 
 

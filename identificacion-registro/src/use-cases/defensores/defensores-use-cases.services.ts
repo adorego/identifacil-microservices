@@ -78,18 +78,21 @@ export class DefensoresUseCases{
         intervencion.fecha_inicio_intervencion = intervencionDefensorDTO.fechaInicioProceso;
         intervencion.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
         intervencion.circunscripcion = circunscripcion;
-        intervencion.oficio_judicial_alta_intervencion = await this.fileService.almacenar_archivo(oficioJudicialAltaIntervencion,`oficio_alta_intervencion_defensor_${intervencionDefensorDTO.fechaInicioProceso}_ci_ppl_${ppl.persona.numero_identificacion}`)
+        intervencion.oficio_judicial_alta_intervencion = await this.fileService.almacenar_archivo(oficioJudicialAltaIntervencion,`oficio_alta_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
 
         const resultado = await this.dataService.intervecion_defensores.create(intervencion);
+        console.log("Resultado:",resultado);
         return resultado.id;
     }
 
     async getIntervenciones(id_circunscripcion:number){
         const resultado = await this.dataService.intervecion_defensores.getIntervencionesDefensoresPorCircunscripcion(id_circunscripcion);
+        console.log("Resultado:", resultado);
         return resultado;
     }
 
     async createEntrevista(idIntervencion:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
+        console.log("entrevistaDefensorDTO:",entrevistaDefensorDTO);
         if(!idIntervencion){
             throw new HttpException("Se debe enviar el id de la intervenación",HttpStatus.BAD_REQUEST);
         }
@@ -134,6 +137,7 @@ export class DefensoresUseCases{
         if(!intervencion){
             throw new HttpException("No se encontró la intervencion enviada",HttpStatus.BAD_GATEWAY);
         }
+        
         return intervencion.entrevistas
     }
 

@@ -30,11 +30,16 @@ export class DefensoresController{
 
     @Get('intervenciones/:id_circunscripcion')
     async getIntervencionesPorCircunscripcion(@Param() param:any){
-        const resultado = await this.defensoresUseCases.getIntervenciones(param.id_circunscripcion)
+        const resultado = await this.defensoresUseCases.getIntervenciones(param.id_circunscripcion);
+        return{
+            success:true,
+            resultado:resultado
+        }
     }
 
     @Post('intervenciones/:id_intervencion/entrevistas')
-    async createEntrevista(@Param() param:any, entrevistaDTO:EntrevistaDefensorDTO){
+    async createEntrevista(@Param() param:any, @Body() entrevistaDTO:EntrevistaDefensorDTO){
+        console.log("Post entrevista:",param,entrevistaDTO);
         const resultado = await this.defensoresUseCases.createEntrevista(param.id_intervencion,entrevistaDTO);
         return{
             success:true,
@@ -47,7 +52,7 @@ export class DefensoresController{
         const resultado = await this.defensoresUseCases.getEntrevistas(param.id_intervencion);
         return{
             success:true,
-            entrevistas:resultado
+            resultado:resultado
         }
     }
 

@@ -25,7 +25,7 @@ export class IntervencionDefensorModel extends IntervencionDefensor{
     @Column({type:"date"})
     fecha_inicio_intervencion:Date;
     
-    @Column({type:"date"})
+    @Column({type:"date",nullable:true})
     fecha_fin_intervencion:Date;
 
     @ManyToOne(()=>CircunscripcionJudicialModel)
@@ -34,9 +34,9 @@ export class IntervencionDefensorModel extends IntervencionDefensor{
     @Column({type:"varchar"})
     oficio_judicial_alta_intervencion:string;
     
-    @Column({type:"varchar"})
+    @Column({type:"varchar",nullable:true})
     oficio_judicial_baja_intervencion:string | null;
     
-    @OneToMany(()=>EntrevistaDefensorModel,entrevista=>entrevista.intervencion)
+    @OneToMany(()=>EntrevistaDefensorModel,entrevista=>entrevista.intervencion,{eager:true})
     entrevistas:Array<EntrevistaDefensorModel>;
 }

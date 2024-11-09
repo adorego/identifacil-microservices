@@ -47,8 +47,8 @@ export class DefensoresUseCases{
             throw new HttpException("Se debe enviar el id del expediente del PPL a intervenir",HttpStatus.BAD_REQUEST);
         }
 
-        const expediemte = await this.dataService.expediente.get(intervencionDefensorDTO.idExpediente);
-        if(!expediemte){
+        const expediente = await this.dataService.expediente.get(intervencionDefensorDTO.idExpediente);
+        if(!expediente){
             throw new HttpException("No se encontró el expediente enviado",HttpStatus.BAD_REQUEST);
         }
 
@@ -74,7 +74,7 @@ export class DefensoresUseCases{
         const intervencion = new IntervencionDefensor();
         intervencion.defensor = defensor;
         intervencion.ppl = ppl;
-        intervencion.expediente = expediemte;
+        intervencion.expediente = expediente;
         intervencion.fecha_inicio_intervencion = intervencionDefensorDTO.fechaInicioProceso;
         intervencion.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
         intervencion.circunscripcion = circunscripcion;
@@ -82,6 +82,22 @@ export class DefensoresUseCases{
 
         const resultado = await this.dataService.intervecion_defensores.create(intervencion);
         console.log("Resultado:",resultado);
+        return resultado.id;
+    }
+
+    async deleteIntervencion(id_intervencion:number, oficioJudicialBajaIntervencion:Express.Multer.File){
+
+        if(!id_intervencion){
+            throw new HttpException("Se debe enviar un id de intervencion",HttpStatus.BAD_REQUEST);
+        }
+
+        const intervencion = await this.dataService.intervecion_defensores.get(id_intervencion);
+        if(!intervencion){
+            throw new HttpException("No se encuntra la intervencion enviada",HttpStatus.BAD_REQUEST);
+        }
+        intervencion.activo = false;
+        intervencion.oficio_judicial_baja_intervencion = await this.fileService.almacenar_archivo(oficioJudicialBajaIntervencion,`oficio_baja_intervencion_id_${id_intervencion}`);
+        const resultado = await this.dataService.intervecion_defensores.update(intervencion);
         return resultado.id;
     }
 
@@ -137,7 +153,7 @@ export class DefensoresUseCases{
         if(!intervencion){
             throw new HttpException("No se encontró la intervencion enviada",HttpStatus.BAD_GATEWAY);
         }
-        
+
         return intervencion.entrevistas
     }
 

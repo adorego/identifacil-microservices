@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
 import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
@@ -22,6 +22,16 @@ export class DefensoresController{
     @UseInterceptors(FileInterceptor('oficio_judicial_alta_intervencion'))
     async createIntervencion(@UploadedFile() oficio_judicial_alta_intervencion:Express.Multer.File, @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
         const resultado = await this.defensoresUseCases.createIntervencion(intervencionDefensorDTO, oficio_judicial_alta_intervencion);
+        return{
+            success:true,
+            id:resultado
+        }
+    }
+
+    @Delete('intervenciones/:id')
+    @UseInterceptors(FileInterceptor('oficio_judicial_baja_intervencion'))
+    async downGradeIntervencion(@Param() param:any, @UploadedFile() oficio_judicial_baja_intervencion:Express.Multer.File){
+        const resultado = await this.defensoresUseCases.deleteIntervencion(param.id, oficio_judicial_baja_intervencion);
         return{
             success:true,
             id:resultado

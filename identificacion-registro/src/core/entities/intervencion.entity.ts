@@ -12,6 +12,7 @@ export class IntervencionDefensor{
     expediente:ExpedienteJudicial;
     fecha_inicio_intervencion:Date;
     fecha_fin_intervencion:Date;
+    activo:boolean;
     oficio_judicial_alta_intervencion:string;
     oficio_judicial_baja_intervencion:string | null;
     circunscripcion:CircunscripcionJudicial;

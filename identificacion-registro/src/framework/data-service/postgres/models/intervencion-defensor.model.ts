@@ -36,6 +36,9 @@ export class IntervencionDefensorModel extends IntervencionDefensor{
     
     @Column({type:"varchar",nullable:true})
     oficio_judicial_baja_intervencion:string | null;
+
+    @Column({type:"boolean",default:true})
+    activo:boolean
     
     @OneToMany(()=>EntrevistaDefensorModel,entrevista=>entrevista.intervencion,{eager:true})
     entrevistas:Array<EntrevistaDefensorModel>;

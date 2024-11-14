@@ -1,6 +1,7 @@
 import { CircunscripcionJudicial } from "./circunscripcion-judicial.entity";
 import { ExpedienteJudicial } from "./expediente-judicial.entity";
 import { PplEnExpediente } from "./pplEnExpediente.entity";
+import { Usuario } from "./security/usuario.entity";
 
 
 export class Defensor{
@@ -13,4 +14,5 @@ export class Defensor{
     pplsEnExpediente:Array<PplEnExpediente>;
     circunscripcion:CircunscripcionJudicial;
     supervisor:boolean;
+    usuario:Usuario
 }

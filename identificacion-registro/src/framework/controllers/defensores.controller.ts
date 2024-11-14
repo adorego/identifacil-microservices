@@ -66,4 +66,13 @@ export class DefensoresController{
         }
     }
 
+    @Get('intervenciones/:id_intervencion/entrevistas/:id_entrevista')
+    async getEntrevistaById(@Param() param:any){
+        const resultado = await this.defensoresUseCases.getEntrevista(param.id_intervencion,param.id_entrevista);
+        return{
+            success:true,
+            resultado:resultado
+        }
+    }
+
 }

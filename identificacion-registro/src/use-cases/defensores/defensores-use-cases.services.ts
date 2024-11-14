@@ -157,5 +157,25 @@ export class DefensoresUseCases{
         return intervencion.entrevistas
     }
 
+    async getEntrevista(idIntervencion:number,idEntrevista:number){
+        console.log("Params:",idIntervencion,idEntrevista)
+        if(!idIntervencion){
+            throw new HttpException("Se debe enviar el id de la intervención",HttpStatus.BAD_GATEWAY);
+        }
+        const intervencion = await this.dataService.intervecion_defensores.get(idIntervencion);
+        if(!intervencion){
+            throw new HttpException("No se encontró la intervencion enviada",HttpStatus.BAD_GATEWAY);
+        }
+        console.log("Entrevistas:",intervencion.entrevistas);
+        const entrevistaEncontrada:EntrevistaDefensor = intervencion.entrevistas.find(
+            (entrevista)=>(entrevista.id == idEntrevista)
+        )
+        console.log("Entrevista encontrada:",entrevistaEncontrada);
+        if(!entrevistaEncontrada){
+            throw new HttpException("No se encontró la entrevista solicitada",HttpStatus.BAD_GATEWAY);
+        }
+        return entrevistaEncontrada;
+    }
+
 
 }

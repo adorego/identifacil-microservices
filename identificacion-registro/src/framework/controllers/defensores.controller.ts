@@ -15,7 +15,7 @@ export class DefensoresController{
 
     @Get('dashboard_data')
     async getDashBoardData(dashBoardDataDTO:DashBoardDataDTO){
-
+        return await this.defensoresUseCases.getDashBoardData(dashBoardDataDTO);
     }
 
     @Post('intervenciones')

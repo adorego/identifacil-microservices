@@ -16,7 +16,16 @@ export class DefensoresUseCases{
     ){ }
 
     async getDashBoardData(dashBoardDataDTO:DashBoardDataDTO){
-        
+        //Devolver cantidad de defensores
+        const defensores = await this.dataService.defensor.getAll();
+        const intervenciones = (await this.dataService.intervecion_defensores.getAll()).filter((intervencion)=>(intervencion.activo==true));
+        const entrevistas = intervenciones.map((intervencion)=>intervencion.entrevistas.length);
+        const promedio_entrevistas = entrevistas.reduce((sum,currentvalue)=>sum + currentvalue,0)/entrevistas.length
+        return{
+            defensores:defensores.length,
+            intervenciones_activas:intervenciones.length,
+            promedio_entrevistas:promedio_entrevistas
+        }
     }
 
     async createIntervencion(intervencionDefensorDTO:IntervencionDefensorDTO, oficioJudicialAltaIntervencion:Express.Multer.File){

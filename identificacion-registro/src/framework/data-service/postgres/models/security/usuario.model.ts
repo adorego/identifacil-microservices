@@ -4,7 +4,7 @@ import { Usuario } from "src/core/entities/security/usuario.entity";
 
 
 @Entity({name:'usuario'})
-@Unique(['nombre', 'apellido'])
+@Unique(['ci','nombre', 'apellido'])
 export class UsuarioModel extends Usuario{
   @PrimaryGeneratedColumn()
   id:number

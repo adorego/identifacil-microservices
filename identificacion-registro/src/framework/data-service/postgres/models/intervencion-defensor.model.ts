@@ -13,13 +13,13 @@ export class IntervencionDefensorModel extends IntervencionDefensor{
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>DefensorModel)
+    @ManyToOne(()=>DefensorModel,{eager:true})
     defensor:DefensorModel;
 
-    @ManyToOne(()=>PplModel)
+    @ManyToOne(()=>PplModel,{eager:true})
     ppl:PplModel;
     
-    @ManyToOne(()=>ExpedienteJudicialModel)
+    @ManyToOne(()=>ExpedienteJudicialModel,{eager:true})
     expediente:ExpedienteJudicialModel;
     
     @Column({type:"date"})
@@ -28,7 +28,7 @@ export class IntervencionDefensorModel extends IntervencionDefensor{
     @Column({type:"date",nullable:true})
     fecha_fin_intervencion:Date;
 
-    @ManyToOne(()=>CircunscripcionJudicialModel)
+    @ManyToOne(()=>CircunscripcionJudicialModel,{eager:true})
     circunscripcion: CircunscripcionJudicialModel;
     
     @Column({type:"varchar"})

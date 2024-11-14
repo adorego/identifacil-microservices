@@ -116,6 +116,17 @@ export class DefensoresUseCases{
         return resultado;
     }
 
+    async getInternvencionById(id_intervencion:number){
+        if(!id_intervencion){
+            throw new HttpException("Se debe enviar un id de intervencion",HttpStatus.BAD_REQUEST);
+        }
+        const intervencionEncontrada = await this.dataService.intervecion_defensores.get(id_intervencion);
+        if(!intervencionEncontrada){
+            throw new HttpException("No se encontró la intervención solicitada",HttpStatus.BAD_REQUEST);
+        }
+        return intervencionEncontrada;
+    }
+
     async createEntrevista(idIntervencion:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
         console.log("entrevistaDefensorDTO:",entrevistaDefensorDTO);
         if(!idIntervencion){

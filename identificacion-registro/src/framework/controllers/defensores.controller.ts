@@ -38,9 +38,18 @@ export class DefensoresController{
         }
     }
 
-    @Get('intervenciones/:id_circunscripcion')
+    @Get('intervenciones/circunscripcion/:id_circunscripcion')
     async getIntervencionesPorCircunscripcion(@Param() param:any){
         const resultado = await this.defensoresUseCases.getIntervenciones(param.id_circunscripcion);
+        return{
+            success:true,
+            resultado:resultado
+        }
+    }
+
+    @Get('intervenciones/:id_intervencion')
+    async getIntervencion(@Param() param:any){
+        const resultado = await this.defensoresUseCases.getInternvencionById(param.id_intervencion);
         return{
             success:true,
             resultado:resultado

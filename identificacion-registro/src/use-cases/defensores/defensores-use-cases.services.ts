@@ -94,8 +94,10 @@ export class DefensoresUseCases{
         return resultado.id;
     }
 
-    async updateIntervencion(intervencionId:number,intervencionDefensorDTO:IntervencionDefensorDTO, oficioJudicialAltaIntervencion:Express.Multer.File){
+    async updateIntervencion(intervencionId:number,intervencionDefensorDTO:IntervencionDefensorDTO, 
+        oficioJudicialAltaIntervencion:Express.Multer.File,oficioJudicialBajaIntervencion:Express.Multer.File){
         
+       
         if(!intervencionId){
             throw new HttpException("Se debe enviar un id de intervención válido",HttpStatus.BAD_REQUEST); 
         }
@@ -151,6 +153,12 @@ export class DefensoresUseCases{
         if(intervencionDefensorDTO.activo == null || intervencionDefensorDTO.activo == undefined){
             throw new HttpException("Se debe enviar la propiedad activo correctamente",HttpStatus.BAD_REQUEST);
         }
+        if(!intervencionDefensorDTO.activo && oficioJudicialBajaIntervencion == null){
+            throw new HttpException("Para dar de baja la interveción hay que enviar el oficio de baja correspondiente",HttpStatus.BAD_REQUEST);
+        }
+        if(!intervencionDefensorDTO.activo && !intervencionDefensorDTO.fechaFinDelProceso){
+            throw new HttpException("La fecha fin del proceso debe ser valida para dar de baja la intervencion",HttpStatus.BAD_REQUEST);
+        }
 
         if(!oficioJudicialAltaIntervencion){
             throw new HttpException("Se debe adjuntar el oficio judicial de la intervención",HttpStatus.BAD_REQUEST);
@@ -167,7 +175,10 @@ export class DefensoresUseCases{
         intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
         intervencionAActualizar.circunscripcion = circunscripcion;
         intervencionAActualizar.oficio_judicial_alta_intervencion = await this.fileService.almacenar_archivo(oficioJudicialAltaIntervencion,`oficio_alta_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
-
+        if(!intervencionDefensorDTO.activo){
+            intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
+            intervencionAActualizar.oficio_judicial_baja_intervencion = await this.fileService.almacenar_archivo(oficioJudicialBajaIntervencion,`oficio_baja_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
+        }
         const resultado = await this.dataService.intervecion_defensores.update(intervencionAActualizar);
         
         return resultado.id;

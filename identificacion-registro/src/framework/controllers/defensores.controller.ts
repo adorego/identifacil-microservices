@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { FileFieldsInterceptor, FileInterceptor } from "@nestjs/platform-express";
 import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
 import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
 import { IntervencionDefensorDTO } from "src/core/dto/defensores/intervencion-defensor.dto";
@@ -29,9 +29,19 @@ export class DefensoresController{
     }
 
     @Put('intervenciones/:id')
-    @UseInterceptors(FileInterceptor('oficio_judicial_alta_intervencion'))
-    async updateIntervencion(@Param() param:any, @UploadedFile() oficio_judicial_alta_intervencion:Express.Multer.File, @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
-        const resultado = await this.defensoresUseCases.updateIntervencion(param.id, intervencionDefensorDTO, oficio_judicial_alta_intervencion);
+    @UseInterceptors(FileFieldsInterceptor([
+        {name:'oficio_judicial_alta_intervencion',maxCount:1},
+        {name:'oficio_judicial_baja_intervencion',maxCount:1},
+    ])
+    )
+    async updateIntervencion(
+        @Param() param:any, 
+        @UploadedFiles() files:{
+            oficio_judicial_alta_intervencion?:Express.Multer.File[],
+            oficio_judicial_baja_intervencion?:Express.Multer.File[]
+        },
+        @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
+        const resultado = await this.defensoresUseCases.updateIntervencion(param.id, intervencionDefensorDTO, files.oficio_judicial_alta_intervencion?.[0], files.oficio_judicial_baja_intervencion?.[0]);
         return{
             success:true,
             id:resultado

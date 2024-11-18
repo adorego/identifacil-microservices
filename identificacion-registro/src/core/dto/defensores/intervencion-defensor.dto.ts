@@ -7,5 +7,6 @@ export class IntervencionDefensorDTO{
     circunscripcion:number;
     fechaInicioProceso:Date;
     fechaFinDelProceso:Date;
+    activo:boolean;
     
 }

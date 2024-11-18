@@ -94,6 +94,84 @@ export class DefensoresUseCases{
         return resultado.id;
     }
 
+    async updateIntervencion(intervencionId:number,intervencionDefensorDTO:IntervencionDefensorDTO, oficioJudicialAltaIntervencion:Express.Multer.File){
+        
+        if(!intervencionId){
+            throw new HttpException("Se debe enviar un id de intervención válido",HttpStatus.BAD_REQUEST); 
+        }
+        const intervencionAActualizar = await this.dataService.intervecion_defensores.get(intervencionId);
+        if(!intervencionAActualizar){
+            throw new HttpException("No se encontró la intervención solicitada",HttpStatus.BAD_REQUEST); 
+        }
+        
+        if(!intervencionDefensorDTO.idDefensor){
+            throw new HttpException("Se debe enviar un Defensor",HttpStatus.BAD_REQUEST);
+        }
+
+        const defensor:Defensor = await this.dataService.defensor.get(intervencionDefensorDTO.idDefensor);
+        if(!defensor){
+            throw new HttpException("No se encontró el defensor enviado",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!intervencionDefensorDTO.idPersonaPPL){
+            throw new HttpException("Se debe enviar el id del PPL a intervenir",HttpStatus.BAD_REQUEST);
+        }
+
+        const pplDePersonaID = await this.dataService.ppl.getPPLByIdPersona(intervencionDefensorDTO.idPersonaPPL);
+
+        if(!pplDePersonaID){
+            throw new HttpException("No se encontró al PPL enviado",HttpStatus.BAD_REQUEST);
+        }
+
+        
+        const ppl = await this.dataService.ppl.get(pplDePersonaID.id);
+
+        if(!intervencionDefensorDTO.idExpediente){
+            throw new HttpException("Se debe enviar el id del expediente del PPL a intervenir",HttpStatus.BAD_REQUEST);
+        }
+
+        const expediente = await this.dataService.expediente.get(intervencionDefensorDTO.idExpediente);
+        if(!expediente){
+            throw new HttpException("No se encontró el expediente enviado",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!intervencionDefensorDTO.circunscripcion){
+            throw new HttpException("Se debe enviar la circunscripción judicial",HttpStatus.BAD_REQUEST);
+        }
+
+        const circunscripcion = await this.dataService.circunscripcionJudicial.get(intervencionDefensorDTO.circunscripcion);
+        if(!circunscripcion){
+            throw new HttpException("No se encontró la circunscripción enviada",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!intervencionDefensorDTO.fechaInicioProceso){
+            throw new HttpException("Se debe enviar la fecha de inicio de la intervención",HttpStatus.BAD_REQUEST);
+        }
+
+        if(intervencionDefensorDTO.activo == null || intervencionDefensorDTO.activo == undefined){
+            throw new HttpException("Se debe enviar la propiedad activo correctamente",HttpStatus.BAD_REQUEST);
+        }
+
+        if(!oficioJudicialAltaIntervencion){
+            throw new HttpException("Se debe adjuntar el oficio judicial de la intervención",HttpStatus.BAD_REQUEST);
+        }
+
+        
+
+        
+        intervencionAActualizar.defensor = defensor;
+        intervencionAActualizar.ppl = ppl;
+        intervencionAActualizar.expediente = expediente;
+        intervencionAActualizar.activo = intervencionDefensorDTO.activo;
+        intervencionAActualizar.fecha_inicio_intervencion = intervencionDefensorDTO.fechaInicioProceso;
+        intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
+        intervencionAActualizar.circunscripcion = circunscripcion;
+        intervencionAActualizar.oficio_judicial_alta_intervencion = await this.fileService.almacenar_archivo(oficioJudicialAltaIntervencion,`oficio_alta_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
+
+        const resultado = await this.dataService.intervecion_defensores.update(intervencionAActualizar);
+        
+        return resultado.id;
+    }
     async deleteIntervencion(id_intervencion:number, oficioJudicialBajaIntervencion:Express.Multer.File){
 
         if(!id_intervencion){
@@ -116,7 +194,7 @@ export class DefensoresUseCases{
         return resultado;
     }
 
-    async getInternvencionById(id_intervencion:number){
+    async getIntervencionById(id_intervencion:number){
         if(!id_intervencion){
             throw new HttpException("Se debe enviar un id de intervencion",HttpStatus.BAD_REQUEST);
         }
@@ -128,7 +206,7 @@ export class DefensoresUseCases{
     }
 
     async createEntrevista(idIntervencion:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
-        console.log("entrevistaDefensorDTO:",entrevistaDefensorDTO);
+        
         if(!idIntervencion){
             throw new HttpException("Se debe enviar el id de la intervenación",HttpStatus.BAD_REQUEST);
         }
@@ -141,10 +219,10 @@ export class DefensoresUseCases{
         if(!entrevistaDefensorDTO.fechaEntrevista){
             throw new HttpException("Se debe enviar una fecha de entrevista",HttpStatus.BAD_REQUEST);
         }
-        if(!entrevistaDefensorDTO.seRealizoEntrevista){
+        if(entrevistaDefensorDTO.seRealizoEntrevista == null || entrevistaDefensorDTO.seRealizoEntrevista == undefined){
             throw new HttpException("Se debe enviar seRealizoEntrevista",HttpStatus.BAD_GATEWAY);
         }
-        if(!entrevistaDefensorDTO.entrevistaPresencial){
+        if(entrevistaDefensorDTO.entrevistaPresencial == null || entrevistaDefensorDTO.entrevistaPresencial == undefined){
             throw new HttpException("Se debe enviar entrevistaPresencial",HttpStatus.BAD_GATEWAY);
         }
         if(!entrevistaDefensorDTO.relatoDeEntrevista){
@@ -163,6 +241,43 @@ export class DefensoresUseCases{
         const resultado:EntrevistaDefensor = await this.dataService.entrevista_defensor.create(entrevista);
         return resultado.id;
 
+    }
+
+    async updateEntrevista(idEntrevista:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
+        
+        console.log("entrevistaDefensorDTO:",entrevistaDefensorDTO);
+        if(!idEntrevista){
+            throw new HttpException("Se debe enviar el id de entrevista válido",HttpStatus.BAD_REQUEST);
+        }
+        const entrevistaAActualizar = await this.dataService.entrevista_defensor.get(idEntrevista);
+        if(!entrevistaAActualizar){
+            throw new HttpException("No se encontró la entrevista enviada",HttpStatus.BAD_REQUEST);
+        }
+        
+        
+       
+        if(!entrevistaDefensorDTO.fechaEntrevista){
+            throw new HttpException("Se debe enviar una fecha de entrevista",HttpStatus.BAD_REQUEST);
+        }
+        if(entrevistaDefensorDTO.seRealizoEntrevista == null || entrevistaDefensorDTO.seRealizoEntrevista == undefined){
+            throw new HttpException("Se debe enviar seRealizoEntrevista",HttpStatus.BAD_GATEWAY);
+        }
+       
+        if(entrevistaDefensorDTO.entrevistaPresencial == null || entrevistaDefensorDTO.entrevistaPresencial == undefined){
+            throw new HttpException("Se debe enviar entrevistaPresencial",HttpStatus.BAD_GATEWAY);
+        }
+        if(!entrevistaDefensorDTO.relatoDeEntrevista){
+            throw new HttpException("Se debe enviar relatoDeEntrevista",HttpStatus.BAD_GATEWAY);
+        }
+
+       
+        entrevistaAActualizar.se_realizo_la_entrevista = entrevistaDefensorDTO.seRealizoEntrevista;
+        entrevistaAActualizar.virtual = !entrevistaDefensorDTO.entrevistaPresencial;
+        entrevistaAActualizar.fecha = entrevistaDefensorDTO.fechaEntrevista;
+        entrevistaAActualizar.relato = entrevistaDefensorDTO.relatoDeEntrevista;
+        
+        const resultado:EntrevistaDefensor = await this.dataService.entrevista_defensor.update(entrevistaAActualizar);
+        return resultado.id;
     }
 
     async getEntrevistas(idIntervencion:number){

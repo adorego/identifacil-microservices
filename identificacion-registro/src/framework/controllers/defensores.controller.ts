@@ -28,6 +28,20 @@ export class DefensoresController{
         }
     }
 
+    @Put('intervenciones/:id')
+    @UseInterceptors(FileInterceptor('oficio_judicial_alta_intervencion'))
+    async updateIntervencion(@Param() param:any, @UploadedFile() oficio_judicial_alta_intervencion:Express.Multer.File, @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
+        const resultado = await this.defensoresUseCases.updateIntervencion(param.id, intervencionDefensorDTO, oficio_judicial_alta_intervencion);
+        return{
+            success:true,
+            id:resultado
+        }
+    }
+
+    
+
+
+
     @Delete('intervenciones/:id')
     @UseInterceptors(FileInterceptor('oficio_judicial_baja_intervencion'))
     async downGradeIntervencion(@Param() param:any, @UploadedFile() oficio_judicial_baja_intervencion:Express.Multer.File){
@@ -49,7 +63,7 @@ export class DefensoresController{
 
     @Get('intervenciones/:id_intervencion')
     async getIntervencion(@Param() param:any){
-        const resultado = await this.defensoresUseCases.getInternvencionById(param.id_intervencion);
+        const resultado = await this.defensoresUseCases.getIntervencionById(param.id_intervencion);
         return{
             success:true,
             resultado:resultado
@@ -60,6 +74,16 @@ export class DefensoresController{
     async createEntrevista(@Param() param:any, @Body() entrevistaDTO:EntrevistaDefensorDTO){
         console.log("Post entrevista:",param,entrevistaDTO);
         const resultado = await this.defensoresUseCases.createEntrevista(param.id_intervencion,entrevistaDTO);
+        return{
+            success:true,
+            id:resultado
+        }
+    }
+
+    @Put('intervenciones/:id_intervencion/entrevistas/:id_entrevista')
+    async updateEntrevista(@Param() param:any, @Body() entrevistaDTO:EntrevistaDefensorDTO){
+        
+        const resultado = await this.defensoresUseCases.updateEntrevista(param.id_entrevista,entrevistaDTO);
         return{
             success:true,
             id:resultado

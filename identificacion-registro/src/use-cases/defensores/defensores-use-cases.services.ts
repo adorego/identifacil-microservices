@@ -244,7 +244,7 @@ export class DefensoresUseCases{
         entrevista.defensor = intervencion.defensor;
         entrevista.ppl = intervencion.ppl;
         entrevista.se_realizo_la_entrevista = entrevistaDefensorDTO.seRealizoEntrevista;
-        entrevista.virtual = !entrevistaDefensorDTO.entrevistaPresencial;
+        entrevista.entrevistaPresencial = entrevistaDefensorDTO.entrevistaPresencial;
         entrevista.fecha = entrevistaDefensorDTO.fechaEntrevista;
         entrevista.intervencion = intervencion;
         entrevista.relato = entrevistaDefensorDTO.relatoDeEntrevista;
@@ -256,7 +256,6 @@ export class DefensoresUseCases{
 
     async updateEntrevista(idEntrevista:number,entrevistaDefensorDTO:EntrevistaDefensorDTO){
         
-        console.log("entrevistaDefensorDTO:",entrevistaDefensorDTO);
         if(!idEntrevista){
             throw new HttpException("Se debe enviar el id de entrevista válido",HttpStatus.BAD_REQUEST);
         }
@@ -283,7 +282,7 @@ export class DefensoresUseCases{
 
        
         entrevistaAActualizar.se_realizo_la_entrevista = entrevistaDefensorDTO.seRealizoEntrevista;
-        entrevistaAActualizar.virtual = !entrevistaDefensorDTO.entrevistaPresencial;
+        entrevistaAActualizar.entrevistaPresencial = entrevistaDefensorDTO.entrevistaPresencial;
         entrevistaAActualizar.fecha = entrevistaDefensorDTO.fechaEntrevista;
         entrevistaAActualizar.relato = entrevistaDefensorDTO.relatoDeEntrevista;
         

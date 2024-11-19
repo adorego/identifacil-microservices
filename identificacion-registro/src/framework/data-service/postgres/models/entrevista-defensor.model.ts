@@ -16,7 +16,7 @@ export class EntrevistaDefensorModel extends EntrevistaDefensor{
     fecha:Date;
 
     @Column({type:"boolean"})
-    virtual:boolean;
+    entrevistaPresencial:boolean;
 
     @Column({type:"varchar"})
     relato:string;

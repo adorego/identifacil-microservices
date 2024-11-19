@@ -7,7 +7,7 @@ export class EntrevistaDefensor{
     id:number;
     se_realizo_la_entrevista:boolean;
     fecha:Date;
-    virtual:boolean;
+    entrevistaPresencial:boolean;
     relato:string;
     defensor:Defensor;
     ppl:Ppl;

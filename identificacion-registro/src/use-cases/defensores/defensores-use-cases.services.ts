@@ -175,13 +175,13 @@ export class DefensoresUseCases{
         intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
         intervencionAActualizar.circunscripcion = circunscripcion;
         intervencionAActualizar.oficio_judicial_alta_intervencion = await this.fileService.almacenar_archivo(oficioJudicialAltaIntervencion,`oficio_alta_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
-        if(!intervencionDefensorDTO.activo){
-            intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
-            intervencionAActualizar.oficio_judicial_baja_intervencion = await this.fileService.almacenar_archivo(oficioJudicialBajaIntervencion,`oficio_baja_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`)
-        }
+        intervencionAActualizar.fecha_fin_intervencion = intervencionDefensorDTO.fechaFinDelProceso;
+        intervencionAActualizar.oficio_judicial_baja_intervencion = await this.fileService.almacenar_archivo(oficioJudicialBajaIntervencion,`oficio_baja_intervencion_defensor_id_${defensor.id}_ci_ppl_${ppl.persona.numero_identificacion}`);
+       
         const resultado = await this.dataService.intervecion_defensores.update(intervencionAActualizar);
         
         return resultado.id;
+        
     }
     async deleteIntervencion(id_intervencion:number, oficioJudicialBajaIntervencion:Express.Multer.File){
 

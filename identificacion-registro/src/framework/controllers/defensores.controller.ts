@@ -41,6 +41,13 @@ export class DefensoresController{
             oficio_judicial_baja_intervencion?:Express.Multer.File[]
         },
         @Body() intervencionDefensorDTO:IntervencionDefensorDTO){
+        console.log("Files:",files);
+        console.log("DTO:",intervencionDefensorDTO);
+        Object.values(intervencionDefensorDTO).map(
+            (value)=>{
+                console.log("Value:",value,",tipo:",typeof value);
+            }
+        )    
         const resultado = await this.defensoresUseCases.updateIntervencion(param.id, intervencionDefensorDTO, files.oficio_judicial_alta_intervencion?.[0], files.oficio_judicial_baja_intervencion?.[0]);
         return{
             success:true,

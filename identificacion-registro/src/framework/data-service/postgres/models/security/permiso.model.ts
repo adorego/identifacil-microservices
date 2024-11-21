@@ -9,4 +9,11 @@ export class PermisoModel extends Permiso{
     @Column({type:"varchar"})
     nombre:string;
 
+    @Column({type:"varchar",nullable:true})
+    modulo:string;
+
+    @Column({type:"varchar",nullable:true})
+    grupo:string;
+
+
 }

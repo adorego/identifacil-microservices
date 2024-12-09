@@ -26,7 +26,7 @@ export class DefensorModel extends Defensor{
     @OneToMany(()=>PplEnExpedienteModel,pplEnExpediente=>pplEnExpediente.defensor)
     pplsEnExpediente: PplEnExpedienteModel[];
 
-    @ManyToOne(()=>CircunscripcionJudicialModel)
+    @ManyToOne(()=>CircunscripcionJudicialModel,{eager:true})
     circunscripcion: CircunscripcionJudicialModel;
 
     @Column({type:"boolean",default:false})

@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { response } from "express";
 import { IDataService } from "src/core/abstract/data-service.abstract";
-import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
+import { DefensorDTO } from "src/core/dto/datosPenales/defensor.dto";
+import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-defensores.dto";
 import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
 import { IntervencionDefensorDTO } from "src/core/dto/defensores/intervencion-defensor.dto";
 import { Defensor } from "src/core/entities/defensor";
@@ -17,15 +19,15 @@ export class DefensoresUseCases{
 
     async getDashBoardData(dashBoardDataDTO:DashBoardDataDTO){
         //Devolver cantidad de defensores
-        const defensores = await this.dataService.defensor.getAll();
-        const intervenciones = (await this.dataService.intervecion_defensores.getAll()).filter((intervencion)=>(intervencion.activo==true));
-        const entrevistas = intervenciones.map((intervencion)=>intervencion.entrevistas.length);
-        const promedio_entrevistas = entrevistas.reduce((sum,currentvalue)=>sum + currentvalue,0)/entrevistas.length
-        return{
-            defensores:defensores.length,
-            intervenciones_activas:intervenciones.length,
-            promedio_entrevistas:promedio_entrevistas
-        }
+       const cantidad_de_defensores = await this.dataService.defensor.getDefensoresCount();
+       const intervenciones_activas = await this.dataService.intervecion_defensores.getIntervencionesActivas();
+       const promedio_enrtevistas = (await this.dataService.entrevista_defensor.getEntrevistasCount()) / cantidad_de_defensores ;
+
+       return{
+        defensores:cantidad_de_defensores,
+        intervenciones_activas:intervenciones_activas,
+        promedio_entrevistas:promedio_enrtevistas,
+       }
     }
 
     async createIntervencion(intervencionDefensorDTO:IntervencionDefensorDTO, oficioJudicialAltaIntervencion:Express.Multer.File){
@@ -320,6 +322,146 @@ export class DefensoresUseCases{
             throw new HttpException("No se encontró la entrevista solicitada",HttpStatus.BAD_GATEWAY);
         }
         return entrevistaEncontrada;
+    }
+
+    async createDefensor(defensorDTO:DefensorDTO){
+        if(!defensorDTO.tipo){
+            throw new HttpException("Se debe enviar el tipo de defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(defensorDTO.tipo != "publico" && defensorDTO.tipo != "privado"){
+            throw new HttpException("El tipo de defensor solo puede ser público o privado",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.nombre){
+            throw new HttpException("Se debe enviar el nombre del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.apellido){
+            throw new HttpException("Se debe enviar el apellido del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.telefono){
+            throw new HttpException("Se debe enviar el telefono del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.circunscripcion){
+            throw new HttpException("Se debe enviar la circunscripcion del defensor",HttpStatus.BAD_GATEWAY);
+        }
+
+        const circunscripcion = await this.dataService.circunscripcionJudicial.get(defensorDTO.circunscripcion);
+        if(!circunscripcion){
+            throw new HttpException("No se encuentra la circunscripcion enviada",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.supervisor){
+            throw new HttpException("Se debe enviar si el defensor es supervisor o no",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.usuario){
+            throw new HttpException("Se debe enviar el usuario asociado al defensor",HttpStatus.BAD_GATEWAY);
+        }
+        const usuario = await this.dataService.usuario.get(defensorDTO.usuario);
+        if(!usuario){
+            throw new HttpException("No se encuentra el usuario asociado a este Defensor",HttpStatus.BAD_GATEWAY);
+        }
+
+        const newDefensor = new Defensor();
+        newDefensor.nombre = defensorDTO.nombre;
+        newDefensor.apellido = defensorDTO.apellido;
+        newDefensor.telefono = defensorDTO.telefono;
+        newDefensor.tipo = defensorDTO.tipo;
+        newDefensor.supervisor = defensorDTO.supervisor;
+        newDefensor.circunscripcion = circunscripcion;
+        newDefensor.usuario = usuario;
+        
+       
+        const response = await this.dataService.defensor.create(newDefensor);
+        return{
+            id:response.id
+        }
+    }
+
+    async getDefensores(){
+        const response = await this.dataService.defensor.getAll();
+        return{
+            defensores:response
+        }
+    }
+
+    async getDefensorByIdDefensor(id_defensor:number){
+        if(!id_defensor){
+            throw new HttpException("El id del defensor debe ser valido",HttpStatus.BAD_GATEWAY);
+        }
+        const defensor = await this.dataService.defensor.get(id_defensor);
+        if(!defensor){
+            throw new HttpException("No se encontró el defensor en el sistema",HttpStatus.BAD_GATEWAY);
+        }
+        return{
+            defensor: defensor
+        }
+    }
+
+    async getDefensorByIdUsuario(id_usuario:number){
+        if(!id_usuario){
+            throw new HttpException("El id de usuario debe ser valido",HttpStatus.BAD_GATEWAY);
+        }
+        const defensor = await this.dataService.defensor.getDefensorByIdUsuario(id_usuario);
+        if(!defensor){
+            throw new HttpException("No se encontró el defensor en el sistema",HttpStatus.BAD_GATEWAY);
+        }
+        return{
+            defensor: defensor
+        }
+    }
+
+    async updateDefensor(id_defensor:number,defensorDTO:DefensorDTO){
+        if(!id_defensor){
+            throw new HttpException("El id del defensor debe ser valido",HttpStatus.BAD_GATEWAY);
+        }
+        const defensor = await this.dataService.defensor.get(id_defensor);
+        if(!defensor){
+            throw new HttpException("No se encontró el defensor en el sistema",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.tipo){
+            throw new HttpException("Se debe enviar el tipo de defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(defensorDTO.tipo != "publico" && defensorDTO.tipo != "privado"){
+            throw new HttpException("El tipo de defensor solo puede ser público o privado",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.nombre){
+            throw new HttpException("Se debe enviar el nombre del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.apellido){
+            throw new HttpException("Se debe enviar el apellido del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.telefono){
+            throw new HttpException("Se debe enviar el telefono del defensor",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.circunscripcion){
+            throw new HttpException("Se debe enviar la circunscripcion del defensor",HttpStatus.BAD_GATEWAY);
+        }
+
+        const circunscripcion = await this.dataService.circunscripcionJudicial.get(defensorDTO.circunscripcion);
+        if(!circunscripcion){
+            throw new HttpException("No se encuentra la circunscripcion enviada",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.supervisor){
+            throw new HttpException("Se debe enviar si el defensor es supervisor o no",HttpStatus.BAD_GATEWAY);
+        }
+        if(!defensorDTO.usuario){
+            throw new HttpException("Se debe enviar el usuario asociado al defensor",HttpStatus.BAD_GATEWAY);
+        }
+        const usuario = await this.dataService.usuario.get(defensorDTO.usuario);
+        if(!usuario){
+            throw new HttpException("No se encuentra el usuario asociado a este Defensor",HttpStatus.BAD_GATEWAY);
+        }
+
+        defensor.nombre = defensorDTO.nombre;
+        defensor.apellido = defensorDTO.apellido;
+        defensor.telefono = defensorDTO.telefono;
+        defensor.tipo = defensorDTO.tipo;
+        defensor.supervisor = defensorDTO.supervisor;
+        defensor.circunscripcion = circunscripcion;
+        defensor.usuario = usuario;
+        
+        const response = await this.dataService.defensor.update(defensor);
+        return{
+            id:response.id
+        }
     }
 
 

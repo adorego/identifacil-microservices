@@ -50,4 +50,13 @@ export abstract class IGenericRepository<T>{
   abstract getRolConPermisos(id:number):Promise<T>;
 
   abstract getIntervencionesDefensoresPorCircunscripcion(id:number):Promise<Array<T>>;
+
+  abstract getDefensorByIdUsuario(id:number):Promise<T>;
+
+  abstract getDefensoresCount():Promise<number>;
+
+  abstract getIntervencionesActivas():Promise<number>;
+
+  abstract getEntrevistasCount():Promise<number>;
+
 }

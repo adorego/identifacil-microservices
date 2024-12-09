@@ -263,5 +263,32 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
            .where("circunscripcion.id = :id",{id:id})
            .getMany()
   }
+
+  getDefensorByIdUsuario(id:number):Promise<T>{
+    return this._repository.createQueryBuilder("defensor")
+           .leftJoinAndSelect("defensor.usuario","usuario")
+           .where("usuario.id = :id",{id:id})
+           .getOne()
+  }
+
+  getDefensoresCount():Promise<number>{
+    const numero_de_defensores = this._repository.createQueryBuilder("defensor")
+           .getCount();
+    return numero_de_defensores;
+  }
+
+  getIntervencionesActivas():Promise<number>{
+    const intervenciones_activas = this._repository.createQueryBuilder("intervencion")
+          .where("intervencion.activo = true")
+          .getCount();
+    return intervenciones_activas;
+  }
+
+  getEntrevistasCount():Promise<number>{
+     const total_entrevistas = this._repository.createQueryBuilder("entrevista")
+     .where("entrevista.se_realizo_la_entrevista = true")
+     .getCount();
+     return total_entrevistas;
+  }
 }
   

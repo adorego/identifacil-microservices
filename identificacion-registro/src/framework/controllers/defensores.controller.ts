@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FileFieldsInterceptor, FileInterceptor } from "@nestjs/platform-express";
-import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-data.dto";
+import { DefensorDTO } from "src/core/dto/datosPenales/defensor.dto";
+import { DashBoardDataDTO } from "src/core/dto/defensores/dashboard-defensores.dto";
 import { EntrevistaDefensorDTO } from "src/core/dto/defensores/entrevista-defensor.dto";
 import { IntervencionDefensorDTO } from "src/core/dto/defensores/intervencion-defensor.dto";
 import { DefensoresUseCases } from "src/use-cases/defensores/defensores-use-cases.services";
@@ -87,6 +88,9 @@ export class DefensoresController{
         }
     }
 
+    @Get('intervenciones/defensores/:id_defensor')
+    
+
     @Post('intervenciones/:id_intervencion/entrevistas')
     async createEntrevista(@Param() param:any, @Body() entrevistaDTO:EntrevistaDefensorDTO){
         console.log("Post entrevista:",param,entrevistaDTO);
@@ -122,6 +126,50 @@ export class DefensoresController{
         return{
             success:true,
             resultado:resultado
+        }
+    }
+
+    @Post('defensor')
+    async createDefensor(@Body() defensorDTO:DefensorDTO){
+        const response = await this.defensoresUseCases.createDefensor(defensorDTO);
+        return{
+            id:response.id,
+            success:true
+        }
+    }
+    @Get('defensor')
+    async getDefensores(){
+        const response = await this.defensoresUseCases.getDefensores();
+        return{
+            defensores:response.defensores,
+            success:true
+        }
+    }
+
+    @Get('defensor/:id')
+    async getDefensorByIdDefensor(@Param() param:any){
+        const response = await this.defensoresUseCases.getDefensorByIdDefensor(param.id);
+        return{
+            defensor:response,
+            success:true
+        }
+        
+    }
+    @Get('defensor/byIdUsuario/:id')
+    async getDefensorByIdUsuario(@Param() param:any){
+        const response = await this.defensoresUseCases.getDefensorByIdUsuario(param.id);
+        return{
+            defensor:response,
+            success:true
+        }
+        
+    }
+    @Put('defensor/:id')
+    async updateDefensor(@Param() param:any,@Body() defensorDTO:DefensorDTO){
+        const response = await this.defensoresUseCases.updateDefensor(param.id,defensorDTO);
+        return{
+            id:response.id,
+            success:true
         }
     }
 

@@ -88,8 +88,7 @@ export class DefensoresController{
         }
     }
 
-    @Get('intervenciones/defensores/:id_defensor')
-    
+   
 
     @Post('intervenciones/:id_intervencion/entrevistas')
     async createEntrevista(@Param() param:any, @Body() entrevistaDTO:EntrevistaDefensorDTO){

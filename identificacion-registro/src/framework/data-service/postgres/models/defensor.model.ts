@@ -32,7 +32,7 @@ export class DefensorModel extends Defensor{
     @Column({type:"boolean",default:false})
     supervisor:boolean
 
-    @OneToOne(()=>UsuarioModel)
+    @OneToOne(()=>UsuarioModel,{eager:true})
     @JoinColumn()
     usuario: UsuarioModel;
 }

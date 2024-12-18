@@ -21,6 +21,7 @@ export class IdentificacionController{
   async identificar(@Body() descriptor_a_identificar:IdentificacionPersonaDTO){
     // console.log("Descriptor recibido:", descriptor_a_identificar.descriptorFacial);
     const persona_encontrada = await this.identificacionPersonaUseCase.identificar(descriptor_a_identificar.descriptorFacial);
+    console.log("Persona encontrada:",persona_encontrada);
     return(persona_encontrada);
   }
 

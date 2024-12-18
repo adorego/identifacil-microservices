@@ -47,6 +47,7 @@ export class RegistroController{
     @Body() registro:RegistroPersonaDTO, ):Promise<RespuestaRegistroPPLDTO>{
     
     this.logger.log("Datos recibidos:", registro);
+    console.log("Datos recibidos:", registro);
    
       //Transformacion de Datos
     const {persona:personaARegistrar,ppl} = await this.registroPersonaFactory.crearRegistro(registro,fotos);

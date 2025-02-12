@@ -1,5 +1,6 @@
 import { HechoPunibleCausaJudicial } from "../entities/hecho-punible-causa-judicial.entity";
 import { Pais } from "../entities/pais.entity";
+import { RegistroCivilPersona } from "../entities/registro_civil_persona.entity";
 
 export abstract class IGenericRepository<T>{
   abstract getAll():Promise<Array<T>>;
@@ -58,5 +59,7 @@ export abstract class IGenericRepository<T>{
   abstract getIntervencionesActivas():Promise<number>;
 
   abstract getEntrevistasCount():Promise<number>;
+
+  abstract getPersonaCivilByCI(ci:string):Promise<T>
 
 }

@@ -73,6 +73,7 @@ import { GradoDeFaltaModel } from "./models/grado-de-falta.model";
 import { TipoDeVictimaModel } from "./models/tipo-victima.model";
 import { IntervencionDefensorModel } from "./models/intervencion-defensor.model";
 import { EntrevistaDefensorModel } from "./models/entrevista-defensor.model";
+import { RegistroCivilPersonaModel } from "./models/registro_civil_persona.model";
 
 @Module({
   imports:[
@@ -154,7 +155,9 @@ import { EntrevistaDefensorModel } from "./models/entrevista-defensor.model";
       RolModel, 
       PermisoModel,
       IntervencionDefensorModel,
-      EntrevistaDefensorModel
+      EntrevistaDefensorModel,
+      RegistroMedicoModel,
+      RegistroCivilPersonaModel,
       
     
     

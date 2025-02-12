@@ -76,6 +76,7 @@ import { TipoDeSancionModel } from "./models/tipo-sancion.model";
 import { TipoDeVictimaModel } from "./models/tipo-victima.model";
 import { IntervencionDefensorModel } from "./models/intervencion-defensor.model";
 import { EntrevistaDefensorModel } from "./models/entrevista-defensor.model";
+import { RegistroCivilPersonaModel } from "./models/registro_civil_persona.model";
 
 
 @Injectable()
@@ -164,6 +165,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
   //Defensores
   intervecion_defensores:PostgresGenericRepository<IntervencionDefensorModel>;
   entrevista_defensor: PostgresGenericRepository<EntrevistaDefensorModel>;
+
+  //Consulta CI local
+  registro_civil_persona:PostgresGenericRepository<RegistroCivilPersonaModel>;
 
   constructor(
     @InjectRepository(PersonaModel)
@@ -322,7 +326,9 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     @InjectRepository(EntrevistaDefensorModel)
     private entrevista_defensores_repository:Repository<EntrevistaDefensorModel>,
     
-
+    //Consulta CI local
+    @InjectRepository(RegistroCivilPersonaModel)
+    private registro_civil_persona_repository:Repository<RegistroCivilPersonaModel>,
 
     ){}
   
@@ -408,6 +414,10 @@ export class PostgresDataService implements IDataService, OnApplicationBootstrap
     //Defensores
     this.intervecion_defensores = new PostgresGenericRepository<IntervencionDefensorModel>(this.intervencion_defensores_repository);
     this.entrevista_defensor = new PostgresGenericRepository<EntrevistaDefensorModel>(this.entrevista_defensores_repository);
+  
+    //Registro Civil CI Consulta local
+    this.registro_civil_persona = new PostgresGenericRepository<RegistroCivilPersonaModel>(this.registro_civil_persona_repository);
+  
   }
   
   

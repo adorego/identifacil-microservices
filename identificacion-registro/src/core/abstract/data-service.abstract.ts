@@ -68,6 +68,7 @@ import { TipoDeSancion } from "../entities/tipo-sancion.entity";
 import { TipoDeVictima } from "../entities/tipo-victima.entity";
 import { IntervencionDefensor } from "../entities/intervencion.entity";
 import { EntrevistaDefensor } from "../entities/entrevista-defensor.entity";
+import { RegistroCivilPersona } from "../entities/registro_civil_persona.entity";
 
 export abstract class IDataService{
   abstract persona: IGenericRepository<Persona>;
@@ -142,4 +143,6 @@ export abstract class IDataService{
   //Defensores
   abstract intervecion_defensores:IGenericRepository<IntervencionDefensor>;
   abstract entrevista_defensor:IGenericRepository<EntrevistaDefensor>;
+  //Consulta CI local
+  abstract registro_civil_persona:IGenericRepository<RegistroCivilPersona>;
 }

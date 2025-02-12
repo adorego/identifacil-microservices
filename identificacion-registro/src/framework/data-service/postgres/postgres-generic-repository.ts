@@ -1,8 +1,6 @@
 import { FindOptionsWhere, Repository } from "typeorm";
 
 import { IGenericRepository } from "src/core/abstract/generic-repository.abstract";
-import { PplDTO } from "src/core/dto/ppl/ppl.dto";
-import { HechoPunibleCausaJudicial } from "src/core/entities/hecho-punible-causa-judicial.entity";
 import { Pais } from "src/core/entities/pais.entity";
 
 export class PostgresGenericRepository<T> implements IGenericRepository<T>{
@@ -290,5 +288,20 @@ export class PostgresGenericRepository<T> implements IGenericRepository<T>{
      .getCount();
      return total_entrevistas;
   }
+
+  //Para Consulta CI local
+  getPersonaCivilByCI(ci:string):Promise<T>{
+    const persona_encontrada = this._repository.createQueryBuilder("registro_civil_persona")
+    .where("registro_civil_persona.cedula_identidad = :ci",{ci:ci})
+    .getOne();
+    return persona_encontrada;
+   
+
+  }
+
+
+
+
 }
-  
+
+

@@ -19,6 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './use-cases/security/auth.module';
 import { FaltasSancionesModule } from './use-cases/faltas-y-sanciones/faltas-y-sanciones.module';
 import { DefensoresModule } from './use-cases/defensores/defensores.module';
+import { RegistroConsultaCivilModule } from './use-cases/registro-civil-personas/registro-civil-consulta-ci.module';
 
 
 
@@ -68,6 +69,7 @@ import { DefensoresModule } from './use-cases/defensores/defensores.module';
     AuthModule,
     FaltasSancionesModule,
     DefensoresModule,
+    RegistroConsultaCivilModule,
   
   ],
   controllers: [],
